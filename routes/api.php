@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->name('api.v1.')->group(function() {
+
+    Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
+    Route::get('subjects/{subject}', 'SubjectsController@show')->name('subjects.show');
+
+    Route::prefix('admin')->namespace('Admin')->group(function () {
+
+        Route::apiResources([
+            'subjects' => 'SubjectsController',
+        ]);
+
+    });
 });

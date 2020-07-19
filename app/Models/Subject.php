@@ -1,8 +1,6 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Subject extends Model
 {
     protected $fillable = [
@@ -11,7 +9,7 @@ class Subject extends Model
     ];
 
     protected $casts = [
-        'is_special' => 'boolean',
+//        'is_special' => 'boolean',
         'is_directory' => 'boolean',
         'status' => 'boolean',
     ];
@@ -41,7 +39,7 @@ class Subject extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function children()
+    public function childrens()
     {
         return $this->hasMany(Subject::class, 'parent_id');
     }
