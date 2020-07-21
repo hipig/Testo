@@ -18,4 +18,9 @@ class BankItem extends Model
     {
         return $this->belongsTo(Bank::class);
     }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
 }
