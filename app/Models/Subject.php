@@ -39,7 +39,7 @@ class Subject extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function childrens()
+    public function childrenSubject()
     {
         return $this->hasMany(Subject::class, 'parent_id');
     }
