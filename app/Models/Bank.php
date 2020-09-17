@@ -34,7 +34,7 @@ class Bank extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Bank::class);
+        return $this->belongsTo(Bank::class, 'parent_id');
     }
 
     public function children()
