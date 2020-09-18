@@ -107,6 +107,78 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ChapterItem",
+  props: {
+    name: {
+      type: String | Number | Object,
+      "default": ''
+    },
+    title: {
+      type: String,
+      "default": ''
+    },
+    number: {
+      type: Array,
+      "default": [0, 0]
+    },
+    disabled: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  data: function data() {
+    return {
+      isActive: false
+    };
+  },
+  methods: {
+    toggle: function toggle() {
+      if (this.disabled) return false;
+      this.isActive = !this.isActive;
+    },
+    handle: function handle() {
+      this.$emit('btnClick', this.name);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/partials/AppFooter.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/partials/AppFooter.vue?vue&type=script&lang=js& ***!
@@ -356,6 +428,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_chapters_ChapterItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/chapters/ChapterItem */ "./resources/js/components/chapters/ChapterItem.vue");
 //
 //
 //
@@ -447,12 +520,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "subjects.show",
+  components: {
+    ChapterItem: _components_chapters_ChapterItem__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       subjects: {
@@ -475,8 +548,79 @@ __webpack_require__.r(__webpack_exports__);
           id: 105,
           name: '初级建筑经济'
         }]
-      }
+      },
+      chapters: [{
+        id: 1,
+        title: '第一章 社会经济制度',
+        learned_num: 0,
+        total: 58,
+        children: [{
+          id: 2,
+          title: '第一节 物质资料生产和基本经济规律',
+          learned_num: 0,
+          total: 22
+        }, {
+          id: 3,
+          title: '第二节 社会经济制度的变革和演化',
+          learned_num: 0,
+          total: 11
+        }, {
+          id: 4,
+          title: '第三节 自然经济与商品经济',
+          learned_num: 0,
+          total: 5
+        }, {
+          id: 5,
+          title: '第四节 市场与市场体系',
+          learned_num: 0,
+          total: 7
+        }, {
+          id: 6,
+          title: '第五节 商品经济与市场经济',
+          learned_num: 0,
+          total: 4
+        }, {
+          id: 7,
+          title: '第六节 资源配置方式与经济体制',
+          learned_num: 0,
+          total: 9
+        }]
+      }, {
+        id: 10,
+        title: '第二章 我国土地基本制度',
+        learned_num: 0,
+        total: 78,
+        children: [{
+          id: 11,
+          title: '第一节　土地所有制',
+          learned_num: 0,
+          total: 10
+        }, {
+          id: 12,
+          title: '第二节　土地征收征用制度',
+          learned_num: 0,
+          total: 8
+        }, {
+          id: 13,
+          title: '第三节　土地管理制度',
+          learned_num: 0,
+          total: 33
+        }, {
+          id: 14,
+          title: '第四节　国有建设用地使用制度',
+          learned_num: 0,
+          total: 17
+        }, {
+          id: 15,
+          title: '第五节　集体土地使用制度',
+          learned_num: 0,
+          total: 10
+        }]
+      }]
     };
+  },
+  methods: {
+    toggle: function toggle() {}
   }
 });
 
@@ -1461,6 +1605,122 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full" }, [
+    _c(
+      "div",
+      {
+        staticClass: "ml-5 pr-5 py-4 flex items-center border-b border-gray-100"
+      },
+      [
+        _c("div", { staticClass: "w-2/3 flex items-center" }, [
+          _c(
+            "div",
+            { staticClass: "mr-4 cursor-pointer", on: { click: _vm.toggle } },
+            [
+              _vm.isActive
+                ? _c(
+                    "svg",
+                    {
+                      staticClass: "w-6 h-6 stroke-current text-teal-500",
+                      attrs: { fill: "none", viewBox: "0 0 24 24" }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round",
+                          "stroke-width": "2",
+                          d: "M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        }
+                      })
+                    ]
+                  )
+                : _c(
+                    "svg",
+                    {
+                      staticClass: "w-6 h-6 stroke-current text-teal-500",
+                      attrs: { fill: "none", viewBox: "0 0 24 24" }
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          "stroke-linecap": "round",
+                          "stroke-linejoin": "round",
+                          "stroke-width": "2",
+                          d:
+                            "M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        }
+                      })
+                    ]
+                  )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-base" }, [_vm._v(_vm._s(_vm.title))])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-1/3 flex items-center justify-between" }, [
+          _c("div", { staticClass: "text-gray-400" }, [
+            _c("span", { staticClass: "text-teal-500" }, [
+              _vm._v(_vm._s(_vm.number[0] || 0))
+            ]),
+            _vm._v("/" + _vm._s(_vm.number[1] || 0))
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none",
+              attrs: { type: "button" },
+              on: { click: _vm.handle }
+            },
+            [_vm._v("马上练习")]
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.isActive,
+            expression: "isActive"
+          }
+        ],
+        staticClass: "ml-5"
+      },
+      [_vm._t("default")],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/partials/AppFooter.vue?vue&type=template&id=631e624a&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/partials/AppFooter.vue?vue&type=template&id=631e624a& ***!
@@ -1983,52 +2243,110 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "mt-5 flex" }, [
-        _vm._m(2),
+      _c("div", { staticClass: "mt-5 flex flex-wrap" }, [
+        _c(
+          "div",
+          { staticClass: "w-36 h-max-c bg-white shadow rounded-lg mr-5" },
+          [
+            _c(
+              "div",
+              { staticClass: "pb-5 pl-2 pr-2 text-gray-500" },
+              _vm._l(_vm.chapters, function(value, key) {
+                return _c(
+                  "div",
+                  {
+                    key: key,
+                    staticClass:
+                      "mt-5 pl-3 leading-tight truncate cursor-pointer border-l-4",
+                    class: {
+                      "text-teal-500 border-teal-500": key === 0,
+                      "border-transparent": key !== 0
+                    }
+                  },
+                  [_vm._v(_vm._s(value.title))]
+                )
+              }),
+              0
+            )
+          ]
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "flex-1 bg-white shadow rounded-lg" }, [
-          _vm._m(3),
+          _vm._m(2),
           _vm._v(" "),
-          _c("div", { staticClass: "flex flex-wrap" }, [
-            _c("div", { staticClass: "w-full" }, [
-              _c(
-                "div",
+          _c(
+            "div",
+            { staticClass: "flex flex-wrap" },
+            _vm._l(_vm.chapters, function(value, key) {
+              return _c(
+                "chapter-item",
                 {
-                  staticClass:
-                    "px-5 py-4 flex items-center border-b border-gray-100"
+                  key: key,
+                  attrs: {
+                    title: value.title,
+                    name: value.id,
+                    number: [value.learned_num, value.total],
+                    disabled: value.children.length === 0
+                  }
                 },
-                [
-                  _c("div", { staticClass: "w-2/3 flex items-center" }, [
-                    _c(
-                      "svg",
-                      {
-                        staticClass:
-                          "w-6 h-6 stroke-current text-teal-500 mr-4",
-                        attrs: { fill: "none", viewBox: "0 0 24 24" }
-                      },
-                      [
-                        _c("path", {
-                          attrs: {
-                            "stroke-linecap": "round",
-                            "stroke-linejoin": "round",
-                            "stroke-width": "2",
-                            d:
-                              "M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                          }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-base" }, [
-                      _vm._v("第一章 社会经济制度")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(4)
-                ]
+                _vm._l(value.children, function(v, k) {
+                  return _c(
+                    "div",
+                    {
+                      key: k,
+                      staticClass:
+                        "pr-5 py-4 flex items-center border-b border-gray-100"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "w-2/3 pl-10 flex items-center" },
+                        [
+                          _c("div", { staticClass: "mr-4" }, [
+                            _c("span", {
+                              staticClass:
+                                "block w-2 h-2 rounded-full border-teal-500 border-2"
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-base" }, [
+                            _vm._v(_vm._s(v.title))
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "w-1/3 flex items-center justify-between"
+                        },
+                        [
+                          _c("div", { staticClass: "text-gray-400" }, [
+                            _c("span", { staticClass: "text-teal-500" }, [
+                              _vm._v(_vm._s(v.learned_num))
+                            ]),
+                            _vm._v("/" + _vm._s(v.total))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none",
+                              attrs: { type: "button" }
+                            },
+                            [_vm._v("马上练习")]
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                }),
+                0
               )
-            ])
-          ])
+            }),
+            1
+          )
         ])
       ])
     ])
@@ -2096,43 +2414,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "w-36 max-h-screen bg-white shadow rounded-lg mr-5" },
-      [
-        _c("div", { staticClass: "pb-5" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "mt-5 pl-5 pr-2 truncate cursor-pointer text-teal-500 sidebar-active"
-            },
-            [_vm._v("第一章 社会经济制度")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5 pl-5 pr-2 truncate cursor-pointer" }, [
-            _vm._v("第一章 社会经济制度")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5 pl-5 pr-2 truncate cursor-pointer" }, [
-            _vm._v("第一章 社会经济制度")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5 pl-5 pr-2 truncate cursor-pointer" }, [
-            _vm._v("第一章 社会经济制度")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5 pl-5 pr-2 truncate cursor-pointer" }, [
-            _vm._v("第一章 社会经济制度")
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
       {
         staticClass:
           "px-5 py-2 text-base text-gray-400 flex border-b border-gray-100"
@@ -2141,31 +2422,6 @@ var staticRenderFns = [
         _c("div", { staticClass: "w-2/3 pl-10" }, [_vm._v("名称")]),
         _vm._v(" "),
         _c("div", { staticClass: "w-1/3" }, [_vm._v("做题进度")])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "w-1/3 flex items-center justify-between" },
-      [
-        _c("div", { staticClass: "text-gray-400" }, [
-          _c("span", { staticClass: "text-teal-500" }, [_vm._v("0")]),
-          _vm._v("/158")
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass:
-              "px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none",
-            attrs: { type: "button" }
-          },
-          [_vm._v("马上练习")]
-        )
       ]
     )
   }
@@ -18730,6 +18986,75 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/components/chapters/ChapterItem.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/chapters/ChapterItem.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChapterItem.vue?vue&type=template&id=fa5d013c& */ "./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c&");
+/* harmony import */ var _ChapterItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChapterItem.vue?vue&type=script&lang=js& */ "./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ChapterItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/chapters/ChapterItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChapterItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ChapterItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/chapters/ChapterItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChapterItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ChapterItem.vue?vue&type=template&id=fa5d013c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/chapters/ChapterItem.vue?vue&type=template&id=fa5d013c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChapterItem_vue_vue_type_template_id_fa5d013c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/partials/AppFooter.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/partials/AppFooter.vue ***!
@@ -19394,8 +19719,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -56,14 +56,10 @@
           </div>
         </div>
       </div>
-      <div class="mt-5 flex">
-        <div class="w-36 max-h-screen bg-white shadow rounded-lg mr-5">
-          <div class="pb-5">
-            <div class="mt-5 pl-5 pr-2 truncate cursor-pointer text-teal-500 sidebar-active">第一章 社会经济制度</div>
-            <div class="mt-5 pl-5 pr-2 truncate cursor-pointer">第一章 社会经济制度</div>
-            <div class="mt-5 pl-5 pr-2 truncate cursor-pointer">第一章 社会经济制度</div>
-            <div class="mt-5 pl-5 pr-2 truncate cursor-pointer">第一章 社会经济制度</div>
-            <div class="mt-5 pl-5 pr-2 truncate cursor-pointer">第一章 社会经济制度</div>
+      <div class="mt-5 flex flex-wrap">
+        <div class="w-36 h-max-c bg-white shadow rounded-lg mr-5">
+          <div class="pb-5 pl-2 pr-2 text-gray-500">
+            <div v-for="(value, key) in chapters" :key="key" class="mt-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
           </div>
         </div>
         <div class="flex-1 bg-white shadow rounded-lg">
@@ -72,20 +68,20 @@
             <div class="w-1/3">做题进度</div>
           </div>
           <div class="flex flex-wrap">
-            <div class="w-full">
-              <div class="px-5 py-4 flex items-center border-b border-gray-100">
-                <div class="w-2/3 flex items-center">
-                  <svg class="w-6 h-6 stroke-current text-teal-500 mr-4" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <div class="text-base">第一章 社会经济制度</div>
+            <chapter-item v-for="(value, key) in chapters" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num, value.total]" :disabled="value.children.length === 0">
+              <div v-for="(v, k) in value.children" :key="k" class="pr-5 py-4 flex items-center border-b border-gray-100">
+                <div class="w-2/3 pl-10 flex items-center">
+                  <div class="mr-4">
+                    <span class="block w-2 h-2 rounded-full border-teal-500 border-2"></span>
+                  </div>
+                  <div class="text-base">{{ v.title }}</div>
                 </div>
                 <div class="w-1/3 flex items-center justify-between">
-                  <div class="text-gray-400"><span class="text-teal-500">0</span>/158</div>
+                  <div class="text-gray-400"><span class="text-teal-500">{{ v.learned_num }}</span>/{{ v.total }}</div>
                   <button type="button" class="px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none">马上练习</button>
                 </div>
               </div>
-            </div>
+            </chapter-item>
           </div>
         </div>
       </div>
@@ -94,39 +90,133 @@
 </template>
 
 <script>
-export default {
-  name: "subjects.show",
-  data () {
-    return {
-      subjects: {
-        special: [
+  import ChapterItem from "@/components/chapters/ChapterItem"
+
+  export default {
+    name: "subjects.show",
+    components: {
+      ChapterItem
+    },
+    data () {
+      return {
+        subjects: {
+          special: [
+            {
+              id: 100,
+              name: '初级经济基础知识',
+            },
+            {
+              id: 101,
+              name: '初级财政税收',
+            },
+            {
+              id: 102,
+              name: '初级金融',
+            },
+            {
+              id: 103,
+              name: '初级人力资源',
+            },
+            {
+              id: 104,
+              name: '初级工商管理',
+            },
+            {
+              id: 105,
+              name: '初级建筑经济',
+            },
+          ]
+        },
+        chapters: [
           {
-            id: 100,
-            name: '初级经济基础知识',
+            id: 1,
+            title: '第一章 社会经济制度',
+            learned_num: 0,
+            total: 58,
+            children: [
+              {
+                id: 2,
+                title: '第一节 物质资料生产和基本经济规律',
+                learned_num: 0,
+                total: 22,
+              },
+              {
+                id: 3,
+                title: '第二节 社会经济制度的变革和演化',
+                learned_num: 0,
+                total: 11,
+              },
+              {
+                id: 4,
+                title: '第三节 自然经济与商品经济',
+                learned_num: 0,
+                total: 5,
+              },
+              {
+                id: 5,
+                title: '第四节 市场与市场体系',
+                learned_num: 0,
+                total: 7,
+              },
+              {
+                id: 6,
+                title: '第五节 商品经济与市场经济',
+                learned_num: 0,
+                total: 4,
+              },
+              {
+                id: 7,
+                title: '第六节 资源配置方式与经济体制',
+                learned_num: 0,
+                total: 9,
+              }
+            ]
           },
           {
-            id: 101,
-            name: '初级财政税收',
-          },
-          {
-            id: 102,
-            name: '初级金融',
-          },
-          {
-            id: 103,
-            name: '初级人力资源',
-          },
-          {
-            id: 104,
-            name: '初级工商管理',
-          },
-          {
-            id: 105,
-            name: '初级建筑经济',
-          },
+            id: 10,
+            title: '第二章 我国土地基本制度',
+            learned_num: 0,
+            total: 78,
+            children: [
+              {
+                id: 11,
+                title: '第一节　土地所有制',
+                learned_num: 0,
+                total: 10,
+              },
+              {
+                id: 12,
+                title: '第二节　土地征收征用制度',
+                learned_num: 0,
+                total: 8,
+              },
+              {
+                id: 13,
+                title: '第三节　土地管理制度',
+                learned_num: 0,
+                total: 33,
+              },
+              {
+                id: 14,
+                title: '第四节　国有建设用地使用制度',
+                learned_num: 0,
+                total: 17,
+              },
+              {
+                id: 15,
+                title: '第五节　集体土地使用制度',
+                learned_num: 0,
+                total: 10,
+              }
+            ]
+          }
         ]
+      }
+    },
+    methods: {
+      toggle() {
+
       }
     }
   }
-}
 </script>
