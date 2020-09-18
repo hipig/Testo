@@ -3,6 +3,7 @@ import BlankLayout from '@/layout/BlankLayout'
 
 import Home from '@/views/Home'
 import Subjects from '@/views/subjects/Index'
+import SubjectsShow from '@/views/subjects/Show'
 
 export default [
   {
@@ -20,7 +21,12 @@ export default [
         path: '/subjects',
         name: 'subjects',
         component: Subjects
-      }
+      },
+      {
+        path: '/subjects/:id',
+        name: 'subjects.show',
+        component: SubjectsShow
+      },
     ]
   }
 ]

@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
-<body class="bg-gray-100 antialiased text-gray-600 font-sans">
+<body class="bg-gray-100 antialiased text-gray-600 font-sans text-sm">
 <div id="app">
   <router-view></router-view>
 </div>
