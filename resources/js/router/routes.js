@@ -23,7 +23,7 @@ export default [
         component: Subjects
       },
       {
-        path: '/subjects/:id',
+        path: '/subjects/:sid/:id?',
         name: 'subjects.show',
         component: SubjectsShow
       },

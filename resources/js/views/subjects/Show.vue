@@ -19,7 +19,7 @@
               </svg>
               <h3 class="text-xl">初级经济师</h3>
             </div>
-            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-sm focus:outline-none">
+            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-sm focus:outline-none" @click="switchSubjectVisible = !switchSubjectVisible">
               <span class="mr-1">切换考试</span>
               <svg class="w-4 h-4 stroke-current -mr-1" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -44,7 +44,7 @@
         <div class="flex">
           <div class="mr-5 text-gray-400 h-8 flex items-center">专业科目</div>
           <div class="flex-1 flex flex-wrap">
-            <a href="#" v-for="(value, key) in subjects.special" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full" :class="{'text-white bg-teal-500': key === 0}">{{ value.name }}</a>
+            <a href="#" v-for="(value, key) in subSubjects.special" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full" :class="{'text-white bg-teal-500': key === 0}">{{ value.name }}</a>
           </div>
         </div>
         <div class="flex justify-center">
@@ -57,9 +57,9 @@
         </div>
       </div>
       <div class="mt-5 flex flex-wrap">
-        <div class="w-36 h-max-c bg-white shadow rounded-lg mr-5">
-          <div class="pb-5 pl-2 pr-2 text-gray-500">
-            <div v-for="(value, key) in chapters" :key="key" class="mt-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
+        <div class="w-40 max-h-screen mr-5">
+          <div class="bg-white shadow rounded-lg pt-5 pl-2 pr-2 text-gray-500 flex flex-col">
+            <div v-for="(value, key) in chapters" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
           </div>
         </div>
         <div class="flex-1 bg-white shadow rounded-lg">
@@ -68,38 +68,112 @@
             <div class="w-1/3">做题进度</div>
           </div>
           <div class="flex flex-wrap">
-            <chapter-item v-for="(value, key) in chapters" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num, value.total]" :disabled="value.children.length === 0">
-              <div v-for="(v, k) in value.children" :key="k" class="pr-5 py-4 flex items-center border-b border-gray-100">
-                <div class="w-2/3 pl-10 flex items-center">
-                  <div class="mr-4">
-                    <span class="block w-2 h-2 rounded-full border-teal-500 border-2"></span>
-                  </div>
-                  <div class="text-base">{{ v.title }}</div>
-                </div>
-                <div class="w-1/3 flex items-center justify-between">
-                  <div class="text-gray-400"><span class="text-teal-500">{{ v.learned_num }}</span>/{{ v.total }}</div>
-                  <button type="button" class="px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none">马上练习</button>
-                </div>
-              </div>
+            <chapter-item v-for="(value, key) in chapters" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num, value.total]" :disabled="value.children.length === 0" @btnClick="handleLearn">
+              <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num, v.total]" second  @btnClick="handleLearn"/>
             </chapter-item>
           </div>
         </div>
       </div>
     </div>
+    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :showFooter="false">
+      <div class="w-full">
+        <div class="mb-5" v-for="(value, key) in subjects" :key="key">
+          <h3 class="text-gray-400 mb-2">{{ value.name }}</h3>
+          <div class="flex flex-wrap -mx-3">
+            <div class="w-1/4 px-3" v-for="(v, k) in value.childrens" :key="k">
+              <a href="#" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.name }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t-modal>
+    <t-modal  v-model="filterVisible" title="练习筛选" size="4xl">
+      <div class="w-full -mb-5">
+        <filter-item v-for="(item, index) in formatterFilterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @change="optionChange"/>
+      </div>
+      <div slot="footer">
+        <div class="flex items-center justify-end">
+          <button type="button" class="inline-flex py-2 px-8 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="handleExercise">练习模式</button>
+          <button type="button" class="ml-6 inline-flex py-2 px-8 text-base rounded text-white bg-gradient-to-r from-yellow-400 to-yellow-500 focus:outline-none" @click="handleExam">考试模式</button>
+        </div>
+      </div>
+    </t-modal>
   </div>
 </template>
 
 <script>
   import ChapterItem from "@/components/chapters/ChapterItem"
+  import FilterItem from "@/components/chapters/FilterItem"
+  import TModal from "@/components/common/modal/Modal"
 
   export default {
     name: "subjects.show",
     components: {
-      ChapterItem
+      ChapterItem,
+      FilterItem,
+      TModal
     },
     data () {
       return {
-        subjects: {
+        subjects: [
+          {
+            id: 1,
+            name: '会计',
+            childrens: [
+              {
+                id: 2,
+                name: '初级经济师'
+              },
+              {
+                id: 3,
+                name: '中级经济师'
+              },
+              {
+                id: 4,
+                name: '初级会计师'
+              },
+              {
+                id: 5,
+                name: '中级会计师'
+              },
+              {
+                id: 6,
+                name: '初级统计师'
+              },
+              {
+                id: 7,
+                name: '中级统计师'
+              },
+              {
+                id: 8,
+                name: '注册会计师CPA'
+              }
+            ]
+          },
+          {
+            id: 9,
+            name: '金融',
+            childrens: [
+              {
+                id: 10,
+                name: '银行'
+              },
+              {
+                id: 11,
+                name: '证券'
+              },
+              {
+                id: 12,
+                name: '期货'
+              },
+              {
+                id: 13,
+                name: '基金'
+              }
+            ]
+          }
+        ],
+        subSubjects: {
           special: [
             {
               id: 100,
@@ -210,13 +284,132 @@
               }
             ]
           }
-        ]
+        ],
+        filterOptions: [
+          {
+            title: '类型',
+            name: 'category',
+            options: [
+              {
+                value: '全部',
+                key: 'all'
+              },
+              {
+                value: '未做',
+                key: 'undone'
+              },
+              {
+                value: '已做',
+                key: 'done'
+              },
+              {
+                value: '错题',
+                key: 'error'
+              }
+            ]
+          },
+          {
+            title: '题型',
+            name: 'type',
+            options: [
+              {
+                value: '全部',
+                key: 0
+              },
+              {
+                value: '单选题',
+                key: 1
+              },
+              {
+                value: '多选题',
+                key: 2
+              },
+              {
+                value: '判断题',
+                key: 3
+              },
+              {
+                value: '填空题',
+                key: 4
+              },
+              {
+                value: '问答题',
+                key: 5
+              }
+            ]
+          },
+          {
+            title: '数量',
+            name: 'number',
+            options: [
+              {
+                value: '5',
+                key: 5
+              },
+              {
+                value: '10',
+                key: 10
+              },
+              {
+                value: '20',
+                key: 20
+              },
+              {
+                value: '30',
+                key: 30
+              },
+              {
+                value: '50',
+                key: 50
+              },
+              {
+                value: '100',
+                key: 100
+              },
+            ]
+          }
+        ],
+        filterValue: {
+          category: 'all',
+          type: 0,
+          number: 5
+        },
+        currentChapter: '',
+
+        switchSubjectVisible: false,
+        filterVisible: false
+      }
+    },
+    computed: {
+      formatterFilterOptions() {
+        let filterOptions = this.filterOptions
+        let count = [59, 37, 21, 0, 0, 1]
+        filterOptions.forEach(item => {
+          if (item.name === 'type') {
+            item.options.map((v, k) => {
+              v.value = v.value + "（" + (count[k]|| 0) + "）"
+              return v
+            })
+          }
+        })
+
+        return filterOptions
       }
     },
     methods: {
-      toggle() {
-
-      }
+      handleLearn(name) {
+        this.currentChapter = name
+        this.filterVisible = true
+      },
+      optionChange(key, name) {
+        this.filterValue[name] = key
+      },
+      handleExercise() {
+        console.log('练习模式', this.filterValue)
+      },
+      handleExam() {
+        console.log('考试模式', this.filterValue)
+      },
     }
   }
 </script>
