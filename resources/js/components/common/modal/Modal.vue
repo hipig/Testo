@@ -150,7 +150,6 @@ export default {
   methods: {
     doClose () {
       this.visible = false
-      this.$emit('input', false)
       this.$emit('on-cancel')
 
       if (this.action && this.callback) {
@@ -171,7 +170,6 @@ export default {
       this.action = action
 
       if (action === 'confirm') {
-        this.$emit('input', false)
         this.$emit('on-confirm')
       }
 

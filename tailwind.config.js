@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       height: {
         'max-c': 'max-content'
+      },
+      width: {
+        '28': '7rem'
       }
     },
   },

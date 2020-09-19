@@ -39,6 +39,11 @@
         selectValue: this.value
       }
     },
+    watch: {
+      value(val) {
+        this.selectValue = val
+      }
+    },
     methods: {
       handle(key) {
         this.selectValue = key

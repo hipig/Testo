@@ -28,14 +28,14 @@
           </div>
           <div class="flex">
             <a href="#" class="flex items-center text-teal-500">
-              <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              <svg class="w-5 h-5 fill-current" fill="none" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
               </svg>
               <span class="ml-1">题目收藏</span>
             </a>
             <a href="#" class="ml-10 flex items-center text-teal-500">
-              <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+              <svg class="w-5 h-5 fill-current" fill="none" viewBox="0 0 20 20">
+                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
               </svg>
               <span class="ml-1">错题练习</span>
             </a>
@@ -49,30 +49,15 @@
         </div>
         <div class="flex justify-center">
           <div class="flex flex-wrap">
-            <div class="flex items-center h-16 mr-24 text-lg cursor-pointer text-teal-500 border-teal-500 border-b-2 tab-active">章节练习</div>
-            <div class="flex items-center h-16 mr-24 text-lg cursor-pointer">模拟考试</div>
-            <div class="flex items-center h-16 mr-24 text-lg cursor-pointer">历年真题</div>
-            <div class="flex items-center h-16 text-lg cursor-pointer">每日一练</div>
+            <div v-for="(item, index) in tabs" :key="index" class="flex items-center h-16 mr-24 text-lg cursor-pointer border-b-2 border-transparent" :class="{'text-teal-500 border-teal-500 tab-active': activeTab === item.key}" @click="switchTab(item.key)">{{ item.value }}</div>
           </div>
         </div>
       </div>
-      <div class="mt-5 flex flex-wrap">
-        <div class="w-40 max-h-screen mr-5">
-          <div class="bg-white shadow rounded-lg pt-5 pl-2 pr-2 text-gray-500 flex flex-col">
-            <div v-for="(value, key) in chapters" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
-          </div>
-        </div>
-        <div class="flex-1 bg-white shadow rounded-lg">
-          <div class="px-5 py-2 text-base text-gray-400 flex border-b border-gray-100">
-            <div class="w-2/3 pl-10">名称</div>
-            <div class="w-1/3">做题进度</div>
-          </div>
-          <div class="flex flex-wrap">
-            <chapter-item v-for="(value, key) in chapters" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num, value.total]" :disabled="value.children.length === 0" @btnClick="handleLearn">
-              <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num, v.total]" second  @btnClick="handleLearn"/>
-            </chapter-item>
-          </div>
-        </div>
+      <div class="mt-5">
+        <chapter-list :list="chapterTests" v-if="activeTab === 'chapter'"></chapter-list>
+        <exam-list :list="mockExams" v-if="activeTab === 'mock'"></exam-list>
+        <exam-list :list="oldExams" v-if="activeTab === 'old'"></exam-list>
+        <daily-list :list="dailyTests" v-if="activeTab === 'daily'"></daily-list>
       </div>
     </div>
     <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :showFooter="false">
@@ -87,30 +72,21 @@
         </div>
       </div>
     </t-modal>
-    <t-modal  v-model="filterVisible" title="练习筛选" size="4xl">
-      <div class="w-full -mb-5">
-        <filter-item v-for="(item, index) in formatterFilterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @change="optionChange"/>
-      </div>
-      <div slot="footer">
-        <div class="flex items-center justify-end">
-          <button type="button" class="inline-flex py-2 px-8 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="handleExercise">练习模式</button>
-          <button type="button" class="ml-6 inline-flex py-2 px-8 text-base rounded text-white bg-gradient-to-r from-yellow-400 to-yellow-500 focus:outline-none" @click="handleExam">考试模式</button>
-        </div>
-      </div>
-    </t-modal>
   </div>
 </template>
 
 <script>
-  import ChapterItem from "@/components/chapters/ChapterItem"
-  import FilterItem from "@/components/chapters/FilterItem"
+  import ChapterList from "./tabs/ChapterList"
+  import ExamList from "./tabs/ExamList"
+  import DailyList from "./tabs/DailyList"
   import TModal from "@/components/common/modal/Modal"
 
   export default {
     name: "subjects.show",
     components: {
-      ChapterItem,
-      FilterItem,
+      ChapterList,
+      ExamList,
+      DailyList,
       TModal
     },
     data () {
@@ -201,7 +177,26 @@
             },
           ]
         },
-        chapters: [
+        tabs: [
+          {
+            value: '章节练习',
+            key: 'chapter'
+          },
+          {
+            value: '模拟考试',
+            key: 'mock'
+          },
+          {
+            value: '历年真题',
+            key: 'old'
+          },
+          {
+            value: '每日一练',
+            key: 'daily'
+          }
+        ],
+        activeTab: 'chapter',
+        chapterTests: [
           {
             id: 1,
             title: '第一章 社会经济制度',
@@ -285,131 +280,136 @@
             ]
           }
         ],
-        filterOptions: [
+        mockExams: [
           {
-            title: '类型',
-            name: 'category',
-            options: [
+            id: 1,
+            title: '2019年初级经济师《基础知识》考试模拟卷三',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          },
+          {
+            id: 2,
+            title: '2019年初级经济师《基础知识》考试模拟卷二',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          },
+          {
+            id: 3,
+            title: '2019年初级经济师《基础知识》考试模拟卷一',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          }
+        ],
+        oldExams: [
+          {
+            id: 1,
+            title: '2018年初级经济师《基础知识》考试真题',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          },
+          {
+            id: 2,
+            title: '2017年初级经济师《基础知识》考试真题\n',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          },
+          {
+            id: 3,
+            title: '2016年初级经济师《基础知识》考试真题',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          },
+          {
+            id: 4,
+            title: '2015年初级经济师《基础知识》考试真题',
+            learned_num: 0,
+            total: 105,
+            score: 140,
+            minutes: 120
+          }
+        ],
+        dailyTests: [
+          {
+            id: 1,
+            title: '初级经济基础知识每日一练',
+            total: 30,
+            date: '09月19日',
+            questions: [
               {
-                value: '全部',
-                key: 'all'
+                type: 2,
+                title: '股份有限公司的特点有（　）。',
               },
               {
-                value: '未做',
-                key: 'undone'
+                type: 2,
+                title: '在社会主义初级阶段的收入分配制度中，按劳分配的具体形式包括（　）。',
               },
               {
-                value: '已做',
-                key: 'done'
-              },
-              {
-                value: '错题',
-                key: 'error'
+                type: 2,
+                title: '一个完善的市场体系应具备的功能包括（　）。',
               }
             ]
           },
           {
-            title: '题型',
-            name: 'type',
-            options: [
+            id: 2,
+            title: '初级经济基础知识每日一练',
+            total: 30,
+            date: '09月18日',
+            questions: [
               {
-                value: '全部',
-                key: 0
+                type: 1,
+                title: '在社会主义初级阶段实行以按劳分配为主体，多种分配方式并存的分配制度，是为了（　）。',
               },
               {
-                value: '单选题',
-                key: 1
+                type: 1,
+                title: '在价值形式发展过程中，一切商品的价值都统一表现在从商品世界中分离出来充当一般等价物的某一种商品上，这种价值形式是（　）。',
               },
               {
-                value: '多选题',
-                key: 2
-              },
-              {
-                value: '判断题',
-                key: 3
-              },
-              {
-                value: '填空题',
-                key: 4
-              },
-              {
-                value: '问答题',
-                key: 5
+                type: 2,
+                title: '在商品经济条件下，价值规律的作用体现在（　）。',
               }
             ]
           },
           {
-            title: '数量',
-            name: 'number',
-            options: [
+            id: 3,
+            title: '初级经济基础知识每日一练',
+            total: 30,
+            date: '09月17日',
+            questions: [
               {
-                value: '5',
-                key: 5
+                type: 1,
+                title: '仲裁的原则中，不包括（　）。',
               },
               {
-                value: '10',
-                key: 10
+                type: 1,
+                title: '下列民事纠纷中，适用1年特别诉讼时效的是（　）。',
               },
               {
-                value: '20',
-                key: 20
-              },
-              {
-                value: '30',
-                key: 30
-              },
-              {
-                value: '50',
-                key: 50
-              },
-              {
-                value: '100',
-                key: 100
-              },
+                type: 1,
+                title: '资产类账户的内部勾稽关系是（　）。',
+              }
             ]
           }
         ],
-        filterValue: {
-          category: 'all',
-          type: 0,
-          number: 5
-        },
-        currentChapter: '',
 
-        switchSubjectVisible: false,
-        filterVisible: false
-      }
-    },
-    computed: {
-      formatterFilterOptions() {
-        let filterOptions = this.filterOptions
-        let count = [59, 37, 21, 0, 0, 1]
-        filterOptions.forEach(item => {
-          if (item.name === 'type') {
-            item.options.map((v, k) => {
-              v.value = v.value + "（" + (count[k]|| 0) + "）"
-              return v
-            })
-          }
-        })
-
-        return filterOptions
+        switchSubjectVisible: false
       }
     },
     methods: {
-      handleLearn(name) {
-        this.currentChapter = name
-        this.filterVisible = true
-      },
-      optionChange(key, name) {
-        this.filterValue[name] = key
-      },
-      handleExercise() {
-        console.log('练习模式', this.filterValue)
-      },
-      handleExam() {
-        console.log('考试模式', this.filterValue)
-      },
+      switchTab(name) {
+        this.activeTab = name
+      }
     }
   }
 </script>
