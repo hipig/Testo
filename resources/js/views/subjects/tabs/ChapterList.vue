@@ -169,19 +169,18 @@
       },
       handleExercise() {
         console.log('练习模式', this.filterValue)
+        this.$router.push({name: 'models.exercise', params: {id: 1}})
       },
       handleExam() {
         console.log('考试模式', this.filterValue)
       },
       resetOption() {
         this.filterVisible = false
-        console.log(this.filterValue)
         this.filterValue = {
           category: 'all',
           type: 0,
           number: 5
         }
-        console.log(this.filterValue)
       }
     }
   }

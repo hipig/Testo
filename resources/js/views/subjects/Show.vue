@@ -19,7 +19,7 @@
               </svg>
               <h3 class="text-xl">初级经济师</h3>
             </div>
-            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-sm focus:outline-none" @click="switchSubjectVisible = !switchSubjectVisible">
+            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none" @click="switchSubject">
               <span class="mr-1">切换考试</span>
               <svg class="w-4 h-4 stroke-current -mr-1" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -60,7 +60,7 @@
         <daily-list :list="dailyTests" v-if="activeTab === 'daily'"></daily-list>
       </div>
     </div>
-    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :showFooter="false">
+    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :showFooter="false" @on-cancel="closeSwitchSubjectModal">
       <div class="w-full">
         <div class="mb-5" v-for="(value, key) in subjects" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.name }}</h3>
@@ -409,6 +409,12 @@
     methods: {
       switchTab(name) {
         this.activeTab = name
+      },
+      switchSubject() {
+        this.switchSubjectVisible = !this.switchSubjectVisible
+      },
+      closeSwitchSubjectModal() {
+        this.switchSubjectVisible = false
       }
     }
   }

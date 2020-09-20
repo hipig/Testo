@@ -530,7 +530,7 @@ __webpack_require__.r(__webpack_exports__);
       currentMenu: '',
       routerList: {
         home: ['home'],
-        subjects: ['subjects', 'subjects.show']
+        subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.exam']
       }
     };
   },
@@ -623,6 +623,185 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "home"
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "models.exercise",
+  data: function data() {
+    return {
+      activeIndex: 0,
+      showAnswer: false
+    };
+  }
 });
 
 /***/ }),
@@ -1066,6 +1245,12 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     switchTab: function switchTab(name) {
       this.activeTab = name;
+    },
+    switchSubject: function switchSubject() {
+      this.switchSubjectVisible = !this.switchSubjectVisible;
+    },
+    closeSwitchSubjectModal: function closeSwitchSubjectModal() {
+      this.switchSubjectVisible = false;
     }
   }
 });
@@ -1229,19 +1414,23 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleExercise: function handleExercise() {
       console.log('练习模式', this.filterValue);
+      this.$router.push({
+        name: 'models.exercise',
+        params: {
+          id: 1
+        }
+      });
     },
     handleExam: function handleExam() {
       console.log('考试模式', this.filterValue);
     },
     resetOption: function resetOption() {
       this.filterVisible = false;
-      console.log(this.filterValue);
       this.filterValue = {
         category: 'all',
         type: 0,
         number: 5
       };
-      console.log(this.filterValue);
     }
   }
 });
@@ -3069,6 +3258,541 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "pt-5 pb-12 px-4" }, [
+    _c("div", { staticClass: "max-w-6xl mx-auto" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "mt-5 flex flex-wrap -mx-3" }, [
+        _c("div", { staticClass: "w-2/3 px-3" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "bg-white shadow rounded-lg px-10 py-5 mt-5" },
+            [
+              _c(
+                "div",
+                { staticClass: "flex items-center justify-between mb-5" },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex flex-wrap" }, [
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center cursor-pointer mr-8" },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-6 h-6 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "text-base text-gray-900" }, [
+                          _vm._v("纠错")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center cursor-pointer mr-8" },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-6 h-6 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "text-base text-gray-900" }, [
+                          _vm._v("写笔记")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center cursor-pointer" },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-6 h-6 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "text-base text-gray-900" }, [
+                          _vm._v("收藏")
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-gray-900 text-lg mb-5" }, [
+                _vm._v(
+                  "政府为了保护农业生产者利益，在必要时对某些农产品可以采取的价格干预措施是()。"
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "mb-3" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex items-center cursor-pointer py-1 mb-2",
+                    on: {
+                      click: function($event) {
+                        _vm.showAnswer = !_vm.showAnswer
+                      }
+                    }
+                  },
+                  [
+                    _vm.showAnswer
+                      ? _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-5 h-5 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                              }
+                            })
+                          ]
+                        )
+                      : _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-5 h-5 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
+                              }
+                            })
+                          ]
+                        ),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-gray-900 leading-none" }, [
+                      _vm._v(_vm._s(_vm.showAnswer ? "隐藏答案" : "查看答案"))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.showAnswer,
+                        expression: "showAnswer"
+                      }
+                    ]
+                  },
+                  [_vm._m(4), _vm._v(" "), _vm._m(5)]
+                )
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-1/3 px-3" }, [
+          _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold"
+              },
+              [_vm._v("答题卡")]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "px-5 py-4 h-36 overflow-auto scrollbar-hover" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "flex flex-wrap -mx-1" },
+                  _vm._l(68, function(item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass:
+                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-gray-500 text-xs hover:border-teal-500 rounded-sm cursor-pointer",
+                        class: {
+                          "border-gray-100": _vm.activeIndex !== index,
+                          "border-teal-500": _vm.activeIndex === index
+                        }
+                      },
+                      [_vm._v(_vm._s(item))]
+                    )
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(6)
+          ]),
+          _vm._v(" "),
+          _vm._m(7)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(8)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-sm" }, [
+      _c("a", { attrs: { href: "/" } }, [_vm._v("首页")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("/")]),
+      _vm._v(" "),
+      _c("a", { attrs: { href: "/subjects" } }, [_vm._v("会计")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("/")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-gray-400" }, [_vm._v("初级经济师")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
+      _c("div", { staticClass: "flex items-center mb-4" }, [
+        _c("div", { staticClass: "text-2xl text-gray-900 mr-3 leading-none" }, [
+          _vm._v("第一章　市场需求、供给与均衡价格")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-base text-teal-500 border border-teal-500 rounded-sm px-1"
+          },
+          [_vm._v("刷题练习")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-base" }, [
+        _c("label", { staticClass: "flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "checkbox" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-2" }, [_vm._v("做对自动下一题")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-start" }, [
+      _c("div", { staticClass: "text-gray-400 text-2xl font-semibold" }, [
+        _vm._v("27")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-teal-500 text-lg ml-3" }, [
+        _vm._v("[单选题]")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex flex-col mb-5" }, [
+      _c("div", { staticClass: "mb-2 text-base" }, [
+        _c("label", { staticClass: "inline-flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "radio" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-3" }, [_vm._v("A、规定保护价格")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-2 text-base" }, [
+        _c("label", { staticClass: "inline-flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "radio" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-3" }, [_vm._v("B、调整均衡价格")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-2 text-base" }, [
+        _c("label", { staticClass: "inline-flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "radio" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-3" }, [_vm._v("规定最高限价")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-2 text-base" }, [
+        _c("label", { staticClass: "inline-flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "radio" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-3" }, [
+            _vm._v("D、降低农业生产资料价格")
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "py-3 px-5 bg-gray-100 flex flex-wrap items-center leading-tight rounded"
+      },
+      [
+        _c("div", { staticClass: "text-green-500" }, [_vm._v("回答正确")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "ml-10 flex items-center" }, [
+          _c("span", [_vm._v("答案：")]),
+          _vm._v(" "),
+          _c(
+            "span",
+            { staticClass: "text-green-500 text-base font-semibold" },
+            [_vm._v("B,C,E")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "ml-10 flex items-center" }, [
+          _c("span", [_vm._v("你的选择：")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-base font-semibold" }, [
+            _vm._v("A,B")
+          ])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "px-5 mt-5" }, [
+      _c("div", { staticClass: "flex flex-wrap text-base text-gray-500" }, [
+        _c("div", [_vm._v("解析：")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex-1" }, [
+          _c("p", [
+            _c("span", [
+              _vm._v(
+                "影响供给的因素主要有：(1)产品价格。在其他条件不变的情况下，某种产品自身的价格和其供给的变动成正方向变化。(2)生产成本。在其他条件不变的情况下，某种产品自身的成本和其供给的变动成反方向变化。(3)生产技术。技术水平在一定程度上决定着生产成本并进而影响供给(4)预期。(5)相关产品的价格。(6)其他因素。包括生产要素的价格以及国家政策等。"
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "mt-1 px-8 py-3 flex justify-between border-t border-gray-100"
+      },
+      [
+        _c("div", { staticClass: "flex items-center text-gray-900" }, [
+          _c("div", { staticClass: "bg-green-500 w-4 h-4 mr-1" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "leading-none" }, [_vm._v("正确0")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex items-center text-gray-900" }, [
+          _c("div", { staticClass: "bg-red-500 w-4 h-4 mr-1" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "leading-none" }, [_vm._v("错误1")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "flex items-center text-gray-900 leading-none" },
+          [
+            _c("div", { staticClass: "mr-1" }, [_vm._v("正确率")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-green-500" }, [_vm._v("0%")])
+          ]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "bg-white shadow rounded-lg py-3 mb-5" }, [
+      _c("div", { staticClass: "flex justify-center" }, [
+        _c(
+          "button",
+          {
+            staticClass:
+              "px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none",
+            attrs: { type: "button" }
+          },
+          [_vm._v("返回章节练习")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "fixed bottom-0 left-0 right-0 px-4" }, [
+      _c("div", { staticClass: "max-w-6xl mx-auto" }, [
+        _c("div", { staticClass: "flex" }, [
+          _c("div", { staticClass: "w-2/3 px-8" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex justify-between py-3 px-10 bg-white rounded-lg shadow-lg mb-5"
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "inline-flex items-center px-8 py-2 text-white bg-gray-400 rounded opacity-50 cursor-not-allowed focus:outline-none",
+                    attrs: { type: "button" }
+                  },
+                  [_vm._v("上一题")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "inline-flex items-center px-8 py-2 text-white bg-teal-500 rounded focus:outline-none",
+                    attrs: { type: "button" }
+                  },
+                  [_vm._v("下一题")]
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/subjects/Index.vue?vue&type=template&id=6bcc5f29&":
 /*!************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/subjects/Index.vue?vue&type=template&id=6bcc5f29& ***!
@@ -3241,13 +3965,9 @@ var render = function() {
                     "button",
                     {
                       staticClass:
-                        "border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-sm focus:outline-none",
+                        "border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none",
                       attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.switchSubjectVisible = !_vm.switchSubjectVisible
-                        }
-                      }
+                      on: { click: _vm.switchSubject }
                     },
                     [
                       _c("span", { staticClass: "mr-1" }, [_vm._v("切换考试")]),
@@ -3418,6 +4138,7 @@ var render = function() {
         "t-modal",
         {
           attrs: { title: "切换考试", size: "4xl", showFooter: false },
+          on: { "on-cancel": _vm.closeSwitchSubjectModal },
           model: {
             value: _vm.switchSubjectVisible,
             callback: function($$v) {
@@ -20938,6 +21659,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_Home__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/views/Home */ "./resources/js/views/Home.vue");
 /* harmony import */ var _views_subjects_Index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/views/subjects/Index */ "./resources/js/views/subjects/Index.vue");
 /* harmony import */ var _views_subjects_Show__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/views/subjects/Show */ "./resources/js/views/subjects/Show.vue");
+/* harmony import */ var _views_details_models_Exercise__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/views/details/models/Exercise */ "./resources/js/views/details/models/Exercise.vue");
+
 
 
 
@@ -20960,6 +21683,10 @@ __webpack_require__.r(__webpack_exports__);
     path: '/subjects/:sid/:id?',
     name: 'subjects.show',
     component: _views_subjects_Show__WEBPACK_IMPORTED_MODULE_4__["default"]
+  }, {
+    path: '/exercise/:id',
+    name: 'models.exercise',
+    component: _views_details_models_Exercise__WEBPACK_IMPORTED_MODULE_5__["default"]
   }]
 }]);
 
@@ -21103,6 +21830,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/details/models/Exercise.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/details/models/Exercise.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Exercise.vue?vue&type=template&id=66ed2081& */ "./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081&");
+/* harmony import */ var _Exercise_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Exercise.vue?vue&type=script&lang=js& */ "./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Exercise_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/details/models/Exercise.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exercise_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exercise.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/details/models/Exercise.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exercise_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exercise.vue?vue&type=template&id=66ed2081& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/details/models/Exercise.vue?vue&type=template&id=66ed2081&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exercise_vue_vue_type_template_id_66ed2081___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
