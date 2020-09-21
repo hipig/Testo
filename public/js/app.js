@@ -554,6 +554,249 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "QuestionItem",
+  props: {
+    index: {
+      type: Number,
+      "default": 0
+    },
+    question: Object,
+    isExam: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  data: function data() {
+    return {
+      types: {
+        1: '单选题',
+        2: '多选题',
+        3: '判断题',
+        4: '填空题',
+        5: '问答题'
+      },
+      answer: [],
+      showAnswer: false,
+      isAnswered: false
+    };
+  },
+  computed: {
+    rightAnswerText: function rightAnswerText() {
+      var answer = this.question.answer;
+      return _typeof(answer) === "object" ? answer.join(',') : answer;
+    },
+    answerText: function answerText() {
+      var answer = this.answer;
+      return _typeof(answer) === "object" ? answer.join(',') : answer;
+    },
+    isRight: function isRight() {
+      var status = true;
+      var questionType = this.question.type;
+      var rightAnswer = this.question.answer;
+      var answer = this.answer;
+
+      switch (questionType) {
+        // 单选 判断
+        case 1:
+        case 3:
+          status = answer == rightAnswer;
+          break;
+        // 多选
+
+        case 2:
+          status = JSON.stringify(answer.sort()) == JSON.stringify(rightAnswer.sort());
+          break;
+        // 填空
+
+        case 4:
+          rightAnswer.forEach(function (v, i) {
+            if (answer[i] != v) {
+              status = false;
+            }
+          });
+          break;
+
+        default:
+          status = true;
+      }
+
+      return status;
+    },
+    showAnswerBar: function showAnswerBar() {
+      var type = this.question.type;
+      return type !== 5;
+    }
+  },
+  methods: {
+    // 提交答案
+    submit: function submit() {
+      if (this.isAnswered) return false;
+      if (this.showAnswer) return false;
+      if (!this.checkAnswer()) return false;
+      this.isAnswered = true;
+      this.showAnswer = true;
+      this.$emit('answer', this.index, this.answer, this.isRight, this.question);
+    },
+    // 校验答案
+    checkAnswer: function checkAnswer() {
+      var questionType = this.question.type;
+      var answer = this.answer;
+
+      switch (questionType) {
+        case 2:
+          if (answer.length === 0) {
+            alert('至少选择一个选项');
+            return false;
+          }
+
+          break;
+
+        case 4:
+          console.log(answer);
+
+          if (answer.length === 0) {
+            alert('所有的填空不能为空');
+            return false;
+          }
+
+          break;
+
+        case 5:
+          if (answer.length === 0) {
+            alert('内容不能为空');
+            return false;
+          }
+
+          break;
+      }
+
+      return true;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/layout/BlankLayout.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/layout/BlankLayout.vue?vue&type=script&lang=js& ***!
@@ -636,6 +879,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_questions_QuestionItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/questions/QuestionItem */ "./resources/js/components/questions/QuestionItem.vue");
 //
 //
 //
@@ -708,99 +952,107 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "models.exercise",
+  components: {
+    QuestionItem: _components_questions_QuestionItem__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
+      types: {
+        1: '单选题',
+        2: '多选题',
+        3: '判断题',
+        4: '填空题',
+        5: '问答题'
+      },
+      questions: [{
+        id: 1,
+        title: '关于社会经济制度的说法，正确的有（）。',
+        type: 1,
+        answer: 'C',
+        options: [{
+          key: 'A',
+          value: 'A、规定保护价格'
+        }, {
+          key: 'B',
+          value: 'B、调整均衡价格'
+        }, {
+          key: 'C',
+          value: 'C、规定最高限价'
+        }, {
+          key: 'D',
+          value: 'D、降低农业生产资料价格'
+        }],
+        parse: '影响供给的因素主要有：(1)产品价格。在其他条件不变的情况下，某种产品自身的价格和其供给的变动成正方向变化。(2)生产成本。在其他条件不变的情况下，某种产品自身的成本和其供给的变动成反方向变化。(3)生产技术。技术水平在一定程度上决定着生产成本并进而影响供给(4)预期。(5)相关产品的价格。(6)其他因素。包括生产要素的价格以及国家政策等。'
+      }, {
+        id: 1,
+        title: '关于社会经济制度的说法，正确的有（）。',
+        type: 2,
+        answer: ['A', 'B'],
+        options: [{
+          key: 'A',
+          value: 'A、社会经济制度是一定时期占统治地位的社会生产关系的总和'
+        }, {
+          key: 'B',
+          value: 'B、社会经济制度规定着社会的政治制度、法律制度和人们的意识形态'
+        }, {
+          key: 'C',
+          value: 'C、社会经济制度变革的根本原因是各阶级的政治斗争'
+        }, {
+          key: 'D',
+          value: 'D、社会经济制度是区分人类历史上不同社会形态的根本标志'
+        }, {
+          key: 'E',
+          value: 'E、社会经济制度变革的一般规律是生产力随着生产关系的发展而改变自身的性质'
+        }],
+        parse: '社会基本矛盾的运动是社会经济制度变革的根本原因，所以C项错误。社会经济制度变革的一般规律是生产关系随着生产力的发展而改变自身的性质，所以E项错误。'
+      }],
+      answerList: [],
       activeIndex: 0,
-      showAnswer: false
+      autoNext: '',
+      showAnswer: false,
+      rightCount: 0,
+      errorCount: 0
     };
+  },
+  created: function created() {
+    this.answerList = this.questions.map(function (item) {
+      return {
+        id: item.id,
+        answer: ''
+      };
+    });
+  },
+  computed: {
+    activeQuestion: function activeQuestion() {
+      return this.questions[this.activeIndex];
+    },
+    rightRate: function rightRate() {
+      return Math.round(this.rightCount / this.questions.length * 100) + '%';
+    }
+  },
+  methods: {
+    prevItem: function prevItem() {
+      if (this.activeIndex > 0) this.activeIndex--;
+    },
+    nextItem: function nextItem() {
+      if (this.activeIndex < this.questions.length - 1) this.activeIndex++;
+    },
+    handleAnswer: function handleAnswer(index, answer, isRight) {
+      this.answerList[index] = Object.assign({}, this.answerList[index], {
+        answer: answer,
+        isRight: isRight
+      });
+
+      if (isRight) {
+        !!this.autoNext && this.nextItem();
+        this.rightCount++;
+      } else {
+        this.errorCount++;
+      }
+    }
   }
 });
 
@@ -3175,6 +3427,520 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "bg-white shadow rounded-lg px-10 py-5 mt-5" },
+    [
+      _c("div", { staticClass: "flex items-center justify-between mb-5" }, [
+        _c("div", { staticClass: "flex items-start" }, [
+          _c("div", { staticClass: "text-gray-400 text-2xl font-semibold" }, [
+            _vm._v(_vm._s(_vm.index + 1))
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-teal-500 text-lg ml-3" }, [
+            _vm._v("[" + _vm._s(_vm.types[_vm.question.type]) + "]")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex flex-wrap" }, [
+          _c("div", { staticClass: "flex items-center cursor-pointer mr-8" }, [
+            _c(
+              "svg",
+              {
+                staticClass: "w-6 h-6 stroke-current text-gray-400 mr-1",
+                attrs: { fill: "none", viewBox: "0 0 24 24" }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d:
+                      "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-base text-gray-900" }, [
+              _vm._v("纠错")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center cursor-pointer mr-8" }, [
+            _c(
+              "svg",
+              {
+                staticClass: "w-6 h-6 stroke-current text-gray-400 mr-1",
+                attrs: { fill: "none", viewBox: "0 0 24 24" }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d:
+                      "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-base text-gray-900" }, [
+              _vm._v("写笔记")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center cursor-pointer" }, [
+            _c(
+              "svg",
+              {
+                staticClass: "w-6 h-6 stroke-current text-gray-400 mr-1",
+                attrs: { fill: "none", viewBox: "0 0 24 24" }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "stroke-linecap": "round",
+                    "stroke-linejoin": "round",
+                    "stroke-width": "2",
+                    d:
+                      "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-base text-gray-900" }, [
+              _vm._v("收藏")
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-gray-900 text-lg mb-5" }, [
+        _vm._v(_vm._s(_vm.question.title))
+      ]),
+      _vm._v(" "),
+      _vm.question.type === 1
+        ? [
+            _c(
+              "div",
+              { staticClass: "flex flex-col mb-3" },
+              _vm._l(_vm.question.options, function(item, index) {
+                return _c(
+                  "div",
+                  { key: index, staticClass: "mb-2 text-base" },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "inline-flex items-center cursor-pointer"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.answer,
+                              expression: "answer"
+                            }
+                          ],
+                          staticClass:
+                            "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                          attrs: {
+                            type: "radio",
+                            disabled:
+                              _vm.isAnswered ||
+                              (!_vm.isAnswered && _vm.showAnswer)
+                          },
+                          domProps: {
+                            value: item.key,
+                            checked: _vm._q(_vm.answer, item.key)
+                          },
+                          on: {
+                            change: [
+                              function($event) {
+                                _vm.answer = item.key
+                              },
+                              _vm.submit
+                            ]
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "ml-3" }, [
+                          _vm._v(_vm._s(item.value))
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.question.type === 2
+        ? [
+            _c(
+              "div",
+              { staticClass: "flex flex-col mb-3" },
+              _vm._l(_vm.question.options, function(item, index) {
+                return _c(
+                  "div",
+                  { key: index, staticClass: "mb-2 text-base" },
+                  [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "inline-flex items-center cursor-pointer"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.answer,
+                              expression: "answer"
+                            }
+                          ],
+                          staticClass:
+                            "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                          attrs: { type: "checkbox", disabled: _vm.showAnswer },
+                          domProps: {
+                            value: item.key,
+                            checked: Array.isArray(_vm.answer)
+                              ? _vm._i(_vm.answer, item.key) > -1
+                              : _vm.answer
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.answer,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = item.key,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 && (_vm.answer = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.answer = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.answer = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "ml-3" }, [
+                          _vm._v(_vm._s(item.value))
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-5" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center py-2 px-8 border border-teal-500 text-teal-500 rounded bg-white focus:outline-none",
+                  attrs: { type: "button" },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("确认")]
+              )
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.question.type === 4
+        ? [
+            _c(
+              "div",
+              { staticClass: "flex flex-col mb-3" },
+              _vm._l(_vm.question.answer, function(v, i) {
+                return _c("label", { staticClass: "flex w-full mb-2" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.answer[i],
+                        expression: "answer[i]"
+                      }
+                    ],
+                    staticClass:
+                      "w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none",
+                    attrs: { placeholder: "请输入答案" },
+                    domProps: { value: _vm.answer[i] },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.answer, i, $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-5" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center py-2 px-8 border border-teal-500 text-teal-500 rounded bg-white focus:outline-none",
+                  attrs: { type: "button" },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("确认")]
+              )
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.question.type === 5
+        ? [
+            _c("div", { staticClass: "mb-5" }, [
+              _c("label", { staticClass: "flex w-full" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.answer,
+                      expression: "answer"
+                    }
+                  ],
+                  staticClass:
+                    "h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none",
+                  attrs: { placeholder: "请输入答案" },
+                  domProps: { value: _vm.answer },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.answer = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-5" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center py-2 px-8 border border-teal-500 text-teal-500 rounded bg-white focus:outline-none",
+                  attrs: { type: "button" },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("确认")]
+              )
+            ])
+          ]
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "mb-3" }, [
+        !_vm.isExam && !_vm.isAnswered
+          ? _c(
+              "div",
+              {
+                staticClass: "flex items-center cursor-pointer py-1 mb-2",
+                on: {
+                  click: function($event) {
+                    _vm.showAnswer = !_vm.showAnswer
+                  }
+                }
+              },
+              [
+                _vm.showAnswer
+                  ? _c(
+                      "svg",
+                      {
+                        staticClass:
+                          "w-5 h-5 stroke-current text-gray-400 mr-1",
+                        attrs: { fill: "none", viewBox: "0 0 24 24" }
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d:
+                              "M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                          }
+                        })
+                      ]
+                    )
+                  : _c(
+                      "svg",
+                      {
+                        staticClass:
+                          "w-5 h-5 stroke-current text-gray-400 mr-1",
+                        attrs: { fill: "none", viewBox: "0 0 24 24" }
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d:
+                              "M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
+                          }
+                        })
+                      ]
+                    ),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-gray-900 leading-none" }, [
+                  _vm._v(_vm._s(_vm.showAnswer ? "隐藏答案" : "查看答案"))
+                ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showAnswer,
+                expression: "showAnswer"
+              }
+            ]
+          },
+          [
+            _vm.showAnswerBar
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "py-2 px-5 bg-gray-200 flex leading-tight rounded",
+                    class: [
+                      _vm.question.type === 4
+                        ? "flex-col"
+                        : "flex-wrap items-center"
+                    ]
+                  },
+                  [
+                    _vm.isAnswered
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "mr-10 py-1",
+                            class: _vm.isRight
+                              ? "text-green-500"
+                              : "text-red-500"
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(_vm.isRight ? "回答正确" : "回答错误")
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "mr-10 py-1 flex items-baseline" },
+                      [
+                        _c("span", [_vm._v("正确答案：")]),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass:
+                              "flex-1 text-green-500 text-base font-semibold"
+                          },
+                          [_vm._v(_vm._s(_vm.rightAnswerText))]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.isAnswered && !_vm.isRight
+                      ? _c(
+                          "div",
+                          { staticClass: "mr-10 py-1 flex items-baseline" },
+                          [
+                            _c("span", [_vm._v("你的答案：")]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "flex-1 text-base font-semibold" },
+                              [_vm._v(_vm._s(_vm.answerText))]
+                            )
+                          ]
+                        )
+                      : _vm._e()
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "px-5 mt-5" }, [
+              _c("div", { staticClass: "flex flex-wrap items-baseline" }, [
+                _c("div", { staticClass: "text-gray-400" }, [_vm._v("解析：")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex-1 text-base" }, [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.question.parse) +
+                      "\n          "
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      ])
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/layout/BlankLayout.vue?vue&type=template&id=46ccced2&":
 /*!**********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/layout/BlankLayout.vue?vue&type=template&id=46ccced2& ***!
@@ -3273,202 +4039,85 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "pt-5 pb-12 px-4" }, [
+  return _c("div", { staticClass: "pt-5 pb-20 px-4" }, [
     _c("div", { staticClass: "max-w-6xl mx-auto" }, [
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "mt-5 flex flex-wrap -mx-3" }, [
-        _c("div", { staticClass: "w-2/3 px-3" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "bg-white shadow rounded-lg px-10 py-5 mt-5" },
-            [
-              _c(
-                "div",
-                { staticClass: "flex items-center justify-between mb-5" },
-                [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex flex-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center cursor-pointer mr-8" },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-6 h-6 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "text-base text-gray-900" }, [
-                          _vm._v("纠错")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center cursor-pointer mr-8" },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-6 h-6 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "text-base text-gray-900" }, [
-                          _vm._v("写笔记")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center cursor-pointer" },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-6 h-6 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "text-base text-gray-900" }, [
-                          _vm._v("收藏")
-                        ])
-                      ]
-                    )
-                  ])
-                ]
-              ),
+        _c(
+          "div",
+          { staticClass: "w-2/3 px-3" },
+          [
+            _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
+              _vm._m(1),
               _vm._v(" "),
-              _c("div", { staticClass: "text-gray-900 text-lg mb-5" }, [
-                _vm._v(
-                  "政府为了保护农业生产者利益，在必要时对某些农产品可以采取的价格干预措施是()。"
-                )
-              ]),
-              _vm._v(" "),
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-3" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "flex items-center cursor-pointer py-1 mb-2",
-                    on: {
-                      click: function($event) {
-                        _vm.showAnswer = !_vm.showAnswer
-                      }
-                    }
-                  },
-                  [
-                    _vm.showAnswer
-                      ? _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-5 h-5 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                              }
-                            })
-                          ]
-                        )
-                      : _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-5 h-5 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
-                              }
-                            })
-                          ]
-                        ),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "text-gray-900 leading-none" }, [
-                      _vm._v(_vm._s(_vm.showAnswer ? "隐藏答案" : "查看答案"))
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
+              _c("div", { staticClass: "text-base" }, [
+                _c("label", { staticClass: "flex items-center" }, [
+                  _c("input", {
                     directives: [
                       {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.showAnswer,
-                        expression: "showAnswer"
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.autoNext,
+                        expression: "autoNext"
                       }
-                    ]
-                  },
-                  [_vm._m(4), _vm._v(" "), _vm._m(5)]
-                )
+                    ],
+                    staticClass:
+                      "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                    attrs: { type: "checkbox", value: "1" },
+                    domProps: {
+                      checked: Array.isArray(_vm.autoNext)
+                        ? _vm._i(_vm.autoNext, "1") > -1
+                        : _vm.autoNext
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.autoNext,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = "1",
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 && (_vm.autoNext = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.autoNext = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.autoNext = $$c
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "ml-2" }, [
+                    _vm._v("做对自动下一题")
+                  ])
+                ])
               ])
-            ]
-          )
-        ]),
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.questions, function(item, index) {
+              return _c("question-item", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.activeIndex === index,
+                    expression: "activeIndex === index"
+                  }
+                ],
+                key: index,
+                attrs: { question: item, index: index },
+                on: { answer: _vm.handleAnswer }
+              })
+            })
+          ],
+          2
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "w-1/3 px-3" }, [
           _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
@@ -3488,19 +4137,24 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "flex flex-wrap -mx-1" },
-                  _vm._l(68, function(item, index) {
+                  _vm._l(_vm.answerList, function(item, index) {
                     return _c(
                       "div",
                       {
                         key: index,
                         staticClass:
-                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-gray-500 text-xs hover:border-teal-500 rounded-sm cursor-pointer",
-                        class: {
-                          "border-gray-100": _vm.activeIndex !== index,
-                          "border-teal-500": _vm.activeIndex === index
-                        }
+                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs hover:border-teal-500 rounded-sm cursor-pointer",
+                        class: [
+                          item.answer === ""
+                            ? _vm.activeIndex === index
+                              ? "text-gray-500 border-teal-500"
+                              : "text-gray-500 border-gray-100"
+                            : item.isRight
+                            ? "text-white bg-green-500 border-green-500"
+                            : "text-white bg-red-500 border-red-500"
+                        ]
                       },
-                      [_vm._v(_vm._s(item))]
+                      [_vm._v(_vm._s(index + 1))]
                     )
                   }),
                   0
@@ -3508,15 +4162,99 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(6)
+            _c(
+              "div",
+              {
+                staticClass:
+                  "mt-1 px-8 py-3 flex justify-between border-t border-gray-100"
+              },
+              [
+                _c("div", { staticClass: "flex items-center text-gray-900" }, [
+                  _c("div", { staticClass: "bg-green-500 w-4 h-4 mr-1" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "leading-none" }, [
+                    _vm._v("正确" + _vm._s(_vm.rightCount))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex items-center text-gray-900" }, [
+                  _c("div", { staticClass: "bg-red-500 w-4 h-4 mr-1" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "leading-none" }, [
+                    _vm._v("错误" + _vm._s(_vm.errorCount))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex items-center text-gray-900 leading-none"
+                  },
+                  [
+                    _c("div", { staticClass: "mr-1" }, [_vm._v("正确率")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-green-500" }, [
+                      _vm._v(_vm._s(_vm.rightRate))
+                    ])
+                  ]
+                )
+              ]
+            )
           ]),
           _vm._v(" "),
-          _vm._m(7)
+          _vm._m(2)
         ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(8)
+    _c("div", { staticClass: "fixed bottom-0 left-0 right-0 px-4" }, [
+      _c("div", { staticClass: "max-w-6xl mx-auto" }, [
+        _c("div", { staticClass: "flex" }, [
+          _c("div", { staticClass: "w-2/3 px-8" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex justify-between py-3 px-10 bg-white rounded-lg shadow-lg mb-5"
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "inline-flex items-center px-8 py-2 text-white rounded focus:outline-none",
+                    class: [
+                      _vm.activeIndex === 0
+                        ? "bg-gray-400 opacity-50 cursor-not-allowed"
+                        : "bg-teal-500"
+                    ],
+                    attrs: { type: "button" },
+                    on: { click: _vm.prevItem }
+                  },
+                  [_vm._v("上一题")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "inline-flex items-center px-8 py-2 text-white rounded focus:outline-none",
+                    class: [
+                      _vm.activeIndex === _vm.questions.length - 1
+                        ? "bg-gray-400 opacity-50 cursor-not-allowed"
+                        : "bg-teal-500"
+                    ],
+                    attrs: { type: "button" },
+                    on: { click: _vm.nextItem }
+                  },
+                  [_vm._v("下一题")]
+                )
+              ]
+            )
+          ])
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -3540,192 +4278,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
-      _c("div", { staticClass: "flex items-center mb-4" }, [
-        _c("div", { staticClass: "text-2xl text-gray-900 mr-3 leading-none" }, [
-          _vm._v("第一章　市场需求、供给与均衡价格")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "text-base text-teal-500 border border-teal-500 rounded-sm px-1"
-          },
-          [_vm._v("刷题练习")]
-        )
+    return _c("div", { staticClass: "flex items-center mb-4" }, [
+      _c("div", { staticClass: "text-2xl text-gray-900 mr-3 leading-none" }, [
+        _vm._v("第一章　市场需求、供给与均衡价格")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "text-base" }, [
-        _c("label", { staticClass: "flex items-center" }, [
-          _c("input", {
-            staticClass:
-              "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-            attrs: { type: "checkbox" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "ml-2" }, [_vm._v("做对自动下一题")])
-        ])
-      ])
+      _c(
+        "div",
+        {
+          staticClass:
+            "text-base text-teal-500 border border-teal-500 rounded-sm px-1"
+        },
+        [_vm._v("刷题练习")]
+      )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex items-start" }, [
-      _c("div", { staticClass: "text-gray-400 text-2xl font-semibold" }, [
-        _vm._v("27")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "text-teal-500 text-lg ml-3" }, [
-        _vm._v("[单选题]")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex flex-col mb-5" }, [
-      _c("div", { staticClass: "mb-2 text-base" }, [
-        _c("label", { staticClass: "inline-flex items-center" }, [
-          _c("input", {
-            staticClass:
-              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-            attrs: { type: "radio" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "ml-3" }, [_vm._v("A、规定保护价格")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-2 text-base" }, [
-        _c("label", { staticClass: "inline-flex items-center" }, [
-          _c("input", {
-            staticClass:
-              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-            attrs: { type: "radio" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "ml-3" }, [_vm._v("B、调整均衡价格")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-2 text-base" }, [
-        _c("label", { staticClass: "inline-flex items-center" }, [
-          _c("input", {
-            staticClass:
-              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-            attrs: { type: "radio" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "ml-3" }, [_vm._v("规定最高限价")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-2 text-base" }, [
-        _c("label", { staticClass: "inline-flex items-center" }, [
-          _c("input", {
-            staticClass:
-              "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-            attrs: { type: "radio" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "ml-3" }, [
-            _vm._v("D、降低农业生产资料价格")
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "py-3 px-5 bg-gray-100 flex flex-wrap items-center leading-tight rounded"
-      },
-      [
-        _c("div", { staticClass: "text-green-500" }, [_vm._v("回答正确")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ml-10 flex items-center" }, [
-          _c("span", [_vm._v("答案：")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "text-green-500 text-base font-semibold" },
-            [_vm._v("B,C,E")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "ml-10 flex items-center" }, [
-          _c("span", [_vm._v("你的选择：")]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-base font-semibold" }, [
-            _vm._v("A,B")
-          ])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "px-5 mt-5" }, [
-      _c("div", { staticClass: "flex flex-wrap text-base text-gray-500" }, [
-        _c("div", [_vm._v("解析：")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-1" }, [
-          _c("p", [
-            _c("span", [
-              _vm._v(
-                "影响供给的因素主要有：(1)产品价格。在其他条件不变的情况下，某种产品自身的价格和其供给的变动成正方向变化。(2)生产成本。在其他条件不变的情况下，某种产品自身的成本和其供给的变动成反方向变化。(3)生产技术。技术水平在一定程度上决定着生产成本并进而影响供给(4)预期。(5)相关产品的价格。(6)其他因素。包括生产要素的价格以及国家政策等。"
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "mt-1 px-8 py-3 flex justify-between border-t border-gray-100"
-      },
-      [
-        _c("div", { staticClass: "flex items-center text-gray-900" }, [
-          _c("div", { staticClass: "bg-green-500 w-4 h-4 mr-1" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "leading-none" }, [_vm._v("正确0")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex items-center text-gray-900" }, [
-          _c("div", { staticClass: "bg-red-500 w-4 h-4 mr-1" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "leading-none" }, [_vm._v("错误1")])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex items-center text-gray-900 leading-none" },
-          [
-            _c("div", { staticClass: "mr-1" }, [_vm._v("正确率")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-green-500" }, [_vm._v("0%")])
-          ]
-        )
-      ]
-    )
   },
   function() {
     var _vm = this
@@ -3742,47 +4308,6 @@ var staticRenderFns = [
           },
           [_vm._v("返回章节练习")]
         )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "fixed bottom-0 left-0 right-0 px-4" }, [
-      _c("div", { staticClass: "max-w-6xl mx-auto" }, [
-        _c("div", { staticClass: "flex" }, [
-          _c("div", { staticClass: "w-2/3 px-8" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "flex justify-between py-3 px-10 bg-white rounded-lg shadow-lg mb-5"
-              },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "inline-flex items-center px-8 py-2 text-white bg-gray-400 rounded opacity-50 cursor-not-allowed focus:outline-none",
-                    attrs: { type: "button" }
-                  },
-                  [_vm._v("上一题")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "inline-flex items-center px-8 py-2 text-white bg-teal-500 rounded focus:outline-none",
-                    attrs: { type: "button" }
-                  },
-                  [_vm._v("下一题")]
-                )
-              ]
-            )
-          ])
-        ])
       ])
     ])
   }
@@ -21459,6 +21984,76 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/questions/QuestionItem.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/questions/QuestionItem.vue ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true& */ "./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true&");
+/* harmony import */ var _QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./QuestionItem.vue?vue&type=script&lang=js& */ "./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "b4d4ef74",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/questions/QuestionItem.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./QuestionItem.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/questions/QuestionItem.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_QuestionItem_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/questions/QuestionItem.vue?vue&type=template&id=b4d4ef74&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_QuestionItem_vue_vue_type_template_id_b4d4ef74_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/layout/BlankLayout.vue":
 /*!*********************************************!*\
   !*** ./resources/js/layout/BlankLayout.vue ***!
@@ -22267,8 +22862,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
