@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
-    <template v-if="question.type === 1">
+    <template v-if="question.type === 1 || question.type === 3">
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
           <label class="inline-flex items-center cursor-pointer">
@@ -202,7 +202,6 @@
             }
             break
           case 4:
-            console.log(answer)
             if (answer.length === 0) {
               alert('所有的填空不能为空')
               return false
@@ -220,7 +219,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>
