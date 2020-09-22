@@ -173,6 +173,7 @@
       },
       handleExam() {
         console.log('考试模式', this.filterValue)
+        this.$router.push({name: 'models.exam', params: {id: 1}})
       },
       resetOption() {
         this.filterVisible = false

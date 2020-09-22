@@ -20,8 +20,8 @@
         leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       >
         <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full relative" :class="modalClasses" v-show="visible">
-          <div class="absolute top-0 right-0 mt-8 mr-8 cursor-pointer" v-if="showClose"  @click="handleAction('cancel')">
-            <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+          <div class="absolute top-0 right-0 mt-8 mr-8 cursor-pointer" v-if="showClose"  @click="handleClose">
+            <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </div>
@@ -36,18 +36,7 @@
             <slot></slot>
           </div>
           <div class="py-6 px-8 sm:flex sm:flex-row-reverse" v-if="showFooter">
-            <slot name="footer">
-              <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto" v-show="showConfirmButton">
-              <button  @click="handleAction('confirm')" type="button" class="w-full transition ease-in-out duration-150">
-                {{ localeOKText }}
-              </button>
-              </span>
-              <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto" v-show="showCancelButton">
-                <button @click="handleAction('cancel')" type="button" class="w-full transition ease-in-out duration-150">
-                  {{ localeCancelText }}
-                </button>
-              </span>
-            </slot>
+            <slot name="footer"></slot>
           </div>
         </div>
       </transition>
@@ -69,12 +58,6 @@ export default {
       type: String,
       default: 'lg'
     },
-    cancelText: {
-      type: String
-    },
-    okText: {
-      type: String
-    },
     maskClosable: {
       type: Boolean,
       default: true
@@ -91,10 +74,6 @@ export default {
       type: Boolean,
       default: true
     },
-    showInput: {
-      type: Boolean,
-      default: false
-    },
     closeOnPressEsc: {
       type: Boolean,
       default: true
@@ -109,25 +88,13 @@ export default {
   data () {
     return {
       wrapShow: false,
-      showCancelButton: true,
-      showConfirmButton: true,
-      action: '',
-      visible: this.value,
-      inputValue: null,
-      inputPlaceholder: '',
-      callback: null
+      visible: this.value
     }
   },
   computed: {
     modalClasses () {
       let widthClasses = 'max-w-' + this.size || 'lg'
       return {[widthClasses]: true}
-    },
-    localeOKText () {
-      return (typeof this.okText === 'undefined') ? '确认' : this.okText
-    },
-    localeCancelText () {
-      return (typeof this.cancelText === 'undefined') ? '取消' : this.cancelText
     }
   },
   watch: {
@@ -151,10 +118,6 @@ export default {
     doClose () {
       this.visible = false
       this.$emit('on-cancel')
-
-      if (this.action && this.callback) {
-        this.callback(this.action, this)
-      }
     },
     handleMaskClick () {
       if (this.maskClosable) {
@@ -166,13 +129,7 @@ export default {
         this.doClose()
       }
     },
-    handleAction (action) {
-      this.action = action
-
-      if (action === 'confirm') {
-        this.$emit('on-confirm')
-      }
-
+    handleClose () {
       this.doClose()
     },
     handleKeyCode (evt) {
