@@ -16,14 +16,11 @@
     data () {
       return {
         timer: null,
-        hour: 0,
-        minutes: 0,
-        seconds: 0
+        timeLeft: 0
       }
     },
     created() {
-      this.initTime()
-      this.initTimer()
+      this.timer = setInterval(this.intervalEvent, 1000)
     },
     destroyed () {
       clearInterval(this.timer)
@@ -33,59 +30,22 @@
         return this.minute === 0
       },
       timingText() {
-        let hour = this.formatTime(this.hour)
-        let minutes = this.formatTime(this.minutes)
-        let seconds = this.formatTime(this.seconds)
+        let time = this.timeLeft
+        if (!this.isTiming) time = this.minute * 60 - this.timeLeft
+
+        let hour = this.formatTime(Math.floor(time / 3600))
+        let minutes = this.formatTime(Math.floor(time / 60))
+        let seconds = this.formatTime(Math.floor(time % 60))
 
         return hour + ':' + minutes + ':' + seconds
       }
     },
     methods: {
-      initTime() {
-        if (this.isTiming) return false
-
-        this.hour = Math.floor(this.minute / 60)
-        this.minutes = Math.floor(this.minute % 60)
-      },
-      initTimer() {
-        console.log(this.isTiming)
-        if (this.isTiming) {
-          this.timer = setInterval(this.startTime, 1000)
-        } else {
+      intervalEvent() {
+        this.timeLeft++
+        if (!this.isTiming && this.timeLeft >= this.minute * 60) {
           clearInterval(this.timer)
-          this.timer = setInterval(this.countdownTime, 1000)
-        }
-      },
-      startTime() {
-        this.seconds++
-        if (this.seconds >= 60) {
-          this.seconds = 0
-          this.minutes++
-        }
-
-        if (this.minutes >= 60) {
-          this.minutes = 0
-          this.hour++
-        }
-      },
-      countdownTime() {
-        this.seconds--
-        if (this.seconds <= 0) {
-          this.seconds = 59
-          this.minutes--
-        }
-
-        if (this.minutes <= 0) {
-          if (this.hour > 0) {
-            this.minutes = 59
-            this.hour--
-          } else {
-            this.minute = 0
-          }
-        }
-
-        if (this.hour <= 0) {
-          this.hour = 0
+          this.$emit('countdownEnd')
         }
       },
       formatTime(time) {

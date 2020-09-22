@@ -14,7 +14,7 @@
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">第一章　市场需求、供给与均衡价格</div>
               <div class="flex-1 ml-3">
-                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">刷题练习</div>
+                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">考试模式</div>
               </div>
             </div>
           </div>
@@ -47,14 +47,16 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-gray-900 text-base ml-1"><timing :minute="1"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing/></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
-                  <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <span class="text-gray-900 ml-1">暂停</span>
+                  <div class="cursor-pointer flex items-center ">
+                    <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-gray-900 ml-1">暂停</span>
+                  </div>
                 </div>
               </div>
               <div class="flex justify-center py-3">
@@ -161,6 +163,14 @@ export default {
         },
         {
           id: 4,
+          title: '收入弹性的大小，可以作为划分——、——和——的标准。',
+          type: 4,
+          answer: ['高档品', '必需品', '低档物品'],
+          options: [],
+          parse: ''
+        },
+        {
+          id: 5,
           title: '商务旅游者向来被航空公司和高档饭店看重，请简述原因。',
           type: 5,
           answer: '',

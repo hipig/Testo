@@ -5,7 +5,7 @@ import Home from '@/views/Home'
 import Subjects from '@/views/subjects/Index'
 import SubjectsShow from '@/views/subjects/Show'
 import ModelsExercise from '@/views/details/models/Exercise'
-import ModelsExam from '@/views/details/models/Exam'
+import ModelsTest from '@/views/details/models/Test'
 
 export default [
   {
@@ -35,9 +35,9 @@ export default [
         component: ModelsExercise
       },
       {
-        path: '/exam/:id',
-        name: 'models.exam',
-        component: ModelsExam
+        path: '/test/:id',
+        name: 'models.test',
+        component: ModelsTest
       }
     ]
   }

@@ -16,7 +16,7 @@
         </chapter-item>
       </div>
     </div>
-    <t-modal  v-model="filterVisible" title="练习筛选" size="4xl" @on-cancel="resetOption">
+    <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
       <div class="w-full -mb-5">
         <filter-item v-for="(item, index) in formatterFilterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @change="optionChange"/>
       </div>
@@ -173,7 +173,7 @@
       },
       handleExam() {
         console.log('考试模式', this.filterValue)
-        this.$router.push({name: 'models.exam', params: {id: 1}})
+        this.$router.push({name: 'models.test', params: {id: 1}})
       },
       resetOption() {
         this.filterVisible = false

@@ -14,7 +14,7 @@
             <div class="flex items-center mb-4">
               <div class="text-2xl text-gray-900 leading-none truncate">第一章　市场需求、供给与均衡价格</div>
               <div class="flex-1 ml-3">
-                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">刷题练习</div>
+                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">练习模式</div>
               </div>
             </div>
             <div class="text-base">
@@ -163,6 +163,14 @@
           },
           {
             id: 4,
+            title: '收入弹性的大小，可以作为划分——、——和——的标准。',
+            type: 4,
+            answer: ['高档品', '必需品', '低档物品'],
+            options: [],
+            parse: ''
+          },
+          {
+            id: 5,
             title: '商务旅游者向来被航空公司和高档饭店看重，请简述原因。',
             type: 5,
             answer: '',

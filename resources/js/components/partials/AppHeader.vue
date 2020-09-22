@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white px-4 relative z-30" :class="{'shadow-sm': currentMenu !== 'home'}">
+  <div class="bg-white px-4 relative" :class="{'shadow-sm': currentMenu !== 'home'}">
     <div class="flex items-center justify-between mx-auto max-w-6xl">
       <a href="/" class="flex items-center py-2">
         <span class="text-2xl text-teal-500">魔方题库</span>
@@ -27,7 +27,7 @@
         currentMenu: '',
         routerList: {
           home: ['home'],
-          subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.exam']
+          subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.test']
         }
       }
     },

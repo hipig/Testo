@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="z-50">
     <transition
       enter-class="opacity-0"
       enter-active-class="ease-out duration-300"
@@ -117,7 +117,7 @@ export default {
   methods: {
     doClose () {
       this.visible = false
-      this.$emit('on-cancel')
+      this.$emit('close')
     },
     handleMaskClick () {
       if (this.maskClosable) {

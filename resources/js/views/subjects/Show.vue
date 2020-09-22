@@ -60,7 +60,7 @@
         <daily-list :list="dailyTests" v-if="activeTab === 'daily'"></daily-list>
       </div>
     </div>
-    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :showFooter="false" @on-cancel="closeSwitchSubjectModal">
+    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
       <div class="w-full">
         <div class="mb-5" v-for="(value, key) in subjects" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.name }}</h3>
