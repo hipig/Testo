@@ -554,6 +554,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AppHeader",
   data: function data() {
@@ -4256,7 +4257,7 @@ var render = function() {
                   "a",
                   {
                     staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-600 text-gray-600",
+                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
                     class: {
                       "menu-active text-teal-500": _vm.currentMenu === "home"
                     },
@@ -4269,7 +4270,7 @@ var render = function() {
                   "a",
                   {
                     staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-600 text-gray-600",
+                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
                     class: {
                       "menu-active text-teal-500":
                         _vm.currentMenu === "subjects"
@@ -4283,7 +4284,7 @@ var render = function() {
                   "a",
                   {
                     staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-500 text-gray-600",
+                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
                     attrs: { href: "#" }
                   },
                   [_vm._v("资讯")]
@@ -4293,7 +4294,7 @@ var render = function() {
                   "a",
                   {
                     staticClass:
-                      "py-2 inline-block font-medium hover:text-teal-500 text-gray-600",
+                      "py-2 inline-block font-medium hover:text-teal-500",
                     attrs: { href: "#" }
                   },
                   [_vm._v("关于我们")]
@@ -4332,10 +4333,20 @@ var staticRenderFns = [
         "a",
         {
           staticClass:
-            "px-6 py-1 mr-1 inline-block font-medium text-gray-600 hover:text-teal-600",
-          attrs: { href: "#" }
+            "px-6 py-1 mr-1 inline-block font-medium hover:text-teal-500",
+          attrs: { href: "/auth/login" }
         },
         [_vm._v("登录")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "px-6 py-1 mr-1 inline-block font-medium text-teal-500 border border-teal-500 rounded",
+          attrs: { href: "/auth/register" }
+        },
+        [_vm._v("注册")]
       )
     ])
   }
@@ -25629,8 +25640,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
