@@ -1810,6 +1810,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
 /* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
+/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
 //
 //
 //
@@ -1892,13 +1893,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "models.test",
   components: {
     ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_1__["default"],
+    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -1972,7 +1975,9 @@ __webpack_require__.r(__webpack_exports__);
         parse: '商务旅游者向来被航空公司和高档饭店看重，原因'
       }],
       answerList: [],
-      doneCount: 0
+      doneCount: 0,
+      isPause: false,
+      pauseModalVisible: false
     };
   },
   created: function created() {
@@ -1986,6 +1991,11 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     undoneCount: function undoneCount() {
       return this.answerList.length - this.doneCount;
+    }
+  },
+  watch: {
+    isPause: function isPause(val) {
+      this.pauseModalVisible = val;
     }
   },
   methods: {
@@ -6480,7 +6490,11 @@ var render = function() {
                           _c(
                             "span",
                             { staticClass: "text-teal-500 text-base ml-1" },
-                            [_c("timing")],
+                            [
+                              _c("timing", {
+                                attrs: { "is-pause": _vm.isPause }
+                              })
+                            ],
                             1
                           )
                         ]
