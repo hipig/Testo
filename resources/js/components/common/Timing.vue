@@ -11,12 +11,20 @@
       minute: {
         type: Number,
         default: 0
+      },
+      usedTime: {
+        type: Number,
+        default: 0
+      },
+      isPause: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
       return {
         timer: null,
-        timeLeft: 0
+        timeLeft: this.usedTime
       }
     },
     created() {
@@ -34,7 +42,7 @@
         if (!this.isTiming) time = this.minute * 60 - this.timeLeft
 
         let hour = this.formatTime(Math.floor(time / 3600))
-        let minutes = this.formatTime(Math.floor(time / 60))
+        let minutes = this.formatTime(Math.floor(time % 3600 / 60))
         let seconds = this.formatTime(Math.floor(time % 60))
 
         return hour + ':' + minutes + ':' + seconds
@@ -42,7 +50,7 @@
     },
     methods: {
       intervalEvent() {
-        this.timeLeft++
+        if (!this.isPause) this.timeLeft++
         if (!this.isTiming && this.timeLeft >= this.minute * 60) {
           clearInterval(this.timer)
           this.$emit('countdownEnd')

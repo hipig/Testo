@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-5">
       <div class="flex items-start">
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
-        <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type] }}]</div>
+        <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
       <question-tool></question-tool>
     </div>

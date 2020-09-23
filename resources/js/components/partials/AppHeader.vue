@@ -27,7 +27,7 @@
         currentMenu: '',
         routerList: {
           home: ['home'],
-          subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.test']
+          subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.test', 'models.exam']
         }
       }
     },

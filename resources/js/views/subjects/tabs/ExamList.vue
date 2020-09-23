@@ -30,6 +30,7 @@
     methods: {
       handle(id) {
         console.log(id)
+        this.$router.push({name: 'models.exam', params: {id: 1}})
       }
     }
   }

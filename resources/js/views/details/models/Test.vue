@@ -18,7 +18,7 @@
               </div>
             </div>
           </div>
-          <exam-item :id="'question'+index" v-for="(item, index) in questions" :key="index" :question="item" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
+          <exam-item :id="'q-'+index" v-for="(item, index) in questions" :key="index" :question="item" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
@@ -26,7 +26,7 @@
               <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
               <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
                 <div class="flex flex-wrap -mx-1">
-                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex(index)">{{ index+1 }}</div>
+                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
               </div>
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
@@ -51,7 +51,7 @@
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
-                  <div class="cursor-pointer flex items-center ">
+                  <div class="cursor-pointer flex items-center" @click="isPause = true">
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -60,13 +60,23 @@
                 </div>
               </div>
               <div class="flex justify-center py-3">
-                <button type="button" class="w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none">交卷</button>
+                <button type="button" class="w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none">交卷</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <t-modal v-model="pauseModalVisible" size="md" :show-close="false" :show-footer="false" :mask-closable="false">
+      <div class="flex flex-col items-center justify-center py-10">
+        <div class="cursor-pointer" @click="isPause = false">
+          <svg class="stroke-current text-gray-500" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div class="mt-2">点击继续</div>
+        </div>
+      </div>
+    </t-modal>
   </div>
 </template>
 
@@ -75,20 +85,13 @@ import ExamItem from "@/components/questions/ExamItem"
 import Timing from "@/components/common/Timing"
 
 export default {
-  name: "models.exam",
+  name: "models.test",
   components: {
     ExamItem,
     Timing
   },
   data () {
     return {
-      types: {
-        1: '单选题',
-        2: '多选题',
-        3: '判断题',
-        4: '填空题',
-        5: '问答题'
-      },
       questions: [
         {
           id: 1,
@@ -197,14 +200,18 @@ export default {
   },
   methods: {
     toIndex(index) {
-      document.getElementById('question'+index).scrollIntoView()
+      this.$nextTick(() => {
+        document.getElementById(index).scrollIntoView({ behavior: "smooth" })
+      })
     },
     handleAnswer(answer, isRight, index) {
       this.answerList[index] = Object.assign({}, this.answerList[index], {
         answer: answer,
         isRight: isRight
       })
-      this.doneCount ++
+      this.doneCount = this.answerList.filter(item => {
+        return item.answer.length !== 0
+      }).length
     }
   }
 }

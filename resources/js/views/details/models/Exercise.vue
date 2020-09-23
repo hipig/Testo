@@ -11,13 +11,13 @@
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
           <div class="bg-white shadow rounded-lg p-5">
-            <div class="flex items-center mb-4">
+            <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">第一章　市场需求、供给与均衡价格</div>
               <div class="flex-1 ml-3">
                 <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">练习模式</div>
               </div>
             </div>
-            <div class="text-base">
+            <div class="text-base mt-4">
               <label class="flex items-center">
                 <input type="checkbox" value="1" v-model="autoNext" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal">
                 <span class="ml-2">做对自动下一题</span>
@@ -31,7 +31,7 @@
             <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
             <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
               <div class="flex flex-wrap -mx-1">
-                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.isRight ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
+                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.isRight ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
               </div>
             </div>
             <div class="mt-1 px-8 py-3 flex justify-between border-t border-gray-100">
@@ -82,13 +82,6 @@
     },
     data () {
       return {
-        types: {
-          1: '单选题',
-          2: '多选题',
-          3: '判断题',
-          4: '填空题',
-          5: '问答题'
-        },
         questions: [
           {
             id: 1,

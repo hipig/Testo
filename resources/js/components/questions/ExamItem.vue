@@ -3,9 +3,9 @@
     <div class="flex items-center justify-between mb-5">
       <div class="flex items-start">
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
-        <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type] }}]</div>
+        <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool></question-tool>
+      <question-tool :show-report="showReport" :show-remark="showRemark" :show-collect="showCollect"></question-tool>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
@@ -22,7 +22,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
           <label class="inline-flex items-center">
-            <input type="checkbox" :value="item.key" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal">
+            <input type="checkbox" :value="item.key" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
             <span class="ml-3">{{ item.value }}</span>
           </label>
         </div>
@@ -31,21 +31,18 @@
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
         <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="currentAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案"/>
+          <input v-model="currentAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @input="submit"/>
         </label>
       </div>
     </template>
     <template v-if="question.type === 5">
       <div class="mb-2">
         <label class="flex w-full">
-          <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案"></textarea>
+          <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案" @input="submit"></textarea>
         </label>
       </div>
-      <div class="mb-5 text-gray-400">此类型的题目暂不支持判断对错，你可以点击下方查看答案解析</div>
+      <div class="mb-5 text-gray-400">主观题仅提供作答，默认得分，不计入错题集，建议收藏。</div>
     </template>
-    <div class="mb-5" v-if="question.type === 2 || question.type === 4 || question.type === 5">
-      <button type="button" class="inline-flex items-center py-2 px-8 border border-teal-500 text-teal-500 rounded bg-white focus:outline-none" @click="submit">确认</button>
-    </div>
   </div>
 </template>
 
@@ -60,7 +57,7 @@
     },
     props: {
       index: {
-        type: Number,
+        type: Number | Array,
         default: 0
       },
       question: Object,
@@ -68,7 +65,7 @@
         type: String | Number | Array,
         default: []
       },
-      showFeedback: {
+      showReport: {
         type: Boolean,
         default: true
       },
@@ -89,7 +86,8 @@
     },
     computed: {
       indexText() {
-        let index = this.index+1
+        let index = this.index
+        index = parseInt((typeof index === "object" ? index.slice(-1) : index)) + 1
        return index > 9 ? index : '0' + index
       },
       rightAnswerText() {
@@ -134,9 +132,6 @@
     methods: {
       // 提交答案
       submit() {
-        if (!this.checkAnswer()) return false
-        // 添加答题记录
-
         this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
       },
       // 校验答案
