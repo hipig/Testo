@@ -29,6 +29,8 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
             // 用户注册
             Route::post('users', 'UsersController@store')->name('users.store');
         });
+    // 用户登录
+    Route::post('authorizations', 'AuthorizationsController@store')->name('api.authorizations.store');
 
 
     Route::prefix('admin')->namespace('Admin')->group(function () {
