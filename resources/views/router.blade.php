@@ -13,6 +13,9 @@
   <router-view></router-view>
 </div>
 
+<script>
+  window.config = @json($config);
+</script>
 <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

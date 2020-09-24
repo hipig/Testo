@@ -8,6 +8,9 @@ import ModelsExercise from '@/views/details/models/Exercise'
 import ModelsTest from '@/views/details/models/Test'
 import ModelsExam from '@/views/details/models/Exam'
 
+import AuthLogin from '@/views/auth/Login'
+import AuthRegister from '@/views/auth/Register'
+
 export default [
   {
     path: '',
@@ -44,6 +47,16 @@ export default [
         path: '/exam/:id',
         name: 'models.exam',
         component: ModelsExam
+      },
+      {
+        path: '/auth/login',
+        name: 'auth.login',
+        component: AuthLogin
+      },
+      {
+        path: '/auth/register',
+        name: 'auth.register',
+        component: AuthRegister
       }
     ]
   }

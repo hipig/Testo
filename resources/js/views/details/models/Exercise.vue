@@ -51,7 +51,7 @@
           </div>
           <div class="bg-white shadow rounded-lg py-3 mb-5">
             <div class="flex justify-center">
-              <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none">返回章节练习</button>
+              <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none" @click="handleBack">返回章节练习</button>
             </div>
           </div>
         </div>
@@ -224,6 +224,9 @@
         } else {
           this.errorCount ++
         }
+      },
+      handleBack() {
+        this.$Message.info('测试全局消息')
       }
     }
   }

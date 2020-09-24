@@ -8,6 +8,12 @@ class RouterController extends Controller
 {
     public function __invoke()
     {
-        return view('router');
+        $config = [
+            'app_name' => config('app.name'),
+            'path' => '/',
+            'api_url' => config('app.api_url')
+        ];
+
+        return view('router', compact('config'));
     }
 }

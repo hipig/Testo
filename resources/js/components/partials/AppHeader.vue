@@ -2,7 +2,7 @@
   <div class="bg-white px-4 relative" :class="{'shadow-sm': currentMenu !== 'home'}">
     <div class="flex items-center justify-between mx-auto max-w-6xl">
       <a href="/" class="flex items-center py-2">
-        <span class="text-2xl text-teal-500">魔方题库</span>
+        <span class="text-2xl text-teal-500 font-semibold">Testo</span>
       </a>
       <div class="flex-1 flex items-center justify-between ml-12 py-4">
         <div class="text-sm">

@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'api_url' => env('API_URL', 'http://localhost'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -175,6 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        App\Providers\EasySmsServiceProvider::class,
 
     ],
 
