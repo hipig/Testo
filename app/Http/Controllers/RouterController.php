@@ -11,7 +11,7 @@ class RouterController extends Controller
         $config = [
             'app_name' => config('app.name'),
             'path' => '/',
-            'api_url' => config('app.api_url')
+            'api_url' => config('api.api_url')
         ];
 
         return view('router', compact('config'));

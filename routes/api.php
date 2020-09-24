@@ -14,10 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->name('api.v1.')->group(function() {
+Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
 
     Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
     Route::get('subjects/{subject}', 'SubjectsController@show')->name('subjects.show');
+
+    Route::middleware('throttle:' . config('api.rate_limits.sign'))
+        ->group(function () {
+
+            // 图片验证码
+            Route::post('captchas', 'CaptchasController@store')->name('captchas.store');
+            // 短信验证码
+            Route::post('verificationCodes', 'VerificationCodesController@store')->name('verificationCodes.store');
+            // 用户注册
+            Route::post('users', 'UsersController@store')->name('users.store');
+        });
+
 
     Route::prefix('admin')->namespace('Admin')->group(function () {
 

@@ -22,7 +22,7 @@
                     <span class="mb-1 text-base font-semibold">验证码</span>
                     <span class="flex items-center">
                       <input type="text" placeholder="输入验证码" class="flex-1 mr-4 px-5 p-3 leading-tight bg-gray-100 rounded-lg text-left appearance-none outline-none">
-                      <button type="button" class="inline-flex items-center justify-center font-medium focus:outline-none rounded-lg w-28 p-3 leading-tight bg-gray-700 text-white">发送验证码</button>
+                      <button type="button" class="inline-flex items-center justify-center font-medium focus:outline-none rounded-lg w-24 p-3 leading-tight bg-teal-500 text-white">发送验证码</button>
                     </span>
                   </label>
                 </div>

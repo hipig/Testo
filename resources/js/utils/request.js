@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
-import { message } from '@/components/common/message'
+import message from '@/components/common/message'
 
 // 创建 axios 实例
 const service = axios.create({
