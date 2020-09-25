@@ -11,18 +11,44 @@
           <a href="#" class="mr-8 py-2 inline-block font-medium hover:text-teal-500">资讯</a>
           <a href="#" class="py-2 inline-block font-medium hover:text-teal-500">关于我们</a>
         </div>
-        <div class="text-sm">
-          <a href="/auth/login" class="px-6 py-1 mr-1 inline-block font-medium hover:text-teal-500">登录</a>
-          <a href="/auth/register" class="px-6 py-1 mr-1 inline-block font-medium text-teal-500 border border-teal-500 rounded">注册</a>
-        </div>
+        <template v-if="isLogin">
+          <dropdown>
+            <div class="flex items-center cursor-pointer">
+              <img src="https://secure.gravatar.com/avatar/2c13c855c7064d2982a0093797d8aebd" class="w-8 h-8 rounded-full border border-gray-100" alt="">
+              <span class="ml-1 leading-none">{{ userInfo.name }}</span>
+            </div>
+            <div slot="dropdown-menu" class="w-48 rounded-lg shadow-lg bg-white border-t border-gray-100">
+              <div class="py-1">
+                <a href="#" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">学习记录</a>
+                <a href="#" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">修改资料</a>
+              </div>
+              <div class="border-t border-gray-100"></div>
+              <div class="py-1">
+                <a href="javascript:;" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" @click="handleLogout">退出</a>
+              </div>
+            </div>
+          </dropdown>
+        </template>
+        <template v-else>
+          <div class="text-sm">
+            <a href="/auth/login" class="px-6 py-1 mr-1 inline-block font-medium hover:text-teal-500">登录</a>
+            <a href="/auth/register" class="px-6 py-1 mr-1 inline-block font-medium text-teal-500 border border-teal-500 rounded">注册</a>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+  import Dropdown from "../common/Dropdown"
+
   export default {
     name: "AppHeader",
+    components: {
+      Dropdown
+    },
     data () {
       return {
         currentMenu: '',
@@ -30,6 +56,15 @@
           home: ['home'],
           subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.test', 'models.exam']
         }
+      }
+    },
+    computed: {
+      ...mapGetters({
+        'token': 'user/token',
+        'userInfo': 'user/userInfo'
+      }),
+      isLogin() {
+        return this.token !== ''
       }
     },
     watch: {
@@ -46,5 +81,16 @@
         immediate: true
       }
     },
+    methods: {
+      ...mapActions({
+        'logout': 'user/logout'
+      }),
+      handleLogout() {
+        this.logout()
+          .then(() => {
+            this.$router.go(0)
+          })
+      }
+    }
   }
 </script>

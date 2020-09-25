@@ -38,6 +38,16 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (!$model->name) {
+                $model->name = substr_replace($model->phone, '****', 3, 4);
+            }
+        });
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = \Hash::make($value);

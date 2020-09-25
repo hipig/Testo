@@ -1,11 +1,25 @@
 import service from '@/utils/request'
 
 const api = {
-  login: '/auth/login',
-  register: '/auth/register',
-  authUser: '/user',
-  current: '/auth/current',
+  captchas: '/captchas',
+  verificationCodes: '/verificationCodes',
+  login: '/authorizations',
+  register: '/users',
+  currentUser: '/user',
+  currentToken: '/authorizations/current',
 }
+
+export const getCaptchas = (params) => service({
+  url: api.captchas,
+  method: 'post',
+  data: params
+})
+
+export const getVerificationCodes = (params) => service({
+  url: api.verificationCodes,
+  method: 'post',
+  data: params
+})
 
 export const login = (params) => service({
   url: api.login,
@@ -20,16 +34,16 @@ export const register = (params) => service({
 })
 
 export const refreshToken = () => service({
-  url: api.current,
+  url: api.currentToken,
   method: 'put'
 })
 
 export const deleteToken = () => service({
-  url: api.current,
+  url: api.currentToken,
   method: 'delete'
 })
 
 export const user = () => service({
-  url: api.authUser,
+  url: api.currentUser,
   method: 'get'
 })

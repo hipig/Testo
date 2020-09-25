@@ -9,26 +9,18 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  const token = window.localStorage.getItem('token')
+  const token = store.getters['user/token']
 
   if (token) {
-    config.headers['Authorization'] = token
+    config.headers['Authorization'] = 'Bearer ' + token
   }
   return config
 })
 
 service.interceptors.response.use((response) => {
-  const token = response.headers.authorization
-  if (token) {
-    store.dispatch('user/RefreshToken', token)
-  }
   return response.data
 }, (error) => {
   const response = error.response
-  const token = response.headers.authorization
-  if (token) {
-    store.dispatch('user/RefreshToken', token)
-  }
   switch (response.status) {
     case 401:
       const token = window.localStorage.getItem('token')
@@ -41,6 +33,7 @@ service.interceptors.response.use((response) => {
       message.error('您的权限不足， 拒绝访问！')
       break;
     case 422:
+      message.error(Object.values(response.data.errors)[0][0])
       break;
     case 429:
       message.error('重复访问次数过多！')

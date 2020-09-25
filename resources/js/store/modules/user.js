@@ -16,7 +16,6 @@ export const getters = {
 // mutations
 export const mutations = {
   [types.SET_TOKEN]: (state, token) => {
-    window.localStorage.setItem('token', token)
     state.token = token
   },
   [types.SET_USERINFO]: (state, info) => {
@@ -57,7 +56,6 @@ export const actions = {
     return new Promise((resolve, reject) => {
       user()
         .then(res => {
-          let logs = res.last_login_logs
           commit("SET_USERINFO", res)
           resolve(res)
         })
@@ -83,7 +81,6 @@ export const actions = {
         .then(() => {
           commit("SET_TOKEN", "")
           commit("SET_USERINFO", {})
-          window.localStorage.setItem('token', "")
         })
     })
   },
@@ -91,6 +88,5 @@ export const actions = {
   clear({ commit }) {
     commit("SET_TOKEN", "")
     commit("SET_USERINFO", {})
-    window.localStorage.setItem('token', "")
   }
 }

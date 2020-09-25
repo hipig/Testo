@@ -39,7 +39,7 @@ class VerificationCodesController extends Controller
         \Cache::forget($request->captcha_key);
 
         return response()->json([
-            'key' => $key,
+            'verification_key' => $key,
             'expired_at' => $expiredAt->toDateTimeString(),
         ])->setStatusCode(201);
     }

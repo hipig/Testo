@@ -18,7 +18,19 @@ class AuthorizationRequest extends FormRequest
                 'required',
                 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199)\d{8}$/'
             ],
-            'password' => 'required|alpha_dash|min:6',
+            'password' => [
+                'required',
+                'alpha_dash',
+                'min:6',
+                function($attribute, $value, $fail) {
+                    $credentials = $this->only('phone', 'password');
+                    if (!$token = \Auth::guard('api')->attempt($credentials)) {
+                        return $fail('用户名或密码错误');
+                    }
+
+                    $this->offsetSet('access_token', $token);
+                }
+            ],
         ];
     }
 

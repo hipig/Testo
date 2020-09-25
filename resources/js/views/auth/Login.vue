@@ -7,10 +7,10 @@
             <div class="p-8">
               <p class="mb-1 text-center text-xl md:text-2xl font-bold leading-tight tracking-tight">欢迎登录</p>
               <p class="mb-6 text-center text-sm text-gray-500 leading-normal">请输入您的手机号码和密码</p>
-              <form action="#">
+              <div>
                 <div class="mb-4 relative">
                   <label>
-                    <input type="text" placeholder="手机号码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12">
+                    <input type="text" v-model="loginForm.phone" placeholder="手机号码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12">
                   </label>
                   <div class="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400">
                     <svg fill="none" class="stroke-current w-6 h-6" viewBox="0 0 24 24">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-4 relative">
                   <label>
-                    <input type="password" placeholder="密码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12">
+                    <input type="password" v-model="loginForm.password" placeholder="密码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12">
                   </label>
                   <div class="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400">
                     <svg fill="none" class="stroke-current w-6 h-6" viewBox="0 0 24 24">
@@ -28,15 +28,11 @@
                     </svg>
                   </div>
                 </div>
-                <div class="mb-4 flex items-center justify-between">
-                  <label class="flex items-center">
-                    <input type="checkbox" value="1" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal">
-                    <span class="ml-2 leading-none">记住我</span>
-                  </label>
+                <div class="mb-4 flex items-center justify-end">
                   <a href="#" class="text-sm inline-flex text-teal-500">忘记密码？</a>
                 </div>
-                <button type="submit" class="w-full inline-flex items-center justify-center font-medium focus:outline-none rounded-lg px-6 py-2 bg-teal-500 text-white text-base">登录</button>
-              </form>
+                <button type="button" class="w-full inline-flex items-center justify-center font-medium focus:outline-none rounded-lg px-6 py-2 bg-teal-500 text-white text-base" @click="submitLogin">登录</button>
+              </div>
             </div>
           </div>
         </div>
@@ -46,7 +42,36 @@
 </template>
 
 <script>
+  import { mapActions } from "vuex"
+
   export default {
-    name: "auth.login"
+    name: "auth.login",
+    data () {
+      return {
+        loginForm: {
+          phone: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      ...mapActions({
+        'login': 'user/login',
+        'getUserInfo': 'user/getUserInfo',
+      }),
+      submitLogin() {
+        this.login(this.loginForm)
+          .then(() => {
+            this.$Message({
+              message: '登录成功',
+              type: 'success',
+              onClose: () => {
+                this.getUserInfo()
+                this.$router.push({path: '/', replace: true})
+              }
+            })
+          })
+      }
+    }
   }
 </script>
