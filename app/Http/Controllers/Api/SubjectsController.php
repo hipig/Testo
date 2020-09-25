@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class SubjectsController extends Controller
 {
-    public function tree(Request $request)
+    public function tree(Request $request, SubjectService $service)
     {
         $subjects = Subject::query()->where('level', '<=', 1)->get();
 
-        return (new SubjectService())->getSubjectTree(null, $subjects);
+        return response()->json($service->getSubjectTree(null, $subjects));
     }
 
     public function show(Request $request, Subject $subject)

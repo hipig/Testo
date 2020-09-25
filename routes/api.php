@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
 
+    // 获取科目树形
     Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
     Route::get('subjects/{subject}', 'SubjectsController@show')->name('subjects.show');
 

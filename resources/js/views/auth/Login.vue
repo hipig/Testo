@@ -62,14 +62,9 @@
       submitLogin() {
         this.login(this.loginForm)
           .then(() => {
-            this.$Message({
-              message: '登录成功',
-              type: 'success',
-              onClose: () => {
-                this.getUserInfo()
-                this.$router.push({path: '/', replace: true})
-              }
-            })
+            this.$Message.success('登录成功')
+            this.getUserInfo()
+            this.$router.push({path: '/', replace: true})
           })
       }
     }

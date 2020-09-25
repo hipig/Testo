@@ -3328,17 +3328,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       this.login(this.loginForm).then(function () {
-        _this.$Message({
-          message: '登录成功',
-          type: 'success',
-          onClose: function onClose() {
-            _this.getUserInfo();
+        _this.$Message.success('登录成功');
 
-            _this.$router.push({
-              path: '/',
-              replace: true
-            });
-          }
+        _this.getUserInfo();
+
+        _this.$router.push({
+          path: '/',
+          replace: true
         });
       });
     }
@@ -3497,17 +3493,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this3 = this;
 
       this.register(this.userForm).then(function (res) {
-        _this3.$Message({
-          message: '注册成功',
-          type: 'success',
-          onClose: function onClose() {
-            _this3.getUserInfo();
+        _this3.$Message.success('注册成功');
 
-            _this3.$router.push({
-              path: '/',
-              replace: true
-            });
-          }
+        _this3.getUserInfo();
+
+        _this3.$router.push({
+          path: '/',
+          replace: true
         });
       });
     },
@@ -4322,6 +4314,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
 //
 //
 //
@@ -4348,53 +4341,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "subjects",
   data: function data() {
     return {
-      subjects: [{
-        id: 1,
-        name: '会计',
-        childrens: [{
-          id: 2,
-          name: '初级经济师'
-        }, {
-          id: 3,
-          name: '中级经济师'
-        }, {
-          id: 4,
-          name: '初级会计师'
-        }, {
-          id: 5,
-          name: '中级会计师'
-        }, {
-          id: 6,
-          name: '初级统计师'
-        }, {
-          id: 7,
-          name: '中级统计师'
-        }, {
-          id: 8,
-          name: '注册会计师CPA'
-        }]
-      }, {
-        id: 9,
-        name: '金融',
-        childrens: [{
-          id: 10,
-          name: '银行'
-        }, {
-          id: 11,
-          name: '证券'
-        }, {
-          id: 12,
-          name: '期货'
-        }, {
-          id: 13,
-          name: '基金'
-        }]
-      }]
+      subjectList: []
     };
+  },
+  mounted: function mounted() {
+    this.getSubjects();
+  },
+  methods: {
+    getSubjects: function getSubjects() {
+      var _this = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_0__["getSubjectsTree"])().then(function (res) {
+        _this.subjectList = res;
+      });
+    }
   }
 });
 
@@ -9900,16 +9865,16 @@ var render = function() {
       _c(
         "div",
         { staticClass: "flex flex-col mt-5" },
-        _vm._l(_vm.subjects, function(value, key) {
+        _vm._l(_vm.subjectList, function(value, key) {
           return _c("div", { key: key, staticClass: "mb-10" }, [
             _c("h3", { staticClass: "text-2xl text-gray-700" }, [
-              _vm._v(_vm._s(value.name))
+              _vm._v(_vm._s(value.title))
             ]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "-mx-3 flex flex-wrap" },
-              _vm._l(value.childrens, function(v, k) {
+              _vm._l(value.children, function(v, k) {
                 return _c("div", { key: k, staticClass: "w-1/6 px-3" }, [
                   _c(
                     "div",
@@ -9957,7 +9922,7 @@ var render = function() {
                           ),
                           _vm._v(" "),
                           _c("span", { staticClass: "mt-2" }, [
-                            _vm._v(_vm._s(v.name))
+                            _vm._v(_vm._s(v.title))
                           ])
                         ]
                       )
@@ -27184,6 +27149,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_f348271a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/api/subject.js":
+/*!*************************************!*\
+  !*** ./resources/js/api/subject.js ***!
+  \*************************************/
+/*! exports provided: getSubjectsTree */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjectsTree", function() { return getSubjectsTree; });
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+
+var api = {
+  subjectsTree: '/subjects/tree'
+};
+var getSubjectsTree = function getSubjectsTree(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.subjectsTree,
+    method: 'get',
+    data: params
+  });
+};
 
 /***/ }),
 

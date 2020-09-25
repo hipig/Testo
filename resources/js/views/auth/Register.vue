@@ -63,7 +63,7 @@
 
 <script>
   import TModal from "@/components/common/modal/Modal"
-  import { getCaptchas, getVerificationCodes, register } from "@/api/user"
+  import { getCaptchas, getVerificationCodes } from "@/api/user"
   import { mapActions } from "vuex"
 
   export default {
@@ -129,14 +129,9 @@
       submitRegister() {
         this.register(this.userForm)
           .then((res) => {
-            this.$Message({
-              message: '注册成功',
-              type: 'success',
-              onClose: () => {
-                this.getUserInfo()
-                this.$router.push({path: '/', replace: true})
-              }
-            })
+            this.$Message.success('注册成功')
+            this.getUserInfo()
+            this.$router.push({path: '/', replace: true})
           })
       },
       startTimer() {
