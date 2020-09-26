@@ -20,6 +20,12 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
     Route::get('subjects/{subject}', 'SubjectsController@show')->name('subjects.show');
 
+    // 获取题库列表
+    Route::get('subjects/{subject}/chapter-tests', 'BanksController@chapterTests')->name('subjects.chapterTests');
+    Route::get('subjects/{subject}/mock-exams', 'BanksController@mockExams')->name('subjects.mockExams');
+    Route::get('subjects/{subject}/old-exams', 'BanksController@oldExams')->name('subjects.oldExams');
+    Route::get('subjects/{subject}/daily-tests', 'BanksController@dailyTests')->name('subjects.dailyTests');
+
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
 

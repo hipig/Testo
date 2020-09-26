@@ -4474,188 +4474,20 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       sid: this.$route.params.sid,
+      ssid: this.$route.params.ssid || res.children_group[0][0].id || 0,
       subject: {},
       subjectList: [],
-      activeSubjectId: 0,
-      tabs: [{
-        value: '章节练习',
-        key: 'chapter'
-      }, {
-        value: '模拟考试',
-        key: 'mock'
-      }, {
-        value: '历年真题',
-        key: 'old'
-      }, {
-        value: '每日一练',
-        key: 'daily'
-      }],
-      activeTab: 'chapter',
-      chapterTests: [{
-        id: 1,
-        title: '第一章 社会经济制度',
-        learned_num: 0,
-        total: 58,
-        children: [{
-          id: 2,
-          title: '第一节 物质资料生产和基本经济规律',
-          learned_num: 0,
-          total: 22
-        }, {
-          id: 3,
-          title: '第二节 社会经济制度的变革和演化',
-          learned_num: 0,
-          total: 11
-        }, {
-          id: 4,
-          title: '第三节 自然经济与商品经济',
-          learned_num: 0,
-          total: 5
-        }, {
-          id: 5,
-          title: '第四节 市场与市场体系',
-          learned_num: 0,
-          total: 7
-        }, {
-          id: 6,
-          title: '第五节 商品经济与市场经济',
-          learned_num: 0,
-          total: 4
-        }, {
-          id: 7,
-          title: '第六节 资源配置方式与经济体制',
-          learned_num: 0,
-          total: 9
-        }]
-      }, {
-        id: 10,
-        title: '第二章 我国土地基本制度',
-        learned_num: 0,
-        total: 78,
-        children: [{
-          id: 11,
-          title: '第一节　土地所有制',
-          learned_num: 0,
-          total: 10
-        }, {
-          id: 12,
-          title: '第二节　土地征收征用制度',
-          learned_num: 0,
-          total: 8
-        }, {
-          id: 13,
-          title: '第三节　土地管理制度',
-          learned_num: 0,
-          total: 33
-        }, {
-          id: 14,
-          title: '第四节　国有建设用地使用制度',
-          learned_num: 0,
-          total: 17
-        }, {
-          id: 15,
-          title: '第五节　集体土地使用制度',
-          learned_num: 0,
-          total: 10
-        }]
-      }],
-      mockExams: [{
-        id: 1,
-        title: '2019年初级经济师《基础知识》考试模拟卷三',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }, {
-        id: 2,
-        title: '2019年初级经济师《基础知识》考试模拟卷二',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }, {
-        id: 3,
-        title: '2019年初级经济师《基础知识》考试模拟卷一',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }],
-      oldExams: [{
-        id: 1,
-        title: '2018年初级经济师《基础知识》考试真题',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }, {
-        id: 2,
-        title: '2017年初级经济师《基础知识》考试真题\n',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }, {
-        id: 3,
-        title: '2016年初级经济师《基础知识》考试真题',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }, {
-        id: 4,
-        title: '2015年初级经济师《基础知识》考试真题',
-        learned_num: 0,
-        total: 105,
-        score: 140,
-        minutes: 120
-      }],
-      dailyTests: [{
-        id: 1,
-        title: '初级经济基础知识每日一练',
-        total: 30,
-        date: '09月19日',
-        questions: [{
-          type: 2,
-          title: '股份有限公司的特点有（　）。'
-        }, {
-          type: 2,
-          title: '在社会主义初级阶段的收入分配制度中，按劳分配的具体形式包括（　）。'
-        }, {
-          type: 2,
-          title: '一个完善的市场体系应具备的功能包括（　）。'
-        }]
-      }, {
-        id: 2,
-        title: '初级经济基础知识每日一练',
-        total: 30,
-        date: '09月18日',
-        questions: [{
-          type: 1,
-          title: '在社会主义初级阶段实行以按劳分配为主体，多种分配方式并存的分配制度，是为了（　）。'
-        }, {
-          type: 1,
-          title: '在价值形式发展过程中，一切商品的价值都统一表现在从商品世界中分离出来充当一般等价物的某一种商品上，这种价值形式是（　）。'
-        }, {
-          type: 2,
-          title: '在商品经济条件下，价值规律的作用体现在（　）。'
-        }]
-      }, {
-        id: 3,
-        title: '初级经济基础知识每日一练',
-        total: 30,
-        date: '09月17日',
-        questions: [{
-          type: 1,
-          title: '仲裁的原则中，不包括（　）。'
-        }, {
-          type: 1,
-          title: '下列民事纠纷中，适用1年特别诉讼时效的是（　）。'
-        }, {
-          type: 1,
-          title: '资产类账户的内部勾稽关系是（　）。'
-        }]
-      }],
+      tabs: {
+        '1': '章节练习',
+        '2': '模拟考试',
+        '3': '历年真题',
+        '4': '每日一练'
+      },
+      activeTab: '1',
+      chapterTests: [],
+      mockExams: [],
+      oldExams: [],
+      dailyTests: [],
       switchSubjectVisible: false
     };
   },
@@ -4676,13 +4508,12 @@ __webpack_require__.r(__webpack_exports__);
 
       Object(_api_subject__WEBPACK_IMPORTED_MODULE_4__["getSubjectsShow"])(this.sid).then(function (res) {
         _this2.subject = res;
-        _this2.activeSubjectId = res.children_group[0][0].id || 0;
       });
     },
     switchTab: function switchTab(name) {
       this.activeTab = name;
     },
-    switchSubject: function switchSubject() {
+    showSwitchSubject: function showSwitchSubject() {
       this.switchSubjectVisible = !this.switchSubjectVisible;
     },
     closeSwitchSubjectModal: function closeSwitchSubjectModal() {
@@ -4705,6 +4536,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_chapters_ChapterItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/chapters/ChapterItem */ "./resources/js/components/chapters/ChapterItem.vue");
 /* harmony import */ var _components_chapters_FilterItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/chapters/FilterItem */ "./resources/js/components/chapters/FilterItem.vue");
 /* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_bank__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/bank */ "./resources/js/api/bank.js");
 //
 //
 //
@@ -4737,6 +4569,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -4748,13 +4585,14 @@ __webpack_require__.r(__webpack_exports__);
     TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
-    list: {
-      type: Array,
-      "default": []
+    subjectId: {
+      type: Number | String,
+      "default": 0
     }
   },
   data: function data() {
     return {
+      list: [],
       filterOptions: [{
         title: '类型',
         name: 'category',
@@ -4825,6 +4663,9 @@ __webpack_require__.r(__webpack_exports__);
       filterVisible: false
     };
   },
+  created: function created() {
+    this.getChapterTestList();
+  },
   computed: {
     formatterFilterOptions: function formatterFilterOptions() {
       var filterOptions = this.filterOptions;
@@ -4841,6 +4682,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getChapterTestList: function getChapterTestList() {
+      var _this = this;
+
+      Object(_api_bank__WEBPACK_IMPORTED_MODULE_3__["getChapterTests"])(this.subjectId).then(function (res) {
+        _this.list = res;
+      });
+    },
     handleLearn: function handleLearn(name) {
       this.currentChapter = name;
       this.filterVisible = true;
@@ -4888,6 +4736,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_bank__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/bank */ "./resources/js/api/bank.js");
 //
 //
 //
@@ -4913,16 +4764,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "DailyList",
   props: {
-    list: {
-      type: Array,
-      "default": []
+    subjectId: {
+      type: Number | String,
+      "default": 0
     }
   },
   data: function data() {
     return {
+      list: [],
+      dayjs: dayjs__WEBPACK_IMPORTED_MODULE_0___default.a,
       types: {
         1: '单选题',
         2: '多选题',
@@ -4932,7 +4790,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  created: function created() {
+    this.getDailyTestList();
+  },
   methods: {
+    getDailyTestList: function getDailyTestList() {
+      var _this = this;
+
+      Object(_api_bank__WEBPACK_IMPORTED_MODULE_1__["getDailyTests"])(this.subjectId).then(function (res) {
+        _this.list = res;
+      });
+    },
     handle: function handle(id) {
       console.log(id);
     }
@@ -4950,6 +4818,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api_bank__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/api/bank */ "./resources/js/api/bank.js");
 //
 //
 //
@@ -4970,15 +4839,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ExamList",
   props: {
-    list: {
-      type: Array,
-      "default": []
+    subjectId: {
+      type: Number | String,
+      "default": 0
+    },
+    type: {
+      type: String,
+      "default": 'mock'
+    }
+  },
+  data: function data() {
+    return {
+      list: []
+    };
+  },
+  created: function created() {
+    this.getExamList();
+  },
+  watch: {
+    type: function type(val) {
+      this.getExamList();
     }
   },
   methods: {
+    getExamList: function getExamList() {
+      var _this = this;
+
+      var request = this.type === 'mock' ? _api_bank__WEBPACK_IMPORTED_MODULE_0__["getMockExams"] : _api_bank__WEBPACK_IMPORTED_MODULE_0__["getOldExams"];
+      request(this.subjectId).then(function (res) {
+        _this.list = res;
+      });
+    },
     handle: function handle(id) {
       console.log(id);
       this.$router.push({
@@ -4990,6 +4885,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/dayjs/dayjs.min.js":
+/*!*****************************************!*\
+  !*** ./node_modules/dayjs/dayjs.min.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){ true?module.exports=e():undefined}(this,function(){"use strict";var t="millisecond",e="second",n="minute",r="hour",i="day",s="week",u="month",a="quarter",o="year",f="date",h=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[^0-9]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?.?(\d+)?$/,c=/\[([^\]]+)]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,d=function(t,e,n){var r=String(t);return!r||r.length>=e?t:""+Array(e+1-r.length).join(n)+t},$={s:d,z:function(t){var e=-t.utcOffset(),n=Math.abs(e),r=Math.floor(n/60),i=n%60;return(e<=0?"+":"-")+d(r,2,"0")+":"+d(i,2,"0")},m:function t(e,n){if(e.date()<n.date())return-t(n,e);var r=12*(n.year()-e.year())+(n.month()-e.month()),i=e.clone().add(r,u),s=n-i<0,a=e.clone().add(r+(s?-1:1),u);return+(-(r+(n-i)/(s?i-a:a-i))||0)},a:function(t){return t<0?Math.ceil(t)||0:Math.floor(t)},p:function(h){return{M:u,y:o,w:s,d:i,D:f,h:r,m:n,s:e,ms:t,Q:a}[h]||String(h||"").toLowerCase().replace(/s$/,"")},u:function(t){return void 0===t}},l={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_")},y="en",M={};M[y]=l;var m=function(t){return t instanceof S},D=function(t,e,n){var r;if(!t)return y;if("string"==typeof t)M[t]&&(r=t),e&&(M[t]=e,r=t);else{var i=t.name;M[i]=t,r=i}return!n&&r&&(y=r),r||!n&&y},v=function(t,e){if(m(t))return t.clone();var n="object"==typeof e?e:{};return n.date=t,n.args=arguments,new S(n)},g=$;g.l=D,g.i=m,g.w=function(t,e){return v(t,{locale:e.$L,utc:e.$u,$offset:e.$offset})};var S=function(){function d(t){this.$L=this.$L||D(t.locale,null,!0),this.parse(t)}var $=d.prototype;return $.parse=function(t){this.$d=function(t){var e=t.date,n=t.utc;if(null===e)return new Date(NaN);if(g.u(e))return new Date;if(e instanceof Date)return new Date(e);if("string"==typeof e&&!/Z$/i.test(e)){var r=e.match(h);if(r){var i=r[2]-1||0,s=(r[7]||"0").substring(0,3);return n?new Date(Date.UTC(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)):new Date(r[1],i,r[3]||1,r[4]||0,r[5]||0,r[6]||0,s)}}return new Date(e)}(t),this.init()},$.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},$.$utils=function(){return g},$.isValid=function(){return!("Invalid Date"===this.$d.toString())},$.isSame=function(t,e){var n=v(t);return this.startOf(e)<=n&&n<=this.endOf(e)},$.isAfter=function(t,e){return v(t)<this.startOf(e)},$.isBefore=function(t,e){return this.endOf(e)<v(t)},$.$g=function(t,e,n){return g.u(t)?this[e]:this.set(n,t)},$.unix=function(){return Math.floor(this.valueOf()/1e3)},$.valueOf=function(){return this.$d.getTime()},$.startOf=function(t,a){var h=this,c=!!g.u(a)||a,d=g.p(t),$=function(t,e){var n=g.w(h.$u?Date.UTC(h.$y,e,t):new Date(h.$y,e,t),h);return c?n:n.endOf(i)},l=function(t,e){return g.w(h.toDate()[t].apply(h.toDate("s"),(c?[0,0,0,0]:[23,59,59,999]).slice(e)),h)},y=this.$W,M=this.$M,m=this.$D,D="set"+(this.$u?"UTC":"");switch(d){case o:return c?$(1,0):$(31,11);case u:return c?$(1,M):$(0,M+1);case s:var v=this.$locale().weekStart||0,S=(y<v?y+7:y)-v;return $(c?m-S:m+(6-S),M);case i:case f:return l(D+"Hours",0);case r:return l(D+"Minutes",1);case n:return l(D+"Seconds",2);case e:return l(D+"Milliseconds",3);default:return this.clone()}},$.endOf=function(t){return this.startOf(t,!1)},$.$set=function(s,a){var h,c=g.p(s),d="set"+(this.$u?"UTC":""),$=(h={},h[i]=d+"Date",h[f]=d+"Date",h[u]=d+"Month",h[o]=d+"FullYear",h[r]=d+"Hours",h[n]=d+"Minutes",h[e]=d+"Seconds",h[t]=d+"Milliseconds",h)[c],l=c===i?this.$D+(a-this.$W):a;if(c===u||c===o){var y=this.clone().set(f,1);y.$d[$](l),y.init(),this.$d=y.set(f,Math.min(this.$D,y.daysInMonth())).$d}else $&&this.$d[$](l);return this.init(),this},$.set=function(t,e){return this.clone().$set(t,e)},$.get=function(t){return this[g.p(t)]()},$.add=function(t,a){var f,h=this;t=Number(t);var c=g.p(a),d=function(e){var n=v(h);return g.w(n.date(n.date()+Math.round(e*t)),h)};if(c===u)return this.set(u,this.$M+t);if(c===o)return this.set(o,this.$y+t);if(c===i)return d(1);if(c===s)return d(7);var $=(f={},f[n]=6e4,f[r]=36e5,f[e]=1e3,f)[c]||1,l=this.$d.getTime()+t*$;return g.w(l,this)},$.subtract=function(t,e){return this.add(-1*t,e)},$.format=function(t){var e=this;if(!this.isValid())return"Invalid Date";var n=t||"YYYY-MM-DDTHH:mm:ssZ",r=g.z(this),i=this.$locale(),s=this.$H,u=this.$m,a=this.$M,o=i.weekdays,f=i.months,h=function(t,r,i,s){return t&&(t[r]||t(e,n))||i[r].substr(0,s)},d=function(t){return g.s(s%12||12,t,"0")},$=i.meridiem||function(t,e,n){var r=t<12?"AM":"PM";return n?r.toLowerCase():r},l={YY:String(this.$y).slice(-2),YYYY:this.$y,M:a+1,MM:g.s(a+1,2,"0"),MMM:h(i.monthsShort,a,f,3),MMMM:h(f,a),D:this.$D,DD:g.s(this.$D,2,"0"),d:String(this.$W),dd:h(i.weekdaysMin,this.$W,o,2),ddd:h(i.weekdaysShort,this.$W,o,3),dddd:o[this.$W],H:String(s),HH:g.s(s,2,"0"),h:d(1),hh:d(2),a:$(s,u,!0),A:$(s,u,!1),m:String(u),mm:g.s(u,2,"0"),s:String(this.$s),ss:g.s(this.$s,2,"0"),SSS:g.s(this.$ms,3,"0"),Z:r};return n.replace(c,function(t,e){return e||l[t]||r.replace(":","")})},$.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},$.diff=function(t,f,h){var c,d=g.p(f),$=v(t),l=6e4*($.utcOffset()-this.utcOffset()),y=this-$,M=g.m(this,$);return M=(c={},c[o]=M/12,c[u]=M,c[a]=M/3,c[s]=(y-l)/6048e5,c[i]=(y-l)/864e5,c[r]=y/36e5,c[n]=y/6e4,c[e]=y/1e3,c)[d]||y,h?M:g.a(M)},$.daysInMonth=function(){return this.endOf(u).$D},$.$locale=function(){return M[this.$L]},$.locale=function(t,e){if(!t)return this.$L;var n=this.clone(),r=D(t,e,!0);return r&&(n.$L=r),n},$.clone=function(){return g.w(this.$d,this)},$.toDate=function(){return new Date(this.valueOf())},$.toJSON=function(){return this.isValid()?this.toISOString():null},$.toISOString=function(){return this.$d.toISOString()},$.toString=function(){return this.$d.toUTCString()},d}(),p=S.prototype;return v.prototype=p,[["$ms",t],["$s",e],["$m",n],["$H",r],["$W",i],["$M",u],["$y",o],["$D",f]].forEach(function(t){p[t[1]]=function(e){return this.$g(e,t[0],t[1])}}),v.extend=function(t,e){return t(e,S,v),v},v.locale=D,v.isDayjs=m,v.unix=function(t){return v(1e3*t)},v.en=M[y],v.Ls=M,v});
+
 
 /***/ }),
 
@@ -6021,9 +5928,12 @@ var render = function() {
                           ? _c(
                               "svg",
                               {
-                                staticClass:
-                                  "w-6 h-6 stroke-current text-teal-500",
-                                class: { "cursor-pointer": !_vm.disabled },
+                                staticClass: "w-6 h-6 stroke-current",
+                                class: [
+                                  _vm.disabled
+                                    ? "text-gray-400"
+                                    : "text-teal-500 cursor-pointer"
+                                ],
                                 attrs: { fill: "none", viewBox: "0 0 24 24" }
                               },
                               [
@@ -6041,9 +5951,12 @@ var render = function() {
                           : _c(
                               "svg",
                               {
-                                staticClass:
-                                  "w-6 h-6 stroke-current text-teal-500",
-                                class: { "cursor-pointer": !_vm.disabled },
+                                staticClass: "w-6 h-6 stroke-current",
+                                class: [
+                                  _vm.disabled
+                                    ? "text-gray-400"
+                                    : "text-teal-500 cursor-pointer"
+                                ],
                                 attrs: { fill: "none", viewBox: "0 0 24 24" }
                               },
                               [
@@ -10014,7 +9927,7 @@ var render = function() {
                       staticClass:
                         "border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none",
                       attrs: { type: "button" },
-                      on: { click: _vm.switchSubject }
+                      on: { click: _vm.showSwitchSubject }
                     },
                     [
                       _c("span", { staticClass: "mr-1" }, [_vm._v("切换考试")]),
@@ -10121,19 +10034,16 @@ var render = function() {
                       { staticClass: "flex-1 flex flex-wrap" },
                       _vm._l(item, function(value, key) {
                         return _c(
-                          "div",
+                          "a",
                           {
                             key: key,
                             staticClass:
                               "flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer",
                             class: {
-                              "text-white bg-teal-500":
-                                value.id === _vm.activeSubjectId
+                              "text-white bg-teal-500": value.id == _vm.ssid
                             },
-                            on: {
-                              click: function($event) {
-                                _vm.activeSubjectId = value.id
-                              }
+                            attrs: {
+                              href: "/subjects/" + _vm.sid + "/" + value.id
                             }
                           },
                           [_vm._v(_vm._s(value.title))]
@@ -10160,15 +10070,15 @@ var render = function() {
                         "flex items-center h-16 mr-24 text-lg cursor-pointer border-b-2 border-transparent",
                       class: {
                         "text-teal-500 border-teal-500 tab-active":
-                          _vm.activeTab === item.key
+                          _vm.activeTab == index
                       },
                       on: {
                         click: function($event) {
-                          return _vm.switchTab(item.key)
+                          return _vm.switchTab(index)
                         }
                       }
                     },
-                    [_vm._v(_vm._s(item.value))]
+                    [_vm._v(_vm._s(item))]
                   )
                 }),
                 0
@@ -10181,20 +10091,22 @@ var render = function() {
           "div",
           { staticClass: "mt-5" },
           [
-            _vm.activeTab === "chapter"
-              ? _c("chapter-list", { attrs: { list: _vm.chapterTests } })
+            _vm.activeTab == 1
+              ? _c("chapter-list", { attrs: { "subject-id": _vm.ssid } })
               : _vm._e(),
             _vm._v(" "),
-            _vm.activeTab === "mock"
-              ? _c("exam-list", { attrs: { list: _vm.mockExams } })
+            _vm.activeTab == 2
+              ? _c("exam-list", { attrs: { "subject-id": _vm.ssid } })
               : _vm._e(),
             _vm._v(" "),
-            _vm.activeTab === "old"
-              ? _c("exam-list", { attrs: { list: _vm.oldExams } })
+            _vm.activeTab == 3
+              ? _c("exam-list", {
+                  attrs: { "subject-id": _vm.ssid, type: "old" }
+                })
               : _vm._e(),
             _vm._v(" "),
-            _vm.activeTab === "daily"
-              ? _c("daily-list", { attrs: { list: _vm.dailyTests } })
+            _vm.activeTab == 4
+              ? _c("daily-list", { attrs: { "subject-id": _vm.ssid } })
               : _vm._e()
           ],
           1
@@ -10234,7 +10146,7 @@ var render = function() {
                         {
                           staticClass:
                             "bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base",
-                          attrs: { href: "#" }
+                          attrs: { href: "/subjects/" + v.id }
                         },
                         [_vm._v(_vm._s(v.title))]
                       )
@@ -10281,65 +10193,86 @@ var render = function() {
       _c("div", { staticClass: "w-40 max-h-screen mr-5" }, [
         _c(
           "div",
-          {
-            staticClass:
-              "bg-white shadow rounded-lg pt-5 pl-2 pr-2 text-gray-500 flex flex-col"
-          },
-          _vm._l(_vm.list, function(value, key) {
-            return _c(
-              "div",
-              {
-                key: key,
-                staticClass:
-                  "mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4",
-                class: {
-                  "text-teal-500 border-teal-500": key === 0,
-                  "border-transparent": key !== 0
-                }
-              },
-              [_vm._v(_vm._s(value.title))]
-            )
-          }),
-          0
+          { staticClass: "bg-white shadow rounded-lg pt-5 pl-2 pr-2" },
+          [
+            _vm.list.length > 0
+              ? _c(
+                  "div",
+                  { staticClass: "text-gray-500 flex flex-col" },
+                  _vm._l(_vm.list, function(value, key) {
+                    return _c(
+                      "div",
+                      {
+                        key: key,
+                        staticClass:
+                          "mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4",
+                        class: {
+                          "text-teal-500 border-teal-500": key === 0,
+                          "border-transparent": key !== 0
+                        }
+                      },
+                      [_vm._v(_vm._s(value.title))]
+                    )
+                  }),
+                  0
+                )
+              : _c(
+                  "div",
+                  {
+                    staticClass:
+                      "flex items-center justify-center text-gray-400 pb-4"
+                  },
+                  [_vm._v("还没有数据哦~")]
+                )
+          ]
         )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "flex-1 bg-white shadow rounded-lg" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex flex-wrap" },
-          _vm._l(_vm.list, function(value, key) {
-            return _c(
-              "chapter-item",
-              {
-                key: key,
-                attrs: {
-                  title: value.title,
-                  name: value.id,
-                  number: [value.learned_num, value.total],
-                  disabled: value.children.length === 0
-                },
-                on: { btnClick: _vm.handleLearn }
-              },
-              _vm._l(value.children, function(v, k) {
-                return _c("chapter-item", {
-                  key: k,
-                  attrs: {
-                    title: v.title,
-                    name: v.id,
-                    number: [v.learned_num, v.total],
-                    second: ""
+        _vm.list.length > 0
+          ? _c(
+              "div",
+              { staticClass: "flex flex-wrap" },
+              _vm._l(_vm.list, function(value, key) {
+                return _c(
+                  "chapter-item",
+                  {
+                    key: key,
+                    attrs: {
+                      title: value.title,
+                      name: value.id,
+                      number: [value.learned_num || 0, value.total_count],
+                      disabled: value.children.length === 0
+                    },
+                    on: { btnClick: _vm.handleLearn }
                   },
-                  on: { btnClick: _vm.handleLearn }
-                })
+                  _vm._l(value.children, function(v, k) {
+                    return _c("chapter-item", {
+                      key: k,
+                      attrs: {
+                        title: v.title,
+                        name: v.id,
+                        number: [v.learned_num || 0, v.total_count],
+                        second: ""
+                      },
+                      on: { btnClick: _vm.handleLearn }
+                    })
+                  }),
+                  1
+                )
               }),
               1
             )
-          }),
-          1
-        )
+          : _c(
+              "div",
+              {
+                staticClass:
+                  "flex items-center justify-center text-gray-400 py-20 text-base"
+              },
+              [_vm._v("还没有数据哦~")]
+            )
       ]),
       _vm._v(" "),
       _c(
@@ -10454,82 +10387,110 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "flex flex-col" },
-    _vm._l(_vm.list, function(item, index) {
-      return _c("div", { key: index, staticClass: "mb-3" }, [
-        _c("div", { staticClass: "bg-white shadow rounded-lg" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "py-5 pl-32 pr-5 flex items-center border-b border-gray-100"
-            },
-            [
-              _c("div", { staticClass: "flex-1 mr-5 relative" }, [
-                _c("div", { staticClass: "text-gray-900 text-base" }, [
-                  _vm._v(_vm._s(item.title))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "text-gray-400 mb-1" }, [
-                  _vm._v("共" + _vm._s(item.total) + "题")
-                ]),
-                _vm._v(" "),
+    [
+      _vm.list.length > 0
+        ? _vm._l(_vm.list, function(item, index) {
+            return _c("div", { key: index, staticClass: "mb-3" }, [
+              _c("div", { staticClass: "bg-white shadow rounded-lg" }, [
                 _c(
                   "div",
                   {
                     staticClass:
-                      "absolute top-0 left-0 -ml-32 py-2 w-28 flex items-center justify-center rounded-tr-full rounded-br-full text-base",
-                    class: {
-                      "text-white bg-teal-500": index === 0,
-                      "bg-gray-100": index !== 0
-                    }
+                      "py-5 pl-32 pr-5 flex items-center border-b border-gray-100"
                   },
-                  [_vm._v(_vm._s(item.date))]
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "px-3 h-8 flex items-center justify-center text-white bg-gradient-to-r from-teal-400 to-teal-500 rounded focus:outline-none",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.handle(item.id)
-                    }
-                  }
-                },
-                [_vm._v("马上练习")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "pl-32 py-5 pr-5" }, [
-            _c(
-              "div",
-              { staticClass: "-mb-5" },
-              _vm._l(item.questions, function(v, k) {
-                return _c(
-                  "div",
-                  { key: k, staticClass: "mb-5 flex items-center" },
                   [
-                    _c("div", { staticClass: "text-teal-500 mr-1" }, [
-                      _vm._v("[" + _vm._s(_vm.types[v.type]) + "]")
+                    _c("div", { staticClass: "flex-1 mr-5 relative" }, [
+                      _c("div", { staticClass: "text-gray-900 text-base" }, [
+                        _vm._v(_vm._s(item.title))
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-gray-400 mb-1" }, [
+                        _vm._v("共" + _vm._s(item.total_count) + "题")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "absolute top-0 left-0 -ml-32 py-2 leading-none w-28 flex items-center justify-center rounded-tr-full rounded-br-full text-base",
+                          class: {
+                            "text-white bg-teal-500": index === 0,
+                            "bg-gray-200": index !== 0
+                          }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(
+                              _vm.dayjs(item.created_at).format("YYYY-MM-DD")
+                            )
+                          )
+                        ]
+                      )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "text-gray-400" }, [
-                      _vm._v(_vm._s(v.title))
-                    ])
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "px-4 h-8 flex items-center justify-center text-white bg-gradient-to-r from-teal-400 to-teal-500 rounded focus:outline-none",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.handle(item.id)
+                          }
+                        }
+                      },
+                      [_vm._v("马上练习")]
+                    )
                   ]
-                )
-              }),
-              0
-            )
-          ])
-        ])
-      ])
-    }),
-    0
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "pl-32 py-5 pr-5" }, [
+                  _c(
+                    "div",
+                    { staticClass: "-mb-5" },
+                    _vm._l(item.items, function(v, k) {
+                      return _c(
+                        "div",
+                        {
+                          key: k,
+                          staticClass: "mb-5 flex flex-wrap items-baseline"
+                        },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "text-teal-500 flex mr-2" },
+                            [
+                              _vm._v(
+                                "[" + _vm._s(_vm.types[v.question.type]) + "]"
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "text-gray-400 flex-1 flex" },
+                            [_vm._v(_vm._s(v.question.title))]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ])
+          })
+        : _c(
+            "div",
+            {
+              staticClass:
+                "flex items-center justify-center text-gray-400 py-20 bg-white shadow rounded-lg text-base"
+            },
+            [_vm._v("还没有数据哦~")]
+          )
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -10554,54 +10515,58 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "flex flex-wrap -mx-3" },
-    _vm._l(_vm.list, function(item, index) {
-      return _c("div", { key: index, staticClass: "w-1/2 px-3 mb-5" }, [
-        _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
-          _c("div", { staticClass: "mb-8 flex justify-between" }, [
-            _c("div", { staticClass: "text-base text-gray-900" }, [
-              _vm._v(_vm._s(item.title))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-gray-400" }, [
-              _c("span", { staticClass: "text-teal-500" }, [
-                _vm._v(_vm._s(item.learned_num))
-              ]),
-              _vm._v("/" + _vm._s(item.total))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "flex items-center justify-between" }, [
-            _c("div", { staticClass: "text-gray-400" }, [
-              _c("span", { staticClass: "mr-5" }, [
-                _vm._v("总分： " + _vm._s(item.score) + "分")
+  return _vm.list.length > 0
+    ? _c(
+        "div",
+        { staticClass: "flex flex-wrap -mx-3" },
+        _vm._l(_vm.list, function(item, index) {
+          return _c("div", { key: index, staticClass: "w-1/2 px-3 mb-5" }, [
+            _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
+              _c("div", { staticClass: "mb-8 flex justify-between" }, [
+                _c("div", { staticClass: "text-base text-gray-900" }, [
+                  _vm._v(_vm._s(item.title))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-gray-400" }, [
+                  _c("span", { staticClass: "text-teal-500" }, [
+                    _vm._v(_vm._s(item.learned_num || 0))
+                  ]),
+                  _vm._v("/" + _vm._s(item.total_count))
+                ])
               ]),
               _vm._v(" "),
-              _c("span", [_vm._v("时间：" + _vm._s(item.minutes) + "分")])
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass:
-                  "px-3 h-8 flex items-center justify-center border-2 border-yellow-500 text-yellow-500 bg-yellow-50 rounded focus:outline-none",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    return _vm.handle(item.id)
-                  }
-                }
-              },
-              [_vm._v("开始考试")]
-            )
+              _c("div", { staticClass: "flex items-center justify-between" }, [
+                _c("div", { staticClass: "text-gray-400" }, [
+                  _c("span", { staticClass: "mr-5" }, [
+                    _vm._v("总分： " + _vm._s(item.total_score) + "分")
+                  ]),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v("时间：" + _vm._s(item.time_limit) + "分")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "px-3 h-8 flex items-center justify-center border-2 border-yellow-500 text-yellow-500 bg-yellow-50 rounded focus:outline-none",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.handle(item.id)
+                      }
+                    }
+                  },
+                  [_vm._v("开始考试")]
+                )
+              ])
+            ])
           ])
-        ])
-      ])
-    }),
-    0
-  )
+        }),
+        0
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -27150,6 +27115,56 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/api/bank.js":
+/*!**********************************!*\
+  !*** ./resources/js/api/bank.js ***!
+  \**********************************/
+/*! exports provided: getChapterTests, getMockExams, getOldExams, getDailyTests */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getChapterTests", function() { return getChapterTests; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMockExams", function() { return getMockExams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOldExams", function() { return getOldExams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDailyTests", function() { return getDailyTests; });
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
+
+
+var api = {
+  chapterTests: '/subjects/%s/chapter-tests',
+  mockExams: '/subjects/%s/mock-exams',
+  oldExams: '/subjects/%s/old-exams',
+  dailyTests: '/subjects/%s/daily-tests'
+};
+var getChapterTests = function getChapterTests(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.chapterTests, id),
+    method: 'get'
+  });
+};
+var getMockExams = function getMockExams(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.mockExams, id),
+    method: 'get'
+  });
+};
+var getOldExams = function getOldExams(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.oldExams, id),
+    method: 'get'
+  });
+};
+var getDailyTests = function getDailyTests(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.dailyTests, id),
+    method: 'get'
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/api/subject.js":
 /*!*************************************!*\
   !*** ./resources/js/api/subject.js ***!
@@ -28458,7 +28473,7 @@ __webpack_require__.r(__webpack_exports__);
     name: 'subjects',
     component: _views_subjects_Index__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
-    path: '/subjects/:sid',
+    path: '/subjects/:sid/:ssid?',
     name: 'subjects.show',
     component: _views_subjects_Show__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {

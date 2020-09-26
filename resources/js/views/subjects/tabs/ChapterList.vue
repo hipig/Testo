@@ -1,8 +1,11 @@
 <template>
   <div class="flex flex-wrap">
     <div class="w-40 max-h-screen mr-5">
-      <div class="bg-white shadow rounded-lg pt-5 pl-2 pr-2 text-gray-500 flex flex-col">
-        <div v-for="(value, key) in list" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
+      <div class="bg-white shadow rounded-lg pt-5 pl-2 pr-2">
+        <div class="text-gray-500 flex flex-col" v-if="list.length > 0">
+          <div v-for="(value, key) in list" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
+        </div>
+        <div class="flex items-center justify-center text-gray-400 pb-4" v-else>还没有数据哦~</div>
       </div>
     </div>
     <div class="flex-1 bg-white shadow rounded-lg">
@@ -10,11 +13,12 @@
         <div class="w-2/3 pl-10">名称</div>
         <div class="w-1/3">做题进度</div>
       </div>
-      <div class="flex flex-wrap">
-        <chapter-item v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num, value.total]" :disabled="value.children.length === 0" @btnClick="handleLearn">
-          <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num, v.total]" second  @btnClick="handleLearn"/>
+      <div class="flex flex-wrap" v-if="list.length > 0">
+        <chapter-item v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num||0, value.total_count]" :disabled="value.children.length === 0" @btnClick="handleLearn">
+          <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num||0, v.total_count]" second  @btnClick="handleLearn"/>
         </chapter-item>
       </div>
+      <div class="flex items-center justify-center text-gray-400 py-20 text-base" v-else>还没有数据哦~</div>
     </div>
     <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
       <div class="w-full -mb-5">
@@ -34,6 +38,7 @@
   import ChapterItem from "@/components/chapters/ChapterItem"
   import FilterItem from "@/components/chapters/FilterItem"
   import TModal from "@/components/common/modal/Modal"
+  import { getChapterTests } from "@/api/bank"
 
   export default {
     name: "ChapterList",
@@ -43,13 +48,14 @@
       TModal
     },
     props: {
-      list: {
-        type: Array,
-        default: []
+      subjectId: {
+        type: Number | String,
+        default: 0,
       }
     },
     data () {
       return {
+        list: [],
         filterOptions: [
           {
             title: '类型',
@@ -143,6 +149,9 @@
         filterVisible: false
       }
     },
+    created() {
+      this.getChapterTestList()
+    },
     computed: {
       formatterFilterOptions() {
         let filterOptions = this.filterOptions
@@ -160,6 +169,12 @@
       }
     },
     methods: {
+      getChapterTestList() {
+        getChapterTests(this.subjectId)
+          .then((res) => {
+            this.list = res
+          })
+      },
       handleLearn(name) {
         this.currentChapter = name
         this.filterVisible = true

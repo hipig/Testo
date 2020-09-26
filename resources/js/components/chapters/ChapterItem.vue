@@ -7,10 +7,10 @@
             <span class="block w-2 h-2 rounded-full border-teal-500 border-2"></span>
           </template>
           <template v-else>
-            <svg class="w-6 h-6 stroke-current text-teal-500" :class="{'cursor-pointer': !disabled}" fill="none" viewBox="0 0 24 24" v-if="isActive">
+            <svg class="w-6 h-6 stroke-current" :class="[disabled ? 'text-gray-400' : 'text-teal-500 cursor-pointer']" fill="none" viewBox="0 0 24 24" v-if="isActive">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <svg class="w-6 h-6 stroke-current text-teal-500" :class="{'cursor-pointer': !disabled}" fill="none" viewBox="0 0 24 24" v-else>
+            <svg class="w-6 h-6 stroke-current" :class="[disabled ? 'text-gray-400' : 'text-teal-500 cursor-pointer']" fill="none" viewBox="0 0 24 24" v-else>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </template>

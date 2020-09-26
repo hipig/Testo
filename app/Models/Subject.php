@@ -44,6 +44,31 @@ class Subject extends Model
         return $this->hasMany(Subject::class, 'parent_id');
     }
 
+    public function banks()
+    {
+        return $this->hasMany(Bank::class, 'subject_id');
+    }
+
+    public function chapterTests()
+    {
+        return $this->hasMany(Bank::class, 'subject_id')->where('type', 1);
+    }
+
+    public function mockExams()
+    {
+        return $this->hasMany(Bank::class, 'subject_id')->where('type', 2);
+    }
+
+    public function oldExams()
+    {
+        return $this->hasMany(Bank::class, 'subject_id')->where('type', 3);
+    }
+
+    public function dailyTests()
+    {
+        return $this->hasMany(Bank::class, 'subject_id')->where('type', 4);
+    }
+
     public function getChildrenGroupAttribute()
     {
         return $this->children->groupBy('is_special');

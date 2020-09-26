@@ -19,7 +19,7 @@
               </svg>
               <h3 class="text-xl">{{ subject.title }}</h3>
             </div>
-            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none" @click="switchSubject">
+            <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none" @click="showSwitchSubject">
               <span class="mr-1">切换考试</span>
               <svg class="w-4 h-4 stroke-current -mr-1" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -45,21 +45,21 @@
           <div class="flex" v-for="(item, index) in subject.children_group" :index="index">
             <div class="mr-5 text-gray-400 h-8 flex items-center">{{ index == 1 ? '专业科目': '公共科目' }}</div>
             <div class="flex-1 flex flex-wrap">
-              <div v-for="(value, key) in item" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer" :class="{'text-white bg-teal-500': value.id === activeSubjectId}" @click="activeSubjectId = value.id">{{ value.title }}</div>
+              <a :href="'/subjects/'+sid+'/'+value.id" v-for="(value, key) in item" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer" :class="{'text-white bg-teal-500': value.id == ssid}">{{ value.title }}</a>
             </div>
           </div>
         </div>
         <div class="flex justify-center">
           <div class="flex flex-wrap">
-            <div v-for="(item, index) in tabs" :key="index" class="flex items-center h-16 mr-24 text-lg cursor-pointer border-b-2 border-transparent" :class="{'text-teal-500 border-teal-500 tab-active': activeTab === item.key}" @click="switchTab(item.key)">{{ item.value }}</div>
+            <div v-for="(item, index) in tabs" :key="index" class="flex items-center h-16 mr-24 text-lg cursor-pointer border-b-2 border-transparent" :class="{'text-teal-500 border-teal-500 tab-active': activeTab == index}" @click="switchTab(index)">{{ item }}</div>
           </div>
         </div>
       </div>
       <div class="mt-5">
-        <chapter-list :list="chapterTests" v-if="activeTab === 'chapter'"></chapter-list>
-        <exam-list :list="mockExams" v-if="activeTab === 'mock'"></exam-list>
-        <exam-list :list="oldExams" v-if="activeTab === 'old'"></exam-list>
-        <daily-list :list="dailyTests" v-if="activeTab === 'daily'"></daily-list>
+        <chapter-list :subject-id="ssid" v-if="activeTab == 1"></chapter-list>
+        <exam-list :subject-id="ssid" v-if="activeTab == 2"></exam-list>
+        <exam-list :subject-id="ssid" type="old" v-if="activeTab == 3"></exam-list>
+        <daily-list :subject-id="ssid" v-if="activeTab == 4"></daily-list>
       </div>
     </div>
     <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
@@ -68,7 +68,7 @@
           <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>
           <div class="flex flex-wrap -mx-3">
             <div class="w-1/4 px-3" v-for="(v, k) in value.childrenList" :key="k">
-              <a href="#" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</a>
+              <a :href="'/subjects/'+v.id" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</a>
             </div>
           </div>
         </div>
@@ -95,234 +95,20 @@
     data () {
       return {
         sid: this.$route.params.sid,
+        ssid: this.$route.params.ssid || res.children_group[0][0].id || 0,
         subject: {},
         subjectList: [],
-        activeSubjectId: 0,
-        tabs: [
-          {
-            value: '章节练习',
-            key: 'chapter'
-          },
-          {
-            value: '模拟考试',
-            key: 'mock'
-          },
-          {
-            value: '历年真题',
-            key: 'old'
-          },
-          {
-            value: '每日一练',
-            key: 'daily'
-          }
-        ],
-        activeTab: 'chapter',
-        chapterTests: [
-          {
-            id: 1,
-            title: '第一章 社会经济制度',
-            learned_num: 0,
-            total: 58,
-            children: [
-              {
-                id: 2,
-                title: '第一节 物质资料生产和基本经济规律',
-                learned_num: 0,
-                total: 22,
-              },
-              {
-                id: 3,
-                title: '第二节 社会经济制度的变革和演化',
-                learned_num: 0,
-                total: 11,
-              },
-              {
-                id: 4,
-                title: '第三节 自然经济与商品经济',
-                learned_num: 0,
-                total: 5,
-              },
-              {
-                id: 5,
-                title: '第四节 市场与市场体系',
-                learned_num: 0,
-                total: 7,
-              },
-              {
-                id: 6,
-                title: '第五节 商品经济与市场经济',
-                learned_num: 0,
-                total: 4,
-              },
-              {
-                id: 7,
-                title: '第六节 资源配置方式与经济体制',
-                learned_num: 0,
-                total: 9,
-              }
-            ]
-          },
-          {
-            id: 10,
-            title: '第二章 我国土地基本制度',
-            learned_num: 0,
-            total: 78,
-            children: [
-              {
-                id: 11,
-                title: '第一节　土地所有制',
-                learned_num: 0,
-                total: 10,
-              },
-              {
-                id: 12,
-                title: '第二节　土地征收征用制度',
-                learned_num: 0,
-                total: 8,
-              },
-              {
-                id: 13,
-                title: '第三节　土地管理制度',
-                learned_num: 0,
-                total: 33,
-              },
-              {
-                id: 14,
-                title: '第四节　国有建设用地使用制度',
-                learned_num: 0,
-                total: 17,
-              },
-              {
-                id: 15,
-                title: '第五节　集体土地使用制度',
-                learned_num: 0,
-                total: 10,
-              }
-            ]
-          }
-        ],
-        mockExams: [
-          {
-            id: 1,
-            title: '2019年初级经济师《基础知识》考试模拟卷三',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          },
-          {
-            id: 2,
-            title: '2019年初级经济师《基础知识》考试模拟卷二',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          },
-          {
-            id: 3,
-            title: '2019年初级经济师《基础知识》考试模拟卷一',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          }
-        ],
-        oldExams: [
-          {
-            id: 1,
-            title: '2018年初级经济师《基础知识》考试真题',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          },
-          {
-            id: 2,
-            title: '2017年初级经济师《基础知识》考试真题\n',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          },
-          {
-            id: 3,
-            title: '2016年初级经济师《基础知识》考试真题',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          },
-          {
-            id: 4,
-            title: '2015年初级经济师《基础知识》考试真题',
-            learned_num: 0,
-            total: 105,
-            score: 140,
-            minutes: 120
-          }
-        ],
-        dailyTests: [
-          {
-            id: 1,
-            title: '初级经济基础知识每日一练',
-            total: 30,
-            date: '09月19日',
-            questions: [
-              {
-                type: 2,
-                title: '股份有限公司的特点有（　）。',
-              },
-              {
-                type: 2,
-                title: '在社会主义初级阶段的收入分配制度中，按劳分配的具体形式包括（　）。',
-              },
-              {
-                type: 2,
-                title: '一个完善的市场体系应具备的功能包括（　）。',
-              }
-            ]
-          },
-          {
-            id: 2,
-            title: '初级经济基础知识每日一练',
-            total: 30,
-            date: '09月18日',
-            questions: [
-              {
-                type: 1,
-                title: '在社会主义初级阶段实行以按劳分配为主体，多种分配方式并存的分配制度，是为了（　）。',
-              },
-              {
-                type: 1,
-                title: '在价值形式发展过程中，一切商品的价值都统一表现在从商品世界中分离出来充当一般等价物的某一种商品上，这种价值形式是（　）。',
-              },
-              {
-                type: 2,
-                title: '在商品经济条件下，价值规律的作用体现在（　）。',
-              }
-            ]
-          },
-          {
-            id: 3,
-            title: '初级经济基础知识每日一练',
-            total: 30,
-            date: '09月17日',
-            questions: [
-              {
-                type: 1,
-                title: '仲裁的原则中，不包括（　）。',
-              },
-              {
-                type: 1,
-                title: '下列民事纠纷中，适用1年特别诉讼时效的是（　）。',
-              },
-              {
-                type: 1,
-                title: '资产类账户的内部勾稽关系是（　）。',
-              }
-            ]
-          }
-        ],
+        tabs: {
+          '1': '章节练习',
+          '2': '模拟考试',
+          '3': '历年真题',
+          '4': '每日一练',
+        },
+        activeTab: '1',
+        chapterTests: [],
+        mockExams: [],
+        oldExams: [],
+        dailyTests: [],
         switchSubjectVisible: false
       }
     },
@@ -341,13 +127,12 @@
         getSubjectsShow(this.sid)
           .then((res) => {
             this.subject = res
-            this.activeSubjectId = res.children_group[0][0].id || 0
           })
       },
       switchTab(name) {
         this.activeTab = name
       },
-      switchSubject() {
+      showSwitchSubject() {
         this.switchSubjectVisible = !this.switchSubjectVisible
       },
       closeSwitchSubjectModal() {
