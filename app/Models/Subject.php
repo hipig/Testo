@@ -36,12 +36,17 @@ class Subject extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Subject::class, 'parent_id');
     }
 
-    public function childrenSubject()
+    public function children()
     {
         return $this->hasMany(Subject::class, 'parent_id');
+    }
+
+    public function getChildrenGroupAttribute()
+    {
+        return $this->children->groupBy('is_special');
     }
 
     // 定义一个访问器，获取所有祖先类目的 ID 值

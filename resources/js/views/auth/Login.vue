@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-4 relative">
                   <label>
-                    <input type="password" v-model="loginForm.password" placeholder="密码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12">
+                    <input type="password" v-model="loginForm.password" placeholder="密码" class="pr-4 py-3 leading-normal block w-full bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12" @keyup.enter="submitLogin">
                   </label>
                   <div class="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400">
                     <svg fill="none" class="stroke-current w-6 h-6" viewBox="0 0 24 24">

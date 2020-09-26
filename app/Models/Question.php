@@ -19,4 +19,13 @@ class Question extends Model
         self::FILL_BLANK => '填空题',
         self::SHORT_ANSWER => '问答题'
     ];
+
+    protected $fillable = [
+        'title', 'type', 'option', 'answer',
+        'material', 'parse', 'status', 'index'
+    ];
+
+    protected $casts = [
+        'option' => 'array'
+    ];
 }

@@ -5,7 +5,7 @@
         <div class="mb-10" v-for="(value, key) in subjectList" :key="key">
           <h3 class="text-2xl text-gray-700">{{ value.title }}</h3>
           <div class="-mx-3 flex flex-wrap">
-            <div class="w-1/6 px-3" v-for="(v, k) in value.children" :key="k">
+            <div class="w-1/6 px-3" v-for="(v, k) in value.childrenList" :key="k">
               <div class="shadow rounded-lg w-full bg-white overflow-hidden w-full block mt-6 relative transform duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <a :href="'/subjects/'+v.id" class="flex flex-col items-center p-5">
                   <svg class="w-8 h-8 stroke-current text-teal-500" fill="none" viewBox="0 0 24 24">
@@ -35,10 +35,10 @@
       }
     },
     mounted() {
-      this.getSubjects()
+      this.getSubjectList()
     },
     methods: {
-      getSubjects() {
+      getSubjectList() {
         getSubjectsTree()
           .then((res) => {
             this.subjectList = res

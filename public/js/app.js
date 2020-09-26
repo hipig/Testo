@@ -4350,10 +4350,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getSubjects();
+    this.getSubjectList();
   },
   methods: {
-    getSubjects: function getSubjects() {
+    getSubjectList: function getSubjectList() {
       var _this = this;
 
       Object(_api_subject__WEBPACK_IMPORTED_MODULE_0__["getSubjectsTree"])().then(function (res) {
@@ -4378,6 +4378,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tabs_ExamList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabs/ExamList */ "./resources/js/views/subjects/tabs/ExamList.vue");
 /* harmony import */ var _tabs_DailyList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tabs/DailyList */ "./resources/js/views/subjects/tabs/DailyList.vue");
 /* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
 //
 //
 //
@@ -4455,6 +4456,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -4469,69 +4473,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      subjects: [{
-        id: 1,
-        name: '会计',
-        childrens: [{
-          id: 2,
-          name: '初级经济师'
-        }, {
-          id: 3,
-          name: '中级经济师'
-        }, {
-          id: 4,
-          name: '初级会计师'
-        }, {
-          id: 5,
-          name: '中级会计师'
-        }, {
-          id: 6,
-          name: '初级统计师'
-        }, {
-          id: 7,
-          name: '中级统计师'
-        }, {
-          id: 8,
-          name: '注册会计师CPA'
-        }]
-      }, {
-        id: 9,
-        name: '金融',
-        childrens: [{
-          id: 10,
-          name: '银行'
-        }, {
-          id: 11,
-          name: '证券'
-        }, {
-          id: 12,
-          name: '期货'
-        }, {
-          id: 13,
-          name: '基金'
-        }]
-      }],
-      subSubjects: {
-        special: [{
-          id: 100,
-          name: '初级经济基础知识'
-        }, {
-          id: 101,
-          name: '初级财政税收'
-        }, {
-          id: 102,
-          name: '初级金融'
-        }, {
-          id: 103,
-          name: '初级人力资源'
-        }, {
-          id: 104,
-          name: '初级工商管理'
-        }, {
-          id: 105,
-          name: '初级建筑经济'
-        }]
-      },
+      sid: this.$route.params.sid,
+      subject: {},
+      subjectList: [],
+      activeSubjectId: 0,
       tabs: [{
         value: '章节练习',
         key: 'chapter'
@@ -4714,7 +4659,26 @@ __webpack_require__.r(__webpack_exports__);
       switchSubjectVisible: false
     };
   },
+  mounted: function mounted() {
+    this.getSubjectList();
+    this.getSubject();
+  },
   methods: {
+    getSubjectList: function getSubjectList() {
+      var _this = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_4__["getSubjectsTree"])().then(function (res) {
+        _this.subjectList = res;
+      });
+    },
+    getSubject: function getSubject() {
+      var _this2 = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_4__["getSubjectsShow"])(this.sid).then(function (res) {
+        _this2.subject = res;
+        _this2.activeSubjectId = res.children_group[0][0].id || 0;
+      });
+    },
     switchTab: function switchTab(name) {
       this.activeTab = name;
     },
@@ -8243,6 +8207,21 @@ var render = function() {
                         attrs: { type: "password", placeholder: "密码" },
                         domProps: { value: _vm.loginForm.password },
                         on: {
+                          keyup: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.submitLogin($event)
+                          },
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -9874,7 +9853,7 @@ var render = function() {
             _c(
               "div",
               { staticClass: "-mx-3 flex flex-wrap" },
-              _vm._l(value.children, function(v, k) {
+              _vm._l(value.childrenList, function(v, k) {
                 return _c("div", { key: k, staticClass: "w-1/6 px-3" }, [
                   _c(
                     "div",
@@ -9966,7 +9945,21 @@ var render = function() {
     { staticClass: "py-5 px-4" },
     [
       _c("div", { staticClass: "max-w-6xl mx-auto" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "text-sm" }, [
+          _c("a", { attrs: { href: "/" } }, [_vm._v("首页")]),
+          _vm._v(" "),
+          _c("span", [_vm._v("/")]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "/subjects" } }, [
+            _vm._v(_vm._s(_vm.subject.parent_title))
+          ]),
+          _vm._v(" "),
+          _c("span", [_vm._v("/")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-gray-400" }, [
+            _vm._v(_vm._s(_vm.subject.title))
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -10010,7 +10003,9 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("h3", { staticClass: "text-xl" }, [_vm._v("初级经济师")])
+                    _c("h3", { staticClass: "text-xl" }, [
+                      _vm._v(_vm._s(_vm.subject.title))
+                    ])
                   ]),
                   _vm._v(" "),
                   _c(
@@ -10105,32 +10100,52 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "flex" }, [
-              _c(
-                "div",
-                { staticClass: "mr-5 text-gray-400 h-8 flex items-center" },
-                [_vm._v("专业科目")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "flex-1 flex flex-wrap" },
-                _vm._l(_vm.subSubjects.special, function(value, key) {
-                  return _c(
-                    "a",
-                    {
-                      key: key,
-                      staticClass:
-                        "flex items-center h-8 px-5 mr-2 mb-5 rounded-full",
-                      class: { "text-white bg-teal-500": key === 0 },
-                      attrs: { href: "#" }
-                    },
-                    [_vm._v(_vm._s(value.name))]
-                  )
-                }),
-                0
-              )
-            ]),
+            _c(
+              "div",
+              { staticClass: "flex flex-col" },
+              _vm._l(_vm.subject.children_group, function(item, index) {
+                return _c(
+                  "div",
+                  { staticClass: "flex", attrs: { index: index } },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "mr-5 text-gray-400 h-8 flex items-center"
+                      },
+                      [_vm._v(_vm._s(index == 1 ? "专业科目" : "公共科目"))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex-1 flex flex-wrap" },
+                      _vm._l(item, function(value, key) {
+                        return _c(
+                          "div",
+                          {
+                            key: key,
+                            staticClass:
+                              "flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer",
+                            class: {
+                              "text-white bg-teal-500":
+                                value.id === _vm.activeSubjectId
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.activeSubjectId = value.id
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(value.title))]
+                        )
+                      }),
+                      0
+                    )
+                  ]
+                )
+              }),
+              0
+            ),
             _vm._v(" "),
             _c("div", { staticClass: "flex justify-center" }, [
               _c(
@@ -10203,16 +10218,16 @@ var render = function() {
           _c(
             "div",
             { staticClass: "w-full" },
-            _vm._l(_vm.subjects, function(value, key) {
+            _vm._l(_vm.subjectList, function(value, key) {
               return _c("div", { key: key, staticClass: "mb-5" }, [
                 _c("h3", { staticClass: "text-gray-400 mb-2" }, [
-                  _vm._v(_vm._s(value.name))
+                  _vm._v(_vm._s(value.title))
                 ]),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "flex flex-wrap -mx-3" },
-                  _vm._l(value.childrens, function(v, k) {
+                  _vm._l(value.childrenList, function(v, k) {
                     return _c("div", { key: k, staticClass: "w-1/4 px-3" }, [
                       _c(
                         "a",
@@ -10221,7 +10236,7 @@ var render = function() {
                             "bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base",
                           attrs: { href: "#" }
                         },
-                        [_vm._v(_vm._s(v.name))]
+                        [_vm._v(_vm._s(v.title))]
                       )
                     ])
                   }),
@@ -10237,24 +10252,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-sm" }, [
-      _c("a", { attrs: { href: "/" } }, [_vm._v("首页")]),
-      _vm._v(" "),
-      _c("span", [_vm._v("/")]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "/subjects" } }, [_vm._v("会计")]),
-      _vm._v(" "),
-      _c("span", [_vm._v("/")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "text-gray-400" }, [_vm._v("初级经济师")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -27156,22 +27154,31 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************!*\
   !*** ./resources/js/api/subject.js ***!
   \*************************************/
-/*! exports provided: getSubjectsTree */
+/*! exports provided: getSubjectsTree, getSubjectsShow */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjectsTree", function() { return getSubjectsTree; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjectsShow", function() { return getSubjectsShow; });
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
+
 
 var api = {
-  subjectsTree: '/subjects/tree'
+  subjectsTree: '/subjects/tree',
+  subjectsShow: '/subjects/%s'
 };
-var getSubjectsTree = function getSubjectsTree(params) {
+var getSubjectsTree = function getSubjectsTree() {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: api.subjectsTree,
-    method: 'get',
-    data: params
+    method: 'get'
+  });
+};
+var getSubjectsShow = function getSubjectsShow(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.subjectsShow, id),
+    method: 'get'
   });
 };
 
@@ -28451,7 +28458,7 @@ __webpack_require__.r(__webpack_exports__);
     name: 'subjects',
     component: _views_subjects_Index__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
-    path: '/subjects/:sid/:id?',
+    path: '/subjects/:sid',
     name: 'subjects.show',
     component: _views_subjects_Show__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
@@ -28760,6 +28767,110 @@ service.interceptors.response.use(function (response) {
   return Promise.reject(response);
 });
 /* harmony default export */ __webpack_exports__["default"] = (service);
+
+/***/ }),
+
+/***/ "./resources/js/utils/util.js":
+/*!************************************!*\
+  !*** ./resources/js/utils/util.js ***!
+  \************************************/
+/*! exports provided: str_repeat, sprintf */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "str_repeat", function() { return str_repeat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sprintf", function() { return sprintf; });
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function str_repeat(i, m) {
+  for (var o = []; m > 0; o[--m] = i) {
+    ;
+  }
+
+  return o.join('');
+}
+function sprintf() {
+  var i = 0,
+      a,
+      f = arguments[i++],
+      o = [],
+      m,
+      p,
+      c,
+      x,
+      s = '';
+
+  while (f) {
+    if (m = /^[^\x25]+/.exec(f)) {
+      o.push(m[0]);
+    } else if (m = /^\x25{2}/.exec(f)) {
+      o.push('%');
+    } else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
+      if ((a = arguments[m[1] || i++]) == null || a == undefined) {
+        throw 'Too few arguments.';
+      }
+
+      if (/[^s]/.test(m[7]) && typeof a != 'number') {
+        throw 'Expecting number but found ' + _typeof(a);
+      }
+
+      switch (m[7]) {
+        case 'b':
+          a = a.toString(2);
+          break;
+
+        case 'c':
+          a = String.fromCharCode(a);
+          break;
+
+        case 'd':
+          a = parseInt(a);
+          break;
+
+        case 'e':
+          a = m[6] ? a.toExponential(m[6]) : a.toExponential();
+          break;
+
+        case 'f':
+          a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a);
+          break;
+
+        case 'o':
+          a = a.toString(8);
+          break;
+
+        case 's':
+          a = (a = String(a)) && m[6] ? a.substring(0, m[6]) : a;
+          break;
+
+        case 'u':
+          a = Math.abs(a);
+          break;
+
+        case 'x':
+          a = a.toString(16);
+          break;
+
+        case 'X':
+          a = a.toString(16).toUpperCase();
+          break;
+      }
+
+      a = /[def]/.test(m[7]) && m[2] && a >= 0 ? '+' + a : a;
+      c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
+      x = m[5] - String(a).length - s.length;
+      p = m[5] ? str_repeat(c, x) : '';
+      o.push(s + (m[4] ? a + p : p + a));
+    } else {
+      throw 'Huh ?!';
+    }
+
+    f = f.substring(m[0].length);
+  }
+
+  return o.join('');
+}
 
 /***/ }),
 

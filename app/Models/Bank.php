@@ -42,8 +42,18 @@ class Bank extends Model
         return $this->hasMany(Bank::class, 'parent_id');
     }
 
+    public function groups()
+    {
+        return $this->hasMany(BankGroup::class);
+    }
+
     public function items()
     {
         return $this->hasMany(BankItem::class);
+    }
+
+    public function getIsGroupAttribute()
+    {
+        return $this->groups->total() > 0;
     }
 }

@@ -25,7 +25,7 @@ class SubjectService
                     return $subject;
                 }
                 // 否则递归调用本方法，将返回值放入 children 字段中
-                $subject->children = $this->getSubjectTree($subject->id, $allSubjects);
+                $subject->childrenList = $this->getSubjectTree($subject->id, $allSubjects);
 
                 return $subject;
             });

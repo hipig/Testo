@@ -4,9 +4,9 @@
       <div class="text-sm">
         <a href="/">首页</a>
         <span>/</span>
-        <a href="/subjects">会计</a>
+        <a href="/subjects">{{ subject.parent_title }}</a>
         <span>/</span>
-        <span class="text-gray-400">初级经济师</span>
+        <span class="text-gray-400">{{ subject.title }}</span>
       </div>
       <div class="mt-2 shadow rounded-lg w-full bg-white overflow-hidden w-full block relative px-5">
         <div class="my-5 flex justify-between items-center">
@@ -17,7 +17,7 @@
                 <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
               </svg>
-              <h3 class="text-xl">初级经济师</h3>
+              <h3 class="text-xl">{{ subject.title }}</h3>
             </div>
             <button type="button" class="border border-teal-200 text-teal-500 rounded-full px-2 flex items-center text-xs focus:outline-none" @click="switchSubject">
               <span class="mr-1">切换考试</span>
@@ -41,10 +41,12 @@
             </a>
           </div>
         </div>
-        <div class="flex">
-          <div class="mr-5 text-gray-400 h-8 flex items-center">专业科目</div>
-          <div class="flex-1 flex flex-wrap">
-            <a href="#" v-for="(value, key) in subSubjects.special" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full" :class="{'text-white bg-teal-500': key === 0}">{{ value.name }}</a>
+        <div class="flex flex-col">
+          <div class="flex" v-for="(item, index) in subject.children_group" :index="index">
+            <div class="mr-5 text-gray-400 h-8 flex items-center">{{ index == 1 ? '专业科目': '公共科目' }}</div>
+            <div class="flex-1 flex flex-wrap">
+              <div v-for="(value, key) in item" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer" :class="{'text-white bg-teal-500': value.id === activeSubjectId}" @click="activeSubjectId = value.id">{{ value.title }}</div>
+            </div>
           </div>
         </div>
         <div class="flex justify-center">
@@ -62,11 +64,11 @@
     </div>
     <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
       <div class="w-full">
-        <div class="mb-5" v-for="(value, key) in subjects" :key="key">
-          <h3 class="text-gray-400 mb-2">{{ value.name }}</h3>
+        <div class="mb-5" v-for="(value, key) in subjectList" :key="key">
+          <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>
           <div class="flex flex-wrap -mx-3">
-            <div class="w-1/4 px-3" v-for="(v, k) in value.childrens" :key="k">
-              <a href="#" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.name }}</a>
+            <div class="w-1/4 px-3" v-for="(v, k) in value.childrenList" :key="k">
+              <a href="#" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</a>
             </div>
           </div>
         </div>
@@ -80,6 +82,7 @@
   import ExamList from "./tabs/ExamList"
   import DailyList from "./tabs/DailyList"
   import TModal from "@/components/common/modal/Modal"
+  import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
 
   export default {
     name: "subjects.show",
@@ -91,92 +94,10 @@
     },
     data () {
       return {
-        subjects: [
-          {
-            id: 1,
-            name: '会计',
-            childrens: [
-              {
-                id: 2,
-                name: '初级经济师'
-              },
-              {
-                id: 3,
-                name: '中级经济师'
-              },
-              {
-                id: 4,
-                name: '初级会计师'
-              },
-              {
-                id: 5,
-                name: '中级会计师'
-              },
-              {
-                id: 6,
-                name: '初级统计师'
-              },
-              {
-                id: 7,
-                name: '中级统计师'
-              },
-              {
-                id: 8,
-                name: '注册会计师CPA'
-              }
-            ]
-          },
-          {
-            id: 9,
-            name: '金融',
-            childrens: [
-              {
-                id: 10,
-                name: '银行'
-              },
-              {
-                id: 11,
-                name: '证券'
-              },
-              {
-                id: 12,
-                name: '期货'
-              },
-              {
-                id: 13,
-                name: '基金'
-              }
-            ]
-          }
-        ],
-        subSubjects: {
-          special: [
-            {
-              id: 100,
-              name: '初级经济基础知识',
-            },
-            {
-              id: 101,
-              name: '初级财政税收',
-            },
-            {
-              id: 102,
-              name: '初级金融',
-            },
-            {
-              id: 103,
-              name: '初级人力资源',
-            },
-            {
-              id: 104,
-              name: '初级工商管理',
-            },
-            {
-              id: 105,
-              name: '初级建筑经济',
-            },
-          ]
-        },
+        sid: this.$route.params.sid,
+        subject: {},
+        subjectList: [],
+        activeSubjectId: 0,
         tabs: [
           {
             value: '章节练习',
@@ -402,11 +323,27 @@
             ]
           }
         ],
-
         switchSubjectVisible: false
       }
     },
+    mounted() {
+      this.getSubjectList()
+      this.getSubject()
+    },
     methods: {
+      getSubjectList() {
+        getSubjectsTree()
+          .then((res) => {
+            this.subjectList = res
+          })
+      },
+      getSubject() {
+        getSubjectsShow(this.sid)
+          .then((res) => {
+            this.subject = res
+            this.activeSubjectId = res.children_group[0][0].id || 0
+          })
+      },
       switchTab(name) {
         this.activeTab = name
       },
