@@ -12,6 +12,6 @@ class BankGroupSeeder extends Seeder
      */
     public function run()
     {
-        factory(BankGroup::class, 20)->create();
+        factory(BankGroup::class, 50)->create();
     }
 }

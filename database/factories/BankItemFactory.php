@@ -6,7 +6,7 @@ use App\Models\BankItem;
 use Faker\Generator as Faker;
 
 $factory->define(BankItem::class, function (Faker $faker) {
-    $banks = \App\Models\Bank::query()->get();
+    $banks = \App\Models\Bank::query()->whereNotNull('parent_id')->get();
 
     $bankId = $faker->randomElement($banks->pluck('id')->toArray());
     $type = $banks->find($bankId)->type;
@@ -22,12 +22,16 @@ $factory->define(BankItem::class, function (Faker $faker) {
         $questionQuery->where('type', $group->item_type ?? 1);
     }
 
-    $questionIds = $questionQuery->pluck('id')->toArray();
+    $questions = $questionQuery->get();
+    $questionIds = $questions->pluck('id')->toArray();
+    $questionId = $faker->randomElement($questionIds);
+    $type = $questions->find($questionId)->type;
 
     return [
         'bank_id' => $bankId,
         'group_id' => $groupId,
-        'question_id' => $faker->randomElement($questionIds),
+        'question_id' => $questionId,
+        'type' => $type,
         'score' => $score
     ];
 });

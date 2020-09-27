@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class BankGroup extends Model
 {
     protected $fillable = [
@@ -22,6 +20,6 @@ class BankGroup extends Model
 
     public function items()
     {
-        return $this->hasMany(BankItem::class);
+        return $this->hasMany(BankItem::class, 'group_id');
     }
 }

@@ -16,8 +16,9 @@ class CreateBankItemsTable extends Migration
         Schema::create('bank_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bank_id')->comment('题库ID');
-            $table->unsignedBigInteger('question_id')->comment('题目ID');
             $table->unsignedBigInteger('group_id')->nullable()->comment('题组ID');
+            $table->unsignedBigInteger('question_id')->comment('题目ID');
+            $table->unsignedTinyInteger('type')->default(1)->comment('题目类型');
             $table->unsignedInteger('score')->default(0)->comment('分数');
             $table->boolean('status')->default(true)->comment('状态');
             $table->unsignedInteger('index')->default(99)->comment('排序');

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Question extends Model
 {
     const SINGLE_SELECT = 1;

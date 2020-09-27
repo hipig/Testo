@@ -18,11 +18,11 @@
           <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num||0, v.total_count]" second  @btnClick="handleLearn"/>
         </chapter-item>
       </div>
-      <div class="flex items-center justify-center text-gray-400 py-20 text-base" v-else>还没有数据哦~</div>
+      <empty-data :show="isLoading && list.length === 0"/>
     </div>
     <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
       <div class="w-full -mb-5">
-        <filter-item v-for="(item, index) in formatterFilterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @change="optionChange"/>
+        <filter-item v-for="(item, index) in filterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @on-change="optionChange"/>
       </div>
       <div slot="footer">
         <div class="flex items-center justify-end">
@@ -38,13 +38,17 @@
   import ChapterItem from "@/components/chapters/ChapterItem"
   import FilterItem from "@/components/chapters/FilterItem"
   import TModal from "@/components/common/modal/Modal"
-  import { getChapterTests } from "@/api/bank"
+  import EmptyData from "@/components/common/EmptyData"
+  import QuestionType from "@/mixins/QuestionType"
+  import { getChapterTests, geCountTypeTotal } from "@/api/bank"
+  import { storeTestRecords } from "@/api/learnRecord"
 
   export default {
     name: "ChapterList",
     components: {
       ChapterItem,
       FilterItem,
+      EmptyData,
       TModal
     },
     props: {
@@ -53,13 +57,14 @@
         default: 0,
       }
     },
+    mixins: [QuestionType],
     data () {
       return {
         list: [],
         filterOptions: [
           {
             title: '类型',
-            name: 'category',
+            name: 'range',
             options: [
               {
                 value: '全部',
@@ -84,27 +89,27 @@
             name: 'type',
             options: [
               {
-                value: '全部',
+                value: '全部（%s）',
                 key: 0
               },
               {
-                value: '单选题',
+                value: '单选题（%s）',
                 key: 1
               },
               {
-                value: '多选题',
+                value: '多选题（%s）',
                 key: 2
               },
               {
-                value: '判断题',
+                value: '判断题（%s）',
                 key: 3
               },
               {
-                value: '填空题',
+                value: '填空题（%s）',
                 key: 4
               },
               {
-                value: '问答题',
+                value: '问答题（%s）',
                 key: 5
               }
             ]
@@ -141,59 +146,78 @@
           }
         ],
         filterValue: {
-          category: 'all',
-          type: 0,
-          number: 5
+          'range': 'all',
+          'type': 0,
+          'number': 5
         },
-        currentChapter: '',
-        filterVisible: false
+        typeCount: [],
+        activeBankId: '',
+        filterVisible: false,
+        isLoading: false
       }
     },
     created() {
       this.getChapterTestList()
     },
-    computed: {
-      formatterFilterOptions() {
-        let filterOptions = this.filterOptions
-        let count = [59, 37, 21, 0, 0, 1]
-        filterOptions.forEach(item => {
-          if (item.name === 'type') {
-            item.options.map((v, k) => {
-              v.value = v.value + "（" + (count[k]|| 0) + "）"
-              return v
-            })
-          }
-        })
-
-        return filterOptions
-      }
-    },
     methods: {
       getChapterTestList() {
         getChapterTests(this.subjectId)
           .then((res) => {
+            this.isLoading = true
             this.list = res
           })
       },
-      handleLearn(name) {
-        this.currentChapter = name
+      getTypeCount() {
+        geCountTypeTotal(this.activeBankId, {type: this.filterValue.range})
+          .then((res) => {
+            this.typeCount = res
+            let filterOptions = this.filterOptions
+            filterOptions.forEach(item => {
+              if (item.name === 'type') {
+                item.options.map((v, k) => {
+                  let type = '全部'
+                  if (v.key !== 0) {
+                    type = this.questionTypes[v.key].name
+                  }
+                  v.value = type + '（' + res[v.key] + '）'
+                  return v
+                })
+              }
+            })
+            this.filterOptions = filterOptions
+          })
+      },
+      storeTestRecords(type) {
+         let params = this.filterValue
+         params.bank_id = this.activeBankId
+
+         storeTestRecords(params)
+           .then((res) => {
+             let name = type === 'test' ? 'models.test' : 'models.exercise'
+             this.$router.push({name: name, params: {id: res.id}})
+           })
+      },
+      handleLearn(key) {
+        this.activeBankId = key
         this.filterVisible = true
+        this.getTypeCount()
       },
       optionChange(key, name) {
         this.filterValue[name] = key
+        if (name === 'range') this.getTypeCount()
       },
       handleExercise() {
         console.log('练习模式', this.filterValue)
-        this.$router.push({name: 'models.exercise', params: {id: 1}})
+        this.storeTestRecords('exercise')
       },
       handleExam() {
         console.log('考试模式', this.filterValue)
-        this.$router.push({name: 'models.test', params: {id: 1}})
+        this.storeTestRecords('test')
       },
       resetOption() {
         this.filterVisible = false
         this.filterValue = {
-          category: 'all',
+          range: 'all',
           type: 0,
           number: 5
         }
@@ -201,7 +225,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

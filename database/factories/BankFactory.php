@@ -14,9 +14,9 @@ $factory->define(Bank::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'subject_id' => $faker->randomElement($subjectIds),
-        'parent_id' => $type === Bank::CHAPTER_STUDY ? $faker->randomElement($bankIds) : null,
+        'parent_id' => $type === Bank::CHAPTER_TEST ? $faker->randomElement($bankIds) : null,
         'type' => $type,
-        'time_limit' => $type === Bank::CHAPTER_STUDY ? 0 : $faker->randomElement([120, 180]),
-        'total_score' => $type === Bank::CHAPTER_STUDY ? 0 : $faker->randomElement([100, 150]),
+        'time_limit' => $type === Bank::CHAPTER_TEST ? 0 : $faker->randomElement([120, 180]),
+        'total_score' => $type === Bank::CHAPTER_TEST ? 0 : $faker->randomElement([100, 150]),
     ];
 });

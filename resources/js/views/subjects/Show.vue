@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="mt-5">
-        <chapter-list :subject-id="ssid" v-if="activeTab == 1"></chapter-list>
+        <chapter-list :subject-id="ssid" v-if="activeTab == 1 && ssid"></chapter-list>
         <exam-list :subject-id="ssid" v-if="activeTab == 2"></exam-list>
         <exam-list :subject-id="ssid" type="old" v-if="activeTab == 3"></exam-list>
         <daily-list :subject-id="ssid" v-if="activeTab == 4"></daily-list>
@@ -95,7 +95,7 @@
     data () {
       return {
         sid: this.$route.params.sid,
-        ssid: this.$route.params.ssid || res.children_group[0][0].id || 0,
+        ssid: 0,
         subject: {},
         subjectList: [],
         tabs: {
@@ -127,6 +127,7 @@
         getSubjectsShow(this.sid)
           .then((res) => {
             this.subject = res
+            this.ssid = this.$route.params.ssid || res.children_group[0][0].id
           })
       },
       switchTab(name) {

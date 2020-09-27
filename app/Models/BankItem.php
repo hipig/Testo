@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class BankItem extends Model
 {
     protected $fillable = [
-        'bank_id', 'group_id', 'score', 'status', 'index'
+        'bank_id', 'group_id', 'question_id',
+        'type', 'score', 'status', 'index'
     ];
 
     protected $casts = [
@@ -25,7 +24,7 @@ class BankItem extends Model
 
     public function group()
     {
-        return $this->belongsTo(BankGroup::class);
+        return $this->belongsTo(BankGroup::class, 'group_id');
     }
 
     public function question()

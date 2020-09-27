@@ -26,6 +26,8 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::get('subjects/{subject}/old-exams', 'BanksController@oldExams')->name('subjects.oldExams');
     Route::get('subjects/{subject}/daily-tests', 'BanksController@dailyTests')->name('subjects.dailyTests');
 
+    Route::get('banks/{bank}/count-type-total', 'BanksController@getTypeCount')->name('banks.countTypeTotal');
+
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
 
@@ -37,7 +39,7 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
             Route::post('users', 'UsersController@store')->name('users.store');
         });
     // 用户登录
-    Route::post('authorizations', 'AuthorizationsController@store')->name('api.authorizations.store');
+    Route::post('authorizations', 'AuthorizationsController@store')->name('authorizations.store');
     // 刷新token
     Route::put('authorizations/current', 'AuthorizationsController@update')->name('authorizations.update');
     // 删除token
@@ -46,8 +48,9 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     // 登录后可以访问的接口
     Route::middleware('auth:api')->group(function() {
         // 当前登录用户信息
-        Route::get('user', 'UsersController@me')
-            ->name('user.show');
+        Route::get('user', 'UsersController@me')->name('user.show');
+        // 生成练习记录
+        Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.testStore');
     });
 
 

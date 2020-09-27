@@ -1,5 +1,5 @@
 <template>
-  <div class="relative inline-block" v-clickoutside="handleClose">
+  <div class="relative inline-block z-50" v-clickoutside="handleClose">
     <div @click="show = !show">
       <slot></slot>
     </div>

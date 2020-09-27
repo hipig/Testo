@@ -14,7 +14,9 @@
         <template v-if="isLogin">
           <dropdown>
             <div class="flex items-center cursor-pointer">
-              <img src="https://secure.gravatar.com/avatar/2c13c855c7064d2982a0093797d8aebd" class="w-8 h-8 rounded-full border border-gray-100" alt="">
+              <svg class="w-6 h-6 fill-current text-gray-500" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
+              </svg>
               <span class="ml-1 leading-none">{{ userInfo.name }}</span>
             </div>
             <div slot="dropdown-menu" class="w-48 rounded-lg shadow-lg bg-white border-t border-gray-100">

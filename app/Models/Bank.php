@@ -4,16 +4,16 @@ namespace App\Models;
 
 class Bank extends Model
 {
-    const CHAPTER_STUDY = 1;
+    const CHAPTER_TEST = 1;
     const MOCK_EXAM = 2;
     const OLD_EXAM = 3;
-    const DAILY_STUDY = 4;
+    const DAILY_TEST = 4;
 
     public static $typeMap = [
-        self::CHAPTER_STUDY => '章节练习',
+        self::CHAPTER_TEST => '章节练习',
         self::MOCK_EXAM => '模拟考试',
         self::OLD_EXAM => '历年真题',
-        self::DAILY_STUDY => '每日一练'
+        self::DAILY_TEST => '每日一练'
     ];
 
     protected $fillable = [
@@ -25,6 +25,10 @@ class Bank extends Model
     protected $casts = [
         'is_free' => 'boolean',
         'status' => 'boolean'
+    ];
+
+    protected $with = [
+        'children'
     ];
 
     public function subject()
@@ -52,8 +56,28 @@ class Bank extends Model
         return $this->hasMany(BankItem::class);
     }
 
+    public function childrenItems()
+    {
+        return $this->hasManyThrough(BankItem::class, Bank::class, 'parent_id', 'bank_id');
+    }
+
+    public function records()
+    {
+        return $this->hasMany(LearnRecord::class);
+    }
+
+    public function recordItems()
+    {
+        return $this->hasManyThrough(LearnRecordItem::class, LearnRecord::class, 'bank_id', 'record_id');
+    }
+
+    public function getHasChildrenAttribute()
+    {
+        return $this->children->isNotEmpty();
+    }
+
     public function getIsGroupAttribute()
     {
-        return $this->groups->total() > 0;
+        return $this->group->isNotEmpty();
     }
 }

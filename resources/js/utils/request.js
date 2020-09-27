@@ -23,11 +23,11 @@ service.interceptors.response.use((response) => {
   const response = error.response
   switch (response.status) {
     case 401:
-      const token = window.localStorage.getItem('token')
+      const token = store.getters['user/token']
       if (token) {
         store.dispatch('user/Clear')
       }
-      window.location.reload()
+      message.error('尚未登录，请先登录后再开始答题！')
       break;
     case 403:
       message.error('您的权限不足， 拒绝访问！')
