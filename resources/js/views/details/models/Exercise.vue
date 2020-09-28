@@ -141,12 +141,16 @@
         if (this.activeIndex < this.questions.length-1)  this.activeIndex ++
       },
       handleAnswer(answer, isRight, index) {
-        this.answerList[index] = Object.assign({}, this.answerList[index], {
+        console.log(index)
+        this.answerList[this.activeIndex] = Object.assign({}, this.answerList[this.activeIndex], {
           answer: answer,
           is_right: isRight
         })
+
+        console.log()
+
         // 生成答题记录
-        storeRecordItems(this.answerList[index])
+        storeRecordItems(this.answerList[this.activeIndex])
 
         if (isRight) {
           !!this.autoNext && this.nextItem()

@@ -41,7 +41,7 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing :is-pause="isPause"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing @timer="getDoneTime" :is-pause="isPause"/></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
@@ -54,13 +54,28 @@
                 </div>
               </div>
               <div class="flex justify-center py-3">
-                <button type="button" class="w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none">交卷</button>
+                <button type="button" class="w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none" @click="submitModalVisible = true">交卷</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <t-modal v-model="submitModalVisible" title="结束作答" size="md" :mask-closable="false" @close="submitModalVisible = false">
+      <div class="flex flex-col">
+        <div class="text-gray-900 text-lg flex justify-center mb-5"><span v-if="undoneCount > 0">你还有 <span class="text-red-500">{{ undoneCount }}</span> 道题未作答，</span>是否确认交卷？</div>
+      </div>
+      <div slot="footer">
+        <div class="flex flex-wrap items-center px-5 -mx-5">
+          <div class="w-1/2 px-5 flex justify-center">
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">继续做题</button>
+          </div>
+          <div class="w-1/2 px-5 flex justify-center">
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none">交卷</button>
+          </div>
+        </div>
+      </div>
+    </t-modal>
     <t-modal v-model="pauseModalVisible" size="md" :show-close="false" :show-footer="false" :mask-closable="false">
       <div class="flex flex-col items-center justify-center py-10">
         <div class="cursor-pointer" @click="isPause = false">
@@ -97,7 +112,9 @@
         answerList: [],
         doneCount: 0,
         isPause: false,
-        pauseModalVisible: false
+        pauseModalVisible: false,
+        submitModalVisible: false,
+        doneTime: 0
       }
     },
     created() {
@@ -142,6 +159,9 @@
         this.doneCount = this.answerList.filter(item => {
           return item.answer.length !== 0
         }).length
+      },
+      getDoneTime(second) {
+        this.doneTime = second
       }
     }
   }

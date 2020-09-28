@@ -35,7 +35,7 @@
           <div class="bg-white px-8">
             <slot></slot>
           </div>
-          <div class="py-6 px-8 sm:flex sm:flex-row-reverse" v-if="showFooter">
+          <div class="py-6 px-8" v-if="showFooter">
             <slot name="footer"></slot>
           </div>
         </div>

@@ -27,4 +27,9 @@ class LearnRecordItem extends Model
     {
         return $this->belongsTo(Question::class, 'question_id');
     }
+
+    public function getAnswerAttribute($value)
+    {
+        return in_array(optional($this->question)->type, Question::$answerGroupType) ? json_encode($value) : $value;
+    }
 }

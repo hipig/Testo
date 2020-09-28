@@ -4068,12 +4068,14 @@ __webpack_require__.r(__webpack_exports__);
       if (this.activeIndex < this.questions.length - 1) this.activeIndex++;
     },
     handleAnswer: function handleAnswer(answer, isRight, index) {
-      this.answerList[index] = Object.assign({}, this.answerList[index], {
+      console.log(index);
+      this.answerList[this.activeIndex] = Object.assign({}, this.answerList[this.activeIndex], {
         answer: answer,
         is_right: isRight
-      }); // 生成答题记录
+      });
+      console.log(); // 生成答题记录
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["storeRecordItems"])(this.answerList[index]);
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["storeRecordItems"])(this.answerList[this.activeIndex]);
 
       if (isRight) {
         !!this.autoNext && this.nextItem();
@@ -4180,6 +4182,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4201,7 +4218,9 @@ __webpack_require__.r(__webpack_exports__);
       answerList: [],
       doneCount: 0,
       isPause: false,
-      pauseModalVisible: false
+      pauseModalVisible: false,
+      submitModalVisible: false,
+      doneTime: 0
     };
   },
   created: function created() {
@@ -4249,6 +4268,9 @@ __webpack_require__.r(__webpack_exports__);
       this.doneCount = this.answerList.filter(function (item) {
         return item.answer.length !== 0;
       }).length;
+    },
+    getDoneTime: function getDoneTime(second) {
+      this.doneTime = second;
     }
   }
 });
@@ -6706,9 +6728,7 @@ var render = function() {
                   _vm.showFooter
                     ? _c(
                         "div",
-                        {
-                          staticClass: "py-6 px-8 sm:flex sm:flex-row-reverse"
-                        },
+                        { staticClass: "py-6 px-8" },
                         [_vm._t("footer")],
                         2
                       )
@@ -9716,7 +9736,8 @@ var render = function() {
                               { staticClass: "text-teal-500 text-base ml-1" },
                               [
                                 _c("timing", {
-                                  attrs: { "is-pause": _vm.isPause }
+                                  attrs: { "is-pause": _vm.isPause },
+                                  on: { timer: _vm.getDoneTime }
                                 })
                               ],
                               1
@@ -9772,13 +9793,104 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._m(1)
+                  _c("div", { staticClass: "flex justify-center py-3" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.submitModalVisible = true
+                          }
+                        }
+                      },
+                      [_vm._v("交卷")]
+                    )
+                  ])
                 ])
               ])
             ])
           ])
         ],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "t-modal",
+        {
+          attrs: { title: "结束作答", size: "md", "mask-closable": false },
+          on: {
+            close: function($event) {
+              _vm.submitModalVisible = false
+            }
+          },
+          model: {
+            value: _vm.submitModalVisible,
+            callback: function($$v) {
+              _vm.submitModalVisible = $$v
+            },
+            expression: "submitModalVisible"
+          }
+        },
+        [
+          _c("div", { staticClass: "flex flex-col" }, [
+            _c(
+              "div",
+              { staticClass: "text-gray-900 text-lg flex justify-center mb-5" },
+              [
+                _vm.undoneCount > 0
+                  ? _c("span", [
+                      _vm._v("你还有 "),
+                      _c("span", { staticClass: "text-red-500" }, [
+                        _vm._v(_vm._s(_vm.undoneCount))
+                      ]),
+                      _vm._v(" 道题未作答，")
+                    ])
+                  : _vm._e(),
+                _vm._v("是否确认交卷？")
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { attrs: { slot: "footer" }, slot: "footer" }, [
+            _c(
+              "div",
+              { staticClass: "flex flex-wrap items-center px-5 -mx-5" },
+              [
+                _c("div", { staticClass: "w-1/2 px-5 flex justify-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.submitModalVisible = false
+                        }
+                      }
+                    },
+                    [_vm._v("继续做题")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-1/2 px-5 flex justify-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("交卷")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -9865,22 +9977,6 @@ var staticRenderFns = [
             "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
         },
         [_vm._v("考试模式")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex justify-center py-3" }, [
-      _c(
-        "button",
-        {
-          staticClass:
-            "w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
-          attrs: { type: "button" }
-        },
-        [_vm._v("交卷")]
       )
     ])
   }
@@ -30040,8 +30136,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
