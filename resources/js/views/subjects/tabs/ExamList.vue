@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <empty-data :show="isLoading && list.length === 0"/>
+    <empty-data :show="isLoaded && list.length === 0"/>
   </div>
 </template>
 
@@ -43,7 +43,7 @@
     data () {
       return {
         list: [],
-        isLoading: false
+        isLoaded: false
       }
     },
     created() {
@@ -59,7 +59,7 @@
         let request = this.type === 'mock' ? getMockExams : getOldExams
         request(this.subjectId)
           .then((res) => {
-            this.isLoading = true
+            this.isLoaded = true
             this.list = res
           })
       },

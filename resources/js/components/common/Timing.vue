@@ -8,7 +8,7 @@
   export default {
     name: "Timing",
     props: {
-      minute: {
+      second: {
         type: Number,
         default: 0
       },
@@ -35,11 +35,11 @@
     },
     computed: {
       isTiming() {
-        return this.minute === 0
+        return this.second === 0
       },
       timingText() {
         let time = this.timeLeft
-        if (!this.isTiming) time = this.minute * 60 - this.timeLeft
+        if (!this.isTiming) time = this.second - this.timeLeft
 
         let hour = this.formatTime(Math.floor(time / 3600))
         let minutes = this.formatTime(Math.floor(time % 3600 / 60))
@@ -50,8 +50,9 @@
     },
     methods: {
       intervalEvent() {
+        this.$emit('timer', this.timeLeft)
         if (!this.isPause) this.timeLeft++
-        if (!this.isTiming && this.timeLeft >= this.minute * 60) {
+        if (!this.isTiming && this.timeLeft >= this.second) {
           clearInterval(this.timer)
           this.$emit('countdownEnd')
         }

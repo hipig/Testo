@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LearnRecordTestRequest;
 use App\Http\Resources\LearnRecordResource;
+use App\Http\Resources\LearnRecordTestResource;
 use App\Models\Bank;
+use App\Models\BankItem;
 use App\Models\LearnRecord;
 use App\Models\LearnRecordItem;
 use Illuminate\Http\Request;
 
 class LearnRecordsController extends Controller
 {
+    public function testShow(Request $request, LearnRecord $record)
+    {
+        return LearnRecordTestResource::make($record);
+    }
+
     public function testStore(LearnRecordTestRequest $request)
     {
         $type = $request->type;
@@ -46,7 +53,7 @@ class LearnRecordsController extends Controller
         $ids = $idPluck->random($number >= $count ? $count : $number);
 
         $record = LearnRecord::create([
-            'user_id' => $request->user()->id,
+            'user_id' => optional($request->user())->id,
             'bank_id' => $bank->id,
             'type' => $bank->type,
             'question_ids' => $ids->toArray(),

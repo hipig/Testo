@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubjectShowResource extends JsonResource
+class LearnRecordTestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,9 @@ class SubjectShowResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'thumb' => $this->thumb,
-            'breadcrumb' => $this->ancestors,
-            'children_group' => $this->childrenGroup
+            'breadcrumb' => optional($this->bank->subject)->ancestors,
+            'bank_title' => optional($this->bank)->title,
+            'questions' => $this->test_question_items
         ];
     }
 }

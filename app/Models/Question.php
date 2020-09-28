@@ -18,6 +18,18 @@ class Question extends Model
         self::SHORT_ANSWER => '问答题'
     ];
 
+    public static $answerGroupType = [
+        self::MULTI_SELECT,
+        self::FILL_BLANK
+    ];
+
+    public static $checkRightType = [
+        self::SINGLE_SELECT,
+        self::MULTI_SELECT,
+        self::JUDGE_SELECT,
+        self::FILL_BLANK
+    ];
+
     protected $fillable = [
         'title', 'type', 'option', 'answer',
         'material', 'parse', 'status', 'index'
@@ -26,4 +38,9 @@ class Question extends Model
     protected $casts = [
         'option' => 'array'
     ];
+
+    public function getAnswerAttribute($value)
+    {
+        return in_array($this->type, self::$answerGroupType) ? json_decode($value) : $value;
+    }
 }

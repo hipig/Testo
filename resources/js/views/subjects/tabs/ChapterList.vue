@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap" ref="chapter-list">
     <div class="w-40 max-h-screen mr-5">
       <div class="bg-white shadow rounded-lg pt-5 pl-2 pr-2">
         <div class="text-gray-500 flex flex-col" v-if="list.length > 0">
-          <div v-for="(value, key) in list" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="{'text-teal-500 border-teal-500': key === 0, 'border-transparent': key !== 0}">{{ value.title }}</div>
+          <div v-for="(value, key) in list" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="[key === activeIndex ? 'text-teal-500 border-teal-500' : 'border-transparent']" @click="toIndex(key)">{{ value.title }}</div>
         </div>
         <div class="flex items-center justify-center text-gray-400 pb-4" v-else>还没有数据哦~</div>
       </div>
@@ -14,11 +14,11 @@
         <div class="w-1/3">做题进度</div>
       </div>
       <div class="flex flex-wrap" v-if="list.length > 0">
-        <chapter-item v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num||0, value.total_count]" :disabled="value.children.length === 0" @btnClick="handleLearn">
+        <chapter-item :id="'chapter-'+key" v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num||0, value.total_count]" :disabled="value.children.length === 0" @btnClick="handleLearn">
           <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num||0, v.total_count]" second  @btnClick="handleLearn"/>
         </chapter-item>
       </div>
-      <empty-data :show="isLoading && list.length === 0"/>
+      <empty-data :show="isLoaded && list.length === 0"/>
     </div>
     <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
       <div class="w-full -mb-5">
@@ -89,27 +89,27 @@
             name: 'type',
             options: [
               {
-                value: '全部（%s）',
+                value: '全部',
                 key: 0
               },
               {
-                value: '单选题（%s）',
+                value: '单选题（0）',
                 key: 1
               },
               {
-                value: '多选题（%s）',
+                value: '多选题（0）',
                 key: 2
               },
               {
-                value: '判断题（%s）',
+                value: '判断题（0）',
                 key: 3
               },
               {
-                value: '填空题（%s）',
+                value: '填空题（0）',
                 key: 4
               },
               {
-                value: '问答题（%s）',
+                value: '问答题（0）',
                 key: 5
               }
             ]
@@ -153,17 +153,28 @@
         typeCount: [],
         activeBankId: '',
         filterVisible: false,
-        isLoading: false
+        isLoaded: false,
+        activeIndex: 0,
+        scrollStatus: true
       }
     },
     created() {
       this.getChapterTestList()
     },
+    mounted() {
+      let timeId = null
+      this.$refs['chapter-list'].addEventListener('scroll', () => {
+        clearTimeout(timeId)
+        timeId = setTimeout(() => {
+          this.scrollToTop()
+        }, 200)
+      } , true)
+    },
     methods: {
       getChapterTestList() {
         getChapterTests(this.subjectId)
           .then((res) => {
-            this.isLoading = true
+            this.isLoaded = true
             this.list = res
           })
       },
@@ -196,6 +207,32 @@
              let name = type === 'test' ? 'models.test' : 'models.exercise'
              this.$router.push({name: name, params: {id: res.id}})
            })
+      },
+      toIndex(index) {
+        this.activeIndex = index
+        this.$nextTick(() => {
+          document.getElementById(`chapter-${index}`).scrollIntoView({ behavior: "smooth" })
+        })
+        this.scrollStatus = false
+
+        let timeId = null
+        clearTimeout(timeId)
+        timeId = setTimeout(() => {
+          this.scrollStatus=true
+        },200)
+      },
+      scrollToTop() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+
+        if (this.scrollStatus) {
+          this.list.map((v,i) => {
+            var offsetTop = document.getElementById(`chapter-${i}`).offsetTop
+            var scrollHeight = document.getElementById(`chapter-${i}`).scrollHeight
+            if (scrollTop >= offsetTop && scrollTop<=(offsetTop+scrollHeight)) {
+              this.activeIndex = i
+            }
+          })
+        }
       },
       handleLearn(key) {
         this.activeBankId = key

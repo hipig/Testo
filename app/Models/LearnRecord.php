@@ -39,4 +39,13 @@ class LearnRecord extends Model
     {
         return $this->hasMany(LearnRecordItem::class, 'record_id');
     }
+
+    public function getTestQuestionItemsAttribute()
+    {
+        return BankItem::query()
+            ->whereIn('id', $this->question_ids)
+            ->orderBy('index')
+            ->orderBy('type')
+            ->get();
+    }
 }

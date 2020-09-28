@@ -48,12 +48,12 @@ class Bank extends Model
 
     public function groups()
     {
-        return $this->hasMany(BankGroup::class);
+        return $this->hasMany(BankGroup::class, 'group_id');
     }
 
     public function items()
     {
-        return $this->hasMany(BankItem::class);
+        return $this->hasMany(BankItem::class, 'bank_id');
     }
 
     public function childrenItems()
@@ -63,7 +63,7 @@ class Bank extends Model
 
     public function records()
     {
-        return $this->hasMany(LearnRecord::class);
+        return $this->hasMany(LearnRecord::class, 'bank_id');
     }
 
     public function recordItems()

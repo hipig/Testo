@@ -1,13 +1,7 @@
 <template>
   <div class="py-5 px-4">
     <div class="max-w-6xl mx-auto">
-      <div class="text-sm">
-        <a href="/">首页</a>
-        <span>/</span>
-        <a href="/subjects">{{ subject.parent_title }}</a>
-        <span>/</span>
-        <span class="text-gray-400">{{ subject.title }}</span>
-      </div>
+      <breadcrumb :list="subject.breadcrumb"/>
       <div class="mt-2 shadow rounded-lg w-full bg-white overflow-hidden w-full block relative px-5">
         <div class="my-5 flex justify-between items-center">
           <div class="flex items-center">
@@ -81,6 +75,7 @@
   import ChapterList from "./tabs/ChapterList"
   import ExamList from "./tabs/ExamList"
   import DailyList from "./tabs/DailyList"
+  import Breadcrumb from "@/components/common/Breadcrumb"
   import TModal from "@/components/common/modal/Modal"
   import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
 
@@ -90,6 +85,7 @@
       ChapterList,
       ExamList,
       DailyList,
+      Breadcrumb,
       TModal
     },
     data () {

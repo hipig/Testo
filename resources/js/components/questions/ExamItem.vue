@@ -10,20 +10,20 @@
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
       <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
+        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="radio" :value="item.key" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
-            <span class="ml-3">{{ item.value }}</span>
+            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
+            <span class="ml-3">{{ item }}</span>
           </label>
         </div>
       </div>
     </template>
     <template v-if="question.type === 2">
       <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
+        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="checkbox" :value="item.key" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
-            <span class="ml-3">{{ item.value }}</span>
+            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
+            <span class="ml-3">{{ item }}</span>
           </label>
         </div>
       </div>
@@ -133,32 +133,6 @@
       // 提交答案
       submit() {
         this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
-      },
-      // 校验答案
-      checkAnswer() {
-        let questionType = this.question.type
-        let answer = this.currentAnswer
-        switch (questionType) {
-          case 2:
-            if (answer.length === 0) {
-              alert('至少选择一个选项')
-              return false
-            }
-            break
-          case 4:
-            if (answer.length === 0) {
-              alert('内容不能为空')
-              return false
-            }
-            break
-          case 5:
-            if (answer.length === 0) {
-              alert('内容不能为空')
-              return false
-            }
-            break
-        }
-        return true
       }
     }
   }

@@ -18,7 +18,8 @@
         "mews/captcha": "^3.2",
         "overtrue/easy-sms": "^1.1",
         "overtrue/laravel-lang": "^4.0",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

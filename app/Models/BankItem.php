@@ -19,7 +19,7 @@ class BankItem extends Model
 
     public function bank()
     {
-        return $this->belongsTo(Bank::class);
+        return $this->belongsTo(Bank::class, 'bank_id');
     }
 
     public function group()
@@ -29,6 +29,6 @@ class BankItem extends Model
 
     public function question()
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Question::class, 'question_id');
     }
 }

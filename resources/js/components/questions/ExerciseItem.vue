@@ -5,25 +5,25 @@
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
         <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool></question-tool>
+      <question-tool/>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
       <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
+        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center" :class="[showAnswer ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']">
-            <input type="radio" :value="item.key" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer" @change="submit">
-            <span class="ml-3">{{ item.value }}</span>
+            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer" @change="submit">
+            <span class="ml-3">{{ item }}</span>
           </label>
         </div>
       </div>
     </template>
     <template v-if="question.type === 2">
       <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.options" :key="index">
+        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center" :class="[showAnswer ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']">
-            <input type="checkbox" :value="item.key" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer">
-            <span class="ml-3">{{ item.value }}</span>
+            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer">
+            <span class="ml-3">{{ item }}</span>
           </label>
         </div>
       </div>
@@ -171,9 +171,6 @@
         if (!this.checkAnswer()) return false
 
         this.isAnswered = true
-
-        // 添加答题记录
-
         this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
       },
       // 校验答案
@@ -183,19 +180,19 @@
         switch (questionType) {
           case 2:
             if (answer.length === 0) {
-              alert('至少选择一个选项')
+              this.$Message.error('至少选择一个选项。')
               return false
             }
             break
           case 4:
             if (answer.length === 0) {
-              alert('内容不能为空')
+              this.$Message.error('内容不能为空。')
               return false
             }
             break
           case 5:
             if (answer.length === 0) {
-              alert('内容不能为空')
+              this.$Message.error('内容不能为空。')
               return false
             }
             break

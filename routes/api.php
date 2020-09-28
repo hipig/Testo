@@ -25,8 +25,10 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::get('subjects/{subject}/mock-exams', 'BanksController@mockExams')->name('subjects.mockExams');
     Route::get('subjects/{subject}/old-exams', 'BanksController@oldExams')->name('subjects.oldExams');
     Route::get('subjects/{subject}/daily-tests', 'BanksController@dailyTests')->name('subjects.dailyTests');
-
+    // 获取题型总计
     Route::get('banks/{bank}/count-type-total', 'BanksController@getTypeCount')->name('banks.countTypeTotal');
+    // 获取练习记录详情
+    Route::get('records/test/{record}', 'LearnRecordsController@testShow')->name('learnRecords.show.test');
 
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
@@ -46,11 +48,13 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::delete('authorizations/current', 'AuthorizationsController@destroy')->name('authorizations.destroy');
 
     // 登录后可以访问的接口
-    Route::middleware('auth:api')->group(function() {
+    Route::middleware('refresh.token')->group(function() {
         // 当前登录用户信息
         Route::get('user', 'UsersController@me')->name('user.show');
         // 生成练习记录
-        Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.testStore');
+        Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.store.test');
+        // 生成答题记录
+        Route::post('record-items', 'LearnRecordItemsController@store')->name('learnRecordItems.store');
     });
 
 

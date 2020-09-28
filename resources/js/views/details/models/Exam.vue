@@ -62,7 +62,7 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing :minute="bank.minutes" :is-pause="isPause"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing :second="bank.minutes * 60" :is-pause="isPause"/></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">

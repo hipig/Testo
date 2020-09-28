@@ -22,7 +22,7 @@
         </div>
       </div>
     </template>
-    <empty-data :show="isLoading && list.length === 0"/>
+    <empty-data :show="isLoaded && list.length === 0"/>
   </div>
 </template>
 
@@ -48,7 +48,7 @@
       return {
         list: [],
         dayjs: dayjs,
-        isLoading: false
+        isLoaded: false
       }
     },
     created() {
@@ -58,7 +58,7 @@
       getDailyTestList() {
         getDailyTests(this.subjectId)
           .then((res) => {
-            this.isLoading = true
+            this.isLoaded = true
             this.list = res
           })
       },

@@ -9,12 +9,12 @@ $factory->define(BankItem::class, function (Faker $faker) {
     $banks = \App\Models\Bank::query()->whereNotNull('parent_id')->get();
 
     $bankId = $faker->randomElement($banks->pluck('id')->toArray());
-    $type = $banks->find($bankId)->type;
+    $type = $banks->find($bankId)->type ?? 1;
 
     $groupId = null;
     $score = 0;
     $questionQuery = \App\Models\Question::query();
-    if ($type === 3) {
+    if ($type == 3) {
         $groups = \App\Models\BankGroup::query()->where('bank_id', $bankId)->get();
         $groupId = $faker->randomElement($groups->pluck('id')->toArray());
         $group = $groups->find($groupId);
@@ -25,13 +25,13 @@ $factory->define(BankItem::class, function (Faker $faker) {
     $questions = $questionQuery->get();
     $questionIds = $questions->pluck('id')->toArray();
     $questionId = $faker->randomElement($questionIds);
-    $type = $questions->find($questionId)->type;
+    $questionType = $questions->find($questionId)->type ?? 1;
 
     return [
         'bank_id' => $bankId,
         'group_id' => $groupId,
         'question_id' => $questionId,
-        'type' => $type,
+        'type' => $questionType,
         'score' => $score
     ];
 });
