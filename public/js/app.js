@@ -3996,14 +3996,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     handleBack: function handleBack() {
-      var breadcrumb = this.record.breadcrumb;
-      this.$router.push({
-        name: 'subjects.show',
-        params: {
-          sid: breadcrumb[breadcrumb.length - 1].id,
-          ssid: this.record.subject_id
-        }
-      });
+      this.$router.go(-1);
     }
   }
 });
@@ -29288,7 +29281,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
-/* harmony import */ var _components_common_message__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/message */ "./resources/js/components/common/message/index.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/router */ "./resources/js/router/index.js");
+/* harmony import */ var _components_common_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/message */ "./resources/js/components/common/message/index.js");
+
 
 
  // 创建 axios 实例
@@ -29313,7 +29308,7 @@ service.interceptors.response.use(function (response) {
   var token = response.headers.authorization;
 
   if (token) {
-    _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/RefreshToken', token);
+    _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/refreshToken', token);
   }
 
   switch (response.status) {
@@ -29321,30 +29316,33 @@ service.interceptors.response.use(function (response) {
       var _token = _store__WEBPACK_IMPORTED_MODULE_1__["default"].getters['user/token'];
 
       if (_token) {
-        _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/Clear');
+        _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/clear');
       }
 
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('尚未登录，请先登录后再开始答题！');
+      _router__WEBPACK_IMPORTED_MODULE_2__["default"].push({
+        name: 'auth.login'
+      });
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请先登录后再开始答题！');
       break;
 
     case 403:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('您的权限不足，拒绝访问！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('您的权限不足，拒绝访问！');
       break;
 
     case 422:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error(Object.values(response.data.errors)[0][0]);
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(Object.values(response.data.errors)[0][0]);
       break;
 
     case 429:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('重复访问次数过多！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('重复访问次数过多！');
       break;
 
     case 500:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('请求出现错误或服务器异常，请稍后再试！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('请求出现错误或服务器异常，请稍后再试！');
       break;
 
     default:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
       break;
   }
 
@@ -30235,8 +30233,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

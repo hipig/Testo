@@ -158,8 +158,7 @@
         }
       },
       handleBack() {
-        let breadcrumb = this.record.breadcrumb
-        this.$router.push({name: 'subjects.show', params: {sid: breadcrumb[breadcrumb.length-1].id, ssid: this.record.subject_id}})
+        this.$router.go(-1)
       }
     }
   }

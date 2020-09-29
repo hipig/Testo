@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 import message from '@/components/common/message'
 
 // 创建 axios 实例
@@ -23,14 +24,15 @@ service.interceptors.response.use((response) => {
 
   const token = response.headers.authorization
   if (token) {
-    store.dispatch('user/RefreshToken', token)
+    store.dispatch('user/refreshToken', token)
   }
   switch (response.status) {
     case 401:
       const token = store.getters['user/token']
       if (token) {
-        store.dispatch('user/Clear')
+        store.dispatch('user/clear')
       }
+      router.push({name: 'auth.login'})
       message.error('尚未登录，请先登录后再开始答题！')
       break;
     case 403:
