@@ -6,7 +6,7 @@ use App\Models\BankItem;
 use Faker\Generator as Faker;
 
 $factory->define(BankItem::class, function (Faker $faker) {
-    $banks = \App\Models\Bank::query()->whereNotNull('parent_id')->get();
+    $banks = \App\Models\Bank::query()->get();
 
     $bankId = $faker->randomElement($banks->pluck('id')->toArray());
     $type = $banks->find($bankId)->type ?? 1;

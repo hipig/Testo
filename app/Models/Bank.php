@@ -48,12 +48,12 @@ class Bank extends Model
 
     public function groups()
     {
-        return $this->hasMany(BankGroup::class, 'group_id');
+        return $this->hasMany(BankGroup::class, 'bank_id');
     }
 
     public function items()
     {
-        return $this->hasMany(BankItem::class, 'bank_id');
+        return $this->hasMany(BankItem::class, 'bank_id')->orderBy('index')->orderBy('type');
     }
 
     public function childrenItems()
@@ -78,6 +78,6 @@ class Bank extends Model
 
     public function getIsGroupAttribute()
     {
-        return $this->group->isNotEmpty();
+        return $this->groups->isNotEmpty();
     }
 }

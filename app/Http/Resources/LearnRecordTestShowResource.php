@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LearnRecordTestResource extends JsonResource
+class LearnRecordTestShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,11 @@ class LearnRecordTestResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'bank_id' => $this->bank_id,
+            'subject_id' => optional($this->bank)->subject_id,
             'breadcrumb' => optional($this->bank->subject)->ancestors,
             'bank_title' => optional($this->bank)->title,
-            'questions' => $this->test_question_items
+            'items' => $this->test_question_items
         ];
     }
 }

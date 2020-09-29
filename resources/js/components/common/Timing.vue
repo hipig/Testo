@@ -50,8 +50,8 @@
     },
     methods: {
       intervalEvent() {
-        this.$emit('timer', this.timeLeft)
         if (!this.isPause) this.timeLeft++
+        this.$emit('timer', this.timeLeft)
         if (!this.isTiming && this.timeLeft >= this.second) {
           clearInterval(this.timer)
           this.$emit('countdownEnd')

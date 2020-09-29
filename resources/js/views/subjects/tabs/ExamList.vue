@@ -23,6 +23,7 @@
 
 <script>
   import { getMockExams, getOldExams } from "@/api/bank"
+  import { storeExamRecords } from "@/api/learnRecord"
   import EmptyData from "@/components/common/EmptyData"
 
   export default {
@@ -64,8 +65,10 @@
           })
       },
       handle(id) {
-        console.log(id)
-        this.$router.push({name: 'models.exam', params: {id: 1}})
+        storeExamRecords({bank_id: id})
+          .then((res) => {
+            this.$router.push({name: 'models.exam', params: {id: res.id}})
+          })
       }
     }
   }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\LearnRecordStored;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\LearnRecordItemBatchRequest;
 use App\Http\Requests\Api\LearnRecordItemRequest;
 use App\Http\Resources\LearnRecordItemResource;
+use App\Models\LearnRecord;
 use App\Models\LearnRecordItem;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -22,10 +24,5 @@ class LearnRecordItemsController extends Controller
         event(new LearnRecordStored($recordItem));
 
         return LearnRecordItemResource::make($recordItem);
-    }
-
-    public function batchStore()
-    {
-
     }
 }

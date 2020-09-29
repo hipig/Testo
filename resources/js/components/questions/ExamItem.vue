@@ -31,7 +31,7 @@
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
         <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="currentAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @input="submit"/>
+          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @input="submit"/>
         </label>
       </div>
     </template>
@@ -81,7 +81,8 @@
     mixins: [QuestionType],
     data () {
       return {
-        currentAnswer: this.answer,
+        currentAnswer: [],
+        fillBlackAnswer: [],
       }
     },
     computed: {
@@ -127,6 +128,11 @@
         }
 
         return status
+      }
+    },
+    watch: {
+      fillBlackAnswer(val) {
+        this.currentAnswer = val
       }
     },
     methods: {

@@ -12,16 +12,20 @@
               </div>
             </div>
           </div>
-          <exam-item :id="'q-'+index" v-for="(item, index) in questions" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
+          <template v-for="(item, index) in questions">
+            <exam-item :id="'q-'+index" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
+          </template>
+          <empty-data class="mt-5" :show="isLoaded && questionsLength === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
             <div class="bg-white shadow rounded-lg mb-5">
               <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
               <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
-                <div class="flex flex-wrap -mx-1">
+                <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
                   <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
+                <div class="text-gray-400" v-if="isLoaded && answerList.length === 0">还没有数据哦~</div>
               </div>
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
                 <div class="flex items-center text-gray-900">
@@ -71,7 +75,7 @@
             <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">继续做题</button>
           </div>
           <div class="w-1/2 px-5 flex justify-center">
-            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none">交卷</button>
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">交卷</button>
           </div>
         </div>
       </div>
@@ -91,15 +95,17 @@
 
 <script>
   import Breadcrumb from "@/components/common/Breadcrumb"
+  import EmptyData from "@/components/common/EmptyData"
   import ExamItem from "@/components/questions/ExamItem"
   import Timing from "@/components/common/Timing"
   import TModal from "@/components/common/modal/Modal"
-  import { showTestRecords } from "@/api/learnRecord"
+  import { showTestRecords, updateRecords } from "@/api/learnRecord"
 
   export default {
     name: "models.test",
     components: {
       Breadcrumb,
+      EmptyData,
       ExamItem,
       Timing,
       TModal
@@ -112,6 +118,7 @@
         answerList: [],
         doneCount: 0,
         isPause: false,
+        isLoaded: false,
         pauseModalVisible: false,
         submitModalVisible: false,
         doneTime: 0
@@ -134,9 +141,10 @@
       showTestRecords() {
         showTestRecords(this.recordId)
           .then((res) => {
+            this.isLoaded = true
             this.record = res
-            this.questions = res.questions
-            this.answerList = res.questions.map(item => {
+            this.questions = res.items
+            this.answerList = res.items.map(item => {
               return {
                 record_id: this.recordId,
                 bank_item_id: item.id,
@@ -162,6 +170,13 @@
       },
       getDoneTime(second) {
         this.doneTime = second
+      },
+      submitRecord() {
+        updateRecords(this.recordId, {done_time: this.doneTime})
+          .then((res) => {
+            this.submitModalVisible = false
+            this.$Message.success('交卷成功！')
+          })
       }
     }
   }

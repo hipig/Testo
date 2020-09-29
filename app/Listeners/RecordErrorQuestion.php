@@ -27,7 +27,7 @@ class RecordErrorQuestion
      */
     public function handle(LearnRecordStored $event)
     {
-        $recordItem = $event->recordItem;
+        $recordItem = $event->getRecordItem();
         // TODO::记录错题
     }
 }

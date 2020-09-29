@@ -4,7 +4,10 @@ import { sprintf } from '@/utils/util'
 const api = {
   showTestRecords: '/records/test/%s',
   testRecords: '/records/test',
-  recordItems: '/record-items'
+  showExamRecords: '/records/exam/%s',
+  examRecords: '/records/exam',
+  recordItems: '/record-items',
+  updateRecords: '/records/%s'
 }
 
 export const showTestRecords = (id) => service({
@@ -18,8 +21,25 @@ export const storeTestRecords = (params) => service({
   data: params
 })
 
+export const showExamRecords = (id) => service({
+  url: sprintf(api.showExamRecords, id),
+  method: 'get'
+})
+
+export const storeExamRecords = (params) => service({
+  url: api.examRecords,
+  method: 'post',
+  data: params
+})
+
 export const storeRecordItems = (params) => service({
   url: api.recordItems,
   method: 'post',
+  data: params
+})
+
+export const updateRecords = (id, params) => service({
+  url: sprintf(api.updateRecords, id),
+  method: 'put',
   data: params
 })

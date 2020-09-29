@@ -2266,8 +2266,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     intervalEvent: function intervalEvent() {
-      this.$emit('timer', this.timeLeft);
       if (!this.isPause) this.timeLeft++;
+      this.$emit('timer', this.timeLeft);
 
       if (!this.isTiming && this.timeLeft >= this.second) {
         clearInterval(this.timer);
@@ -2786,7 +2786,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
-      currentAnswer: this.answer
+      currentAnswer: [],
+      fillBlackAnswer: []
     };
   },
   computed: {
@@ -2835,6 +2836,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       return status;
+    }
+  },
+  watch: {
+    fillBlackAnswer: function fillBlackAnswer(val) {
+      this.currentAnswer = val;
     }
   },
   methods: {
@@ -2965,7 +2971,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
-      currentAnswer: this.answer,
+      currentAnswer: [],
+      multiSelectAnswer: [],
+      fillBlackAnswer: [],
       showAnswer: false,
       isAnswered: false
     };
@@ -3024,12 +3032,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   watch: {
     isAnswered: function isAnswered(val) {
       this.showAnswer = val;
+    },
+    fillBlackAnswer: function fillBlackAnswer(val) {
+      this.currentAnswer = val;
     }
   },
   methods: {
     // 提交答案
     submit: function submit() {
-      if (this.isAnswered) return false;
       if (this.showAnswer) return false;
       if (!this.checkAnswer()) return false;
       this.isAnswered = true;
@@ -3574,10 +3584,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
-/* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
-/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
-/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/Breadcrumb */ "./resources/js/components/common/Breadcrumb.vue");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
+/* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -3682,6 +3695,24 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -3689,172 +3720,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "models.exam",
   components: {
-    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_1__["default"],
-    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Breadcrumb: _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__["default"],
+    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__["default"]],
   data: function data() {
     return {
-      bank: {
-        id: 1,
-        title: '2016年一级造价工程师《建设工程计价》真题及答案',
-        type: 3,
-        score: 100,
-        minutes: 180,
-        isGroup: true,
-        list: [{
-          id: 100,
-          title: '一、单项选择(本类题共3题,每小题1分,共3分。每小题的备选项中，只有一个符合题意，多选，错选,不选均不得分)',
-          type: 1,
-          total: 3,
-          score: 1,
-          questions: [{
-            id: 1,
-            title: '某企业向银行借款500万元，利率为5.4%，银行要求10%的补偿性余额，则该借款的实际利率是( )。',
-            type: 1,
-            answer: 'C',
-            options: [{
-              key: 'A',
-              value: 'A、6%'
-            }, {
-              key: 'B',
-              value: 'B、5.4%'
-            }, {
-              key: 'C',
-              value: 'C、4.86%'
-            }, {
-              key: 'D',
-              value: 'D、4.91%'
-            }],
-            parse: ''
-          }, {
-            id: 2,
-            title: '某ST公司在2018年3月5日宣布其发行的公司债券本期利息总额为8980元将无法于原定付息日2018年3月9日全额支付，仅能够支付500万元，则该公司债务的投资者面临的风险是( )。',
-            type: 1,
-            answer: 'B',
-            options: [{
-              key: 'A',
-              value: 'A、价格风险'
-            }, {
-              key: 'B',
-              value: 'B、购买力风险'
-            }, {
-              key: 'C',
-              value: 'C、变现风险'
-            }, {
-              key: 'D',
-              value: 'D、违约风险'
-            }],
-            parse: ''
-          }, {
-            id: 3,
-            title: '与企业价值化财务管理目标相比，股东财富化目标的局限性是( )。',
-            type: 1,
-            answer: 'B',
-            options: [{
-              key: 'A',
-              value: 'A、固定成本'
-            }, {
-              key: 'B',
-              value: 'B、制造成本'
-            }, {
-              key: 'C',
-              value: 'C、全部成本'
-            }, {
-              key: 'D',
-              value: 'D、变动成本'
-            }],
-            parse: ''
-          }]
-        }, {
-          id: 101,
-          title: '二、多项选择题(本类题共2题,每小题2分,共4分。每小题的备选项中，有两个或两个以上符合题意，多选,少选，错选,不选均不得分)',
-          type: 2,
-          total: 2,
-          score: 2,
-          questions: [{
-            id: 10,
-            title: '下列指标中适用于对利润中心进行业绩考评的有( )。',
-            type: 2,
-            answer: ['A', 'B'],
-            options: [{
-              key: 'A',
-              value: 'A、投资报酬率'
-            }, {
-              key: 'B',
-              value: 'B、部门边际贡献'
-            }, {
-              key: 'C',
-              value: 'C、剩余收益'
-            }, {
-              key: 'D',
-              value: 'D、可控边际贡献'
-            }],
-            parse: ''
-          }, {
-            id: 11,
-            title: '下列风险中，属于非系统风险的有( )。',
-            type: 2,
-            answer: ['A', 'B', 'C'],
-            options: [{
-              key: 'A',
-              value: 'A、经营风险'
-            }, {
-              key: 'B',
-              value: 'B、利率风险'
-            }, {
-              key: 'C',
-              value: 'C、政治风险'
-            }, {
-              key: 'D',
-              value: 'D、财务风险'
-            }],
-            parse: ''
-          }]
-        }, {
-          id: 102,
-          title: '三、判断题(本类题共2题,每小题1分,共2分。每小题答对的1分，错误不得分)',
-          type: 3,
-          total: 2,
-          score: 1,
-          questions: [{
-            id: 14,
-            title: '根据量本利分析基本原理，保本点越高企业经营越安全。( )',
-            type: 3,
-            answer: 'A',
-            options: [{
-              key: 'A',
-              value: 'A、正确'
-            }, {
-              key: 'B',
-              value: 'B、错误'
-            }],
-            parse: ''
-          }, {
-            id: 15,
-            title: '净资产收益率是一个综合性比较强的财务分析指标，是杜邦财务分析体系的起点。( )',
-            type: 3,
-            answer: 'B',
-            options: [{
-              key: 'A',
-              value: 'A、正确'
-            }, {
-              key: 'B',
-              value: 'B、错误'
-            }],
-            parse: ''
-          }]
-        }]
-      },
-      answerList: {},
+      recordId: this.$route.params.id,
+      record: {},
+      recordItems: [],
+      answerList: [],
       doneCount: 0,
       isPause: false,
-      pauseModalVisible: false
+      isLoaded: false,
+      pauseModalVisible: false,
+      submitModalVisible: false,
+      doneTime: 0
     };
   },
   created: function created() {
-    this.initAnswerList();
+    this.showExamRecords();
   },
   computed: {
     undoneCount: function undoneCount() {
@@ -3867,29 +3755,38 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     }
   },
   methods: {
-    initAnswerList: function initAnswerList() {
-      var answerList = {};
-      var bank = this.bank;
-      bank.list.forEach(function (item, index) {
-        if (bank.isGroup) {
-          item.questions.forEach(function (v, i) {
-            var key = index + '-' + i;
-            answerList[key] = {
-              bank_id: bank.id,
-              group_id: item.id,
-              answer: v.recordAnswer ? v.recordAnswer.answer : [],
-              question_id: v.id
+    showExamRecords: function showExamRecords() {
+      var _this = this;
+
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["showExamRecords"])(this.recordId).then(function (res) {
+        _this.isLoaded = true;
+        _this.record = res;
+        _this.recordItems = res.items;
+        var answerList = {};
+
+        _this.recordItems.forEach(function (item, index) {
+          if (res.is_group) {
+            item.items.forEach(function (v, i) {
+              var key = index + '-' + i;
+              answerList[key] = {
+                record_id: _this.recordId,
+                bank_item_id: v.id,
+                question_id: v.question.id,
+                answer: []
+              };
+            });
+          } else {
+            answerList[index] = {
+              record_id: _this.recordId,
+              bank_item_id: item.id,
+              question_id: item.question.id,
+              answer: []
             };
-          });
-        } else {
-          answerList[index] = {
-            bank_id: bank.id,
-            answer: v.recordAnswer ? v.recordAnswer.answer : [],
-            question_id: v.id
-          };
-        }
+          }
+        });
+
+        _this.answerList = answerList;
       });
-      this.answerList = answerList;
     },
     toIndex: function toIndex(index) {
       this.$nextTick(function () {
@@ -3907,6 +3804,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       this.doneCount = Object.values(this.answerList).filter(function (item) {
         return item.answer.length !== 0;
       }).length;
+    },
+    getDoneTime: function getDoneTime(second) {
+      this.doneTime = second;
+    },
+    submitRecord: function submitRecord() {
+      var _this2 = this;
+
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["updateRecords"])(this.recordId, {
+        done_time: this.doneTime
+      }).then(function (res) {
+        _this2.submitModalVisible = false;
+
+        _this2.$Message.success('交卷成功！');
+      });
     }
   }
 });
@@ -3926,6 +3837,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
 /* harmony import */ var _components_questions_ExerciseItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExerciseItem */ "./resources/js/components/questions/ExerciseItem.vue");
 /* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+//
+//
 //
 //
 //
@@ -4031,7 +3944,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.questions.length;
     },
     rightRate: function rightRate() {
-      return this.questionsLength > 0 ? Math.round(this.rightCount / this.questionsLength * 100) : 0 + '%';
+      return (this.questionsLength > 0 ? Math.round(this.rightCount / this.questionsLength * 100) : 0) + '%';
     },
     isFirst: function isFirst() {
       return this.activeIndex === 0;
@@ -4047,8 +3960,8 @@ __webpack_require__.r(__webpack_exports__);
       Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["showTestRecords"])(this.recordId).then(function (res) {
         _this.isLoaded = true;
         _this.record = res;
-        _this.questions = res.questions;
-        _this.answerList = res.questions.map(function (item) {
+        _this.questions = res.items;
+        _this.answerList = res.items.map(function (item) {
           return {
             record_id: _this.recordId,
             bank_item_id: item.id,
@@ -4067,13 +3980,11 @@ __webpack_require__.r(__webpack_exports__);
     nextItem: function nextItem() {
       if (this.activeIndex < this.questions.length - 1) this.activeIndex++;
     },
-    handleAnswer: function handleAnswer(answer, isRight, index) {
-      console.log(index);
+    handleAnswer: function handleAnswer(answer, isRight) {
       this.answerList[this.activeIndex] = Object.assign({}, this.answerList[this.activeIndex], {
         answer: answer,
         is_right: isRight
-      });
-      console.log(); // 生成答题记录
+      }); // 生成答题记录
 
       Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["storeRecordItems"])(this.answerList[this.activeIndex]);
 
@@ -4085,7 +3996,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     handleBack: function handleBack() {
-      this.$Message.info('测试全局消息');
+      var breadcrumb = this.record.breadcrumb;
+      this.$router.push({
+        name: 'subjects.show',
+        params: {
+          sid: breadcrumb[breadcrumb.length - 1].id,
+          ssid: this.record.subject_id
+        }
+      });
     }
   }
 });
@@ -4102,10 +4020,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/Breadcrumb */ "./resources/js/components/common/Breadcrumb.vue");
-/* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
-/* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
-/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
+/* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
+/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 //
 //
 //
@@ -4197,6 +4116,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -4206,9 +4130,10 @@ __webpack_require__.r(__webpack_exports__);
   name: "models.test",
   components: {
     Breadcrumb: _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_2__["default"],
-    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_3__["default"]
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__["default"],
+    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   data: function data() {
     return {
@@ -4218,6 +4143,7 @@ __webpack_require__.r(__webpack_exports__);
       answerList: [],
       doneCount: 0,
       isPause: false,
+      isLoaded: false,
       pauseModalVisible: false,
       submitModalVisible: false,
       doneTime: 0
@@ -4240,10 +4166,11 @@ __webpack_require__.r(__webpack_exports__);
     showTestRecords: function showTestRecords() {
       var _this = this;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["showTestRecords"])(this.recordId).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["showTestRecords"])(this.recordId).then(function (res) {
+        _this.isLoaded = true;
         _this.record = res;
-        _this.questions = res.questions;
-        _this.answerList = res.questions.map(function (item) {
+        _this.questions = res.items;
+        _this.answerList = res.items.map(function (item) {
           return {
             record_id: _this.recordId,
             bank_item_id: item.id,
@@ -4271,6 +4198,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     getDoneTime: function getDoneTime(second) {
       this.doneTime = second;
+    },
+    submitRecord: function submitRecord() {
+      var _this2 = this;
+
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["updateRecords"])(this.recordId, {
+        done_time: this.doneTime
+      }).then(function (res) {
+        _this2.submitModalVisible = false;
+
+        _this2.$Message.success('交卷成功！');
+      });
     }
   }
 });
@@ -4867,7 +4805,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_bank__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/api/bank */ "./resources/js/api/bank.js");
-/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
 //
 //
 //
@@ -4891,12 +4830,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ExamList",
   components: {
-    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"]
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     subjectId: {
@@ -4933,12 +4873,17 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     handle: function handle(id) {
-      console.log(id);
-      this.$router.push({
-        name: 'models.exam',
-        params: {
-          id: 1
-        }
+      var _this2 = this;
+
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_1__["storeExamRecords"])({
+        bank_id: id
+      }).then(function (res) {
+        _this2.$router.push({
+          name: 'models.exam',
+          params: {
+            id: res.id
+          }
+        });
       });
     }
   }
@@ -7176,21 +7121,21 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.currentAnswer[i],
-                        expression: "currentAnswer[i]"
+                        value: _vm.fillBlackAnswer[i],
+                        expression: "fillBlackAnswer[i]"
                       }
                     ],
                     staticClass:
                       "w-full px-4 py-3 bg-gray-100 rounded focus:outline-none",
                     attrs: { placeholder: "请输入答案" },
-                    domProps: { value: _vm.currentAnswer[i] },
+                    domProps: { value: _vm.fillBlackAnswer[i] },
                     on: {
                       input: [
                         function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.currentAnswer, i, $event.target.value)
+                          _vm.$set(_vm.fillBlackAnswer, i, $event.target.value)
                         },
                         _vm.submit
                       ]
@@ -7437,33 +7382,37 @@ var render = function() {
               "div",
               { staticClass: "flex flex-col mb-3" },
               _vm._l(_vm.question.answer, function(v, i) {
-                return _c("label", { staticClass: "flex w-full mb-2" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.currentAnswer[i],
-                        expression: "currentAnswer[i]"
-                      }
-                    ],
-                    staticClass:
-                      "w-full px-4 py-3 bg-gray-100 rounded focus:outline-none",
-                    attrs: {
-                      placeholder: "请输入答案",
-                      disabled: _vm.showAnswer
-                    },
-                    domProps: { value: _vm.currentAnswer[i] },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                return _c(
+                  "label",
+                  { key: i, staticClass: "flex w-full mb-2" },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.fillBlackAnswer[i],
+                          expression: "fillBlackAnswer[i]"
                         }
-                        _vm.$set(_vm.currentAnswer, i, $event.target.value)
+                      ],
+                      staticClass:
+                        "w-full px-4 py-3 bg-gray-100 rounded focus:outline-none",
+                      attrs: {
+                        placeholder: "请输入答案",
+                        disabled: _vm.showAnswer
+                      },
+                      domProps: { value: _vm.fillBlackAnswer[i] },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.fillBlackAnswer, i, $event.target.value)
+                        }
                       }
-                    }
-                  })
-                ])
+                    })
+                  ]
+                )
               }),
               0
             )
@@ -8746,312 +8695,296 @@ var render = function() {
     "div",
     { staticClass: "pt-5 pb-20 px-4" },
     [
-      _c("div", { staticClass: "max-w-6xl mx-auto" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "mt-5 flex flex-wrap -mx-3" }, [
-          _c(
-            "div",
-            { staticClass: "w-2/3 px-3" },
-            [
-              _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
-                _c("div", { staticClass: "flex items-center" }, [
+      _c(
+        "div",
+        { staticClass: "max-w-6xl mx-auto" },
+        [
+          _c("breadcrumb", { attrs: { list: _vm.record.breadcrumb } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-5 flex flex-wrap -mx-3" }, [
+            _c(
+              "div",
+              { staticClass: "w-2/3 px-3" },
+              [
+                _c("div", { staticClass: "bg-white shadow rounded-lg p-5" }, [
+                  _c("div", { staticClass: "flex items-center" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "text-2xl text-gray-900 leading-none truncate"
+                      },
+                      [_vm._v(_vm._s(_vm.record.bank_title))]
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "div",
                     {
                       staticClass:
-                        "text-2xl text-gray-900 leading-none truncate"
+                        "mt-4 flex flex-warp items-center text-gray-400"
                     },
-                    [_vm._v(_vm._s(_vm.bank.title))]
-                  ),
-                  _vm._v(" "),
-                  _vm._m(1)
+                    [
+                      _c("div", { staticClass: "mr-10" }, [
+                        _vm._v(
+                          "本卷共" +
+                            _vm._s(_vm.recordItems.length) +
+                            _vm._s(_vm.record.is_group ? "大题" : "小题")
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mr-10" }, [
+                        _vm._v("总分：" + _vm._s(_vm.record.score) + "分")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mr-10" }, [
+                        _vm._v(
+                          "时间：" + _vm._s(_vm.record.time_limit) + "分钟"
+                        )
+                      ])
+                    ]
+                  )
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "mt-4 flex flex-warp items-center text-gray-400"
-                  },
-                  [
-                    _c("div", { staticClass: "mr-10" }, [
-                      _vm._v(
-                        "本卷共" +
-                          _vm._s(_vm.bank.list.length) +
-                          _vm._s(_vm.bank.isGroup ? "大题" : "小题")
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mr-10" }, [
-                      _vm._v("总分：" + _vm._s(_vm.bank.score) + "分")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mr-10" }, [
-                      _vm._v("时间：" + _vm._s(_vm.bank.minutes) + "分钟")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.bank.list, function(item, index) {
-                return _vm.bank.isGroup
-                  ? _c(
-                      "div",
-                      { key: index, staticClass: "mt-8" },
-                      [
-                        _c("div", { staticClass: "text-base font-semibold" }, [
-                          _vm._v(_vm._s(item.title))
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(item.questions, function(v, i) {
-                          return _c("exam-item", {
-                            key: i,
-                            attrs: {
-                              id: "q-" + index + "-" + i,
-                              question: v,
-                              answer: _vm.answerList[index + "-" + i].answer,
-                              index: [index, i],
-                              "show-report": false,
-                              "show-remark": false
-                            },
-                            on: { answer: _vm.handleAnswer }
+                _vm.record.is_group
+                  ? _vm._l(_vm.recordItems, function(item, index) {
+                      return _c(
+                        "div",
+                        { key: index, staticClass: "mt-8" },
+                        [
+                          _c(
+                            "div",
+                            { staticClass: "text-base font-semibold" },
+                            [_vm._v(_vm._s(item.title))]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(item.items, function(v, i) {
+                            return _c("exam-item", {
+                              key: i,
+                              attrs: {
+                                id: "q-" + index + "-" + i,
+                                question: v.question,
+                                answer: _vm.answerList[index + "-" + i].answer,
+                                index: [index, i],
+                                "show-report": false,
+                                "show-remark": false
+                              },
+                              on: { answer: _vm.handleAnswer }
+                            })
                           })
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._l(_vm.bank.list, function(item, index) {
+                        ],
+                        2
+                      )
+                    })
+                  : _vm._l(_vm.recordItems, function(item, index) {
                       return _c("exam-item", {
                         key: index,
                         attrs: {
                           id: "q-" + index,
-                          question: item,
+                          question: item.question,
                           answer: _vm.answerList[index].answer,
-                          index: index
+                          index: index,
+                          "show-report": false,
+                          "show-remark": false
                         },
                         on: { answer: _vm.handleAnswer }
                       })
-                    })
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-1/3 px-3 relative" }, [
-            _c("div", { staticClass: "sticky top-1" }, [
-              _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold"
-                  },
-                  [_vm._v("答题卡")]
-                ),
+                    }),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "px-5 py-4" },
-                  _vm._l(_vm.bank.list, function(item, index) {
-                    return _vm.bank.isGroup
-                      ? _c("div", { key: index, staticClass: "mb-4" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "mb-2 text-gray-900 flex items-center leading-none"
-                            },
-                            [
-                              _c(
-                                "span",
-                                { staticClass: "font-semibold text-base" },
-                                [
-                                  _vm._v(
-                                    _vm._s(_vm.questionTypes[item.type].name)
-                                  )
-                                ]
-                              ),
-                              _c("span", { staticClass: "text-gray-400" }, [
-                                _vm._v(
-                                  _vm._s(
-                                    "（共" +
-                                      item.total +
-                                      "题，每题" +
-                                      item.score +
-                                      "分）"
-                                  )
+                _c("empty-data", {
+                  staticClass: "mt-5",
+                  attrs: { show: _vm.isLoaded && _vm.recordItems.length === 0 }
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-1/3 px-3 relative" }, [
+              _c("div", { staticClass: "sticky top-1" }, [
+                _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold"
+                    },
+                    [_vm._v("答题卡")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "px-5 py-4" },
+                    [
+                      _vm.record.is_group
+                        ? _vm._l(_vm.recordItems, function(item, index) {
+                            return _c(
+                              "div",
+                              { key: index, staticClass: "mb-4" },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "mb-2 text-gray-900 flex items-center leading-none"
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      {
+                                        staticClass: "font-semibold text-base"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.questionTypes[item.item_type]
+                                              .name
+                                          )
+                                        )
+                                      ]
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticClass: "text-gray-400" },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            "（共" +
+                                              item.item_count +
+                                              "题，每题" +
+                                              item.item_score +
+                                              "分）"
+                                          )
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "flex flex-wrap -mx-1" },
+                                  _vm._l(item.items, function(v, i) {
+                                    return _c(
+                                      "div",
+                                      {
+                                        key: i,
+                                        staticClass:
+                                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                        class: [
+                                          _vm.answerList[index + "-" + i] &&
+                                          _vm.answerList[index + "-" + i].answer
+                                            .length === 0
+                                            ? "text-gray-500 border-gray-100 hover:border-teal-500"
+                                            : "text-white bg-gray-400 border-gray-400"
+                                        ],
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.toIndex(
+                                              "q-" + index + "-" + i
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(i + 1))]
+                                    )
+                                  }),
+                                  0
                                 )
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
+                              ]
+                            )
+                          })
+                        : _c(
                             "div",
                             { staticClass: "flex flex-wrap -mx-1" },
-                            _vm._l(item.questions, function(v, i) {
+                            _vm._l(_vm.recordItems, function(item, index) {
                               return _c(
                                 "div",
                                 {
-                                  key: i,
+                                  key: index,
                                   staticClass:
                                     "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
                                   class: [
-                                    _vm.answerList[index + "-" + i] &&
-                                    _vm.answerList[index + "-" + i].answer
-                                      .length === 0
+                                    _vm.answerList[index] &&
+                                    _vm.answerList[index].answer.length === 0
                                       ? "text-gray-500 border-gray-100 hover:border-teal-500"
                                       : "text-white bg-gray-400 border-gray-400"
                                   ],
-                                  attrs: {
-                                    xx: _vm.answerList[index + "-" + i]
-                                  },
                                   on: {
                                     click: function($event) {
-                                      return _vm.toIndex("q-" + index + "-" + i)
+                                      return _vm.toIndex("q-" + index)
                                     }
                                   }
                                 },
-                                [_vm._v(_vm._s(i + 1))]
+                                [_vm._v(_vm._s(index + 1))]
                               )
                             }),
                             0
-                          )
-                        ])
-                      : _c(
-                          "div",
-                          { staticClass: "flex flex-wrap -mx-1" },
-                          _vm._l(_vm.bank.list, function(item, index) {
-                            return _c(
-                              "div",
-                              {
-                                key: index,
-                                staticClass:
-                                  "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
-                                class: [
-                                  _vm.answerList[index] &&
-                                  _vm.answerList[index].answer.length !== 0
-                                    ? "text-gray-500 border-gray-100 hover:border-teal-500"
-                                    : "text-white bg-gray-400 border-gray-400"
-                                ],
-                                on: {
-                                  click: function($event) {
-                                    return _vm.toIndex("q-" + index)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(index + 1))]
-                            )
-                          }),
-                          0
-                        )
-                  }),
-                  0
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "mt-1 px-20 py-3 flex justify-between border-t border-gray-100"
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center text-gray-900" },
-                      [
-                        _c("div", {
-                          staticClass:
-                            "bg-gray-400 border border-gray-400 w-4 h-4 mr-1"
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "leading-none" }, [
-                          _vm._v("已做" + _vm._s(_vm.doneCount))
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center text-gray-900" },
-                      [
-                        _c("div", {
-                          staticClass:
-                            "bg-white border border-gray-200 w-4 h-4 mr-1"
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "leading-none" }, [
-                          _vm._v("未做" + _vm._s(_vm.undoneCount))
-                        ])
-                      ]
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
-                _c(
-                  "div",
-                  { staticClass: "border-b border-gray-100 flex leading-none" },
-                  [
-                    _c("div", { staticClass: "w-2/3 flex items-center" }, [
+                          ),
+                      _vm._v(" "),
+                      _vm.isLoaded && Object.keys(_vm.answerList).length === 0
+                        ? _c("div", { staticClass: "text-gray-400" }, [
+                            _vm._v("还没有数据哦~")
+                          ])
+                        : _vm._e()
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "mt-1 px-20 py-3 flex justify-between border-t border-gray-100"
+                    },
+                    [
                       _c(
                         "div",
-                        {
-                          staticClass:
-                            "w-full flex items-center py-2 px-4 border-r border-gray-100"
-                        },
+                        { staticClass: "flex items-center text-gray-900" },
                         [
-                          _c(
-                            "svg",
-                            {
-                              staticClass:
-                                "w-6 h-6 stroke-current text-gray-400",
-                              attrs: { fill: "none", viewBox: "0 0 24 24" }
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  "stroke-linecap": "round",
-                                  "stroke-linejoin": "round",
-                                  "stroke-width": "2",
-                                  d:
-                                    "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                }
-                              })
-                            ]
-                          ),
+                          _c("div", {
+                            staticClass:
+                              "bg-gray-400 border border-gray-400 w-4 h-4 mr-1"
+                          }),
                           _vm._v(" "),
-                          _c(
-                            "span",
-                            { staticClass: "text-teal-500 text-base ml-1" },
-                            [
-                              _c("timing", {
-                                attrs: {
-                                  second: _vm.bank.minutes * 60,
-                                  "is-pause": _vm.isPause
-                                }
-                              })
-                            ],
-                            1
-                          )
+                          _c("div", { staticClass: "leading-none" }, [
+                            _vm._v("已做" + _vm._s(_vm.doneCount))
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "flex items-center text-gray-900" },
+                        [
+                          _c("div", {
+                            staticClass:
+                              "bg-white border border-gray-200 w-4 h-4 mr-1"
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "leading-none" }, [
+                            _vm._v("未做" + _vm._s(_vm.undoneCount))
+                          ])
                         ]
                       )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "w-1/3 flex items-center py-2 px-4" },
-                      [
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "border-b border-gray-100 flex leading-none"
+                    },
+                    [
+                      _c("div", { staticClass: "w-2/3 flex items-center" }, [
                         _c(
                           "div",
                           {
-                            staticClass: "cursor-pointer flex items-center",
-                            on: {
-                              click: function($event) {
-                                _vm.isPause = true
-                              }
-                            }
+                            staticClass:
+                              "w-full flex items-center py-2 px-4 border-r border-gray-100"
                           },
                           [
                             _c(
@@ -9068,28 +9001,185 @@ var render = function() {
                                     "stroke-linejoin": "round",
                                     "stroke-width": "2",
                                     d:
-                                      "M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                                   }
                                 })
                               ]
                             ),
                             _vm._v(" "),
-                            _c("span", { staticClass: "text-gray-900 ml-1" }, [
-                              _vm._v("暂停")
-                            ])
+                            _c(
+                              "span",
+                              { staticClass: "text-teal-500 text-base ml-1" },
+                              [
+                                _c("timing", {
+                                  attrs: {
+                                    second: _vm.record.time_limit * 60,
+                                    "is-pause": _vm.isPause
+                                  },
+                                  on: { timer: _vm.getDoneTime }
+                                })
+                              ],
+                              1
+                            )
                           ]
                         )
-                      ]
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _vm._m(2)
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "w-1/3 flex items-center py-2 px-4" },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "cursor-pointer flex items-center",
+                              on: {
+                                click: function($event) {
+                                  _vm.isPause = true
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass:
+                                    "w-6 h-6 stroke-current text-gray-400",
+                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
+                                },
+                                [
+                                  _c("path", {
+                                    attrs: {
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round",
+                                      "stroke-width": "2",
+                                      d:
+                                        "M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                { staticClass: "text-gray-900 ml-1" },
+                                [_vm._v("暂停")]
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "flex justify-center py-3 px-5 -mx-2" },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "w-1/2 px-2" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.submitModalVisible = true
+                              }
+                            }
+                          },
+                          [_vm._v("交卷")]
+                        )
+                      ])
+                    ]
+                  )
+                ])
               ])
             ])
           ])
-        ])
-      ]),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "t-modal",
+        {
+          attrs: { title: "结束作答", size: "md", "mask-closable": false },
+          on: {
+            close: function($event) {
+              _vm.submitModalVisible = false
+            }
+          },
+          model: {
+            value: _vm.submitModalVisible,
+            callback: function($$v) {
+              _vm.submitModalVisible = $$v
+            },
+            expression: "submitModalVisible"
+          }
+        },
+        [
+          _c("div", { staticClass: "flex flex-col" }, [
+            _c(
+              "div",
+              { staticClass: "text-gray-900 text-lg flex justify-center mb-5" },
+              [
+                _vm.undoneCount > 0
+                  ? _c("span", [
+                      _vm._v("你还有 "),
+                      _c("span", { staticClass: "text-red-500" }, [
+                        _vm._v(_vm._s(_vm.undoneCount))
+                      ]),
+                      _vm._v(" 道题未作答，")
+                    ])
+                  : _vm._e(),
+                _vm._v("是否确认交卷？")
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { attrs: { slot: "footer" }, slot: "footer" }, [
+            _c(
+              "div",
+              { staticClass: "flex flex-wrap items-center px-5 -mx-5" },
+              [
+                _c("div", { staticClass: "w-1/2 px-5 flex justify-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.submitModalVisible = false
+                        }
+                      }
+                    },
+                    [_vm._v("继续做题")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "w-1/2 px-5 flex justify-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
+                      attrs: { type: "button" },
+                      on: { click: _vm.submitRecord }
+                    },
+                    [_vm._v("交卷")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "t-modal",
@@ -9167,22 +9257,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-sm" }, [
-      _c("a", { attrs: { href: "/" } }, [_vm._v("首页")]),
-      _vm._v(" "),
-      _c("span", [_vm._v("/")]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "/subjects" } }, [_vm._v("一级造价工程师")]),
-      _vm._v(" "),
-      _c("span", [_vm._v("/")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "text-gray-400" }, [_vm._v("建设工程计价")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "flex-1 ml-3" }, [
       _c(
         "div",
@@ -9198,30 +9272,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex justify-center py-3 px-5 -mx-2" }, [
-      _c("div", { staticClass: "w-1/2 px-2" }, [
-        _c(
-          "button",
-          {
-            staticClass:
-              "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none",
-            attrs: { type: "button" }
-          },
-          [_vm._v("下次继续")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "w-1/2 px-2" }, [
-        _c(
-          "button",
-          {
-            staticClass:
-              "w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
-            attrs: { type: "button" }
-          },
-          [_vm._v("交卷")]
-        )
-      ])
+    return _c("div", { staticClass: "w-1/2 px-2" }, [
+      _c(
+        "button",
+        {
+          staticClass:
+            "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none",
+          attrs: { type: "button" }
+        },
+        [_vm._v("下次继续")]
+      )
     ])
   }
 ]
@@ -9322,23 +9382,19 @@ var render = function() {
               ]),
               _vm._v(" "),
               _vm._l(_vm.questions, function(item, index) {
-                return _c("exercise-item", {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.activeIndex === index,
-                      expression: "activeIndex === index"
-                    }
-                  ],
-                  key: index,
-                  attrs: {
-                    question: item.question,
-                    answer: _vm.activeAnswer.answer,
-                    index: index
-                  },
-                  on: { answer: _vm.handleAnswer }
-                })
+                return [
+                  _vm.activeIndex === index
+                    ? _c("exercise-item", {
+                        key: index,
+                        attrs: {
+                          question: item.question,
+                          answer: _vm.activeAnswer.answer,
+                          index: index
+                        },
+                        on: { answer: _vm.handleAnswer }
+                      })
+                    : _vm._e()
+                ]
               }),
               _vm._v(" "),
               _c("empty-data", {
@@ -9384,6 +9440,7 @@ var render = function() {
                                   ? "text-white bg-green-500 border-green-500"
                                   : "text-white bg-red-500 border-red-500"
                               ],
+                              attrs: { "item-data": item.answer },
                               on: {
                                 click: function($event) {
                                   return _vm.toIndex(index)
@@ -9593,16 +9650,23 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _vm._l(_vm.questions, function(item, index) {
-                  return _c("exam-item", {
-                    key: index,
-                    attrs: {
-                      id: "q-" + index,
-                      question: item.question,
-                      answer: _vm.answerList[index].answer,
-                      index: index
-                    },
-                    on: { answer: _vm.handleAnswer }
-                  })
+                  return [
+                    _c("exam-item", {
+                      key: index,
+                      attrs: {
+                        id: "q-" + index,
+                        question: item.question,
+                        answer: _vm.answerList[index].answer,
+                        index: index
+                      },
+                      on: { answer: _vm.handleAnswer }
+                    })
+                  ]
+                }),
+                _vm._v(" "),
+                _c("empty-data", {
+                  staticClass: "mt-5",
+                  attrs: { show: _vm.isLoaded && _vm.questionsLength === 0 }
                 })
               ],
               2
@@ -9627,32 +9691,40 @@ var render = function() {
                         "px-5 py-4 h-36 overflow-auto scrollbar-hover"
                     },
                     [
-                      _c(
-                        "div",
-                        { staticClass: "flex flex-wrap -mx-1" },
-                        _vm._l(_vm.answerList, function(item, index) {
-                          return _c(
+                      _vm.answerList.length > 0
+                        ? _c(
                             "div",
-                            {
-                              key: index,
-                              staticClass:
-                                "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
-                              class: [
-                                item.answer.length === 0
-                                  ? "text-gray-500 border-gray-100 hover:border-teal-500"
-                                  : "text-white bg-gray-400 border-gray-400"
-                              ],
-                              on: {
-                                click: function($event) {
-                                  return _vm.toIndex("q-" + index)
-                                }
-                              }
-                            },
-                            [_vm._v(_vm._s(index + 1))]
+                            { staticClass: "flex flex-wrap -mx-1 -mb-2" },
+                            _vm._l(_vm.answerList, function(item, index) {
+                              return _c(
+                                "div",
+                                {
+                                  key: index,
+                                  staticClass:
+                                    "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                  class: [
+                                    item.answer.length === 0
+                                      ? "text-gray-500 border-gray-100 hover:border-teal-500"
+                                      : "text-white bg-gray-400 border-gray-400"
+                                  ],
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.toIndex("q-" + index)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(index + 1))]
+                              )
+                            }),
+                            0
                           )
-                        }),
-                        0
-                      )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.isLoaded && _vm.answerList.length === 0
+                        ? _c("div", { staticClass: "text-gray-400" }, [
+                            _vm._v("还没有数据哦~")
+                          ])
+                        : _vm._e()
                     ]
                   ),
                   _vm._v(" "),
@@ -9882,7 +9954,8 @@ var render = function() {
                     {
                       staticClass:
                         "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
-                      attrs: { type: "button" }
+                      attrs: { type: "button" },
+                      on: { click: _vm.submitRecord }
                     },
                     [_vm._v("交卷")]
                   )
@@ -27452,14 +27525,17 @@ var geCountTypeTotal = function geCountTypeTotal(id, params) {
 /*!*****************************************!*\
   !*** ./resources/js/api/learnRecord.js ***!
   \*****************************************/
-/*! exports provided: showTestRecords, storeTestRecords, storeRecordItems */
+/*! exports provided: showTestRecords, storeTestRecords, showExamRecords, storeExamRecords, storeRecordItems, updateRecords */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showTestRecords", function() { return showTestRecords; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeTestRecords", function() { return storeTestRecords; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showExamRecords", function() { return showExamRecords; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeExamRecords", function() { return storeExamRecords; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeRecordItems", function() { return storeRecordItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecords", function() { return updateRecords; });
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
 
@@ -27467,7 +27543,10 @@ __webpack_require__.r(__webpack_exports__);
 var api = {
   showTestRecords: '/records/test/%s',
   testRecords: '/records/test',
-  recordItems: '/record-items'
+  showExamRecords: '/records/exam/%s',
+  examRecords: '/records/exam',
+  recordItems: '/record-items',
+  updateRecords: '/records/%s'
 };
 var showTestRecords = function showTestRecords(id) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
@@ -27482,10 +27561,30 @@ var storeTestRecords = function storeTestRecords(params) {
     data: params
   });
 };
+var showExamRecords = function showExamRecords(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.showExamRecords, id),
+    method: 'get'
+  });
+};
+var storeExamRecords = function storeExamRecords(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.examRecords,
+    method: 'post',
+    data: params
+  });
+};
 var storeRecordItems = function storeRecordItems(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: api.recordItems,
     method: 'post',
+    data: params
+  });
+};
+var updateRecords = function updateRecords(id, params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.updateRecords, id),
+    method: 'put',
     data: params
   });
 };
@@ -30136,8 +30235,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

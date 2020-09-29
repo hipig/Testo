@@ -18,7 +18,9 @@
               </label>
             </div>
           </div>
-          <exercise-item v-for="(item, index) in questions" :key="index" v-show="activeIndex === index" :question="item.question" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
+          <template v-for="(item, index) in questions">
+            <exercise-item :key="index" v-if="activeIndex === index" :question="item.question" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
+          </template>
           <empty-data class="mt-5" :show="isLoaded && questionsLength === 0"/>
         </div>
         <div class="w-1/3 px-3">
@@ -26,7 +28,7 @@
             <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
             <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
               <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
-                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.is_right ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
+                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :item-data="item.answer" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.is_right ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
               </div>
               <div class="text-gray-400" v-if="isLoaded && answerList.length === 0">还没有数据哦~</div>
             </div>
@@ -105,7 +107,7 @@
         return this.questions.length
       },
       rightRate() {
-        return this.questionsLength > 0 ? Math.round((this.rightCount/this.questionsLength)*100) : 0 + '%'
+        return (this.questionsLength > 0 ? Math.round((this.rightCount/this.questionsLength)*100) : 0) + '%'
       },
       isFirst() {
         return this.activeIndex === 0
@@ -120,8 +122,8 @@
           .then((res) => {
             this.isLoaded = true
             this.record = res
-            this.questions = res.questions
-            this.answerList = res.questions.map(item => {
+            this.questions = res.items
+            this.answerList = res.items.map(item => {
               return {
                 record_id: this.recordId,
                 bank_item_id: item.id,
@@ -140,15 +142,11 @@
       nextItem() {
         if (this.activeIndex < this.questions.length-1)  this.activeIndex ++
       },
-      handleAnswer(answer, isRight, index) {
-        console.log(index)
+      handleAnswer(answer, isRight) {
         this.answerList[this.activeIndex] = Object.assign({}, this.answerList[this.activeIndex], {
           answer: answer,
           is_right: isRight
         })
-
-        console.log()
-
         // 生成答题记录
         storeRecordItems(this.answerList[this.activeIndex])
 
@@ -160,7 +158,8 @@
         }
       },
       handleBack() {
-        this.$Message.info('测试全局消息')
+        let breadcrumb = this.record.breadcrumb
+        this.$router.push({name: 'subjects.show', params: {sid: breadcrumb[breadcrumb.length-1].id, ssid: this.record.subject_id}})
       }
     }
   }

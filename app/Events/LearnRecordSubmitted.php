@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\LearnRecordItem;
+use App\Models\LearnRecord;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,24 +11,24 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LearnRecordStored
+class LearnRecordSubmitted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $recordItem = null;
+    protected $record = null;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(LearnRecordItem $recordItem)
+    public function __construct(LearnRecord $record)
     {
-        $this->recordItem = $recordItem;
+        $this->record = $record;
     }
 
-    public function getRecordItem()
+    public function getRecord()
     {
-        return $this->recordItem;
+        return $this->record;
     }
 }

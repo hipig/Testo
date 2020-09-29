@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\LearnRecordStored' => [
             'App\Listeners\RecordErrorQuestion',
         ],
+        'App\Events\LearnRecordSubmitted' => [
+            'App\Listeners\UpdateRecordCountAndScore',
+        ],
     ];
 
     /**
