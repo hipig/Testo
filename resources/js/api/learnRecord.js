@@ -6,7 +6,7 @@ const api = {
   testRecords: '/records/test',
   showExamRecords: '/records/exam/%s',
   examRecords: '/records/exam',
-  recordItems: '/record-items',
+  recordItems: '/records/%s/items',
   updateRecords: '/records/%s'
 }
 
@@ -32,8 +32,8 @@ export const storeExamRecords = (params) => service({
   data: params
 })
 
-export const storeRecordItems = (params) => service({
-  url: api.recordItems,
+export const storeRecordItems = (id, params) => service({
+  url: sprintf(api.recordItems, id),
   method: 'post',
   data: params
 })

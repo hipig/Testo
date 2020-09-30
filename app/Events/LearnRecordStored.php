@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\LearnRecordItem;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -22,7 +22,7 @@ class LearnRecordStored
      *
      * @return void
      */
-    public function __construct(LearnRecordItem $recordItem)
+    public function __construct(Model $recordItem)
     {
         $this->recordItem = $recordItem;
     }

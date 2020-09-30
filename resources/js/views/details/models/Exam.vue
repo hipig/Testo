@@ -13,8 +13,8 @@
             </div>
             <div class="mt-4 flex flex-warp items-center text-gray-400">
               <div class="mr-10">本卷共{{ recordItems.length }}{{ record.is_group ? '大题' : '小题' }}</div>
-              <div class="mr-10">总分：{{ record.score }}分</div>
-              <div class="mr-10">时间：{{ record.time_limit }}分钟</div>
+              <div class="mr-10">总分：{{ record.score || 0 }}分</div>
+              <div class="mr-10">时间：{{ record.time_limit || 0  }}分钟</div>
             </div>
           </div>
           <template v-if="record.is_group">
@@ -62,7 +62,7 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing :second="record.time_limit * 60" :is-pause="isPause" @timer="getDoneTime"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing :second="record.time_limit * 60 || 0" :is-pause="isPause" @timer="getDoneTime"/></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
@@ -76,7 +76,7 @@
               </div>
               <div class="flex justify-center py-3 px-5 -mx-2">
                 <div class="w-1/2 px-2">
-                  <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none">下次继续</button>
+                  <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none" @click="nextContinue">下次继续</button>
                 </div>
                 <div class="w-1/2 px-2">
                   <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none" @click="submitModalVisible = true">交卷</button>
@@ -97,7 +97,7 @@
             <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">继续做题</button>
           </div>
           <div class="w-1/2 px-5 flex justify-center">
-            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none"@click="submitRecord">交卷</button>
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none"@click="submitRecord('end')">交卷</button>
           </div>
         </div>
       </div>
@@ -175,7 +175,6 @@
                 item.items.forEach((v, i) => {
                   let key = index+'-'+i
                   answerList[key] = {
-                    record_id: this.recordId,
                     bank_item_id: v.id,
                     question_id: v.question.id,
                     answer: []
@@ -183,7 +182,6 @@
                 })
               } else {
                 answerList[index] = {
-                  record_id: this.recordId,
                   bank_item_id: item.id,
                   question_id: item.question.id,
                   answer: []
@@ -202,7 +200,7 @@
         index = typeof index === "object" ? index.join('-') : index
         this.answerList[index] = Object.assign({}, this.answerList[index], {
           answer: answer,
-          isRight: isRight
+          is_right: isRight
         })
         this.doneCount = Object.values(this.answerList).filter(item => {
           return item.answer.length !== 0
@@ -211,12 +209,23 @@
       getDoneTime(second) {
         this.doneTime = second
       },
-      submitRecord() {
-        updateRecords(this.recordId, {done_time: this.doneTime})
+      submitRecord(type = 'end') {
+        let params = {
+          done_time: this.doneTime,
+          type: type || '',
+          items: this.answerList
+        }
+        updateRecords(this.recordId, params)
           .then((res) => {
-            this.submitModalVisible = false
-            this.$Message.success('交卷成功！')
+            if (type && type == 'end') {
+              this.submitModalVisible = false
+              this.$Message.success('交卷成功！')
+            }
           })
+      },
+      nextContinue() {
+        this.submitRecord('next')
+        this.$router.go(-1)
       }
     }
   }

@@ -14,10 +14,10 @@ use Illuminate\Http\Request;
 
 class LearnRecordItemsController extends Controller
 {
-    public function store(LearnRecordItemRequest $request)
+    public function store(LearnRecordItemRequest $request, LearnRecord $record)
     {
-        $recordItem = LearnRecordItem::updateOrCreate(
-            $request->only('record_id', 'bank_item_id', 'question_id'),
+        $recordItem = $record->items()->updateOrCreate(
+            $request->only('bank_item_id', 'question_id'),
             $request->all()
         );
 

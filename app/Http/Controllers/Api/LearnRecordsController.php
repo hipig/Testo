@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\LearnRecordStored;
 use App\Events\LearnRecordSubmitted;
+use App\Exceptions\InvalidRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LearnRecordExamStoreRequest;
 use App\Http\Requests\Api\LearnRecordTestStoreRequest;
@@ -15,6 +17,7 @@ use App\Models\BankItem;
 use App\Models\LearnRecord;
 use App\Models\LearnRecordItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LearnRecordsController extends Controller
 {
@@ -25,6 +28,10 @@ class LearnRecordsController extends Controller
 
     public function examShow(Request $request, LearnRecord $record)
     {
+        if ($record->is_end) {
+            throw new InvalidRequestException('考试已结束');
+        }
+
         $record->load('bank.groups.items');
         return LearnRecordExamShowResource::make($record);
     }
@@ -90,9 +97,25 @@ class LearnRecordsController extends Controller
 
     public function update(LearnRecordUpdateRequest $request, LearnRecord $record)
     {
-        $record->done_time = $request->done_time;
-        $record->is_end = true;
-        $record->save();
+        $record = DB::transaction(function () use ($record, $request) {
+            $record->done_time = $request->done_time;
+            $record->is_end = $request->type && $request->type == 'end';
+            $record->save();
+
+            $items = $request->items;
+            foreach ($items as $data) {
+                $selectData = collect($data)->only('bank_item_id', 'question_id')->toArray();
+
+                $recordItem = $record->items()->updateOrCreate(
+                    $selectData,
+                    $data
+                );
+
+                event(new LearnRecordStored($recordItem));
+            }
+
+            return $record;
+        });
 
         event(new LearnRecordSubmitted($record));
 

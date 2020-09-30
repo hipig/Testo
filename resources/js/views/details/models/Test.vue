@@ -172,7 +172,12 @@
         this.doneTime = second
       },
       submitRecord() {
-        updateRecords(this.recordId, {done_time: this.doneTime})
+        let params = {
+          done_time: this.doneTime,
+          type: 'end',
+          items: this.answerList
+        }
+        updateRecords(this.recordId, params)
           .then((res) => {
             this.submitModalVisible = false
             this.$Message.success('交卷成功！')

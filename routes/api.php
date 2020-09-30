@@ -57,10 +57,10 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.store.test');
         // 生成考试记录
         Route::post('records/exam', 'LearnRecordsController@examStore')->name('learnRecords.store.exam');
-        // 交卷
+        // 批量生成答题记录（交卷）
         Route::put('records/{record}', 'LearnRecordsController@update')->name('learnRecords.update');
         // 生成答题记录
-        Route::post('record-items', 'LearnRecordItemsController@store')->name('learnRecordItems.store');
+        Route::post('records/{record}/items', 'LearnRecordItemsController@store')->name('learnRecordItems.store');
     });
 
 

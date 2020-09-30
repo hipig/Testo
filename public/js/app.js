@@ -3769,7 +3769,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             item.items.forEach(function (v, i) {
               var key = index + '-' + i;
               answerList[key] = {
-                record_id: _this.recordId,
                 bank_item_id: v.id,
                 question_id: v.question.id,
                 answer: []
@@ -3777,7 +3776,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             });
           } else {
             answerList[index] = {
-              record_id: _this.recordId,
               bank_item_id: item.id,
               question_id: item.question.id,
               answer: []
@@ -3799,7 +3797,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       index = _typeof(index) === "object" ? index.join('-') : index;
       this.answerList[index] = Object.assign({}, this.answerList[index], {
         answer: answer,
-        isRight: isRight
+        is_right: isRight
       });
       this.doneCount = Object.values(this.answerList).filter(function (item) {
         return item.answer.length !== 0;
@@ -3811,13 +3809,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     submitRecord: function submitRecord() {
       var _this2 = this;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["updateRecords"])(this.recordId, {
-        done_time: this.doneTime
-      }).then(function (res) {
-        _this2.submitModalVisible = false;
+      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'end';
+      var params = {
+        done_time: this.doneTime,
+        type: type || '',
+        items: this.answerList
+      };
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["updateRecords"])(this.recordId, params).then(function (res) {
+        if (type && type == 'end') {
+          _this2.submitModalVisible = false;
 
-        _this2.$Message.success('交卷成功！');
+          _this2.$Message.success('交卷成功！');
+        }
       });
+    },
+    nextContinue: function nextContinue() {
+      this.submitRecord('next');
+      this.$router.go(-1);
     }
   }
 });
@@ -3963,7 +3971,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.questions = res.items;
         _this.answerList = res.items.map(function (item) {
           return {
-            record_id: _this.recordId,
             bank_item_id: item.id,
             question_id: item.question.id,
             answer: []
@@ -3986,7 +3993,7 @@ __webpack_require__.r(__webpack_exports__);
         is_right: isRight
       }); // 生成答题记录
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["storeRecordItems"])(this.answerList[this.activeIndex]);
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["storeRecordItems"])(this.recordId, this.answerList[this.activeIndex]);
 
       if (isRight) {
         !!this.autoNext && this.nextItem();
@@ -4195,9 +4202,12 @@ __webpack_require__.r(__webpack_exports__);
     submitRecord: function submitRecord() {
       var _this2 = this;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["updateRecords"])(this.recordId, {
-        done_time: this.doneTime
-      }).then(function (res) {
+      var params = {
+        done_time: this.doneTime,
+        type: 'end',
+        items: this.answerList
+      };
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["updateRecords"])(this.recordId, params).then(function (res) {
         _this2.submitModalVisible = false;
 
         _this2.$Message.success('交卷成功！');
@@ -7123,15 +7133,13 @@ var render = function() {
                     attrs: { placeholder: "请输入答案" },
                     domProps: { value: _vm.fillBlackAnswer[i] },
                     on: {
-                      input: [
-                        function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.fillBlackAnswer, i, $event.target.value)
-                        },
-                        _vm.submit
-                      ]
+                      change: _vm.submit,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.fillBlackAnswer, i, $event.target.value)
+                      }
                     }
                   })
                 ])
@@ -8729,12 +8737,12 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mr-10" }, [
-                        _vm._v("总分：" + _vm._s(_vm.record.score) + "分")
+                        _vm._v("总分：" + _vm._s(_vm.record.score || 0) + "分")
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mr-10" }, [
                         _vm._v(
-                          "时间：" + _vm._s(_vm.record.time_limit) + "分钟"
+                          "时间：" + _vm._s(_vm.record.time_limit || 0) + "分钟"
                         )
                       ])
                     ]
@@ -9006,7 +9014,7 @@ var render = function() {
                               [
                                 _c("timing", {
                                   attrs: {
-                                    second: _vm.record.time_limit * 60,
+                                    second: _vm.record.time_limit * 60 || 0,
                                     "is-pause": _vm.isPause
                                   },
                                   on: { timer: _vm.getDoneTime }
@@ -9069,7 +9077,18 @@ var render = function() {
                     "div",
                     { staticClass: "flex justify-center py-3 px-5 -mx-2" },
                     [
-                      _vm._m(1),
+                      _c("div", { staticClass: "w-1/2 px-2" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none",
+                            attrs: { type: "button" },
+                            on: { click: _vm.nextContinue }
+                          },
+                          [_vm._v("下次继续")]
+                        )
+                      ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "w-1/2 px-2" }, [
                         _c(
@@ -9163,7 +9182,11 @@ var render = function() {
                       staticClass:
                         "inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
                       attrs: { type: "button" },
-                      on: { click: _vm.submitRecord }
+                      on: {
+                        click: function($event) {
+                          return _vm.submitRecord("end")
+                        }
+                      }
                     },
                     [_vm._v("交卷")]
                   )
@@ -9258,22 +9281,6 @@ var staticRenderFns = [
             "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
         },
         [_vm._v("模拟考试")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-1/2 px-2" }, [
-      _c(
-        "button",
-        {
-          staticClass:
-            "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none",
-          attrs: { type: "button" }
-        },
-        [_vm._v("下次继续")]
       )
     ])
   }
@@ -27538,7 +27545,7 @@ var api = {
   testRecords: '/records/test',
   showExamRecords: '/records/exam/%s',
   examRecords: '/records/exam',
-  recordItems: '/record-items',
+  recordItems: '/records/%s/items',
   updateRecords: '/records/%s'
 };
 var showTestRecords = function showTestRecords(id) {
@@ -27567,9 +27574,9 @@ var storeExamRecords = function storeExamRecords(params) {
     data: params
   });
 };
-var storeRecordItems = function storeRecordItems(params) {
+var storeRecordItems = function storeRecordItems(id, params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: api.recordItems,
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.recordItems, id),
     method: 'post',
     data: params
   });
@@ -30233,8 +30240,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

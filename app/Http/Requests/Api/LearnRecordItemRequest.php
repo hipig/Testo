@@ -12,7 +12,6 @@ class LearnRecordItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'record_id' => 'required',
             'bank_item_id' => 'required',
             'question_id' => 'required',
             'answer' => 'required',
@@ -23,7 +22,6 @@ class LearnRecordItemRequest extends FormRequest
     public function attributes()
     {
         return [
-            'record_id' => '学习记录',
             'bank_item_id' => '题库',
             'question_id' => '题目',
             'answer' => '答案',

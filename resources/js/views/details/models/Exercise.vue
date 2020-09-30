@@ -125,7 +125,6 @@
             this.questions = res.items
             this.answerList = res.items.map(item => {
               return {
-                record_id: this.recordId,
                 bank_item_id: item.id,
                 question_id: item.question.id,
                 answer: []
@@ -148,7 +147,7 @@
           is_right: isRight
         })
         // 生成答题记录
-        storeRecordItems(this.answerList[this.activeIndex])
+        storeRecordItems(this.recordId, this.answerList[this.activeIndex])
 
         if (isRight) {
           !!this.autoNext && this.nextItem()

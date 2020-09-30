@@ -31,7 +31,7 @@
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
         <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @input="submit"/>
+          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @change="submit"/>
         </label>
       </div>
     </template>

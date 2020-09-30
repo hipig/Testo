@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\LearnRecordStored;
 use App\Models\Question;
+use App\Models\SubjectErrorItem;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -28,6 +29,9 @@ class RecordErrorQuestion
     public function handle(LearnRecordStored $event)
     {
         $recordItem = $event->getRecordItem();
-        // TODO::记录错题
+
+        SubjectErrorItem::updateOrCreate([
+
+        ]);
     }
 }
