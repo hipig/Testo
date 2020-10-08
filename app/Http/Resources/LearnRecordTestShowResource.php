@@ -14,13 +14,15 @@ class LearnRecordTestShowResource extends JsonResource
      */
     public function toArray($request)
     {
+        $bank = optional($this->bank);
+
         return [
             'id' => $this->id,
             'bank_id' => $this->bank_id,
-            'subject_id' => optional($this->bank)->subject_id,
-            'breadcrumb' => optional($this->bank->subject)->ancestors,
-            'bank_title' => optional($this->bank)->title,
-            'items' => $this->test_question_items
+            'subject_id' => $bank->subject_id,
+            'breadcrumb' => optional($bank->subject)->ancestors,
+            'bank_title' => $bank->title,
+            'items' => $request->bank_type == 'chapter' ? $this->test_question_items : $bank->items
         ];
     }
 }

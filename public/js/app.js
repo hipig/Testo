@@ -3931,6 +3931,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       recordId: this.$route.params.id,
+      bankType: this.$route.query.type || 'chapter',
       record: {},
       questions: [],
       answerList: [],
@@ -3965,7 +3966,9 @@ __webpack_require__.r(__webpack_exports__);
     showTestRecords: function showTestRecords() {
       var _this = this;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["showTestRecords"])(this.recordId).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["showTestRecords"])(this.recordId, {
+        bank_type: this.bankType
+      }).then(function (res) {
         _this.isLoaded = true;
         _this.record = res;
         _this.questions = res.items;
@@ -4727,6 +4730,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
 /* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
 /* harmony import */ var _api_bank__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/bank */ "./resources/js/api/bank.js");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 //
 //
 //
@@ -4755,6 +4759,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -4791,7 +4796,21 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     handle: function handle(id) {
-      console.log(id);
+      var _this2 = this;
+
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["storeExamRecords"])({
+        bank_id: id
+      }).then(function (res) {
+        _this2.$router.push({
+          name: 'models.exercise',
+          params: {
+            id: res.id
+          },
+          query: {
+            type: 'daily'
+          }
+        });
+      });
     }
   }
 });
@@ -27548,10 +27567,11 @@ var api = {
   recordItems: '/records/%s/items',
   updateRecords: '/records/%s'
 };
-var showTestRecords = function showTestRecords(id) {
+var showTestRecords = function showTestRecords(id, params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.showTestRecords, id),
-    method: 'get'
+    method: 'get',
+    params: params
   });
 };
 var storeTestRecords = function storeTestRecords(params) {

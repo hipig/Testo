@@ -10,9 +10,10 @@ const api = {
   updateRecords: '/records/%s'
 }
 
-export const showTestRecords = (id) => service({
+export const showTestRecords = (id, params) => service({
   url: sprintf(api.showTestRecords, id),
-  method: 'get'
+  method: 'get',
+  params: params
 })
 
 export const storeTestRecords = (params) => service({

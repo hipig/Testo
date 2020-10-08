@@ -31,6 +31,7 @@
   import QuestionType from "@/mixins/QuestionType"
   import EmptyData from "@/components/common/EmptyData"
   import { getDailyTests } from "@/api/bank"
+  import { storeExamRecords } from "@/api/learnRecord"
 
   export default {
     name: "DailyList",
@@ -63,7 +64,10 @@
           })
       },
       handle(id) {
-        console.log(id)
+        storeExamRecords({bank_id: id})
+          .then((res) => {
+            this.$router.push({name: 'models.exercise', params: {id: res.id}, query: {type: 'daily'}})
+          })
       }
     }
   }

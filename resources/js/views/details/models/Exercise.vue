@@ -86,6 +86,7 @@
     data () {
       return {
         recordId: this.$route.params.id,
+        bankType: this.$route.query.type || 'chapter',
         record:{},
         questions: [],
         answerList: [],
@@ -118,7 +119,7 @@
     },
     methods: {
       showTestRecords() {
-        showTestRecords(this.recordId)
+        showTestRecords(this.recordId, {bank_type: this.bankType})
           .then((res) => {
             this.isLoaded = true
             this.record = res
