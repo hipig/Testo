@@ -1,5 +1,7 @@
 import MainLayout from '@/layout/MainLayout'
 import BlankLayout from '@/layout/BlankLayout'
+import MyLayout from "@/layout/MyLayout"
+
 
 import Home from '@/views/Home'
 import Subjects from '@/views/subjects/Index'
@@ -10,6 +12,8 @@ import ModelsExam from '@/views/details/models/Exam'
 
 import AuthLogin from '@/views/auth/Login'
 import AuthRegister from '@/views/auth/Register'
+
+import MyIndex from "@/views/my/Index"
 
 export default [
   {
@@ -57,6 +61,19 @@ export default [
         path: '/auth/register',
         name: 'auth.register',
         component: AuthRegister
+      },
+      {
+        path: '/my',
+        name: 'my',
+        redirect: '/my/',
+        component: MyLayout,
+        children: [
+          {
+            path: '/',
+            name: 'my.index',
+            component: MyIndex
+          }
+        ]
       }
     ]
   }
