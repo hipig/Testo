@@ -70,7 +70,7 @@ class LearnRecordsController extends Controller
         $ids = $idPluck->random($number >= $count ? $count : $number);
 
         $record = LearnRecord::create([
-            'user_id' => optional($request->user())->id,
+            'user_id' => optional($request->user('api'))->id,
             'bank_id' => $bank->id,
             'type' => $bank->type,
             'question_ids' => $ids->toArray(),
@@ -86,7 +86,7 @@ class LearnRecordsController extends Controller
         $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
 
         $record = LearnRecord::create([
-            'user_id' => optional($request->user())->id,
+            'user_id' => optional($request->user('api'))->id,
             'bank_id' => $bank->id,
             'type' => $bank->type,
             'total_count' => $bankItems->count()

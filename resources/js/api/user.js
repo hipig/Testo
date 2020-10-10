@@ -6,6 +6,7 @@ const api = {
   login: '/authorizations',
   register: '/users',
   currentUser: '/user',
+  changePassword: 'user/change-password',
   currentToken: '/authorizations/current',
 }
 
@@ -46,4 +47,10 @@ export const deleteToken = () => service({
 export const user = () => service({
   url: api.currentUser,
   method: 'get'
+})
+
+export const changePassword = (params) => service({
+  url: api.changePassword,
+  method: 'post',
+  data: params
 })

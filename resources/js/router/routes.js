@@ -13,7 +13,9 @@ import ModelsExam from '@/views/details/models/Exam'
 import AuthLogin from '@/views/auth/Login'
 import AuthRegister from '@/views/auth/Register'
 
-import MyIndex from "@/views/my/Index"
+import MyIndex from "@/views/my/info/Index"
+import MyChangePassword from "@/views/my/info/ChangePassword"
+import MyLearn from "@/views/my/learn/Index"
 
 export default [
   {
@@ -65,13 +67,22 @@ export default [
       {
         path: '/my',
         name: 'my',
-        redirect: '/my/',
         component: MyLayout,
         children: [
           {
             path: '/',
             name: 'my.index',
             component: MyIndex
+          },
+          {
+            path: 'change-password',
+            name: 'my.change.password',
+            component: MyChangePassword
+          },
+          {
+            path: 'learn',
+            name: 'my.learn',
+            component: MyLearn
           }
         ]
       }
