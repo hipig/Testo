@@ -67,6 +67,7 @@ export default [
       {
         path: '/my',
         name: 'my',
+        redirect: '/',
         component: MyLayout,
         children: [
           {

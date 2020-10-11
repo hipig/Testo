@@ -21,7 +21,7 @@
             </div>
             <div slot="dropdown-menu" class="w-48 rounded-lg shadow-lg bg-white border-t border-gray-100">
               <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">学习记录</a>
+                <a href="/my/learn" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">学习记录</a>
                 <a href="/my" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">修改资料</a>
               </div>
               <div class="border-t border-gray-100"></div>

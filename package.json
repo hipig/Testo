@@ -24,6 +24,7 @@
         "dayjs": "^1.8.36",
         "nprogress": "^0.2.0",
         "tailwindcss": "^1.8.10",
+        "v-calendar": "^1.0.8",
         "vue": "^2.6.12",
         "vue-router": "^3.4.3",
         "vue-template-compiler": "^2.6.12",
