@@ -81,7 +81,7 @@
     mixins: [QuestionType],
     data () {
       return {
-        currentAnswer: [],
+        currentAnswer: this.answer || [],
         fillBlackAnswer: [],
       }
     },

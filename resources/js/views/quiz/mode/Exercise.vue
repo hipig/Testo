@@ -76,10 +76,10 @@
   import Breadcrumb from "@/components/common/Breadcrumb"
   import EmptyData from "@/components/common/EmptyData"
   import ExerciseItem from "@/components/questions/ExerciseItem"
-  import { showTestRecords, storeRecordItems } from "@/api/learnRecord"
+  import { showRecords, storeRecordItems } from "@/api/learnRecord"
 
   export default {
-    name: "models.exercise",
+    name: "quiz.mode.exercise",
     components: {
       Breadcrumb,
       EmptyData,
@@ -100,7 +100,7 @@
       }
     },
     mounted() {
-      this.showTestRecords()
+      this.showRecords()
     },
     computed: {
       activeAnswer() {
@@ -120,9 +120,9 @@
       }
     },
     methods: {
-      showTestRecords() {
+      showRecords() {
         this.isLoading = true
-        showTestRecords(this.recordId, {bank_type: this.bankType})
+        showRecords(this.recordId, {bank_type: this.bankType})
           .then((res) => {
             this.record = res
             this.questions = res.items
@@ -130,6 +130,7 @@
               return {
                 bank_item_id: item.id,
                 question_id: item.question.id,
+                question_type: item.question.type,
                 answer: []
               }
             })

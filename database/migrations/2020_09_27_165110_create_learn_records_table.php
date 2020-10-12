@@ -18,6 +18,7 @@ class CreateLearnRecordsTable extends Migration
             $table->unsignedBigInteger('user_id')->comment('用户ID');
             $table->unsignedBigInteger('bank_id')->comment('题库ID');
             $table->string('question_ids', 2560)->nullable()->comment('题目集合');
+            $table->unsignedTinyInteger('quiz_mode')->default(1)->comment('测验类型');
             $table->unsignedTinyInteger('type')->default(1)->comment('类型');
             $table->unsignedInteger('score')->default(0)->comment('得分');
             $table->unsignedInteger('total_count')->default(0)->comment('总题数');

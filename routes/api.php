@@ -27,10 +27,6 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::get('subjects/{subject}/daily-tests', 'BanksController@dailyTests')->name('subjects.dailyTests');
     // 获取题型总计
     Route::get('banks/{bank}/count-type-total', 'BanksController@getTypeCount')->name('banks.countTypeTotal');
-    // 获取练习记录详情
-    Route::get('records/test/{record}', 'LearnRecordsController@testShow')->name('learnRecords.show.test');
-    // 获取考试记录详情
-    Route::get('records/exam/{record}', 'LearnRecordsController@examShow')->name('learnRecords.show.exam');
 
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
@@ -58,10 +54,14 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
 
         // 生成练习记录
         Route::get('records', 'LearnRecordsController@index')->name('learnRecords.index');
+        // 获取练习记录详情
+        Route::get('records/{record}', 'LearnRecordsController@show')->name('learnRecords.show');
+        // 获取练习记录结果
+        Route::get('records/{record}/result', 'LearnRecordsController@showResult')->name('learnRecords.show.result');
         // 生成练习记录
-        Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.store.test');
+        Route::post('records/test', 'LearnRecordsController@storeTest')->name('learnRecords.store.test');
         // 生成考试记录
-        Route::post('records/exam', 'LearnRecordsController@examStore')->name('learnRecords.store.exam');
+        Route::post('records/exam', 'LearnRecordsController@storeExam')->name('learnRecords.store.exam');
         // 批量生成答题记录（交卷）
         Route::put('records/{record}', 'LearnRecordsController@update')->name('learnRecords.update');
         // 生成答题记录

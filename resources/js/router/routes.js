@@ -6,9 +6,11 @@ import MyLayout from "@/layout/MyLayout"
 import Home from '@/views/Home'
 import Subjects from '@/views/subjects/Index'
 import SubjectsShow from '@/views/subjects/Show'
-import ModelsExercise from '@/views/details/models/Exercise'
-import ModelsTest from '@/views/details/models/Test'
-import ModelsExam from '@/views/details/models/Exam'
+
+import QuizModeExercise from '@/views/quiz/mode/Exercise'
+import QuizModeTest from '@/views/quiz/mode/Test'
+import QuizModeExam from '@/views/quiz/mode/Exam'
+import QuizResult from '@/views/quiz/Result'
 
 import AuthLogin from '@/views/auth/Login'
 import AuthRegister from '@/views/auth/Register'
@@ -40,19 +42,31 @@ export default [
         component: SubjectsShow
       },
       {
-        path: '/exercise/:id',
-        name: 'models.exercise',
-        component: ModelsExercise
-      },
-      {
-        path: '/test/:id',
-        name: 'models.test',
-        component: ModelsTest
-      },
-      {
-        path: '/exam/:id',
-        name: 'models.exam',
-        component: ModelsExam
+        path: '/quiz',
+        name: 'quiz',
+        component: BlankLayout,
+        children: [
+          {
+            path: 'mode/:id/exercise',
+            name: 'mode.exercise',
+            component: QuizModeExercise
+          },
+          {
+            path: 'mode/:id/test',
+            name: 'mode.test',
+            component: QuizModeTest
+          },
+          {
+            path: 'mode/:id/exam',
+            name: 'mode.exam',
+            component: QuizModeExam
+          },
+          {
+            path: 'result/:id',
+            name: 'quiz.result',
+            component: QuizResult
+          }
+        ]
       },
       {
         path: '/auth/login',

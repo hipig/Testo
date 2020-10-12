@@ -69,7 +69,7 @@
       handle(id) {
         storeExamRecords({bank_id: id})
           .then((res) => {
-            this.$router.push({name: 'models.exercise', params: {id: res.id}, query: {type: 'daily'}})
+            this.$router.push({name: 'mode.exercise', params: {id: res.id}, query: {type: 'daily'}})
           })
       }
     }

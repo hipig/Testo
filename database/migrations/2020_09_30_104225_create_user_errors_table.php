@@ -30,6 +30,6 @@ class CreateUserErrorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject_error_items');
+        Schema::dropIfExists('user_errors');
     }
 }

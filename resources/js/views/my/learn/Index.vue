@@ -5,7 +5,7 @@
       <div class="mb-5 flex items-center justify-between">
         <div class="flex items-center">
           <div class="mr-3">
-            <select v-model="filterForm.subject_pid" class="form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none" placeholder="请选择" @change="selectSubject">
+            <select v-model="filterForm.subject_pid" class="form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none" @change="selectSubjectParent">
               <option value="">全部科目</option>
               <optgroup v-for="(value, key) in subjectList" :key="key" :label="value.title">
                 <option v-for="(v, k) in value.childrenList" :key="k" :value="v.id">{{ v.title }}</option>
@@ -13,7 +13,7 @@
             </select>
           </div>
           <div>
-            <select v-model="filterForm.subject_id" class="form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm" :class="[subjectSelected ? '' : 'text-gray-400 cursor-not-allowed']" :disabled="!subjectSelected" placeholder="请选择">
+            <select v-model="filterForm.subject_id" class="form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm" :class="[subjectSelected ? '' : 'text-gray-400 cursor-not-allowed']" :disabled="!subjectSelected" @change="selectSubject">
               <option value="">全部科目</option>
               <optgroup v-for="(value, key) in activeSubject.children_group" :key="key" :label="key == 1 ? '专业科目': '公共科目'">
                 <option v-for="(v, k) in value" :key="k" :value="v.id">{{ v.title }}</option>
@@ -28,6 +28,7 @@
               v-model="filterForm.date"
               color="teal"
               :popover="{ placement: 'bottom', visibility: 'click' }"
+              @input="selectDate"
             >
               <input type="text" slot-scope="{ inputProps, inputEvents, isDragging }" placeholder="选择日期" :class="[`pr-4 py-2 block w-64 bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12 ${isDragging ? 'text-gray-400' : ''}`]" v-bind="inputProps" v-on="inputEvents">
             </v-date-picker>
@@ -39,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div v-loading="isLoading">
         <div class="pt-5 pb-4 border-b border-gray-100" v-for="(item, index) in records" :key="index">
           <div class="flex items-center justify-between text-gray-500 text-xs leading-none mb-2">
             <div>{{ item.created_at }}</div>
@@ -48,29 +49,32 @@
           <div class="text-base mb-2">{{ item.bank_title }}</div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="text-gray-900 mr-10 flex items-center">
+              <div class="text-gray-900 w-48 mr-2 truncate flex items-center">
                 <div class="mr-1 flex items-center justify-center bg-gradient-to-r text-white leading-none text-xs w-4 h-4 rounded-sm" :class="item.type | labelColor">{{ item.type | labelText }}</div>
                 <span>{{ item.subject_title }}</span>
               </div>
-              <div class="text-base text-gray-400"><span class="text-teal-500">{{ item.done_count }}</span>/{{ item.total_count }}</div>
+              <div class="text-gray-400"><span class="text-teal-500 text-base">{{ item.done_count }}</span>/{{ item.total_count }}</div>
             </div>
-            <div class="text-teal-500 cursor-pointer font-semibold">继续练习</div>
+            <div class="cursor-pointer font-semibold" :class="item.type | actionColor" @click="handleContinue(item)">{{ item | actionText }}</div>
           </div>
         </div>
       </div>
+      <empty-data :class="['shadow-none']" :show="isLoading === false && records.length === 0"/>
     </div>
   </div>
 </template>
 
 <script>
   import LearnTab from "./LearnTab"
+  import EmptyData from "@/components/common/EmptyData"
   import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
   import { getRecords } from "@/api/learnRecord"
 
   export default {
     name: "my.learn.index",
     components: {
-      LearnTab
+      LearnTab,
+      EmptyData
     },
     data () {
       return {
@@ -81,7 +85,8 @@
           subject_pid: "",
           subject_id: "",
           date: ""
-        }
+        },
+        isLoading: null
       }
     },
     mounted() {
@@ -95,19 +100,28 @@
     },
     filters: {
       labelColor(val) {
-        let isExam = ['2' ,'3'].indexOf(val) > -1
+        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
         return isExam ? 'from-yellow-400 to-yellow-500' : 'from-teal-400 to-teal-500'
       },
       labelText(val) {
-        let isExam = ['2' ,'3'].indexOf(val) > -1
+        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
         return isExam ? '试' : '练'
+      },
+      actionColor(val) {
+        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
+        return isExam ? 'text-yellow-500' : 'text-teal-500'
+      },
+      actionText(val) {
+        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
+        return val.is_end ? '查看解析' : (isExam ? '继续考试' : '继续练习')
       }
     },
     methods: {
       getRecordList() {
+        this.isLoading = true
         getRecords(this.filterForm)
           .then((res) => {
-            console.log(res)
+            this.isLoading = false
             this.records = res.data
           })
       },
@@ -123,9 +137,25 @@
             this.activeSubject = res
           })
       },
-      selectSubject() {
+      selectSubjectParent() {
         if (this.filterForm.subject_pid != "")  this.getSubject(this.filterForm.subject_pid)
         this.filterForm.subject_id = ""
+
+        this.getRecordList()
+      },
+      selectSubject() {
+        this.getRecordList()
+      },
+      selectDate() {
+        this.getRecordList()
+      },
+      handleContinue(val) {
+        let routerName = 'mode.exercise'
+        if(parseInt(val.quiz_mode) === 2) routerName = 'mode.test'
+        if([2 ,3].indexOf(parseInt(val.type)) > -1) routerName = 'mode.exam'
+        if (val.is_end) routerName = 'quiz.result'
+
+        this.$router.push({name: routerName, params: { id: val.id }})
       }
     }
   }

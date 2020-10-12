@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\LearnRecordStored;
+use App\Events\LearnRecordItemStored;
 use App\Events\LearnRecordSubmitted;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LearnRecordExamStoreRequest;
 use App\Http\Requests\Api\LearnRecordTestStoreRequest;
 use App\Http\Requests\Api\LearnRecordUpdateRequest;
-use App\Http\Resources\LearnRecordExamShowResource;
+use App\Http\Resources\LearnRecordShowResource;
 use App\Http\Resources\LearnRecordResource;
 use App\Http\Resources\LearnRecordTestShowResource;
 use App\Models\Bank;
 use App\Models\BankItem;
 use App\Models\LearnRecord;
 use App\Models\LearnRecordItem;
+use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class LearnRecordsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = optional($request->user('api'))->records();
+        $query = optional($request->user('api'))->records()->with('bank', 'bank.subject');
 
         if ($subjectPid = $request->subject_pid) {
             $subjectIds = Subject::query()->where('parent_id', $subjectPid)->pluck('id');
@@ -41,33 +42,38 @@ class LearnRecordsController extends Controller
             $query->whereBetween('created_at', $dates);
         }
 
-        $records = $query->paginate();
+        $records = $query->orderBy('updated_at', 'desc')->paginate();
 
         return LearnRecordResource::collection($records);
     }
 
-    public function testShow(Request $request, LearnRecord $record)
-    {
-        if ($record->is_end) {
-            throw new InvalidRequestException('考试已结束！');
-        }
-
-        return LearnRecordTestShowResource::make($record);
-    }
-
-    public function examShow(Request $request, LearnRecord $record)
+    public function show(Request $request, LearnRecord $record)
     {
         if ($record->is_end) {
             throw new InvalidRequestException('考试已结束！');
         }
 
         $record->load('bank.groups.items');
-        return LearnRecordExamShowResource::make($record);
+
+        return LearnRecordShowResource::make($record);
     }
 
-    public function testStore(LearnRecordTestStoreRequest $request)
+    public function showResult(Request $request, LearnRecord $record)
+    {
+        if (!$record->is_end) {
+            throw new InvalidRequestException('请先交卷再来查看解析！');
+        }
+
+        $record->load('items');
+        $record->withResult = true;
+
+        return LearnRecordShowResource::make($record);
+    }
+
+    public function storeTest(LearnRecordTestStoreRequest $request)
     {
         $type = $request->type;
+        $mode = $request->mode ?? 1;
         $number = $request->number;
 
         $bank = Bank::query()->findOrFail($request->bank_id);
@@ -101,6 +107,7 @@ class LearnRecordsController extends Controller
         $record = LearnRecord::create([
             'user_id' => optional($request->user('api'))->id,
             'bank_id' => $bank->id,
+            'quiz_mode' => $mode,
             'type' => $bank->type,
             'question_ids' => $ids->toArray(),
             'total_count' => $ids->count()
@@ -109,7 +116,7 @@ class LearnRecordsController extends Controller
         return LearnRecordResource::make($record);
     }
 
-    public function examStore(LearnRecordExamStoreRequest $request)
+    public function storeExam(LearnRecordExamStoreRequest $request)
     {
         $bank = Bank::query()->findOrFail($request->bank_id);
         $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
@@ -117,6 +124,7 @@ class LearnRecordsController extends Controller
         $record = LearnRecord::create([
             'user_id' => optional($request->user('api'))->id,
             'bank_id' => $bank->id,
+            'quiz_mode' => LearnRecord::QUIZ_EXAM,
             'type' => $bank->type,
             'total_count' => $bankItems->count()
         ]);
@@ -144,7 +152,7 @@ class LearnRecordsController extends Controller
                     $data
                 );
 
-                event(new LearnRecordStored($recordItem));
+                event(new LearnRecordItemStored($recordItem));
             }
 
             return $record;

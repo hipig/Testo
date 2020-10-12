@@ -30,6 +30,6 @@ class CreateUserCollectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject_collect_items');
+        Schema::dropIfExists('user_collects');
     }
 }

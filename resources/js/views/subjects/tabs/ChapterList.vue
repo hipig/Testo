@@ -202,10 +202,11 @@
       storeTestRecords(type) {
          let params = this.filterValue
          params.bank_id = this.activeBankId
+         params.mode = type === 'exercise' ? 1 : 2
 
          storeTestRecords(params)
            .then((res) => {
-             let name = type === 'test' ? 'models.test' : 'models.exercise'
+             let name = type === 'exercise' ? 'mode.exercise' : 'mode.test'
              this.$router.push({name: name, params: {id: res.id}})
            })
       },
@@ -245,11 +246,9 @@
         if (name === 'range') this.getTypeCount()
       },
       handleExercise() {
-        console.log('练习模式', this.filterValue)
         this.storeTestRecords('exercise')
       },
       handleExam() {
-        console.log('考试模式', this.filterValue)
         this.storeTestRecords('test')
       },
       resetOption() {

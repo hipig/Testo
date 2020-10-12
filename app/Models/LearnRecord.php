@@ -16,9 +16,17 @@ class LearnRecord extends Model
         self::DAILY_TEST => '每日一练'
     ];
 
+    const QUIZ_TEST = 1;
+    const QUIZ_EXAM= 2;
+
+    public static $quizModeMap = [
+        self::QUIZ_TEST => '练习模式',
+        self::QUIZ_EXAM => '考试模式'
+    ];
+
     protected $fillable = [
         'user_id', 'bank_id', 'question_ids', 'type',
-        'total_count', 'done_count', 'done_time'
+        'quiz_mode', 'total_count', 'done_count', 'done_time'
     ];
 
     protected $casts = [
@@ -40,12 +48,27 @@ class LearnRecord extends Model
         return $this->hasMany(LearnRecordItem::class, 'record_id');
     }
 
-    public function getTestQuestionItemsAttribute()
+    public function getQuestionItemsAttribute()
     {
         return BankItem::query()
             ->whereIn('id', $this->question_ids)
             ->orderBy('index')
             ->orderBy('type')
             ->get();
+    }
+
+    public function getItemsResult($type = 1)
+    {
+        $query = $this->items()->where('question_type', $type);
+
+        return [
+            'type' => $type,
+            'total' => (clone $query)->count(),
+            'right' => (clone $query)->where('is_right', true)->count(),
+            'error' => (clone $query)->where(function ($query) {
+                $query->where('is_right', false)->orWhere('is_right', null);
+            })->count(),
+            'score' => (clone $query)->where('is_right', true)->sum('score'),
+        ];
     }
 }

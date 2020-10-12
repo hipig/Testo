@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\LearnRecordStored;
+use App\Events\LearnRecordItemStored;
+use App\Events\LearnRecordSubmitted;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LearnRecordItemBatchRequest;
 use App\Http\Requests\Api\LearnRecordItemRequest;
@@ -21,7 +22,8 @@ class LearnRecordItemsController extends Controller
             $request->all()
         );
 
-        event(new LearnRecordStored($recordItem));
+        event(new LearnRecordSubmitted($record));
+        event(new LearnRecordItemStored($recordItem));
 
         return LearnRecordItemResource::make($recordItem);
     }

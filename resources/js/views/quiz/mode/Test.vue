@@ -8,43 +8,26 @@
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
-                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">模拟考试</div>
+                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">考试模式</div>
               </div>
-            </div>
-            <div class="mt-4 flex flex-warp items-center text-gray-400">
-              <div class="mr-10">本卷共{{ recordItems.length }}{{ record.is_group ? '大题' : '小题' }}</div>
-              <div class="mr-10">总分：{{ record.score || 0 }}分</div>
-              <div class="mr-10">时间：{{ record.time_limit || 0  }}分钟</div>
             </div>
           </div>
           <div v-loading="isLoading" loading-custom-class="h-56">
-            <template v-if="record.is_group">
-              <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
-                <div class="text-base font-semibold">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
-                <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :question="v.question" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
-              </div>
+            <template v-for="(item, index) in questions">
+              <exam-item :id="'q-'+index" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
             </template>
-            <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
           </div>
-          <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
+          <empty-data class="mt-5" :show="isLoading === false && questions.length === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
             <div class="bg-white shadow rounded-lg mb-5">
               <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
-              <div class="px-5 py-4">
-                <template v-if="record.is_group">
-                  <div class="mb-4" v-for="(item, index) in recordItems" :key="index">
-                    <div class="mb-2 text-gray-900 flex items-center leading-none"><span class="font-semibold text-base">{{ questionTypes[item.item_type].name }}</span><span class="text-gray-400">{{ '（共'+item.item_count+'题，每题'+item.item_score+'分）' }}</span> </div>
-                    <div class="flex flex-wrap -mx-1">
-                      <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(v, i) in item.items" :key="i" :class="[(answerList[index+'-'+i] && answerList[index+'-'+i].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index+'-'+i)">{{ i+1 }}</div>
-                    </div>
-                  </div>
-                </template>
-                <div class="flex flex-wrap -mx-1" v-else>
-                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
+              <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
+                <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
+                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
-                <div class="text-gray-400" v-if="isLoading === false  && Object.keys(answerList).length === 0">还没有数据哦~</div>
+                <div class="text-gray-400" v-if="isLoading === false && answerList.length === 0">还没有数据哦~</div>
               </div>
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
                 <div class="flex items-center text-gray-900">
@@ -64,7 +47,7 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing :second="record.time_limit * 60 || 0" :is-pause="isPause" @timer="getDoneTime"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing @timer="getDoneTime" :is-pause="isPause"/></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
@@ -76,13 +59,8 @@
                   </div>
                 </div>
               </div>
-              <div class="flex justify-center py-3 px-5 -mx-2">
-                <div class="w-1/2 px-2">
-                  <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none" @click="nextContinue">下次继续</button>
-                </div>
-                <div class="w-1/2 px-2">
-                  <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none" @click="submitModalVisible = true">交卷</button>
-                </div>
+              <div class="flex justify-center py-3">
+                <button type="button" class="w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none" @click="submitModalVisible = true">交卷</button>
               </div>
             </div>
           </div>
@@ -99,7 +77,7 @@
             <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">继续做题</button>
           </div>
           <div class="w-1/2 px-5 flex justify-center">
-            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none"@click="submitRecord('end')">交卷</button>
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">交卷</button>
           </div>
         </div>
       </div>
@@ -122,12 +100,11 @@
   import EmptyData from "@/components/common/EmptyData"
   import ExamItem from "@/components/questions/ExamItem"
   import Timing from "@/components/common/Timing"
-  import QuestionType from "@/mixins/QuestionType"
   import TModal from "@/components/common/modal/Modal"
-  import { showExamRecords, updateRecords } from "@/api/learnRecord"
+  import { showRecords, updateRecords } from "@/api/learnRecord"
 
   export default {
-    name: "models.exam",
+    name: "quiz.mode.test",
     components: {
       Breadcrumb,
       EmptyData,
@@ -135,12 +112,11 @@
       Timing,
       TModal
     },
-    mixins: [QuestionType],
     data () {
       return {
         recordId: this.$route.params.id,
         record:{},
-        recordItems: [],
+        questions: [],
         answerList: [],
         doneCount: 0,
         isPause: false,
@@ -151,11 +127,11 @@
       }
     },
     mounted() {
-      this.showExamRecords()
+      this.showRecords()
     },
     computed: {
       undoneCount() {
-        return Object.keys(this.answerList).length - this.doneCount
+        return this.answerList.length - this.doneCount
       }
     },
     watch: {
@@ -164,33 +140,20 @@
       }
     },
     methods: {
-      showExamRecords() {
+      showRecords() {
         this.isLoading = true
-        showExamRecords(this.recordId)
+        showRecords(this.recordId)
           .then((res) => {
             this.record = res
-            this.recordItems = res.items
-
-            let answerList = {}
-            this.recordItems.forEach((item, index) => {
-              if (res.is_group) {
-                item.items.forEach((v, i) => {
-                  let key = index+'-'+i
-                  answerList[key] = {
-                    bank_item_id: v.id,
-                    question_id: v.question.id,
-                    answer: []
-                  }
-                })
-              } else {
-                answerList[index] = {
-                  bank_item_id: item.id,
-                  question_id: item.question.id,
-                  answer: []
-                }
+            this.questions = res.items
+            this.answerList = res.items.map(item => {
+              return {
+                bank_item_id: item.id,
+                question_id: item.question.id,
+                question_type: item.question.type,
+                answer: []
               }
             })
-            this.answerList = answerList
           })
           .finally(() => {
             this.isLoading = false
@@ -202,35 +165,28 @@
         })
       },
       handleAnswer(answer, isRight, index) {
-        index = typeof index === "object" ? index.join('-') : index
         this.answerList[index] = Object.assign({}, this.answerList[index], {
           answer: answer,
-          is_right: isRight
+          isRight: isRight
         })
-        this.doneCount = Object.values(this.answerList).filter(item => {
+        this.doneCount = this.answerList.filter(item => {
           return item.answer.length !== 0
         }).length
       },
       getDoneTime(second) {
         this.doneTime = second
       },
-      submitRecord(type = 'end') {
+      submitRecord() {
         let params = {
           done_time: this.doneTime,
-          type: type || '',
+          type: 'end',
           items: this.answerList
         }
         updateRecords(this.recordId, params)
           .then((res) => {
-            if (type && type == 'end') {
-              this.submitModalVisible = false
-              this.$Message.success('交卷成功！')
-            }
+            this.submitModalVisible = false
+            this.$Message.success('交卷成功！')
           })
-      },
-      nextContinue() {
-        this.submitRecord('next')
-        this.$router.go(-1)
       }
     }
   }

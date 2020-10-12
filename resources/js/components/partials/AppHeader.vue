@@ -56,7 +56,7 @@
         currentMenu: '',
         routerList: {
           home: ['home'],
-          subjects: ['subjects', 'subjects.show', 'models.exercise', 'models.test', 'models.exam']
+          subjects: ['subjects', 'subjects.show', 'mode.exercise', 'mode.test', 'mode.exam', 'quiz.result', 'quiz.result.detail']
         }
       }
     },

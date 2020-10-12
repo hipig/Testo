@@ -53,12 +53,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(LearnRecord::class);
     }
 
-    public function errorItems()
+    public function recordItems()
+    {
+        return $this->hasManyThrough(LearnRecordItem::class, LearnRecord::class, 'user_id', 'record_id');
+    }
+
+    public function errors()
     {
         return $this->hasMany(UserError::class);
     }
 
-    public function collectItems()
+    public function collects()
     {
         return $this->hasMany(UserCollect::class);
     }

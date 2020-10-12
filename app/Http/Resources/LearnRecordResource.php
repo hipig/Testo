@@ -21,6 +21,7 @@ class LearnRecordResource extends JsonResource
             'id' => $this->id,
             'bank_id' => $this->bank_id,
             'type' => $this->type,
+            'quiz_mode' => $this->quiz_mode,
             'bank_title' => $bank->title,
             'subject_title' => optional($bank->subject)->title,
             'total_count' => $this->total_count,

@@ -18,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\LearnRecordStored' => [
+        'App\Events\LearnRecordItemStored' => [
             'App\Listeners\RecordErrorQuestion',
         ],
         'App\Events\LearnRecordSubmitted' => [

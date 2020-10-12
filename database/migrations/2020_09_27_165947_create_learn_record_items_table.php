@@ -18,6 +18,7 @@ class CreateLearnRecordItemsTable extends Migration
             $table->unsignedBigInteger('record_id')->comment('记录ID');
             $table->unsignedBigInteger('bank_item_id')->comment('题目ID');
             $table->unsignedBigInteger('question_id')->comment('题库关联题目ID');
+            $table->unsignedTinyInteger('question_type')->default(1)->comment('题库关联题目类型');
             $table->string('answer', 2560)->nullable()->comment('答案');
             $table->boolean('is_right')->nullable()->comment('是否答对');
             $table->unsignedInteger('score')->default(0)->comment('得分');
