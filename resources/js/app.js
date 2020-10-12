@@ -4,12 +4,12 @@ import store from '@/store'
 import router from '@/router'
 
 import VCalendar from 'v-calendar'
-import Message from '@/components/common/message'
+import Component from './component'
 
 Vue.config.productionTip = false
 
 Vue.use(VCalendar)
-Vue.prototype.$Message = Message
+Vue.use(Component)
 
 new Vue({
     store,

@@ -57,7 +57,7 @@
       </div>
     </div>
     <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
-      <div class="w-full">
+      <div class="w-full" v-loading="listLoading">
         <div class="mb-5" v-for="(value, key) in subjectList" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>
           <div class="flex flex-wrap -mx-3">
@@ -105,25 +105,34 @@
         mockExams: [],
         oldExams: [],
         dailyTests: [],
-        switchSubjectVisible: false
+        switchSubjectVisible: false,
+        isLoading: null,
+        listLoading: null
       }
     },
     mounted() {
-      this.getSubjectList()
       this.getSubject()
     },
     methods: {
       getSubjectList() {
+        this.listLoading = true
         getSubjectsTree()
           .then((res) => {
             this.subjectList = res
           })
+          .finally(() => {
+            this.listLoading = false
+          })
       },
       getSubject() {
+        this.isLoading = true
         getSubjectsShow(this.sid)
           .then((res) => {
             this.subject = res
             this.ssid = this.$route.params.ssid || res.children_group[0][0].id
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       switchTab(name) {
@@ -131,6 +140,7 @@
       },
       showSwitchSubject() {
         this.switchSubjectVisible = !this.switchSubjectVisible
+        this.getSubjectList()
       },
       closeSwitchSubjectModal() {
         this.switchSubjectVisible = false

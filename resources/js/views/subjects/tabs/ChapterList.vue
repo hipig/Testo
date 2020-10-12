@@ -5,7 +5,7 @@
         <div class="text-gray-500 flex flex-col" v-if="list.length > 0">
           <div v-for="(value, key) in list" :key="key" class="mb-5 pl-3 leading-tight truncate cursor-pointer border-l-4" :class="[key === activeIndex ? 'text-teal-500 border-teal-500' : 'border-transparent']" @click="toIndex(key)">{{ value.title }}</div>
         </div>
-        <div class="flex items-center justify-center text-gray-400 pb-4" v-else>还没有数据哦~</div>
+        <div class="flex items-center justify-center text-gray-400 pb-4" v-if="isLoading === false && list.length === 0">还没有数据哦~</div>
       </div>
     </div>
     <div class="flex-1 bg-white shadow rounded-lg">
@@ -13,12 +13,12 @@
         <div class="w-2/3 pl-10">名称</div>
         <div class="w-1/3">做题进度</div>
       </div>
-      <div class="flex flex-wrap" v-if="list.length > 0">
+      <div class="flex flex-wrap relative" v-loading="isLoading" loading-custom-class="h-32">
         <chapter-item :id="'chapter-'+key" v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num||0, value.total_count]" :disabled="value.children.length === 0" @btnClick="handleLearn">
           <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num||0, v.total_count]" second  @btnClick="handleLearn"/>
         </chapter-item>
       </div>
-      <empty-data :show="isLoaded && list.length === 0"/>
+      <empty-data :show="isLoading === false && list.length === 0"/>
     </div>
     <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
       <div class="w-full -mb-5">
@@ -153,15 +153,13 @@
         typeCount: [],
         activeBankId: '',
         filterVisible: false,
-        isLoaded: false,
+        isLoading: null,
         activeIndex: 0,
         scrollStatus: true
       }
     },
-    created() {
-      this.getChapterTestList()
-    },
     mounted() {
+      this.getChapterTestList()
       let timeId = null
       this.$refs['chapter-list'].addEventListener('scroll', () => {
         clearTimeout(timeId)
@@ -172,10 +170,13 @@
     },
     methods: {
       getChapterTestList() {
+        this.isLoading = true
         getChapterTests(this.subjectId)
           .then((res) => {
-            this.isLoaded = true
             this.list = res
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       getTypeCount() {

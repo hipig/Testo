@@ -14,7 +14,7 @@
       leave-class="translate-y-0 opacity-100"
       leave-active-class="transform origin-center ease-in-out duration-300"
       leave-to-class="-translate-y-full opacity-0"
-      @after-leave="doDestory"
+      @after-leave="handleAfterLeave"
     >
       <div class="inline-flex items-center px-4 py-2 text-sm rounded-md bg-white shadow-md border border-gray-50 leading-none" v-show="visible">
         <svg class="w-5 h-5 stroke-current text-teal-500" fill="none" viewBox="0 0 24 24" v-if="type === 'info'">
@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    doDestory () {
+    handleAfterLeave () {
       this.$destroy(true)
       this.$el.parentNode.removeChild(this.$el)
     },

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubjectErrorItemsTable extends Migration
+class CreateUserCollectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSubjectErrorItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subject_error_items', function (Blueprint $table) {
+        Schema::create('user_collects', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->comment('用户ID');
             $table->unsignedBigInteger('subject_id')->comment('科目ID');
@@ -30,6 +30,6 @@ class CreateSubjectErrorItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject_error_items');
+        Schema::dropIfExists('subject_collect_items');
     }
 }

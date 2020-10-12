@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class SubjectCollectItem extends Model
+class UserCollect extends Model
 {
     protected $fillable = [
         'user_id', 'subject_id', 'bank_item_id', 'question_id'

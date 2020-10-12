@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <template v-if="list.length > 0">
+    <div v-loading="isLoading" loading-custom-class="h-56">
       <div class="mb-3" v-for="(item, index) in list" :key="index">
         <div class="bg-white shadow rounded-lg">
           <div class="py-5 pl-32 pr-5 flex items-center border-b border-gray-100">
@@ -21,8 +21,8 @@
           </div>
         </div>
       </div>
-    </template>
-    <empty-data :show="isLoaded && list.length === 0"/>
+    </div>
+    <empty-data :show="isLoading === false && list.length === 0"/>
   </div>
 </template>
 
@@ -49,18 +49,21 @@
       return {
         list: [],
         dayjs: dayjs,
-        isLoaded: false
+        isLoading: null
       }
     },
-    created() {
+    mounted() {
       this.getDailyTestList()
     },
     methods: {
       getDailyTestList() {
+        this.isLoading = true
         getDailyTests(this.subjectId)
           .then((res) => {
-            this.isLoaded = true
             this.list = res
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       handle(id) {

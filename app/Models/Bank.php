@@ -48,7 +48,7 @@ class Bank extends Model
 
     public function groups()
     {
-        return $this->hasMany(BankGroup::class, 'bank_id');
+        return $this->hasMany(BankGroup::class, 'bank_id')->orderBy('item_type');
     }
 
     public function items()

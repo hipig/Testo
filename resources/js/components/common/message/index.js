@@ -30,22 +30,16 @@ const Message = options => {
   })
 
   instance.id = id
-  instance.vm = instance.$mount()
-  document.body.appendChild(instance.vm.$el)
-  instance.vm.visible = true
-  instance.dom = instance.vm.$el
-  instance.dom.style.zIndex = zindexSeed++
+  instance.$mount()
+  document.body.appendChild(instance.$el)
+  instance.visible = true
+  instance.$el.style.zIndex = zindexSeed++
 
-  const offset = 0
-  const len = instances.length
-  let topDist = offset
-
-  for (let i = 0; i < len; i++) {
-    topDist += instances[i].$el.offsetHeight + 10
-  }
-
-  topDist += 10
-  instance.top = topDist
+  let topDist  = options.top || 10
+  instances.forEach(item => {
+    topDist  += (item.$el.offsetHeight || 0) + 10
+  })
+  instance.top  = topDist
 
   instances.push(instance)
 
@@ -65,7 +59,7 @@ Message.close = (id, customCloseFunc) => {
         customCloseFunc(instances[i])
       }
       index = i
-      removedHeight = instances[i].dom.offsetHeight
+      removedHeight = instances[i].$el.offsetHeight
       instances.splice(i, 1)
       break
     }
@@ -73,7 +67,7 @@ Message.close = (id, customCloseFunc) => {
 
   if (len > 1) {
     for (let i = index; i < len - 1; i++) {
-      instances[i].dom.style.top = `${parseInt(instances[i].dom.style.top) - removedHeight - 10}px`
+      instances[i].$el.style.top = `${parseInt(instances[i].$el.style.top) - removedHeight - 10}px`
     }
   }
 }

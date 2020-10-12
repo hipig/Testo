@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Events\LearnRecordStored;
 use App\Models\Question;
-use App\Models\SubjectErrorItem;
+use App\Models\UserError;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -30,7 +30,7 @@ class RecordErrorQuestion
     {
         $recordItem = $event->getRecordItem();
 
-        SubjectErrorItem::updateOrCreate([
+        UserError::updateOrCreate([
 
         ]);
     }

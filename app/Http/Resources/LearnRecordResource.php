@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LearnRecordResource extends JsonResource
@@ -14,6 +15,18 @@ class LearnRecordResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $bank = optional($this->bank);
+
+        return [
+            'id' => $this->id,
+            'bank_id' => $this->bank_id,
+            'type' => $this->type,
+            'bank_title' => $bank->title,
+            'subject_title' => optional($bank->subject)->title,
+            'total_count' => $this->total_count,
+            'done_count' => $this->done_count,
+            'is_end' => $this->is_end,
+            'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i:s')
+        ];
     }
 }

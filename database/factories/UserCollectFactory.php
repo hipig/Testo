@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\SubjectErrorItem;
+use App\Models\UserCollect;
 use Faker\Generator as Faker;
 
-$factory->define(SubjectErrorItem::class, function (Faker $faker) {
+$factory->define(UserCollect::class, function (Faker $faker) {
     return [
         //
     ];

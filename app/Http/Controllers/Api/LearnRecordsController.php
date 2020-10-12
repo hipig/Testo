@@ -16,20 +16,49 @@ use App\Models\Bank;
 use App\Models\BankItem;
 use App\Models\LearnRecord;
 use App\Models\LearnRecordItem;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LearnRecordsController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = optional($request->user('api'))->records();
+
+        if ($subjectPid = $request->subject_pid) {
+            $subjectIds = Subject::query()->where('parent_id', $subjectPid)->pluck('id');
+            $bankIds = Bank::query()->whereIn('subject_id', $subjectIds)->pluck('id');
+            $query->whereIn('bank_id', $bankIds);
+        }
+
+        if ($subjectId = $request->subject_id) {
+            $query->where('bank_id', $subjectId);
+        }
+
+        if ($date = $request->date) {
+            $dates = explode('-', $date);
+            $query->whereBetween('created_at', $dates);
+        }
+
+        $records = $query->paginate();
+
+        return LearnRecordResource::collection($records);
+    }
+
     public function testShow(Request $request, LearnRecord $record)
     {
+        if ($record->is_end) {
+            throw new InvalidRequestException('考试已结束！');
+        }
+
         return LearnRecordTestShowResource::make($record);
     }
 
     public function examShow(Request $request, LearnRecord $record)
     {
         if ($record->is_end) {
-            throw new InvalidRequestException('考试已结束');
+            throw new InvalidRequestException('考试已结束！');
         }
 
         $record->load('bank.groups.items');
@@ -97,6 +126,10 @@ class LearnRecordsController extends Controller
 
     public function update(LearnRecordUpdateRequest $request, LearnRecord $record)
     {
+        if ($record->is_end) {
+            throw new InvalidRequestException('禁止重复交卷！');
+        }
+
         $record = DB::transaction(function () use ($record, $request) {
             $record->done_time = $request->done_time;
             $record->is_end = $request->type && $request->type == 'end';

@@ -55,12 +55,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function errorItems()
     {
-        return $this->hasMany(SubjectErrorItem::class);
+        return $this->hasMany(UserError::class);
     }
 
     public function collectItems()
     {
-        return $this->hasMany(SubjectCollectItem::class);
+        return $this->hasMany(UserCollect::class);
     }
 
     public function setPasswordAttribute($value)

@@ -17,14 +17,16 @@
               <div class="mr-10">时间：{{ record.time_limit || 0  }}分钟</div>
             </div>
           </div>
-          <template v-if="record.is_group">
-            <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
-              <div class="text-base font-semibold">{{ item.title }}</div>
-              <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :question="v.question" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
-            </div>
-          </template>
-          <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
-          <empty-data class="mt-5" :show="isLoaded && recordItems.length === 0"/>
+          <div v-loading="isLoading" loading-custom-class="h-56">
+            <template v-if="record.is_group">
+              <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
+                <div class="text-base font-semibold">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
+                <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :question="v.question" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
+              </div>
+            </template>
+            <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
+          </div>
+          <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
@@ -42,7 +44,7 @@
                 <div class="flex flex-wrap -mx-1" v-else>
                   <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
-                <div class="text-gray-400" v-if="isLoaded && Object.keys(answerList).length === 0">还没有数据哦~</div>
+                <div class="text-gray-400" v-if="isLoading === false  && Object.keys(answerList).length === 0">还没有数据哦~</div>
               </div>
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
                 <div class="flex items-center text-gray-900">
@@ -142,13 +144,13 @@
         answerList: [],
         doneCount: 0,
         isPause: false,
-        isLoaded: false,
+        isLoading: null,
         pauseModalVisible: false,
         submitModalVisible: false,
         doneTime: 0
       }
     },
-    created() {
+    mounted() {
       this.showExamRecords()
     },
     computed: {
@@ -163,9 +165,9 @@
     },
     methods: {
       showExamRecords() {
+        this.isLoading = true
         showExamRecords(this.recordId)
           .then((res) => {
-            this.isLoaded = true
             this.record = res
             this.recordItems = res.items
 
@@ -189,6 +191,9 @@
               }
             })
             this.answerList = answerList
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       toIndex(index) {

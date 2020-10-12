@@ -55,6 +55,9 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::get('user', 'UsersController@me')->name('user.show');
         // 修改密码
         Route::post('user/change-password', 'UsersController@updatePassword')->name('user.change.password');
+
+        // 生成练习记录
+        Route::get('records', 'LearnRecordsController@index')->name('learnRecords.index');
         // 生成练习记录
         Route::post('records/test', 'LearnRecordsController@testStore')->name('learnRecords.store.test');
         // 生成考试记录

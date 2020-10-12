@@ -2,6 +2,7 @@ import service from '@/utils/request'
 import { sprintf } from '@/utils/util'
 
 const api = {
+  getRecords: '/records',
   showTestRecords: '/records/test/%s',
   testRecords: '/records/test',
   showExamRecords: '/records/exam/%s',
@@ -9,6 +10,12 @@ const api = {
   recordItems: '/records/%s/items',
   updateRecords: '/records/%s'
 }
+
+export const getRecords = (params) => service({
+  url: api.getRecords,
+  method: 'get',
+  params: params
+})
 
 export const showTestRecords = (id, params) => service({
   url: sprintf(api.showTestRecords, id),

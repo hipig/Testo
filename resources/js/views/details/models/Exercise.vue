@@ -18,10 +18,12 @@
               </label>
             </div>
           </div>
-          <template v-for="(item, index) in questions">
-            <exercise-item :key="index" v-if="activeIndex === index" :question="item.question" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
-          </template>
-          <empty-data class="mt-5" :show="isLoaded && questionsLength === 0"/>
+          <div v-loading="isLoading" loading-custom-class="h-56">
+            <template v-for="(item, index) in questions">
+              <exercise-item :key="index" v-if="activeIndex === index" :question="item.question" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
+            </template>
+          </div>
+          <empty-data class="mt-5" :show="isLoading === false && questionsLength === 0"/>
         </div>
         <div class="w-1/3 px-3">
           <div class="bg-white shadow rounded-lg mb-5">
@@ -30,7 +32,7 @@
               <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
                 <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :item-data="item.answer" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.is_right ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
               </div>
-              <div class="text-gray-400" v-if="isLoaded && answerList.length === 0">还没有数据哦~</div>
+              <div class="text-gray-400" v-if="isLoading === false && answerList.length === 0">还没有数据哦~</div>
             </div>
             <div class="mt-1 px-8 py-3 flex justify-between border-t border-gray-100">
               <div class="flex items-center text-gray-900">
@@ -94,10 +96,10 @@
         autoNext: '',
         rightCount: 0,
         errorCount: 0,
-        isLoaded: false
+        isLoading: null
       }
     },
-    created() {
+    mounted() {
       this.showTestRecords()
     },
     computed: {
@@ -119,9 +121,9 @@
     },
     methods: {
       showTestRecords() {
+        this.isLoading = true
         showTestRecords(this.recordId, {bank_type: this.bankType})
           .then((res) => {
-            this.isLoaded = true
             this.record = res
             this.questions = res.items
             this.answerList = res.items.map(item => {
@@ -131,6 +133,9 @@
                 answer: []
               }
             })
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       toIndex(index) {

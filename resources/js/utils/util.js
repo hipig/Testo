@@ -1,3 +1,6 @@
+const SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g
+const MOZ_HACK_REGEXP = /^moz([A-Z])/
+
 export function str_repeat(i, m) {
   for (var o = []; m > 0; o[--m] = i);
   return o.join('');
@@ -43,4 +46,112 @@ export function sprintf() {
     f = f.substring(m[0].length);
   }
   return o.join('');
+}
+
+export function camelCase (name) {
+  return name.replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
+    return offset ? letter.toUpperCase() : letter
+  }).replace(MOZ_HACK_REGEXP, 'Moz$1')
+}
+
+export function getStyle (element, styleName) {
+  if (!element || !styleName) return null
+
+  styleName = camelCase(styleName)
+  if (styleName === 'float') {
+    styleName = 'cssFloat'
+  }
+
+  try {
+    const computed = document.defaultView.getComputedStyle(element, '')
+    return element.style[styleName] || computed ? computed[styleName] : null
+  } catch (e) {
+    return element.style[styleName]
+  }
+}
+
+function typeOf (obj) {
+  const map = {
+    '[object Boolean]': 'boolean',
+    '[object Number]': 'number',
+    '[object String]': 'string',
+    '[object Function]': 'function',
+    '[object Array]': 'array',
+    '[object Date]': 'date',
+    '[object RegExp]': 'regExp',
+    '[object Undefined]': 'undefined',
+    '[object Null]': 'null',
+    '[object Object]': 'object',
+  }
+  return map[Object.prototype.toString.call(obj)]
+}
+
+export function hasClass (el, cls) {
+  if (!el || !cls) return false
+  if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.')
+  if (el.classList) {
+    return el.classList.contains(cls)
+  }
+  return (` ${el.className} `).indexOf(` ${cls} `) > -1
+}
+
+export function addClass (el, cls) {
+  if (!el) return
+
+  const classes = (cls || '').split(' ')
+  let curClass = el.className
+
+  for (let i = 0, j = classes.length; i < j; i++) {
+    const clsName = classes[i]
+    if (!clsName) continue
+
+    if (el.classList) {
+      el.classList.add(clsName)
+    } else if (!hasClass(el, clsName)) {
+      curClass += ` ${clsName}`
+    }
+  }
+  if (!el.classList) {
+    el.className = curClass
+  }
+}
+
+export function removeClass (el, cls) {
+  if (!el || !cls) return
+  const classes = cls.split(' ')
+  let curClass = ` ${el.className} `
+
+  for (let i = 0, j = classes.length; i < j; i++) {
+    const clsName = classes[i]
+    if (!clsName) continue
+
+    if (el.classList) {
+      el.classList.remove(clsName)
+    } else if (hasClass(el, clsName)) {
+      curClass = curClass.replace(` ${clsName} `, ' ')
+    }
+  }
+  if (!el.classList) {
+    el.className = trim(curClass)
+  }
+}
+
+export function afterLeave(instance, callback, speed = 300, once = false) {
+  if (!instance || !callback) throw new Error('instance & callback is required')
+  let called = false
+  const afterLeaveCallback = function() {
+    if (called) return
+    called = true
+    if (callback) {
+      callback.apply(null, arguments)
+    }
+  }
+  if (once) {
+    instance.$once('after-leave', afterLeaveCallback)
+  } else {
+    instance.$on('after-leave', afterLeaveCallback)
+  }
+  setTimeout(() => {
+    afterLeaveCallback()
+  }, speed + 100)
 }

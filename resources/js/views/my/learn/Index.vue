@@ -39,7 +39,25 @@
           </div>
         </div>
       </div>
-      <div>这是最近考试</div>
+      <div>
+        <div class="pt-5 pb-4 border-b border-gray-100" v-for="(item, index) in records" :key="index">
+          <div class="flex items-center justify-between text-gray-500 text-xs leading-none mb-2">
+            <div>{{ item.created_at }}</div>
+            <div class="cursor-pointer">删除</div>
+          </div>
+          <div class="text-base mb-2">{{ item.bank_title }}</div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="text-gray-900 mr-10 flex items-center">
+                <div class="mr-1 flex items-center justify-center bg-gradient-to-r text-white leading-none text-xs w-4 h-4 rounded-sm" :class="item.type | labelColor">{{ item.type | labelText }}</div>
+                <span>{{ item.subject_title }}</span>
+              </div>
+              <div class="text-base text-gray-400"><span class="text-teal-500">{{ item.done_count }}</span>/{{ item.total_count }}</div>
+            </div>
+            <div class="text-teal-500 cursor-pointer font-semibold">继续练习</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +65,7 @@
 <script>
   import LearnTab from "./LearnTab"
   import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
+  import { getRecords } from "@/api/learnRecord"
 
   export default {
     name: "my.learn.index",
@@ -55,6 +74,7 @@
     },
     data () {
       return {
+        records: [],
         subjectList: [],
         activeSubject: {},
         filterForm: {
@@ -66,13 +86,31 @@
     },
     mounted() {
       this.getSubjectList()
+      this.getRecordList()
     },
     computed: {
       subjectSelected() {
         return this.filterForm.subject_pid != ""
       }
     },
+    filters: {
+      labelColor(val) {
+        let isExam = ['2' ,'3'].indexOf(val) > -1
+        return isExam ? 'from-yellow-400 to-yellow-500' : 'from-teal-400 to-teal-500'
+      },
+      labelText(val) {
+        let isExam = ['2' ,'3'].indexOf(val) > -1
+        return isExam ? '试' : '练'
+      }
+    },
     methods: {
+      getRecordList() {
+        getRecords(this.filterForm)
+          .then((res) => {
+            console.log(res)
+            this.records = res.data
+          })
+      },
       getSubjectList() {
         getSubjectsTree()
           .then((res) => {
