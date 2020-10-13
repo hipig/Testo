@@ -27,6 +27,7 @@ class LearnRecordResource extends JsonResource
             'total_count' => $this->total_count,
             'done_count' => $this->done_count,
             'is_end' => $this->is_end,
+            'score' => $this->score,
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i:s')
         ];
     }

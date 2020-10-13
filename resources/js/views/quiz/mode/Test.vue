@@ -4,7 +4,7 @@
       <breadcrumb :list="record.breadcrumb"/>
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
-          <div class="bg-white shadow rounded-lg p-5">
+          <div class="bg-white shadow rounded-lg p-5 mb-5">
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
@@ -13,11 +13,11 @@
             </div>
           </div>
           <div v-loading="isLoading" loading-custom-class="h-56">
-            <template v-for="(item, index) in questions">
+            <template v-for="(item, index) in recordItems">
               <exam-item :id="'q-'+index" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
             </template>
           </div>
-          <empty-data class="mt-5" :show="isLoading === false && questions.length === 0"/>
+          <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
@@ -32,11 +32,11 @@
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
                 <div class="flex items-center text-gray-900">
                   <div class="bg-gray-400 border border-gray-400 w-4 h-4 mr-1"></div>
-                  <div class="leading-none">已做{{ doneCount }}</div>
+                  <div class="leading-none">已做 {{ doneCount }}</div>
                 </div>
                 <div class="flex items-center text-gray-900">
                   <div class="bg-white border border-gray-200 w-4 h-4 mr-1"></div>
-                  <div class="leading-none">未做{{ undoneCount }}</div>
+                  <div class="leading-none">未做 {{ undoneCount }}</div>
                 </div>
               </div>
             </div>
@@ -47,7 +47,7 @@
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing @timer="getDoneTime" :is-pause="isPause"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing :second="0" :done-second="doneTime" v-if="isLoading === false" /></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
@@ -116,18 +116,22 @@
       return {
         recordId: this.$route.params.id,
         record:{},
-        questions: [],
+        recordItems: [],
         answerList: [],
-        doneCount: 0,
         isPause: false,
         isLoading: null,
         pauseModalVisible: false,
         submitModalVisible: false,
-        doneTime: 0
+        doneTime: 0,
+        doneCount: 0,
+        timer: null
       }
     },
     mounted() {
       this.showRecords()
+      window.addEventListener('beforeunload', e => {
+        this.submitRecord('next')
+      })
     },
     computed: {
       undoneCount() {
@@ -145,19 +149,30 @@
         showRecords(this.recordId)
           .then((res) => {
             this.record = res
-            this.questions = res.items
+            this.recordItems = res.items
+            this.doneTime = res.done_time
+
             this.answerList = res.items.map(item => {
               return {
+                record_id: this.recordId,
                 bank_item_id: item.id,
                 question_id: item.question.id,
                 question_type: item.question.type,
-                answer: []
+                answer: (item.record && item.record.answer) || ""
               }
             })
+
+            this.doneCount = this.answerList.filter(item => {
+              return item.answer.length !== 0
+            }).length
           })
           .finally(() => {
             this.isLoading = false
+            this.timer = setInterval(this.intervalEvent, 1000)
           })
+      },
+      intervalEvent() {
+        if (!this.isPause) this.doneTime++
       },
       toIndex(index) {
         this.$nextTick(() => {
@@ -167,8 +182,9 @@
       handleAnswer(answer, isRight, index) {
         this.answerList[index] = Object.assign({}, this.answerList[index], {
           answer: answer,
-          isRight: isRight
+          is_right: isRight
         })
+
         this.doneCount = this.answerList.filter(item => {
           return item.answer.length !== 0
         }).length
@@ -176,16 +192,17 @@
       getDoneTime(second) {
         this.doneTime = second
       },
-      submitRecord() {
+      submitRecord(type = 'end') {
         let params = {
           done_time: this.doneTime,
-          type: 'end',
+          type: type,
           items: this.answerList
         }
         updateRecords(this.recordId, params)
           .then((res) => {
             this.submitModalVisible = false
-            this.$Message.success('交卷成功！')
+            this.$Message.success('交卷成功，正在计算得分!')
+            this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
           })
       }
     }

@@ -28,6 +28,11 @@ class LearnRecordItem extends Model
         return $this->belongsTo(Question::class, 'question_id');
     }
 
+    public function getAnswerAttribute($value)
+    {
+        return in_array($this->question_type, [Question::MULTI_SELECT, Question::FILL_BLANK]) ? json_decode($value, true) : $value;
+    }
+
     public function setAnswerAttribute($value)
     {
         $this->attributes['answer'] = is_array($value) ? json_encode($value) : $value;

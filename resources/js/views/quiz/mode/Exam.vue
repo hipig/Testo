@@ -4,7 +4,7 @@
       <breadcrumb :list="record.breadcrumb"/>
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
-          <div class="bg-white shadow rounded-lg p-5">
+          <div class="bg-white shadow rounded-lg p-5 mb-5" v-if="record.id">
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
@@ -26,7 +26,7 @@
             </template>
             <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" :show-report="false" :show-remark="false" @answer="handleAnswer"></exam-item>
           </div>
-          <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
+          <empty-data :show="isLoading === false && recordItems.length === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">
@@ -49,22 +49,22 @@
               <div class="mt-1 px-20 py-3 flex justify-between border-t border-gray-100">
                 <div class="flex items-center text-gray-900">
                   <div class="bg-gray-400 border border-gray-400 w-4 h-4 mr-1"></div>
-                  <div class="leading-none">已做{{ doneCount }}</div>
+                  <div class="leading-none">已做 {{ doneCount }}</div>
                 </div>
                 <div class="flex items-center text-gray-900">
                   <div class="bg-white border border-gray-200 w-4 h-4 mr-1"></div>
-                  <div class="leading-none">未做{{ undoneCount }}</div>
+                  <div class="leading-none">未做 {{ undoneCount }}</div>
                 </div>
               </div>
             </div>
-            <div class="bg-white shadow rounded-lg mb-5">
+            <div class="bg-white shadow rounded-lg" v-if="record.id">
               <div class="border-b border-gray-100 flex leading-none">
                 <div class="w-2/3 flex items-center">
                   <div class="w-full flex items-center py-2 px-4 border-r border-gray-100">
                     <svg class="w-6 h-6 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-teal-500 text-base ml-1"><timing :second="record.time_limit * 60 || 0" :is-pause="isPause" @timer="getDoneTime"/></span>
+                    <span class="text-teal-500 text-base ml-1"><timing :second="record.time_limit * 60" :done-second="doneTime" :is-countdown="true" v-if="isLoading === false" /></span>
                   </div>
                 </div>
                 <div class="w-1/3 flex items-center py-2 px-4">
@@ -146,17 +146,20 @@
         isLoading: null,
         pauseModalVisible: false,
         submitModalVisible: false,
-        doneTime: 0
+        doneTime: 0,
+        doneCount : 0,
+        timer: null
       }
     },
     mounted() {
       this.showRecords()
+      window.addEventListener('beforeunload', e => {
+        this.submitRecord('next')
+      })
     },
     computed: {
-      doneCount() {
-        return Object.values(this.answerList).filter(item => {
-          return item.answer.length !== 0
-        }).length
+      limitTime() {
+        return this.record.time_limit * 60 - this.doneTime
       },
       undoneCount() {
         return Object.keys(this.answerList).length - this.doneCount
@@ -174,32 +177,46 @@
           .then((res) => {
             this.record = res
             this.recordItems = res.items
+            this.doneTime = res.done_time
 
             let answerList = {}
             this.recordItems.forEach((item, index) => {
               if (res.is_group) {
                 item.items.forEach((v, i) => {
-                  let key = index+'-'+i
-                  answerList[key] = {
+                  answerList[index+'-'+i] = {
+                    record_id: this.recordId,
                     bank_item_id: v.id,
                     question_id: v.question.id,
-                    answer: (v.record && v.record.answer) ||[]
+                    question_type: v.question.type,
+                    answer: (v.record && v.record.answer) || ""
                   }
                 })
               } else {
                 answerList[index] = {
+                  record_id: this.recordId,
                   bank_item_id: item.id,
                   question_id: item.question.id,
                   question_type: item.question.type,
-                  answer: (item.record && item.record.answer) ||[]
+                  answer: (item.record && item.record.answer) || ""
                 }
               }
             })
             this.answerList = answerList
+
+            this.doneCount = Object.values(answerList).filter(item => {
+              return item.answer.length !== 0
+            }).length
           })
           .finally(() => {
             this.isLoading = false
+            this.timer = setInterval(this.intervalEvent, 1000)
           })
+      },
+      intervalEvent() {
+        if (!this.isPause) this.doneTime++
+        if (this.limitTime <= 0) {
+          clearInterval(this.timer)
+        }
       },
       toIndex(index) {
         this.$nextTick(() => {
@@ -212,9 +229,10 @@
           answer: answer,
           is_right: isRight
         })
-      },
-      getDoneTime(second) {
-        this.doneTime = second
+
+        this.doneCount = Object.values(this.answerList).filter(item => {
+          return item.answer.length !== 0
+        }).length
       },
       submitRecord(type = 'end') {
         let params = {
@@ -224,9 +242,10 @@
         }
         updateRecords(this.recordId, params)
           .then((res) => {
-            if (type && type == 'end') {
+            if (type && type === 'end') {
               this.submitModalVisible = false
-              this.$Message.success('交卷成功！')
+              this.$Message.success('交卷成功，正在计算得分!')
+              this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
             }
           })
       },

@@ -12,34 +12,22 @@
         type: Number,
         default: 0
       },
-      usedTime: {
+      doneSecond: {
         type: Number,
         default: 0
       },
-      isPause: {
+      isCountdown: {
         type: Boolean,
         default: false
       }
-    },
-    data () {
-      return {
-        timer: null,
-        timeLeft: this.usedTime
-      }
-    },
-    created() {
-      this.timer = setInterval(this.intervalEvent, 1000)
-    },
-    destroyed () {
-      clearInterval(this.timer)
     },
     computed: {
       isTiming() {
         return this.second === 0
       },
       timingText() {
-        let time = this.timeLeft
-        if (!this.isTiming) time = this.second - this.timeLeft
+        let time = this.doneSecond
+        if (this.isCountdown) time = this.second - this.doneSecond
 
         let hour = this.formatTime(Math.floor(time / 3600))
         let minutes = this.formatTime(Math.floor(time % 3600 / 60))
@@ -49,14 +37,6 @@
       }
     },
     methods: {
-      intervalEvent() {
-        if (!this.isPause) this.timeLeft++
-        this.$emit('timer', this.timeLeft)
-        if (!this.isTiming && this.timeLeft >= this.second) {
-          clearInterval(this.timer)
-          this.$emit('countdownEnd')
-        }
-      },
       formatTime(time) {
         if (time < 10)  time = '0' + time
         return time

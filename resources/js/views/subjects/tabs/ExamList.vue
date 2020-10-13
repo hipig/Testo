@@ -4,7 +4,7 @@
       <div class="w-1/2 px-3 mb-5" v-for="(item, index) in list" :key="index">
         <div class="bg-white shadow rounded-lg p-5">
           <div class="mb-8 flex justify-between">
-            <div class="text-base text-gray-900 pr-5">{{ item.title }}</div>
+            <div class="text-base text-gray-900 pr-5 truncate">{{ item.title }}</div>
             <div class="text-gray-400"><span class="text-teal-500">{{ item.learned_num||0 }}</span>/{{ item.total_count }}</div>
           </div>
           <div class="flex items-center justify-between">

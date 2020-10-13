@@ -96,7 +96,7 @@
         let name
         switch (parseInt(val.type)) {
           case 1:
-            name = val.quiz_mode == 1 ? '练习模式' : '考试模式'
+            name = parseInt(val.quiz_mode) === 1 ? '练习模式' : '考试模式'
             break
           case 2:
             name = '模拟考试'

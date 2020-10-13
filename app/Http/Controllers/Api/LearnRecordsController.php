@@ -38,8 +38,13 @@ class LearnRecordsController extends Controller
         }
 
         if ($date = $request->date) {
-            $dates = explode('-', $date);
-            $query->whereBetween('created_at', $dates);
+            !is_array($date) && $date = explode('-', $date);
+            $query->whereBetween('created_at', $date);
+        }
+
+        if ($type = $request->type) {
+            !is_array($type) && $type = explode(',', $type);
+            $query->whereIn('type', $type);
         }
 
         $records = $query->orderBy('updated_at', 'desc')->paginate();
@@ -145,7 +150,7 @@ class LearnRecordsController extends Controller
 
             $items = $request->items;
             foreach ($items as $data) {
-                $selectData = collect($data)->only('bank_item_id', 'question_id')->toArray();
+                $selectData = collect($data)->only('record_id', 'bank_item_id', 'question_id')->toArray();
 
                 $recordItem = $record->items()->updateOrCreate(
                     $selectData,

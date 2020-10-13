@@ -13,9 +13,7 @@ class LearnRecordUpdateRequest extends FormRequest
     {
         return [
             'done_time' => 'required',
-            'items' => ['required', 'array'],
-            'items.*.bank_item_id' => 'required',
-            'items.*.question_id' => 'required'
+            'items' => 'array'
         ];
     }
 
@@ -23,9 +21,7 @@ class LearnRecordUpdateRequest extends FormRequest
     {
         return [
             'done_time' => '作答时间',
-            'items' => '作答列表',
-            'items.*.bank_item_id' => '关联题库',
-            'items.*.question_id' => '关联问题'
+            'items' => '作答列表'
         ];
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow rounded-lg px-10 py-5 mt-5">
+  <div class="bg-white shadow rounded-lg px-10 py-5 mb-5">
     <div class="flex items-center justify-between mb-5">
       <div class="flex items-start">
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
@@ -12,7 +12,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
+            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showParse" @change="submit">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -22,7 +22,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="submit">
+            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showParse" @change="submit">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -31,18 +31,41 @@
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
         <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" @change="submit"/>
+          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
         </label>
       </div>
     </template>
     <template v-if="question.type === 5">
       <div class="mb-2">
         <label class="flex w-full">
-          <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案" @input="submit"></textarea>
+          <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案" :disabled="showParse" @input="submit"></textarea>
         </label>
       </div>
       <div class="mb-5 text-gray-400">主观题仅提供作答，默认得分，不计入错题集，建议收藏。</div>
     </template>
+    <div  class="mb-3" v-if="showParse">
+      <div class="py-2 px-5 bg-gray-100 flex leading-tight rounded" :class="[question.type === 4 ? 'flex-col' : 'flex-wrap items-center']">
+        <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
+        <template  v-if="showAnswerBar">
+          <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']">
+            <span class="text-gray-500">正确答案：</span>
+            <span class="flex-1 text-green-500 text-base font-semibold leading-tight">{{ rightAnswerText }}</span>
+          </div>
+          <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']" v-if="answer.length > 0 && !isRight">
+            <span class="text-gray-500">你的答案：</span>
+            <span class="flex-1 text-base font-semibold leading-tight">{{ answerText }}</span>
+          </div>
+        </template>
+      </div>
+      <div class="px-5 mt-5">
+        <div class="flex flex-wrap items-baseline">
+          <div class="text-gray-400">解析：</div>
+          <div class="flex-1 text-base">
+            {{ question.parse }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,6 +88,10 @@
         type: String | Number | Array,
         default: []
       },
+      showParse: {
+        type: Boolean,
+        default: false
+      },
       showReport: {
         type: Boolean,
         default: true
@@ -82,7 +109,7 @@
     data () {
       return {
         currentAnswer: this.answer || [],
-        fillBlackAnswer: [],
+        fillBlackAnswer: []
       }
     },
     computed: {
@@ -100,7 +127,7 @@
         return typeof answer === "object" ? answer.join(',') : answer
       },
       isRight() {
-        let status = true
+        let status = false
         let questionType = this.question.type
         let rightAnswer = this.question.answer
         let answer = this.currentAnswer
@@ -123,11 +150,16 @@
               }
             })
             break
-          default:
-            status = true
+          case 5:
+            status = answer.length > 0
+            break
         }
 
         return status
+      },
+      showAnswerBar() {
+        let type = this.question.type
+        return type !== 5
       }
     },
     watch: {

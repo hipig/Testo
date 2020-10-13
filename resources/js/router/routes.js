@@ -11,6 +11,7 @@ import QuizModeExercise from '@/views/quiz/mode/Exercise'
 import QuizModeTest from '@/views/quiz/mode/Test'
 import QuizModeExam from '@/views/quiz/mode/Exam'
 import QuizResult from '@/views/quiz/Result'
+import QuizResultDetail from '@/views/quiz/ResultDetail'
 
 import AuthLogin from '@/views/auth/Login'
 import AuthRegister from '@/views/auth/Register'
@@ -18,6 +19,7 @@ import AuthRegister from '@/views/auth/Register'
 import MyIndex from "@/views/my/info/Index"
 import MyChangePassword from "@/views/my/info/ChangePassword"
 import MyLearn from "@/views/my/learn/Index"
+import MyExam from "@/views/my/learn/Exam"
 
 export default [
   {
@@ -65,18 +67,30 @@ export default [
             path: 'result/:id',
             name: 'quiz.result',
             component: QuizResult
+          },
+          {
+            path: 'result/:id/detail',
+            name: 'quiz.result.detail',
+            component: QuizResultDetail
           }
         ]
       },
       {
-        path: '/auth/login',
-        name: 'auth.login',
-        component: AuthLogin
-      },
-      {
-        path: '/auth/register',
-        name: 'auth.register',
-        component: AuthRegister
+        path: '/auth',
+        name: 'auth',
+        component: BlankLayout,
+        children: [
+          {
+            path: 'login',
+            name: 'auth.login',
+            component: AuthLogin
+          },
+          {
+            path: 'register',
+            name: 'auth.register',
+            component: AuthRegister
+          },
+        ]
       },
       {
         path: '/my',
@@ -98,6 +112,11 @@ export default [
             path: 'learn',
             name: 'my.learn',
             component: MyLearn
+          },
+          {
+            path: 'exam',
+            name: 'my.exam',
+            component: MyExam
           }
         ]
       }

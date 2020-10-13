@@ -4,7 +4,10 @@ import { login, register, user, deleteToken } from "@/api/user"
 // state
 export const state = {
   token: "",
-  userInfo: {}
+  userInfo: {},
+  config: {
+    autoNext: ""
+  }
 }
 
 // getters

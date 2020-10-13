@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow rounded-lg px-10 py-5 mt-5">
+  <div class="bg-white shadow rounded-lg px-10 py-5 mb-5">
     <div class="flex items-center justify-between mb-5">
       <div class="flex items-start">
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
@@ -100,17 +100,20 @@
       answer: {
         type: String | Number | Array,
         default: []
-      },
+      }
     },
     mixins: [QuestionType],
     data () {
       return {
-        currentAnswer: [],
+        currentAnswer: this.answer || [],
         multiSelectAnswer: [],
         fillBlackAnswer: [],
         showAnswer: false,
         isAnswered: false
       }
+    },
+    created() {
+      if (this.answer.length !== 0) this.isAnswered = true
     },
     computed: {
       indexText() {

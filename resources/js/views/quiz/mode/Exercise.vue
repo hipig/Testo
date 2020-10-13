@@ -4,11 +4,11 @@
       <breadcrumb :list="record.breadcrumb"/>
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
-          <div class="bg-white shadow rounded-lg p-5">
+          <div class="bg-white shadow rounded-lg p-5 mb-5">
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
-                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">练习模式</div>
+                <div class="flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20">{{ parseInt(record.type) === 4 ? '每日一练' : '练习模式' }}</div>
               </div>
             </div>
             <div class="text-base mt-4">
@@ -37,21 +37,25 @@
             <div class="mt-1 px-8 py-3 flex justify-between border-t border-gray-100">
               <div class="flex items-center text-gray-900">
                 <div class="bg-green-500 w-4 h-4 mr-1"></div>
-                <div class="leading-none">正确{{ rightCount }}</div>
+                <div class="leading-none">正确 {{ rightCount }}</div>
               </div>
               <div class="flex items-center text-gray-900">
                 <div class="bg-red-500 w-4 h-4 mr-1"></div>
-                <div class="leading-none">错误{{ errorCount }}</div>
+                <div class="leading-none">错误 {{ errorCount }}</div>
               </div>
-              <div class="flex items-center text-gray-900 leading-none">
-                <div class="mr-1">正确率</div>
-                <div class="text-green-500">{{ rightRate }}</div>
+              <div class="flex items-center text-gray-900">
+                <div class="leading-none">正确率 <span class="text-green-500">{{ rightRate }}</span></div>
               </div>
             </div>
           </div>
-          <div class="bg-white shadow rounded-lg py-3 mb-5">
-            <div class="flex justify-center">
-              <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none" @click="handleBack">返回章节练习</button>
+          <div class="bg-white shadow rounded-lg">
+            <div class="flex justify-center py-3 px-5 -mx-2">
+              <div class="w-1/2 px-2">
+                <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded focus:outline-none" @click="handleBack">返回章节练习</button>
+              </div>
+              <div class="w-1/2 px-2" v-if="submitActionShow">
+                <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitModalVisible = true">交卷</button>
+              </div>
             </div>
           </div>
         </div>
@@ -69,6 +73,21 @@
         </div>
       </div>
     </div>
+    <t-modal v-model="submitModalVisible" title="结束作答" size="md" :mask-closable="false" @close="submitModalVisible = false">
+      <div class="flex flex-col">
+        <div class="text-gray-900 text-lg flex justify-center mb-5">你已全部作答完毕，是否确认交卷？</div>
+      </div>
+      <div slot="footer">
+        <div class="flex flex-wrap items-center px-5 -mx-5">
+          <div class="w-1/2 px-5 flex justify-center">
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">取消</button>
+          </div>
+          <div class="w-1/2 px-5 flex justify-center">
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">交卷</button>
+          </div>
+        </div>
+      </div>
+    </t-modal>
   </div>
 </template>
 
@@ -76,14 +95,16 @@
   import Breadcrumb from "@/components/common/Breadcrumb"
   import EmptyData from "@/components/common/EmptyData"
   import ExerciseItem from "@/components/questions/ExerciseItem"
-  import { showRecords, storeRecordItems } from "@/api/learnRecord"
+  import TModal from "@/components/common/modal/Modal"
+  import { showRecords, storeRecordItems, updateRecords } from "@/api/learnRecord"
 
   export default {
     name: "quiz.mode.exercise",
     components: {
       Breadcrumb,
       EmptyData,
-      ExerciseItem
+      ExerciseItem,
+      TModal
     },
     data () {
       return {
@@ -96,11 +117,19 @@
         autoNext: '',
         rightCount: 0,
         errorCount: 0,
-        isLoading: null
+        doneCount: 0,
+        isLoading: null,
+        submitModalVisible: false,
+        submitActionShow: false,
+        timer: null,
+        doneTime: 0
       }
     },
     mounted() {
       this.showRecords()
+      this.timer = setInterval(() => {
+        this.doneTime ++
+      }, 1000)
     },
     computed: {
       activeAnswer() {
@@ -108,6 +137,9 @@
       },
       questionsLength() {
         return this.questions.length
+      },
+      undoneCount() {
+        return this.answerList.length - this.doneCount
       },
       rightRate() {
         return (this.questionsLength > 0 ? Math.round((this.rightCount/this.questionsLength)*100) : 0) + '%'
@@ -128,12 +160,25 @@
             this.questions = res.items
             this.answerList = res.items.map(item => {
               return {
+                record_id: this.recordId,
                 bank_item_id: item.id,
                 question_id: item.question.id,
                 question_type: item.question.type,
-                answer: []
+                answer: (item.record && item.record.answer) || "",
+                is_right: item.record && item.record.is_right
               }
             })
+            this.rightCount = this.answerList.filter(item => {
+              return item.is_right
+            }).length
+            this.errorCount = this.answerList.filter(item => {
+              return item.is_right === false
+            }).length
+            this.doneCount = this.answerList.filter(item => {
+              return item.answer.length !== 0
+            }).length
+
+            if (this.undoneCount === 0) this.submitActionShow = true
           })
           .finally(() => {
             this.isLoading = false
@@ -162,6 +207,28 @@
         } else {
           this.errorCount ++
         }
+
+        this.doneCount = this.answerList.filter(item => {
+          return item.answer.length !== 0
+        }).length
+
+        if (this.undoneCount === 0) {
+          this.submitActionShow = true
+          this.submitModalVisible = true
+        }
+      },
+      submitRecord() {
+        let params = {
+          done_time: this.doneTime,
+          type: 'end',
+          items: []
+        }
+        updateRecords(this.recordId, params)
+          .then((res) => {
+            this.submitModalVisible = false
+            this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
+            this.$Message.success('交卷成功，正在计算得分!')
+          })
       },
       handleBack() {
         this.$router.go(-1)
