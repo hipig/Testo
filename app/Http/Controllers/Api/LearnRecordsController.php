@@ -47,7 +47,7 @@ class LearnRecordsController extends Controller
             $query->whereIn('type', $type);
         }
 
-        $records = $query->orderBy('updated_at', 'desc')->paginate();
+        $records = $query->orderBy('updated_at', 'desc')->paginate(config('api.page_size'));
 
         return LearnRecordResource::collection($records);
     }

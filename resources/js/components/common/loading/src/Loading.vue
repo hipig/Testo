@@ -9,7 +9,7 @@
       leave-to-class="opacity-0"
       @after-leave="handleAfterLeave"
     >
-      <div class="absolute inset-0 transition-opacity" :class="[customClass, background || 'bg-white bg-opacity-50']" v-show="visible">
+      <div class="absolute inset-0 transition-opacity" :class="[customClass, background || 'bg-transparent']" v-show="visible">
         <div class="flex items-center justify-center w-full h-full">
           <svg v-if="!spinner" class="animate-spin w-12 h-12 fill-current text-teal-500" viewBox="0 0 50 50">
             <circle cx="25" cy="2.4" r="2.4" />

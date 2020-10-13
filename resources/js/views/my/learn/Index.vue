@@ -49,7 +49,7 @@
           <div class="text-base mb-2">{{ item.bank_title }}</div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="text-gray-900 w-48 mr-2 truncate flex items-center">
+              <div class="text-gray-900 w-40 mr-2 truncate flex items-center">
                 <div class="mr-1 flex items-center justify-center bg-gradient-to-r text-white leading-none text-xs w-4 h-4 rounded-sm" :class="item.type | labelColor">{{ item.type | labelText }}</div>
                 <span class="text-xs">{{ item.subject_title }}</span>
               </div>
@@ -57,6 +57,9 @@
             </div>
             <div class="cursor-pointer font-semibold" :class="item.type | actionColor" @click="handleContinue(item)">{{ item | actionText }}</div>
           </div>
+        </div>
+        <div class="pt-5 pb-1 flex justify-end">
+          <t-pagination :total="total" :current="currentPage" @page-change="changePage"/>
         </div>
       </div>
       <empty-data :class="['shadow-none']" :show="isLoading === false && records.length === 0"/>
@@ -87,6 +90,8 @@
           subject_id: ""
         },
         dates: null,
+        currentPage: 1,
+        total: 0,
         isLoading: null
       }
     },
@@ -129,10 +134,17 @@
     methods: {
       getRecordList() {
         this.isLoading = true
+        let params = this.filterForm
+        params.date = this.date
+        params.page = this.currentPage
+
         getRecords(this.filterForm)
           .then((res) => {
-            this.isLoading = false
             this.records = res.data
+            this.total = res.meta.total
+          })
+          .finally(() => {
+            this.isLoading = false
           })
       },
       getSubjectList() {
@@ -148,7 +160,7 @@
           })
       },
       selectSubjectParent() {
-        if (this.filterForm.subject_pid != "")  this.getSubject(this.filterForm.subject_pid)
+        if (this.filterForm.subject_pid !== "")  this.getSubject(this.filterForm.subject_pid)
         this.filterForm.subject_id = ""
 
         this.getRecordList()
@@ -157,7 +169,6 @@
         this.getRecordList()
       },
       selectDate() {
-        this.filterForm.date = this.date
         this.getRecordList()
       },
       handleContinue(val) {
@@ -167,6 +178,10 @@
         if (val.is_end) routerName = 'quiz.result'
 
         this.$router.push({name: routerName, params: { id: val.id }})
+      },
+      changePage(page) {
+        this.currentPage = page
+        this.getRecordList()
       }
     }
   }

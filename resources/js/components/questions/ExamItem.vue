@@ -5,7 +5,7 @@
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
         <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool :show-report="showReport" :show-remark="showRemark" :show-collect="showCollect"></question-tool>
+      <question-tool :question-id="question.id" :bank-item-id="bankItemId" :show-report="showReport" :show-note="showNote" :show-collect="showCollect"></question-tool>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
@@ -96,14 +96,15 @@
         type: Boolean,
         default: true
       },
-      showRemark: {
+      showNote: {
         type: Boolean,
         default: true
       },
       showCollect: {
         type: Boolean,
         default: true
-      }
+      },
+      bankItemId: Number
     },
     mixins: [QuestionType],
     data () {

@@ -5,7 +5,7 @@
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
         <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool/>
+      <question-tool :question-id="question.id" :bank-item-id="bankItemId"/>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
@@ -100,7 +100,8 @@
       answer: {
         type: String | Number | Array,
         default: []
-      }
+      },
+      bankItemId: Number
     },
     mixins: [QuestionType],
     data () {

@@ -15,4 +15,9 @@ return [
         // 登录相关，次数/分钟
         'sign' =>  env('SIGN_RATE_LIMITS', '15,1'),
     ],
+
+    /**
+     * 数据分页大小
+     */
+    'page_size' => env('PAGE_SIZE', 10)
 ];

@@ -33,7 +33,7 @@
               <input type="text" slot-scope="{ inputProps, inputEvents, isDragging }" placeholder="选择日期" :class="[`pr-4 py-2 block w-64 bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12 ${isDragging ? 'text-gray-400' : ''}`]" v-bind="inputProps" v-on="inputEvents">
             </v-date-picker>
             <div class="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400">
-              <svg  class="stroke-current w-5 h-5" fill="none" viewBox="0 0 24 24">
+              <svg  class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
               </svg>
             </div>
@@ -53,13 +53,16 @@
           <div class="text-base mb-2">{{ item.bank_title }}</div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="text-gray-900 w-48 mr-2 truncate flex items-center">
+              <div class="text-gray-900 w-40 mr-2 truncate flex items-center">
                 <span class="text-xs">{{ item.subject_title }}</span>
               </div>
               <div class="text-gray-400"><span class="text-teal-500 text-base">{{ item.done_count }}</span>/{{ item.total_count }}</div>
             </div>
             <div class="cursor-pointer font-semibold text-yellow-500" @click="handleContinue(item)">{{ item | actionText }}</div>
           </div>
+        </div>
+        <div class="pt-5 pb-1 flex justify-end">
+          <t-pagination :total="total" :current="currentPage" @page-change="changePage"/>
         </div>
       </div>
       <empty-data :class="['shadow-none']" :show="isLoading === false && records.length === 0"/>
@@ -68,94 +71,107 @@
 </template>
 
 <script>
-import LearnTab from "./LearnTab"
-import EmptyData from "@/components/common/EmptyData"
-import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
-import { getRecords } from "@/api/learnRecord"
+  import dayjs from "dayjs"
+  import LearnTab from "./LearnTab"
+  import EmptyData from "@/components/common/EmptyData"
+  import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
+  import { getRecords } from "@/api/learnRecord"
 
-export default {
-  name: "my.exam",
-  components: {
-    LearnTab,
-    EmptyData
-  },
-  data () {
-    return {
-      records: [],
-      subjectList: [],
-      activeSubject: {},
-      filterForm: {
-        subject_pid: "",
-        subject_id: "",
-        type: [2, 3]
-      },
-      dates: null,
-      isLoading: null
-    }
-  },
-  mounted() {
-    this.getSubjectList()
-    this.getRecordList()
-  },
-  computed: {
-    date() {
-      let date = []
-      if (this.dates) {
-        let start = dayjs(this.dates.start).format("YYYY-MM-DD")
-        let end = dayjs(this.dates.end).format("YYYY-MM-DD")
-        date = [start, end]
+  export default {
+    name: "my.exam",
+    components: {
+      LearnTab,
+      EmptyData
+    },
+    data () {
+      return {
+        records: [],
+        subjectList: [],
+        activeSubject: {},
+        filterForm: {
+          subject_pid: "",
+          subject_id: "",
+          type: [2, 3]
+        },
+        dates: null,
+        currentPage: 1,
+        total: 0,
+        isLoading: null
       }
-      return date
     },
-    subjectSelected() {
-      return this.filterForm.subject_pid !== ""
-    }
-  },
-  filters: {
-    actionText(val) {
-      return val.is_end ? '查看解析' : '继续考试'
-    }
-  },
-  methods: {
-    getRecordList() {
-      this.isLoading = true
-      getRecords(this.filterForm)
-        .then((res) => {
-          this.isLoading = false
-          this.records = res.data
-        })
+    mounted() {
+      this.getSubjectList()
+      this.getRecordList()
     },
-    getSubjectList() {
-      getSubjectsTree()
-        .then((res) => {
-          this.subjectList = res
-        })
+    computed: {
+      date() {
+        let date = []
+        if (this.dates) {
+          let start = dayjs(this.dates.start).format("YYYY-MM-DD")
+          let end = dayjs(this.dates.end).format("YYYY-MM-DD")
+          date = [start, end]
+        }
+        return date
+      },
+      subjectSelected() {
+        return this.filterForm.subject_pid !== ""
+      }
     },
-    getSubject(id) {
-      getSubjectsShow(id)
-        .then((res) => {
-          this.activeSubject = res
-        })
+    filters: {
+      actionText(val) {
+        return val.is_end ? '查看解析' : '继续考试'
+      }
     },
-    selectSubjectParent() {
-      if (this.filterForm.subject_pid != "")  this.getSubject(this.filterForm.subject_pid)
-      this.filterForm.subject_id = ""
+    methods: {
+      getRecordList() {
+        this.isLoading = true
+        let params = this.filterForm
+        params.date = this.date
+        params.page = this.currentPage
 
-      this.getRecordList()
-    },
-    selectSubject() {
-      this.getRecordList()
-    },
-    selectDate() {
-      this.filterForm.date = this.date
-      this.getRecordList()
-    },
-    handleContinue(val) {
-      let routerName = 'mode.exam'
-      if (val.is_end) routerName = 'quiz.result'
+        getRecords(params)
+          .then((res) => {
+            this.records = res.data
+            this.total = res.meta.total
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
+      },
+      getSubjectList() {
+        getSubjectsTree()
+          .then((res) => {
+            this.subjectList = res
+          })
+      },
+      getSubject(id) {
+        getSubjectsShow(id)
+          .then((res) => {
+            this.activeSubject = res
+          })
+      },
+      selectSubjectParent() {
+        if (this.filterForm.subject_pid !== "")  this.getSubject(this.filterForm.subject_pid)
+        this.filterForm.subject_id = ""
 
-      this.$router.push({name: routerName, params: { id: val.id }})
+        this.getRecordList()
+      },
+      selectSubject() {
+        this.getRecordList()
+      },
+      selectDate() {
+        this.getRecordList()
+      },
+      handleContinue(val) {
+        let routerName = 'mode.exam'
+        if (val.is_end) routerName = 'quiz.result'
+
+        this.$router.push({name: routerName, params: { id: val.id }})
+      },
+      changePage(page) {
+        this.currentPage = page
+        this.getRecordList()
+      }
     }
   }
-}
 </script>

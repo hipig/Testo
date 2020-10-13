@@ -14,7 +14,7 @@
           </div>
           <div v-loading="isLoading" loading-custom-class="h-56">
             <template v-for="(item, index) in recordItems">
-              <exam-item :id="'q-'+index" :key="index" :question="item.question" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
+              <exam-item :id="'q-'+index" :key="index" :question="item.question" :bank-item-id="item.id" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
             </template>
           </div>
           <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
@@ -77,7 +77,7 @@
             <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">继续做题</button>
           </div>
           <div class="w-1/2 px-5 flex justify-center">
-            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">交卷</button>
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord('end')">交卷</button>
           </div>
         </div>
       </div>
@@ -129,9 +129,6 @@
     },
     mounted() {
       this.showRecords()
-      window.addEventListener('beforeunload', e => {
-        this.submitRecord('next')
-      })
     },
     computed: {
       undoneCount() {

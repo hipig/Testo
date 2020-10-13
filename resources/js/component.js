@@ -1,15 +1,15 @@
+import Pagination from '@/components/common/pagination'
 import Message from '@/components/common/message'
 import Loading from '@/components/common/loading'
 
-const components = {
-  Message,
-  Loading
-}
+const components = [
+  Pagination
+]
 
 const install = function(Vue, opts = {}) {
-  // components.forEach(component => {
-  //   Vue.component(component.name, component)
-  // })
+  components.forEach(component => {
+    Vue.component(component.name, component)
+  })
 
   Vue.use(Loading.directive)
 

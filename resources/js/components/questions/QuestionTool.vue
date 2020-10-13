@@ -6,7 +6,7 @@
       </svg>
       <span class="text-base text-gray-900">纠错</span>
     </div>
-    <div class="flex items-center cursor-pointer mr-8" v-if="showRemark" @click="handleRemark">
+    <div class="flex items-center cursor-pointer mr-8" v-if="showNote" @click="handleNote">
       <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
       </svg>
@@ -45,15 +45,15 @@
       </div>
       <div slot="footer">
         <div class="flex items-center justify-end">
-          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none">提交</button>
+          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="submitReport">提交</button>
         </div>
       </div>
     </t-modal>
-    <t-modal title="写笔记" v-model="remarkModalVisible" size="3xl" :mask-closable="false" @close="closeRemarkModal">
+    <t-modal title="写笔记" v-model="noteModalVisible" size="3xl" :mask-closable="false" @close="closeNoteModal">
       <div class="flex flex-col">
         <div class="mb-5">
           <label class="flex w-full relative">
-            <textarea v-model="remarkForm.content" class="h-36 w-full px-4 pt-3 pb-8 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入笔记"></textarea>
+            <textarea v-model="noteForm.content" class="h-36 w-full px-4 pt-3 pb-8 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入笔记"></textarea>
             <span class="absolute bottom-0 right-0 pr-3 h-8 flex items-center text-gray-400">0/200</span>
           </label>
         </div>
@@ -70,7 +70,7 @@
       </div>
       <div slot="footer">
         <div class="flex items-center justify-end">
-          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none">提交</button>
+          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="submitNote">提交</button>
         </div>
       </div>
     </t-modal>
@@ -86,11 +86,13 @@
       TModal
     },
     props: {
+      bankItemId: Number,
+      questionId: Number,
       showReport: {
         type: Boolean,
         default: true
       },
-      showRemark: {
+      showNote: {
         type: Boolean,
         default: true
       },
@@ -102,7 +104,7 @@
     data () {
       return {
         reportModalVisible: false,
-        remarkModalVisible: false,
+        noteModalVisible: false,
         isCollect: false,
         reportTypes: {
           1: '错别字',
@@ -117,7 +119,7 @@
           content: '',
           images: []
         },
-        remarkForm: {
+        noteForm: {
           content: '',
           images: []
         }
@@ -127,7 +129,7 @@
       handleReport() {
         this.reportModalVisible = true
       },
-      handleRemark() {
+      handleNote() {
         this.remarkModalVisible = true
       },
       handleCollect() {
@@ -136,11 +138,19 @@
       closeReportModal() {
         this.reportModalVisible = false
       },
-      closeRemarkModal() {
-        this.remarkModalVisible = false
+      closeNoteModal() {
+        this.noteModalVisible = false
       },
       changeReportType(type) {
         this.reportForm.type = type
+      },
+      submitReport() {
+        let params = this.reportForm
+        params.bank_item_id = this.bankItemId
+      },
+      submitNote() {
+        let params = this.noteForm
+        params.bank_item_id = this.bankItemId
       }
     }
   }
