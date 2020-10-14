@@ -17,6 +17,7 @@ class LearnRecordShowResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = optional($request->user('api'))->load('recordItems', 'collectItems');
         $bank = optional($this->bank);
         switch ($this->type) {
             case LearnRecord::CHAPTER_TEST:
@@ -31,27 +32,34 @@ class LearnRecordShowResource extends JsonResource
                 break;
         }
 
-        $items = $items->map(function ($item) use ($bank) {
+        $items = $items->map(function ($item) use ($bank, $user) {
            if ($bank->is_group) {
-               $item->items = $item->items->map(function ($i) {
-                   $i->record = optional(Auth::guard('api')->user())
-                       ->recordItems()
+               $item->items = $item->items->map(function ($i) use ($bank, $user) {
+                   $i->subject_id = $bank->subject_id;
+                   $i->bank_item_id = $i->id;
+                   $i->record = $user->recordItems()
                        ->where('record_id', $this->id)
                        ->where('bank_item_id', $i->id)
                        ->first();
+                   $i->is_collect = $user->collectItems()
+                       ->where('bank_item_id', $i->id)
+                       ->exists();
                    return $i;
                });
            } else {
-               $item->record = optional(Auth::guard('api')->user())
-                   ->recordItems()
+               $item->subject_id = $bank->subject_id;
+               $item->bank_item_id = $item->id;
+               $item->record = $user->recordItems()
                    ->where('record_id', $this->id)
                    ->where('bank_item_id', $item->id)
                    ->first();
+               $item->is_collect = $user->collectItems()
+                   ->where('bank_item_id', $item->id)
+                   ->exists();
            }
 
            return $item;
         });
-
 
         $resultScore = 0;
         foreach (Question::$typeMap as $key => $value) {

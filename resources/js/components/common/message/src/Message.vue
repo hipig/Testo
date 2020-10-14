@@ -16,7 +16,7 @@
       leave-to-class="-translate-y-full opacity-0"
       @after-leave="handleAfterLeave"
     >
-      <div class="inline-flex items-center px-4 py-2 text-sm rounded-md bg-white shadow-md border border-gray-50 leading-none" v-show="visible">
+      <div class="inline-flex items-center px-4 py-2 text-sm rounded-lg bg-white shadow border border-gray-50 leading-none" v-show="visible">
         <svg class="w-5 h-5 stroke-current text-teal-500" fill="none" viewBox="0 0 24 24" v-if="type === 'info'">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>

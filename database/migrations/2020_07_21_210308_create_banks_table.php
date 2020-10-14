@@ -21,6 +21,7 @@ class CreateBanksTable extends Migration
             $table->unsignedTinyInteger('type')->default(1)->comment('类型');
             $table->boolean('is_free')->default(true)->comment('是否免费');
             $table->unsignedDecimal('price')->nullable()->comment('题库价格');
+            $table->boolean('is_group')->default(false)->comment('是否存在题组');
             $table->unsignedInteger('time_limit')->default(0)->comment('时间限制');
             $table->unsignedInteger('total_score')->default(0)->comment('总分');
             $table->unsignedInteger('total_count')->default(0)->comment('总题数');

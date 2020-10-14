@@ -3008,6 +3008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionTool__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionTool */ "./resources/js/components/questions/QuestionTool.vue");
 /* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -3081,6 +3082,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3093,7 +3105,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       type: Number | Array,
       "default": 0
     },
-    question: Object,
+    item: Object,
     answer: {
       type: String | Number | Array,
       "default": []
@@ -3113,14 +3125,23 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     showCollect: {
       type: Boolean,
       "default": true
-    },
-    bankItemId: Number
+    }
   },
   mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
+      question: this.item.question,
       currentAnswer: this.answer || [],
-      fillBlackAnswer: []
+      fillBlackAnswer: this.answer || [],
+      isCollect: this.item.is_collect || false,
+      toolForm: {
+        subject_id: this.item.subject_id,
+        bank_item_id: this.item.bank_item_id,
+        question_id: this.item.question.id,
+        question_type: this.item.question.type
+      },
+      visibleReport: null,
+      visibleNote: null
     };
   },
   computed: {
@@ -3185,6 +3206,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     // 提交答案
     submit: function submit() {
       this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question);
+    },
+    handleReport: function handleReport() {},
+    handleNote: function handleNote() {},
+    handleCollect: function handleCollect() {
+      var _this = this;
+
+      var request = this.isCollect ? _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["deleteUserCollects"] : _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["storeUserCollects"];
+      request(this.toolForm).then(function (res) {
+        _this.isCollect = !_this.isCollect;
+
+        _this.$Message.success((_this.isCollect ? '收藏' : '取消收藏') + '成功！');
+      });
     }
   }
 });
@@ -3202,6 +3235,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionTool__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionTool */ "./resources/js/components/questions/QuestionTool.vue");
 /* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -3288,6 +3322,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3300,7 +3342,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       type: Number,
       "default": 0
     },
-    question: Object,
+    item: Object,
     answer: {
       type: String | Number | Array,
       "default": []
@@ -3310,11 +3352,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
   mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
+      question: this.item.question,
       currentAnswer: this.answer || [],
       multiSelectAnswer: [],
       fillBlackAnswer: [],
       showAnswer: false,
-      isAnswered: false
+      isAnswered: false,
+      isCollect: this.item.is_collect || false,
+      toolForm: {
+        subject_id: this.item.subject_id,
+        bank_item_id: this.item.bank_item_id,
+        question_id: this.item.question.id,
+        question_type: this.item.question.type
+      },
+      visibleReport: null,
+      visibleNote: null
     };
   },
   created: function created() {
@@ -3419,6 +3471,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       return true;
+    },
+    handleReport: function handleReport() {},
+    handleNote: function handleNote() {},
+    handleCollect: function handleCollect() {
+      var _this = this;
+
+      var request = this.isCollect ? _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["deleteUserCollects"] : _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["storeUserCollects"];
+      request(this.toolForm).then(function (res) {
+        _this.isCollect = !_this.isCollect;
+
+        _this.$Message.success((_this.isCollect ? '收藏' : '取消收藏') + '成功！');
+      });
     }
   }
 });
@@ -3521,8 +3585,6 @@ __webpack_require__.r(__webpack_exports__);
     TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    bankItemId: Number,
-    questionId: Number,
     showReport: {
       type: Boolean,
       "default": true
@@ -3531,16 +3593,27 @@ __webpack_require__.r(__webpack_exports__);
       type: Boolean,
       "default": true
     },
+    visibleReport: {
+      type: Boolean,
+      "default": false
+    },
+    visibleNote: {
+      type: Boolean,
+      "default": false
+    },
     showCollect: {
       type: Boolean,
       "default": true
+    },
+    isCollect: {
+      type: Boolean,
+      "default": false
     }
   },
   data: function data() {
     return {
-      reportModalVisible: false,
-      noteModalVisible: false,
-      isCollect: false,
+      reportModalVisible: this.visibleReport,
+      noteModalVisible: this.visibleNote,
       reportTypes: {
         1: '错别字',
         2: '答案有误',
@@ -3561,31 +3634,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    handleReport: function handleReport() {
-      this.reportModalVisible = true;
-    },
-    handleNote: function handleNote() {
-      this.remarkModalVisible = true;
-    },
-    handleCollect: function handleCollect() {
-      this.isCollect = !this.isCollect;
-    },
-    closeReportModal: function closeReportModal() {
-      this.reportModalVisible = false;
-    },
-    closeNoteModal: function closeNoteModal() {
-      this.noteModalVisible = false;
-    },
-    changeReportType: function changeReportType(type) {
-      this.reportForm.type = type;
-    },
     submitReport: function submitReport() {
-      var params = this.reportForm;
-      params.bank_item_id = this.bankItemId;
+      this.$emit('on-report', this.reportForm);
     },
     submitNote: function submitNote() {
-      var params = this.noteForm;
-      params.bank_item_id = this.bankItemId;
+      this.$emit('on-note', this.noteForm);
+    },
+    submitCollect: function submitCollect() {
+      this.$emit('on-collect');
     }
   }
 });
@@ -4219,58 +4275,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
-/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
-/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
+/* harmony import */ var _LearnFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnFilter */ "./resources/js/views/my/learn/LearnFilter.vue");
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
 //
 //
 //
@@ -4314,44 +4332,126 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "my.exam",
   components: {
-    LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_1__["default"],
-    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__["default"]
+    LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LearnFilter: _LearnFilter__WEBPACK_IMPORTED_MODULE_1__["default"],
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__["default"]],
   data: function data() {
     return {
-      records: [],
-      subjectList: [],
-      activeSubject: {},
-      filterForm: {
-        subject_pid: "",
-        subject_id: "",
-        type: [2, 3]
-      },
-      dates: null,
+      collects: [],
+      filterForm: {},
       currentPage: 1,
       total: 0,
       isLoading: null
     };
   },
   mounted: function mounted() {
-    this.getSubjectList();
-    this.getRecordList();
+    this.getUserCollects();
   },
-  computed: {
-    date: function date() {
-      var date = [];
+  methods: {
+    getUserCollects: function getUserCollects() {
+      var _this = this;
 
-      if (this.dates) {
-        var start = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(this.dates.start).format("YYYY-MM-DD");
-        var end = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(this.dates.end).format("YYYY-MM-DD");
-        date = [start, end];
-      }
+      this.isLoading = true;
+      var params = this.filterForm;
+      params.page = this.currentPage;
 
-      return date;
+      Object(_api_userCollect__WEBPACK_IMPORTED_MODULE_4__["getUserCollects"])(params).then(function (res) {
+        _this.collects = res.data;
+        _this.total = res.meta.total;
+      })["finally"](function () {
+        _this.isLoading = false;
+      });
     },
-    subjectSelected: function subjectSelected() {
-      return this.filterForm.subject_pid !== "";
+    handleSelect: function handleSelect(form) {
+      this.filterForm = form;
+      this.getUserCollects();
+    },
+    handleContinue: function handleContinue(val) {
+      this.$router.push({
+        name: 'home'
+      });
+    },
+    changePage: function changePage(page) {
+      this.currentPage = page;
+      this.getUserCollects();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
+/* harmony import */ var _LearnFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnFilter */ "./resources/js/views/my/learn/LearnFilter.vue");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "my.exam",
+  components: {
+    LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LearnFilter: _LearnFilter__WEBPACK_IMPORTED_MODULE_1__["default"],
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {
+      records: [],
+      filterForm: {},
+      currentPage: 1,
+      total: 0,
+      isLoading: null
+    };
+  },
+  mounted: function mounted() {
+    this.getRecordList();
   },
   filters: {
     actionText: function actionText(val) {
@@ -4364,38 +4464,17 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       var params = this.filterForm;
-      params.date = this.date;
+      params.type = [2, 3];
       params.page = this.currentPage;
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["getRecords"])(params).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["getRecords"])(params).then(function (res) {
         _this.records = res.data;
         _this.total = res.meta.total;
       })["finally"](function () {
         _this.isLoading = false;
       });
     },
-    getSubjectList: function getSubjectList() {
-      var _this2 = this;
-
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_3__["getSubjectsTree"])().then(function (res) {
-        _this2.subjectList = res;
-      });
-    },
-    getSubject: function getSubject(id) {
-      var _this3 = this;
-
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_3__["getSubjectsShow"])(id).then(function (res) {
-        _this3.activeSubject = res;
-      });
-    },
-    selectSubjectParent: function selectSubjectParent() {
-      if (this.filterForm.subject_pid !== "") this.getSubject(this.filterForm.subject_pid);
-      this.filterForm.subject_id = "";
-      this.getRecordList();
-    },
-    selectSubject: function selectSubject() {
-      this.getRecordList();
-    },
-    selectDate: function selectDate() {
+    handleSelect: function handleSelect(form) {
+      this.filterForm = form;
       this.getRecordList();
     },
     handleContinue: function handleContinue(val) {
@@ -4426,12 +4505,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
-/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
+/* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
+/* harmony import */ var _LearnFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnFilter */ "./resources/js/views/my/learn/LearnFilter.vue");
 /* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
-/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 //
 //
 //
@@ -4464,44 +4541,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 
 
@@ -4509,43 +4548,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "my.learn",
   components: {
-    LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_1__["default"],
+    LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LearnFilter: _LearnFilter__WEBPACK_IMPORTED_MODULE_1__["default"],
     EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
       records: [],
-      subjectList: [],
-      activeSubject: {},
-      filterForm: {
-        subject_pid: "",
-        subject_id: ""
-      },
-      dates: null,
+      filterForm: {},
       currentPage: 1,
       total: 0,
       isLoading: null
     };
   },
   mounted: function mounted() {
-    this.getSubjectList();
     this.getRecordList();
-  },
-  computed: {
-    date: function date() {
-      var date = [];
-
-      if (this.dates) {
-        var start = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(this.dates.start).format("YYYY-MM-DD");
-        var end = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(this.dates.end).format("YYYY-MM-DD");
-        date = [start, end];
-      }
-
-      return date;
-    },
-    subjectSelected: function subjectSelected() {
-      return this.filterForm.subject_pid !== "";
-    }
   },
   filters: {
     labelColor: function labelColor(val) {
@@ -4571,38 +4588,16 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
       var params = this.filterForm;
-      params.date = this.date;
       params.page = this.currentPage;
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["getRecords"])(this.filterForm).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["getRecords"])(this.filterForm).then(function (res) {
         _this.records = res.data;
         _this.total = res.meta.total;
       })["finally"](function () {
         _this.isLoading = false;
       });
     },
-    getSubjectList: function getSubjectList() {
-      var _this2 = this;
-
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_3__["getSubjectsTree"])().then(function (res) {
-        _this2.subjectList = res;
-      });
-    },
-    getSubject: function getSubject(id) {
-      var _this3 = this;
-
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_3__["getSubjectsShow"])(id).then(function (res) {
-        _this3.activeSubject = res;
-      });
-    },
-    selectSubjectParent: function selectSubjectParent() {
-      if (this.filterForm.subject_pid !== "") this.getSubject(this.filterForm.subject_pid);
-      this.filterForm.subject_id = "";
-      this.getRecordList();
-    },
-    selectSubject: function selectSubject() {
-      this.getRecordList();
-    },
-    selectDate: function selectDate() {
+    handleSelect: function handleSelect(form) {
+      this.filterForm = form;
       this.getRecordList();
     },
     handleContinue: function handleContinue(val) {
@@ -4620,6 +4615,155 @@ __webpack_require__.r(__webpack_exports__);
     changePage: function changePage(page) {
       this.currentPage = page;
       this.getRecordList();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "LearnFilter",
+  props: {
+    showQuestionTypeSelect: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      subjectList: [],
+      activeSubject: {},
+      filterForm: {
+        subject_pid: "",
+        subject_id: "",
+        question_type: "",
+        date: ""
+      },
+      dates: null
+    };
+  },
+  mounted: function mounted() {
+    this.getSubjectList();
+  },
+  computed: {
+    date: function date() {
+      return this.formatDate(this.dates);
+    },
+    subjectSelected: function subjectSelected() {
+      return this.filterForm.subject_pid !== "";
+    }
+  },
+  methods: {
+    getSubjectList: function getSubjectList() {
+      var _this = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_2__["getSubjectsTree"])().then(function (res) {
+        _this.subjectList = res;
+      });
+    },
+    getSubject: function getSubject(id) {
+      var _this2 = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_2__["getSubjectsShow"])(id).then(function (res) {
+        _this2.activeSubject = res;
+      });
+    },
+    selectSubjectParent: function selectSubjectParent() {
+      if (this.filterForm.subject_pid !== "") this.getSubject(this.filterForm.subject_pid);
+      this.filterForm.subject_id = "";
+      this.$emit('on-select', Object.assign({}, this.filterForm, {
+        date: this.date
+      }));
+    },
+    selectSubject: function selectSubject() {
+      this.$emit('on-select', Object.assign({}, this.filterForm, {
+        date: this.date
+      }));
+    },
+    selectQuestionType: function selectQuestionType() {
+      this.$emit('on-select', Object.assign({}, this.filterForm, {
+        date: this.date
+      }));
+    },
+    selectDate: function selectDate() {
+      this.$emit('on-select', Object.assign({}, this.filterForm, {
+        date: this.date
+      }));
+    },
+    formatDate: function formatDate(dates) {
+      var date = "";
+
+      if (dates) {
+        var start = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(dates.start).format("YYYY-MM-DD");
+        var end = dayjs__WEBPACK_IMPORTED_MODULE_0___default()(dates.end).format("YYYY-MM-DD");
+        date = [start, end];
+      }
+
+      return date;
     }
   }
 });
@@ -5289,8 +5433,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         if (type && type === 'end') {
           _this2.submitModalVisible = false;
 
-          _this2.$Message.success('交卷成功，正在计算得分!');
-
           _this2.$router.push({
             name: 'quiz.result',
             params: {
@@ -5561,8 +5703,6 @@ __webpack_require__.r(__webpack_exports__);
             id: _this3.recordId
           }
         });
-
-        _this3.$Message.success('交卷成功，正在计算得分!');
       });
     },
     handleBack: function handleBack() {
@@ -5789,8 +5929,6 @@ __webpack_require__.r(__webpack_exports__);
       Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["updateRecords"])(this.recordId, params).then(function (res) {
         _this2.submitModalVisible = false;
 
-        _this2.$Message.success('交卷成功，正在计算得分!');
-
         _this2.$router.push({
           name: 'quiz.result',
           params: {
@@ -5969,21 +6107,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      sid: this.$route.params.sid,
-      ssid: 0,
+      pid: this.$route.params.pid,
+      id: 0,
       subject: {},
       subjectList: [],
       tabs: {
-        '1': '章节练习',
-        '2': '模拟考试',
-        '3': '历年真题',
-        '4': '每日一练'
+        1: '章节练习',
+        2: '模拟考试',
+        3: '历年真题',
+        4: '每日一练'
       },
-      activeTab: '1',
-      chapterTests: [],
-      mockExams: [],
-      oldExams: [],
-      dailyTests: [],
+      activeTab: 1,
       switchSubjectVisible: false,
       isLoading: null,
       listLoading: null
@@ -5991,6 +6125,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getSubject();
+  },
+  watch: {
+    $route: function $route(to, from) {
+      this.id = to.params.id;
+      this.getSubject();
+    }
   },
   methods: {
     getSubjectList: function getSubjectList() {
@@ -6007,9 +6147,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.isLoading = true;
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_5__["getSubjectsShow"])(this.sid).then(function (res) {
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_5__["getSubjectsShow"])(this.pid).then(function (res) {
         _this2.subject = res;
-        _this2.ssid = _this2.$route.params.ssid || res.children_group[0][0].id;
+        _this2.id = _this2.$route.params.id || res.children_group[0][0].id;
       })["finally"](function () {
         _this2.isLoading = false;
       });
@@ -6191,6 +6331,11 @@ __webpack_require__.r(__webpack_exports__);
         _this.scrollToTop();
       }, 200);
     }, true);
+  },
+  watch: {
+    subjectId: function subjectId(val) {
+      this.getChapterTestList();
+    }
   },
   methods: {
     getChapterTestList: function getChapterTestList() {
@@ -6376,6 +6521,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.getDailyTestList();
   },
+  watch: {
+    subjectId: function subjectId(val) {
+      this.getDailyTestList();
+    }
+  },
   methods: {
     getDailyTestList: function getDailyTestList() {
       var _this = this;
@@ -6474,6 +6624,9 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     type: function type(val) {
       this.getExamList();
+    },
+    subjectId: function subjectId(val) {
+      this.getDailyTestList();
     }
   },
   methods: {
@@ -8207,7 +8360,7 @@ var render = function() {
                 }
               ],
               staticClass:
-                "inline-flex items-center px-4 py-2 text-sm rounded-md bg-white shadow-md border border-gray-50 leading-none"
+                "inline-flex items-center px-4 py-2 text-sm rounded-lg bg-white shadow border border-gray-50 leading-none"
             },
             [
               _vm.type === "info"
@@ -9084,54 +9237,59 @@ var render = function() {
               staticClass: "flex-1 flex items-center justify-between ml-12 py-4"
             },
             [
-              _c("div", { staticClass: "text-sm" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
-                    class: {
-                      "menu-active text-teal-500": _vm.currentMenu === "home"
+              _c(
+                "div",
+                { staticClass: "text-sm" },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "mr-8 py-2 inline-block font-medium hover:text-teal-500",
+                      class: {
+                        "menu-active text-teal-500": _vm.currentMenu === "home"
+                      },
+                      attrs: { to: { name: "home" } }
                     },
-                    attrs: { href: "/" }
-                  },
-                  [_vm._v("首页")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
-                    class: {
-                      "menu-active text-teal-500":
-                        _vm.currentMenu === "subjects"
+                    [_vm._v("首页")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "mr-8 py-2 inline-block font-medium hover:text-teal-500",
+                      class: {
+                        "menu-active text-teal-500":
+                          _vm.currentMenu === "subjects"
+                      },
+                      attrs: { to: { name: "subjects" } }
                     },
-                    attrs: { href: "/subjects" }
-                  },
-                  [_vm._v("题库")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "mr-8 py-2 inline-block font-medium hover:text-teal-500",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("资讯")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass:
-                      "py-2 inline-block font-medium hover:text-teal-500",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("关于我们")]
-                )
-              ]),
+                    [_vm._v("题库")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "mr-8 py-2 inline-block font-medium hover:text-teal-500",
+                      attrs: { to: "#" }
+                    },
+                    [_vm._v("资讯")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass:
+                        "py-2 inline-block font-medium hover:text-teal-500",
+                      attrs: { to: "#" }
+                    },
+                    [_vm._v("关于我们")]
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _vm.isLogin
                 ? [
@@ -9173,27 +9331,32 @@ var render = function() {
                           slot: "dropdown-menu"
                         },
                         [
-                          _c("div", { staticClass: "py-1" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900",
-                                attrs: { href: "/my/learn" }
-                              },
-                              [_vm._v("学习记录")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900",
-                                attrs: { href: "/my" }
-                              },
-                              [_vm._v("修改资料")]
-                            )
-                          ]),
+                          _c(
+                            "div",
+                            { staticClass: "py-1" },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900",
+                                  attrs: { to: { name: "my.learn" } }
+                                },
+                                [_vm._v("学习记录")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900",
+                                  attrs: { to: { name: "my" } }
+                                },
+                                [_vm._v("修改资料")]
+                              )
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c("div", {
                             staticClass: "border-t border-gray-100"
@@ -9215,7 +9378,34 @@ var render = function() {
                       )
                     ])
                   ]
-                : [_vm._m(1)]
+                : [
+                    _c(
+                      "div",
+                      { staticClass: "text-sm" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass:
+                              "px-6 py-1 mr-1 inline-block font-medium hover:text-teal-500",
+                            attrs: { to: { name: "auth.login" } }
+                          },
+                          [_vm._v("登录")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "router-link",
+                          {
+                            staticClass:
+                              "px-6 py-1 mr-1 inline-block font-medium text-teal-500 border border-teal-500 rounded",
+                            attrs: { to: { name: "auth.register" } }
+                          },
+                          [_vm._v("注册")]
+                        )
+                      ],
+                      1
+                    )
+                  ]
             ],
             2
           )
@@ -9238,32 +9428,6 @@ var staticRenderFns = [
         ])
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-sm" }, [
-      _c(
-        "a",
-        {
-          staticClass:
-            "px-6 py-1 mr-1 inline-block font-medium hover:text-teal-500",
-          attrs: { href: "/auth/login" }
-        },
-        [_vm._v("登录")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass:
-            "px-6 py-1 mr-1 inline-block font-medium text-teal-500 border border-teal-500 rounded",
-          attrs: { href: "/auth/register" }
-        },
-        [_vm._v("注册")]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -9309,11 +9473,17 @@ var render = function() {
           _vm._v(" "),
           _c("question-tool", {
             attrs: {
-              "question-id": _vm.question.id,
-              "bank-item-id": _vm.bankItemId,
               "show-report": _vm.showReport,
               "show-note": _vm.showNote,
-              "show-collect": _vm.showCollect
+              "show-collect": _vm.showCollect,
+              "is-collect": _vm.isCollect,
+              "visible-report": _vm.visibleReport,
+              "visible-note": _vm.visibleNote
+            },
+            on: {
+              "on-report": _vm.handleReport,
+              "on-note": _vm.handleNote,
+              "on-collect": _vm.handleCollect
             }
           })
         ],
@@ -9679,8 +9849,14 @@ var render = function() {
           _vm._v(" "),
           _c("question-tool", {
             attrs: {
-              "question-id": _vm.question.id,
-              "bank-item-id": _vm.bankItemId
+              "is-collect": _vm.isCollect,
+              "visible-report": _vm.visibleReport,
+              "visible-note": _vm.visibleNote
+            },
+            on: {
+              "on-report": _vm.handleReport,
+              "on-note": _vm.handleNote,
+              "on-collect": _vm.handleCollect
             }
           })
         ],
@@ -10137,7 +10313,11 @@ var render = function() {
             "div",
             {
               staticClass: "flex items-center cursor-pointer mr-8",
-              on: { click: _vm.handleReport }
+              on: {
+                click: function($event) {
+                  _vm.reportModalVisible = true
+                }
+              }
             },
             [
               _c(
@@ -10171,7 +10351,11 @@ var render = function() {
             "div",
             {
               staticClass: "flex items-center cursor-pointer mr-8",
-              on: { click: _vm.handleNote }
+              on: {
+                click: function($event) {
+                  _vm.noteModalVisible = true
+                }
+              }
             },
             [
               _c(
@@ -10205,7 +10389,7 @@ var render = function() {
             "div",
             {
               staticClass: "flex items-center cursor-pointer",
-              on: { click: _vm.handleCollect }
+              on: { click: _vm.submitCollect }
             },
             [
               _c(
@@ -10232,9 +10416,14 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("span", { staticClass: "text-base text-gray-900" }, [
-                _vm._v("收藏")
-              ])
+              _c(
+                "span",
+                {
+                  staticClass: "text-base",
+                  class: [_vm.isCollect ? "text-teal-500" : "text-gray-900"]
+                },
+                [_vm._v("收藏")]
+              )
             ]
           )
         : _vm._e(),
@@ -10243,7 +10432,11 @@ var render = function() {
         "t-modal",
         {
           attrs: { title: "纠错", size: "3xl", "mask-closable": false },
-          on: { close: _vm.closeReportModal },
+          on: {
+            close: function($event) {
+              _vm.reportModalVisible = false
+            }
+          },
           model: {
             value: _vm.reportModalVisible,
             callback: function($$v) {
@@ -10272,7 +10465,7 @@ var render = function() {
                         ],
                         on: {
                           click: function($event) {
-                            return _vm.changeReportType(key)
+                            _vm.reportForm.type = key
                           }
                         }
                       },
@@ -10371,7 +10564,11 @@ var render = function() {
         "t-modal",
         {
           attrs: { title: "写笔记", size: "3xl", "mask-closable": false },
-          on: { close: _vm.closeNoteModal },
+          on: {
+            close: function($event) {
+              _vm.noteModalVisible = false
+            }
+          },
           model: {
             value: _vm.noteModalVisible,
             callback: function($$v) {
@@ -10560,7 +10757,7 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "pt-5 pb-20" }, [
-        _c("div", { staticClass: "flex flex-wrap" }, [
+        _c("div", { staticClass: "flex" }, [
           _c("div", { staticClass: "w-48 max-h-screen mr-5" }, [
             _c("div", { staticClass: "bg-white py-5 shadow rounded-lg" }, [
               _c("div", { staticClass: "flex flex-col" }, [
@@ -11645,7 +11842,7 @@ var render = function() {
     },
     [
       _c(
-        "a",
+        "router-link",
         {
           staticClass:
             "py-3 mx-5 text-base border-b-2 border-transparent cursor-pointer",
@@ -11654,13 +11851,13 @@ var render = function() {
               ? "text-gray-900 text-lg border-teal-500"
               : "text-gray-500 border-transparent"
           ],
-          attrs: { href: "/my" }
+          attrs: { to: { name: "my" } }
         },
         [_vm._v("基本资料")]
       ),
       _vm._v(" "),
       _c(
-        "a",
+        "router-link",
         {
           staticClass:
             "py-3 mx-5 text-base border-b-2 border-transparent cursor-pointer",
@@ -11669,11 +11866,177 @@ var render = function() {
               ? "text-gray-900 text-lg border-teal-500"
               : "text-gray-500 border-transparent"
           ],
-          attrs: { href: "/my/change-password" }
+          attrs: { to: { name: "my.change.password" } }
         },
         [_vm._v("修改密码")]
       )
-    ]
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "bg-white shadow rounded-lg" },
+    [
+      _c("learn-tab", { attrs: { active: "collect" } }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "p-5" },
+        [
+          _c("learn-filter", {
+            attrs: { "show-question-type-select": true },
+            on: { "on-select": _vm.handleSelect }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "loading",
+                  rawName: "v-loading",
+                  value: _vm.isLoading,
+                  expression: "isLoading"
+                }
+              ],
+              attrs: { "loading-custom-class": "h-56" }
+            },
+            [
+              _vm._l(_vm.collects, function(item, index) {
+                return _c(
+                  "div",
+                  {
+                    key: index,
+                    staticClass: "pt-5 pb-4 border-b border-gray-100"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "flex items-center justify-between text-gray-500 text-xs leading-none mb-2"
+                      },
+                      [
+                        _c("div", { staticClass: "flex items-center" }, [
+                          _c("div", [_vm._v(_vm._s(item.created_at))])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cursor-pointer" }, [
+                          _vm._v("取消收藏")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-baseline text-base mb-2" },
+                      [
+                        _c("div", { staticClass: "text-teal-500 w-16" }, [
+                          _vm._v(
+                            _vm._s(
+                              "[" +
+                                _vm.questionTypes[item.question_type].name +
+                                "]"
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "flex-1" }, [
+                          _vm._v(_vm._s(item.question_title))
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center justify-between" },
+                      [
+                        _c("div", { staticClass: "flex items-center" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "text-gray-400 text-xs w-40 mr-2 truncate flex items-center"
+                            },
+                            [
+                              _vm._v("\n              来源："),
+                              _c("span", { staticClass: "text-gray-900" }, [
+                                _vm._v(_vm._s(item.subject_title))
+                              ])
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "cursor-pointer font-semibold text-teal-500",
+                            on: {
+                              click: function($event) {
+                                return _vm.handleContinue(item)
+                              }
+                            }
+                          },
+                          [_vm._v("查看详情")]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _vm.total > 0
+                ? _c(
+                    "div",
+                    { staticClass: "pt-5 pb-1 flex justify-end" },
+                    [
+                      _c("t-pagination", {
+                        attrs: { total: _vm.total, current: _vm.currentPage },
+                        on: { "page-change": _vm.changePage }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("empty-data", {
+            class: ["shadow-none"],
+            attrs: {
+              show: _vm.isLoading === false && _vm.collects.length === 0
+            }
+          })
+        ],
+        1
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -11708,227 +12071,7 @@ var render = function() {
         "div",
         { staticClass: "p-5" },
         [
-          _c("div", { staticClass: "mb-5 flex items-center justify-between" }, [
-            _c("div", { staticClass: "flex items-center" }, [
-              _c("div", { staticClass: "mr-3" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filterForm.subject_pid,
-                        expression: "filterForm.subject_pid"
-                      }
-                    ],
-                    staticClass:
-                      "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none",
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.filterForm,
-                            "subject_pid",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        _vm.selectSubjectParent
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("全部科目")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.subjectList, function(value, key) {
-                      return _c(
-                        "optgroup",
-                        { key: key, attrs: { label: value.title } },
-                        _vm._l(value.childrenList, function(v, k) {
-                          return _c(
-                            "option",
-                            { key: k, domProps: { value: v.id } },
-                            [_vm._v(_vm._s(v.title))]
-                          )
-                        }),
-                        0
-                      )
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filterForm.subject_id,
-                        expression: "filterForm.subject_id"
-                      }
-                    ],
-                    staticClass:
-                      "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm",
-                    class: [
-                      _vm.subjectSelected
-                        ? ""
-                        : "text-gray-400 cursor-not-allowed"
-                    ],
-                    attrs: { disabled: !_vm.subjectSelected },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.filterForm,
-                            "subject_id",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        _vm.selectSubject
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("全部科目")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.activeSubject.children_group, function(
-                      value,
-                      key
-                    ) {
-                      return _c(
-                        "optgroup",
-                        {
-                          key: key,
-                          attrs: { label: key == 1 ? "专业科目" : "公共科目" }
-                        },
-                        _vm._l(value, function(v, k) {
-                          return _c(
-                            "option",
-                            { key: k, domProps: { value: v.id } },
-                            [_vm._v(_vm._s(v.title))]
-                          )
-                        }),
-                        0
-                      )
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c(
-                "div",
-                { staticClass: "relative" },
-                [
-                  _c("v-date-picker", {
-                    attrs: {
-                      mode: "range",
-                      color: "teal",
-                      popover: { placement: "bottom", visibility: "click" }
-                    },
-                    on: { input: _vm.selectDate },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "default",
-                        fn: function(ref) {
-                          var inputProps = ref.inputProps
-                          var inputEvents = ref.inputEvents
-                          var isDragging = ref.isDragging
-                          return _c(
-                            "input",
-                            _vm._g(
-                              _vm._b(
-                                {
-                                  class: [
-                                    "pr-4 py-2 block w-64 bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12 " +
-                                      (isDragging ? "text-gray-400" : "")
-                                  ],
-                                  attrs: {
-                                    type: "text",
-                                    placeholder: "选择日期"
-                                  }
-                                },
-                                "input",
-                                inputProps,
-                                false
-                              ),
-                              inputEvents
-                            )
-                          )
-                        }
-                      }
-                    ]),
-                    model: {
-                      value: _vm.dates,
-                      callback: function($$v) {
-                        _vm.dates = $$v
-                      },
-                      expression: "dates"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "w-5 h-5 stroke-current",
-                          attrs: { fill: "none", viewBox: "0 0 24 24" }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ],
-                1
-              )
-            ])
-          ]),
+          _c("learn-filter", { on: { "on-select": _vm.handleSelect } }),
           _vm._v(" "),
           _c(
             "div",
@@ -12001,7 +12144,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "text-base mb-2" }, [
+                    _c("div", { staticClass: "text-base mb-2 truncate" }, [
                       _vm._v(_vm._s(item.bank_title))
                     ]),
                     _vm._v(" "),
@@ -12052,17 +12195,19 @@ var render = function() {
                 )
               }),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "pt-5 pb-1 flex justify-end" },
-                [
-                  _c("t-pagination", {
-                    attrs: { total: _vm.total, current: _vm.currentPage },
-                    on: { "page-change": _vm.changePage }
-                  })
-                ],
-                1
-              )
+              _vm.total > 0
+                ? _c(
+                    "div",
+                    { staticClass: "pt-5 pb-1 flex justify-end" },
+                    [
+                      _c("t-pagination", {
+                        attrs: { total: _vm.total, current: _vm.currentPage },
+                        on: { "page-change": _vm.changePage }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
             ],
             2
           ),
@@ -12110,227 +12255,7 @@ var render = function() {
         "div",
         { staticClass: "p-5" },
         [
-          _c("div", { staticClass: "mb-5 flex items-center justify-between" }, [
-            _c("div", { staticClass: "flex items-center" }, [
-              _c("div", { staticClass: "mr-3" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filterForm.subject_pid,
-                        expression: "filterForm.subject_pid"
-                      }
-                    ],
-                    staticClass:
-                      "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none",
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.filterForm,
-                            "subject_pid",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        _vm.selectSubjectParent
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("全部科目")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.subjectList, function(value, key) {
-                      return _c(
-                        "optgroup",
-                        { key: key, attrs: { label: value.title } },
-                        _vm._l(value.childrenList, function(v, k) {
-                          return _c(
-                            "option",
-                            { key: k, domProps: { value: v.id } },
-                            [_vm._v(_vm._s(v.title))]
-                          )
-                        }),
-                        0
-                      )
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.filterForm.subject_id,
-                        expression: "filterForm.subject_id"
-                      }
-                    ],
-                    staticClass:
-                      "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm",
-                    class: [
-                      _vm.subjectSelected
-                        ? ""
-                        : "text-gray-400 cursor-not-allowed"
-                    ],
-                    attrs: { disabled: !_vm.subjectSelected },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.filterForm,
-                            "subject_id",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        _vm.selectSubject
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "" } }, [
-                      _vm._v("全部科目")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.activeSubject.children_group, function(
-                      value,
-                      key
-                    ) {
-                      return _c(
-                        "optgroup",
-                        {
-                          key: key,
-                          attrs: { label: key == 1 ? "专业科目" : "公共科目" }
-                        },
-                        _vm._l(value, function(v, k) {
-                          return _c(
-                            "option",
-                            { key: k, domProps: { value: v.id } },
-                            [_vm._v(_vm._s(v.title))]
-                          )
-                        }),
-                        0
-                      )
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c(
-                "div",
-                { staticClass: "relative" },
-                [
-                  _c("v-date-picker", {
-                    attrs: {
-                      mode: "range",
-                      color: "teal",
-                      popover: { placement: "bottom", visibility: "click" }
-                    },
-                    on: { input: _vm.selectDate },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "default",
-                        fn: function(ref) {
-                          var inputProps = ref.inputProps
-                          var inputEvents = ref.inputEvents
-                          var isDragging = ref.isDragging
-                          return _c(
-                            "input",
-                            _vm._g(
-                              _vm._b(
-                                {
-                                  class: [
-                                    "pr-4 py-2 block w-64 bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12 " +
-                                      (isDragging ? "text-gray-400" : "")
-                                  ],
-                                  attrs: {
-                                    type: "text",
-                                    placeholder: "选择日期"
-                                  }
-                                },
-                                "input",
-                                inputProps,
-                                false
-                              ),
-                              inputEvents
-                            )
-                          )
-                        }
-                      }
-                    ]),
-                    model: {
-                      value: _vm.dates,
-                      callback: function($$v) {
-                        _vm.dates = $$v
-                      },
-                      expression: "dates"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400"
-                    },
-                    [
-                      _c(
-                        "svg",
-                        {
-                          staticClass: "stroke-current w-5 h-5",
-                          attrs: { fill: "none", viewBox: "0 0 24 24" }
-                        },
-                        [
-                          _c("path", {
-                            attrs: {
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2",
-                              d:
-                                "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            }
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ],
-                1
-              )
-            ])
-          ]),
+          _c("learn-filter", { on: { "on-select": _vm.handleSelect } }),
           _vm._v(" "),
           _c(
             "div",
@@ -12430,17 +12355,19 @@ var render = function() {
                 )
               }),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "pt-5 pb-1 flex justify-end" },
-                [
-                  _c("t-pagination", {
-                    attrs: { total: _vm.total, current: _vm.currentPage },
-                    on: { "page-change": _vm.changePage }
-                  })
-                ],
-                1
-              )
+              _vm.total > 0
+                ? _c(
+                    "div",
+                    { staticClass: "pt-5 pb-1 flex justify-end" },
+                    [
+                      _c("t-pagination", {
+                        attrs: { total: _vm.total, current: _vm.currentPage },
+                        on: { "page-change": _vm.changePage }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
             ],
             2
           ),
@@ -12455,6 +12382,282 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "mb-5 flex items-center justify-between" }, [
+    _c("div", { staticClass: "flex items-center" }, [
+      _c("div", { staticClass: "mr-3" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterForm.subject_pid,
+                expression: "filterForm.subject_pid"
+              }
+            ],
+            staticClass:
+              "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none",
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.filterForm,
+                    "subject_pid",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                },
+                _vm.selectSubjectParent
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { value: "" } }, [_vm._v("全部科目")]),
+            _vm._v(" "),
+            _vm._l(_vm.subjectList, function(value, key) {
+              return _c(
+                "optgroup",
+                { key: key, attrs: { label: value.title } },
+                _vm._l(value.childrenList, function(v, k) {
+                  return _c("option", { key: k, domProps: { value: v.id } }, [
+                    _vm._v(_vm._s(v.title))
+                  ])
+                }),
+                0
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "mr-3" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterForm.subject_id,
+                expression: "filterForm.subject_id"
+              }
+            ],
+            staticClass:
+              "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm",
+            class: [
+              _vm.subjectSelected ? "" : "text-gray-400 cursor-not-allowed"
+            ],
+            attrs: { disabled: !_vm.subjectSelected },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.filterForm,
+                    "subject_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                },
+                _vm.selectSubject
+              ]
+            }
+          },
+          [
+            _c("option", { attrs: { value: "" } }, [_vm._v("全部科目")]),
+            _vm._v(" "),
+            _vm._l(_vm.activeSubject.children_group, function(value, key) {
+              return _c(
+                "optgroup",
+                {
+                  key: key,
+                  attrs: { label: key == 1 ? "专业科目" : "公共科目" }
+                },
+                _vm._l(value, function(v, k) {
+                  return _c("option", { key: k, domProps: { value: v.id } }, [
+                    _vm._v(_vm._s(v.title))
+                  ])
+                }),
+                0
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _vm.showQuestionTypeSelect
+        ? _c("div", [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filterForm.question_type,
+                    expression: "filterForm.question_type"
+                  }
+                ],
+                staticClass:
+                  "form-select bg-gray-100 border-0 rounded-lg w-48 text-sm py-2 focus:shadow-none text-sm",
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.filterForm,
+                        "question_type",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    _vm.selectQuestionType
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [_vm._v("全部题型")]),
+                _vm._v(" "),
+                _vm._l(_vm.questionTypes, function(v, k) {
+                  return _c("option", { key: k, domProps: { value: k } }, [
+                    _vm._v(_vm._s(v.name))
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c(
+        "div",
+        { staticClass: "relative" },
+        [
+          _c("v-date-picker", {
+            attrs: {
+              mode: "range",
+              color: "teal",
+              popover: { placement: "bottom", visibility: "click" }
+            },
+            on: { input: _vm.selectDate },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var inputProps = ref.inputProps
+                  var inputEvents = ref.inputEvents
+                  var isDragging = ref.isDragging
+                  return _c(
+                    "input",
+                    _vm._g(
+                      _vm._b(
+                        {
+                          class: [
+                            "pr-4 py-2 block w-64 bg-gray-100 rounded-lg text-left appearance-none outline-none pl-12 " +
+                              (isDragging ? "text-gray-400" : "")
+                          ],
+                          attrs: { type: "text", placeholder: "选择日期" }
+                        },
+                        "input",
+                        inputProps,
+                        false
+                      ),
+                      inputEvents
+                    )
+                  )
+                }
+              }
+            ]),
+            model: {
+              value: _vm.dates,
+              callback: function($$v) {
+                _vm.dates = $$v
+              },
+              expression: "dates"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center text-gray-400"
+            },
+            [
+              _c(
+                "svg",
+                {
+                  staticClass: "w-5 h-5 stroke-current",
+                  attrs: { fill: "none", viewBox: "0 0 24 24" }
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      "stroke-linecap": "round",
+                      "stroke-linejoin": "round",
+                      "stroke-width": "2",
+                      d:
+                        "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    }
+                  })
+                ]
+              )
+            ]
+          )
+        ],
+        1
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -12539,7 +12742,7 @@ var render = function() {
               ? "text-gray-900 text-lg border-teal-500"
               : "text-gray-500 border-transparent"
           ],
-          attrs: { to: { name: "my.learn" } }
+          attrs: { to: { name: "my.collect" } }
         },
         [_vm._v("收藏")]
       )
@@ -12934,7 +13137,7 @@ var render = function() {
                                 key: i,
                                 attrs: {
                                   id: "q-" + index + "-" + i,
-                                  question: v.question,
+                                  item: v,
                                   answer:
                                     _vm.answerList[index + "-" + i].answer,
                                   index: [index, i],
@@ -12951,7 +13154,7 @@ var render = function() {
                           key: index,
                           attrs: {
                             id: "q-" + index,
-                            question: item.question,
+                            item: item,
                             answer: _vm.answerList[index].answer,
                             index: index,
                             "show-parse": true
@@ -13330,8 +13533,7 @@ var render = function() {
                                   key: i,
                                   attrs: {
                                     id: "q-" + index + "-" + i,
-                                    question: v.question,
-                                    "bank-item-id": v.id,
+                                    item: v,
                                     answer:
                                       _vm.answerList[index + "-" + i].answer,
                                     index: [index, i],
@@ -13350,8 +13552,7 @@ var render = function() {
                             key: index,
                             attrs: {
                               id: "q-" + index,
-                              "bank-item-id": item.id,
-                              question: item.question,
+                              item: item,
                               answer: _vm.answerList[index].answer,
                               index: index,
                               "show-report": false,
@@ -14004,8 +14205,7 @@ var render = function() {
                           ? _c("exercise-item", {
                               key: index,
                               attrs: {
-                                question: item.question,
-                                "bank-item-id": item.id,
+                                item: item,
                                 answer: _vm.activeAnswer.answer,
                                 index: index
                               },
@@ -14373,8 +14573,7 @@ var render = function() {
                           key: index,
                           attrs: {
                             id: "q-" + index,
-                            question: item.question,
-                            "bank-item-id": item.id,
+                            item: item,
                             answer: _vm.answerList[index].answer,
                             index: index
                           },
@@ -14832,10 +15031,12 @@ var render = function() {
                     },
                     [
                       _c(
-                        "a",
+                        "router-link",
                         {
                           staticClass: "flex flex-col items-center p-5",
-                          attrs: { href: "/subjects/" + v.id }
+                          attrs: {
+                            to: { name: "subjects.show", params: { pid: v.id } }
+                          }
                         },
                         [
                           _c(
@@ -14874,7 +15075,8 @@ var render = function() {
                           ])
                         ]
                       )
-                    ]
+                    ],
+                    1
                   )
                 ])
               }),
@@ -15080,7 +15282,13 @@ var render = function() {
                           staticClass:
                             "mr-5 text-gray-400 h-8 flex items-center"
                         },
-                        [_vm._v(_vm._s(index == 1 ? "专业科目" : "公共科目"))]
+                        [
+                          _vm._v(
+                            _vm._s(
+                              parseInt(index) === 1 ? "专业科目" : "公共科目"
+                            )
+                          )
+                        ]
                       ),
                       _vm._v(" "),
                       _c(
@@ -15088,22 +15296,25 @@ var render = function() {
                         { staticClass: "flex-1 flex flex-wrap" },
                         _vm._l(item, function(value, key) {
                           return _c(
-                            "a",
+                            "router-link",
                             {
                               key: key,
                               staticClass:
                                 "flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer",
                               class: {
-                                "text-white bg-teal-500": value.id == _vm.ssid
+                                "text-white bg-teal-500": value.id == _vm.id
                               },
                               attrs: {
-                                href: "/subjects/" + _vm.sid + "/" + value.id
+                                to: {
+                                  name: "subjects.show",
+                                  params: { pid: _vm.pid, id: value.id }
+                                }
                               }
                             },
                             [_vm._v(_vm._s(value.title))]
                           )
                         }),
-                        0
+                        1
                       )
                     ]
                   )
@@ -15145,22 +15356,22 @@ var render = function() {
             "div",
             { staticClass: "mt-5" },
             [
-              _vm.activeTab == 1 && _vm.ssid
-                ? _c("chapter-list", { attrs: { "subject-id": _vm.ssid } })
+              parseInt(_vm.activeTab) === 1 && _vm.id
+                ? _c("chapter-list", { attrs: { "subject-id": _vm.id } })
                 : _vm._e(),
               _vm._v(" "),
-              _vm.activeTab == 2
-                ? _c("exam-list", { attrs: { "subject-id": _vm.ssid } })
+              parseInt(_vm.activeTab) === 2 && _vm.id
+                ? _c("exam-list", { attrs: { "subject-id": _vm.id } })
                 : _vm._e(),
               _vm._v(" "),
-              _vm.activeTab == 3
+              parseInt(_vm.activeTab) === 3 && _vm.id
                 ? _c("exam-list", {
-                    attrs: { "subject-id": _vm.ssid, type: "old" }
+                    attrs: { "subject-id": _vm.id, type: "old" }
                   })
                 : _vm._e(),
               _vm._v(" "),
-              _vm.activeTab == 4
-                ? _c("daily-list", { attrs: { "subject-id": _vm.ssid } })
+              parseInt(_vm.activeTab) === 4 && _vm.id
+                ? _c("daily-list", { attrs: { "subject-id": _vm.id } })
                 : _vm._e()
             ],
             1
@@ -15206,17 +15417,31 @@ var render = function() {
                   "div",
                   { staticClass: "flex flex-wrap -mx-3" },
                   _vm._l(value.childrenList, function(v, k) {
-                    return _c("div", { key: k, staticClass: "w-1/4 px-3" }, [
-                      _c(
-                        "a",
-                        {
-                          staticClass:
-                            "bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base",
-                          attrs: { href: "/subjects/" + v.id }
-                        },
-                        [_vm._v(_vm._s(v.title))]
-                      )
-                    ])
+                    return _c(
+                      "div",
+                      {
+                        key: k,
+                        staticClass: "w-1/4 px-3",
+                        on: { click: _vm.closeSwitchSubjectModal }
+                      },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass:
+                              "bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base",
+                            attrs: {
+                              to: {
+                                name: "subjects.show",
+                                params: { pid: v.id }
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(v.title))]
+                        )
+                      ],
+                      1
+                    )
                   }),
                   0
                 )
@@ -32431,7 +32656,7 @@ var api = {
   login: '/authorizations',
   register: '/users',
   currentUser: '/user',
-  changePassword: 'user/change-password',
+  changePassword: '/user/change-password',
   currentToken: '/authorizations/current'
 };
 var getCaptchas = function getCaptchas(params) {
@@ -32484,6 +32709,56 @@ var changePassword = function changePassword(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: api.changePassword,
     method: 'post',
+    data: params
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/api/userCollect.js":
+/*!*****************************************!*\
+  !*** ./resources/js/api/userCollect.js ***!
+  \*****************************************/
+/*! exports provided: getUserCollects, storeUserCollects, showUserCollects, deleteUserCollects */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserCollects", function() { return getUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeUserCollects", function() { return storeUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showUserCollects", function() { return showUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUserCollects", function() { return deleteUserCollects; });
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+
+var api = {
+  userCollects: '/user/collects',
+  showUserCollects: '/user/collects/item'
+};
+var getUserCollects = function getUserCollects(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.userCollects,
+    method: 'get',
+    params: params
+  });
+};
+var storeUserCollects = function storeUserCollects(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.userCollects,
+    method: 'post',
+    data: params
+  });
+};
+var showUserCollects = function showUserCollects(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.showUserCollects,
+    method: 'get',
+    params: params
+  });
+};
+var deleteUserCollects = function deleteUserCollects(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.showUserCollects,
+    method: 'delete',
     data: params
   });
 };
@@ -34314,6 +34589,14 @@ nprogress__WEBPACK_IMPORTED_MODULE_3___default.a.configure({
   speed: 350
 });
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
+var originalPush = vue_router__WEBPACK_IMPORTED_MODULE_2__["default"].prototype.push;
+
+vue_router__WEBPACK_IMPORTED_MODULE_2__["default"].prototype.push = function push(location) {
+  return originalPush.call(this, location)["catch"](function (err) {
+    return err;
+  });
+};
+
 var router = createRouter();
 router.beforeEach(before);
 router.afterEach(after);
@@ -34364,6 +34647,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_my_info_ChangePassword__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @/views/my/info/ChangePassword */ "./resources/js/views/my/info/ChangePassword.vue");
 /* harmony import */ var _views_my_learn_Index__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @/views/my/learn/Index */ "./resources/js/views/my/learn/Index.vue");
 /* harmony import */ var _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @/views/my/learn/Exam */ "./resources/js/views/my/learn/Exam.vue");
+/* harmony import */ var _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @/views/my/learn/Collect */ "./resources/js/views/my/learn/Collect.vue");
+
 
 
 
@@ -34395,7 +34680,7 @@ __webpack_require__.r(__webpack_exports__);
     name: 'subjects',
     component: _views_subjects_Index__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    path: '/subjects/:sid/:ssid?',
+    path: '/subjects/:pid/:id?',
     name: 'subjects.show',
     component: _views_subjects_Show__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {
@@ -34439,7 +34724,7 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     path: '/my',
     name: 'my',
-    redirect: '/',
+    redirect: '/my/',
     component: _layout_MyLayout__WEBPACK_IMPORTED_MODULE_2__["default"],
     children: [{
       path: '/',
@@ -34457,6 +34742,10 @@ __webpack_require__.r(__webpack_exports__);
       path: 'exam',
       name: 'my.exam',
       component: _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_16__["default"]
+    }, {
+      path: 'collect',
+      name: 'my.collect',
+      component: _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_17__["default"]
     }]
   }]
 }]);
@@ -34710,6 +34999,12 @@ service.interceptors.request.use(function (config) {
   return config;
 });
 service.interceptors.response.use(function (response) {
+  var token = response.headers.authorization;
+
+  if (token) {
+    _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/refreshToken', token);
+  }
+
   return response.data;
 }, function (error) {
   var response = error.response;
@@ -34727,10 +35022,7 @@ service.interceptors.response.use(function (response) {
         _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/clear');
       }
 
-      _router__WEBPACK_IMPORTED_MODULE_2__["default"].push({
-        name: 'auth.login'
-      });
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请先登录后再开始答题！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请您先登录！');
       break;
 
     case 403:
@@ -34745,11 +35037,8 @@ service.interceptors.response.use(function (response) {
       _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('重复访问次数过多！');
       break;
 
+    case 400:
     case 500:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('请求出现错误或服务器异常，请稍后再试！');
-      break;
-
-    default:
       _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
       break;
   }
@@ -35398,6 +35687,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/my/learn/Collect.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Collect.vue?vue&type=template&id=28a9201b& */ "./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&");
+/* harmony import */ var _Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Collect.vue?vue&type=script&lang=js& */ "./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/my/learn/Collect.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Collect.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Collect.vue?vue&type=template&id=28a9201b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/views/my/learn/Exam.vue":
 /*!**********************************************!*\
   !*** ./resources/js/views/my/learn/Exam.vue ***!
@@ -35531,6 +35889,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_01cf5603___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_01cf5603___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/my/learn/LearnFilter.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/views/my/learn/LearnFilter.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LearnFilter.vue?vue&type=template&id=eba0f766& */ "./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766&");
+/* harmony import */ var _LearnFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnFilter.vue?vue&type=script&lang=js& */ "./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LearnFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/my/learn/LearnFilter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LearnFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./LearnFilter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/LearnFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LearnFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./LearnFilter.vue?vue&type=template&id=eba0f766& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/LearnFilter.vue?vue&type=template&id=eba0f766&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LearnFilter_vue_vue_type_template_id_eba0f766___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -36313,8 +36740,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

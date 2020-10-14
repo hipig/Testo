@@ -5,7 +5,17 @@
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
         <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool :question-id="question.id" :bank-item-id="bankItemId" :show-report="showReport" :show-note="showNote" :show-collect="showCollect"></question-tool>
+      <question-tool
+        :show-report="showReport"
+        :show-note="showNote"
+        :show-collect="showCollect"
+        :is-collect="isCollect"
+        :visible-report="visibleReport"
+        :visible-note="visibleNote"
+        @on-report="handleReport"
+        @on-note="handleNote"
+        @on-collect="handleCollect"
+      />
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
@@ -72,6 +82,7 @@
 <script>
   import QuestionTool from "./QuestionTool"
   import QuestionType from "@/mixins/QuestionType"
+  import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
 
   export default {
     name: "ExamItem",
@@ -83,7 +94,7 @@
         type: Number | Array,
         default: 0
       },
-      question: Object,
+      item: Object,
       answer: {
         type: String | Number | Array,
         default: []
@@ -103,14 +114,23 @@
       showCollect: {
         type: Boolean,
         default: true
-      },
-      bankItemId: Number
+      }
     },
     mixins: [QuestionType],
     data () {
       return {
+        question: this.item.question,
         currentAnswer: this.answer || [],
-        fillBlackAnswer: []
+        fillBlackAnswer: this.answer || [],
+        isCollect: this.item.is_collect || false,
+        toolForm: {
+          subject_id: this.item.subject_id,
+          bank_item_id: this.item.bank_item_id,
+          question_id: this.item.question.id,
+          question_type: this.item.question.type
+        },
+        visibleReport: null,
+        visibleNote: null
       }
     },
     computed: {
@@ -172,6 +192,20 @@
       // 提交答案
       submit() {
         this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
+      },
+      handleReport() {
+
+      },
+      handleNote() {
+
+      },
+      handleCollect() {
+        let request =  this.isCollect ? deleteUserCollects : storeUserCollects
+        request(this.toolForm)
+          .then((res) => {
+            this.isCollect = !this.isCollect
+            this.$Message.success((this.isCollect ? '收藏' : '取消收藏') + '成功！')
+          })
       }
     }
   }

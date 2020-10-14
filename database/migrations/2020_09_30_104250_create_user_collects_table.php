@@ -19,6 +19,7 @@ class CreateUserCollectsTable extends Migration
             $table->unsignedBigInteger('subject_id')->comment('科目ID');
             $table->unsignedBigInteger('bank_item_id')->comment('题目ID');
             $table->unsignedBigInteger('question_id')->comment('题库关联题目ID');
+            $table->unsignedTinyInteger('question_type')->default(1)->comment('题库关联题目类型');
             $table->timestamps();
         });
     }

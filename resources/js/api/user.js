@@ -6,7 +6,7 @@ const api = {
   login: '/authorizations',
   register: '/users',
   currentUser: '/user',
-  changePassword: 'user/change-password',
+  changePassword: '/user/change-password',
   currentToken: '/authorizations/current',
 }
 

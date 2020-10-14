@@ -3,10 +3,11 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Models\BankGroup;
+use App\Models\Question;
 use Faker\Generator as Faker;
 
 $factory->define(BankGroup::class, function (Faker $faker) {
-    $bankIds = \App\Models\Bank::query()->where('type', 3)->pluck('id')->toArray();
+    $bankIds = \App\Models\Bank::query()->where('is_group', true)->pluck('id')->toArray();
 
     $bankId = $faker->randomElement($bankIds);
     $descs = [
@@ -16,16 +17,17 @@ $factory->define(BankGroup::class, function (Faker $faker) {
         4 => '有两个或两个以上的空时，少填，错填,不填均不得分',
         5 => '主观题仅提供作答，默认得分。'
     ];
-    $type = $faker->randomElement(array_keys(\App\Models\Question::$typeMap));
+    $type = $faker->randomElement(array_keys(Question::$typeMap));
     $count = $faker->randomElement([5, 10, 15, 20, 30, 50]);
-    $score = $faker->randomElement([1, 2, 5]);
+    $scores = [1 => 2, 2 => 3, 3 => 1, 4 => 5, 5 => 10 ];
+    $score = $scores[$type];
     $title = sprintf("本类题共%s题,每小题%s分,共%s分。".$descs[$type], $count, $score, $count * $score);
 
     return [
-        'bank_id' => $faker->randomElement($bankIds),
+        'bank_id' => $bankId,
         'title' => $title,
         'item_type' => $type,
         'item_count' => $count,
-        'item_score' => $score,
+        'item_score' => $score
     ];
 });

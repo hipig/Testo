@@ -55,6 +55,11 @@
     mounted() {
       this.getDailyTestList()
     },
+    watch: {
+      subjectId(val) {
+        this.getDailyTestList()
+      }
+    },
     methods: {
       getDailyTestList() {
         this.isLoading = true

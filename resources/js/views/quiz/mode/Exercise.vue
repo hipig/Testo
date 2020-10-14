@@ -20,7 +20,7 @@
           </div>
           <div v-loading="isLoading" loading-custom-class="h-56">
             <template v-for="(item, index) in questions">
-              <exercise-item :key="index" v-if="activeIndex === index" :question="item.question" :bank-item-id="item.id" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
+              <exercise-item :key="index" v-if="activeIndex === index" :item="item" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
             </template>
           </div>
           <empty-data class="mt-5" :show="isLoading === false && questionsLength === 0"/>
@@ -227,7 +227,6 @@
           .then((res) => {
             this.submitModalVisible = false
             this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
-            this.$Message.success('交卷成功，正在计算得分!')
           })
       },
       handleBack() {

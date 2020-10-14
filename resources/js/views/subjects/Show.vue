@@ -37,9 +37,9 @@
         </div>
         <div class="flex flex-col">
           <div class="flex" v-for="(item, index) in subject.children_group" :index="index">
-            <div class="mr-5 text-gray-400 h-8 flex items-center">{{ index == 1 ? '专业科目': '公共科目' }}</div>
+            <div class="mr-5 text-gray-400 h-8 flex items-center">{{ parseInt(index) === 1 ? '专业科目': '公共科目' }}</div>
             <div class="flex-1 flex flex-wrap">
-              <a :href="'/subjects/'+sid+'/'+value.id" v-for="(value, key) in item" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer" :class="{'text-white bg-teal-500': value.id == ssid}">{{ value.title }}</a>
+              <router-link :to="{name: 'subjects.show', params: {pid: pid, id:value.id}}" v-for="(value, key) in item" :key="key" class="flex items-center h-8 px-5 mr-2 mb-5 rounded-full cursor-pointer" :class="{'text-white bg-teal-500': value.id == id}">{{ value.title }}</router-link>
             </div>
           </div>
         </div>
@@ -50,19 +50,19 @@
         </div>
       </div>
       <div class="mt-5">
-        <chapter-list :subject-id="ssid" v-if="activeTab == 1 && ssid"></chapter-list>
-        <exam-list :subject-id="ssid" v-if="activeTab == 2"></exam-list>
-        <exam-list :subject-id="ssid" type="old" v-if="activeTab == 3"></exam-list>
-        <daily-list :subject-id="ssid" v-if="activeTab == 4"></daily-list>
+        <chapter-list :subject-id="id" v-if="parseInt(activeTab) === 1 && id"></chapter-list>
+        <exam-list :subject-id="id" v-if="parseInt(activeTab) === 2 && id"></exam-list>
+        <exam-list :subject-id="id" type="old" v-if="parseInt(activeTab) === 3 && id"></exam-list>
+        <daily-list :subject-id="id" v-if="parseInt(activeTab) === 4 && id"></daily-list>
       </div>
     </div>
-    <t-modal  v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
+    <t-modal v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
       <div class="w-full" v-loading="listLoading">
         <div class="mb-5" v-for="(value, key) in subjectList" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>
           <div class="flex flex-wrap -mx-3">
-            <div class="w-1/4 px-3" v-for="(v, k) in value.childrenList" :key="k">
-              <a :href="'/subjects/'+v.id" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</a>
+            <div class="w-1/4 px-3" v-for="(v, k) in value.childrenList" :key="k" @click="closeSwitchSubjectModal">
+              <router-link :to="{name: 'subjects.show', params: {pid: v.id}}" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</router-link>
             </div>
           </div>
         </div>
@@ -90,21 +90,17 @@
     },
     data () {
       return {
-        sid: this.$route.params.sid,
-        ssid: 0,
+        pid: this.$route.params.pid,
+        id: 0,
         subject: {},
         subjectList: [],
         tabs: {
-          '1': '章节练习',
-          '2': '模拟考试',
-          '3': '历年真题',
-          '4': '每日一练',
+          1: '章节练习',
+          2: '模拟考试',
+          3: '历年真题',
+          4: '每日一练',
         },
-        activeTab: '1',
-        chapterTests: [],
-        mockExams: [],
-        oldExams: [],
-        dailyTests: [],
+        activeTab: 1,
         switchSubjectVisible: false,
         isLoading: null,
         listLoading: null
@@ -112,6 +108,12 @@
     },
     mounted() {
       this.getSubject()
+    },
+    watch: {
+      $route(to,from){
+        this.id = to.params.id
+        this.getSubject()
+      }
     },
     methods: {
       getSubjectList() {
@@ -126,10 +128,10 @@
       },
       getSubject() {
         this.isLoading = true
-        getSubjectsShow(this.sid)
+        getSubjectsShow(this.pid)
           .then((res) => {
             this.subject = res
-            this.ssid = this.$route.params.ssid || res.children_group[0][0].id
+            this.id = this.$route.params.id || res.children_group[0][0].id
           })
           .finally(() => {
             this.isLoading = false

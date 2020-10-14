@@ -57,6 +57,40 @@ class LearnRecord extends Model
             ->get();
     }
 
+    public function scopeInSubject($query, $subjectPid)
+    {
+        if ($subjectPid) {
+            $subjectIds = Subject::query()->where('parent_id', $subjectPid)->pluck('id');
+            $bankIds = Bank::query()->whereIn('subject_id', $subjectIds)->pluck('id');
+            $query->whereIn('bank_id', $bankIds);
+        }
+        return $query;
+    }
+
+    public function scopeInBank($query, $subjectId)
+    {
+        if ($subjectId) {
+            $bankIds = Bank::query()->where('subject_id', $subjectId)->pluck('id');
+            $query->whereIn('bank_id', $bankIds);
+        }
+        return $query;
+    }
+
+    public function scopeBetweenDate($query, $date)
+    {
+        if ($date) {
+            !is_array($date) && $date = explode('-', $date);
+            $query->whereBetween('updated_at', $date);
+        }
+        return $query;
+    }
+
+    public function scopeInType($query, $type)
+    {
+        $type && $query->whereIn('type', $type);
+        return $query;
+    }
+
     public function getItemsResult($type = 1)
     {
         $query = $this->items()->where('question_type', $type);

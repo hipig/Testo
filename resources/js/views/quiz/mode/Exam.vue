@@ -21,10 +21,10 @@
             <template v-if="record.is_group">
               <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
                 <div class="text-base font-semibold">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
-                <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :question="v.question" :bank-item-id="v.id" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-note="false" @answer="handleAnswer"></exam-item>
+                <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :item="v" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-note="false" @answer="handleAnswer"></exam-item>
               </div>
             </template>
-            <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :bank-item-id="item.id" :question="item.question" :answer="answerList[index].answer" :index="index" :show-report="false" :show-note="false" @answer="handleAnswer"></exam-item>
+            <exam-item v-else :id="'q-'+index" v-for="(item, index) in recordItems" :key="index" :item="item" :answer="answerList[index].answer" :index="index" :show-report="false" :show-note="false" @answer="handleAnswer"></exam-item>
           </div>
           <empty-data :show="isLoading === false && recordItems.length === 0"/>
         </div>
@@ -241,7 +241,6 @@
           .then((res) => {
             if (type && type === 'end') {
               this.submitModalVisible = false
-              this.$Message.success('交卷成功，正在计算得分!')
               this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
             }
           })

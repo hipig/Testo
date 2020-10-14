@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
 
-    // 获取科目树形
+    // 科目树形
     Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
     Route::get('subjects/{subject}', 'SubjectsController@show')->name('subjects.show');
 
-    // 获取题库列表
+    // 题库列表
     Route::get('subjects/{subject}/chapter-tests', 'BanksController@chapterTests')->name('subjects.chapterTests');
     Route::get('subjects/{subject}/mock-exams', 'BanksController@mockExams')->name('subjects.mockExams');
     Route::get('subjects/{subject}/old-exams', 'BanksController@oldExams')->name('subjects.oldExams');
@@ -46,26 +46,32 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::delete('authorizations/current', 'AuthorizationsController@destroy')->name('authorizations.destroy');
 
     // 登录后可以访问的接口
-    Route::middleware('auth:api')->group(function() {
+    Route::middleware('refresh.token')->group(function() {
         // 当前登录用户信息
         Route::get('user', 'UsersController@me')->name('user.show');
         // 修改密码
         Route::post('user/change-password', 'UsersController@updatePassword')->name('user.change.password');
 
-        // 生成练习记录
+        // 答题记录
         Route::get('records', 'LearnRecordsController@index')->name('learnRecords.index');
-        // 获取练习记录详情
+        // 获取答题记录详情
         Route::get('records/{record}', 'LearnRecordsController@show')->name('learnRecords.show');
-        // 获取练习记录结果
+        // 获取答题记录结果
         Route::get('records/{record}/result', 'LearnRecordsController@showResult')->name('learnRecords.show.result');
-        // 生成练习记录
+        // 生成练习答题记录
         Route::post('records/test', 'LearnRecordsController@storeTest')->name('learnRecords.store.test');
-        // 生成考试记录
+        // 生成考试答题记录
         Route::post('records/exam', 'LearnRecordsController@storeExam')->name('learnRecords.store.exam');
-        // 批量生成答题记录（交卷）
+        // 更新考试答题记录（交卷）
         Route::put('records/{record}', 'LearnRecordsController@update')->name('learnRecords.update');
-        // 生成答题记录
+        // 生成练习答题记录
         Route::post('records/{record}/items', 'LearnRecordItemsController@store')->name('learnRecordItems.store');
+
+        // 题目收藏
+        Route::get('user/collects', 'UserCollectsController@index')->name('userCollects.index');
+        Route::post('user/collects', 'UserCollectsController@store')->name('userCollects.store');
+        Route::get('user/collects/item', 'UserCollectsController@show')->name('userCollects.show');
+        Route::delete('user/collects/item', 'UserCollectsController@destroy')->name('userCollects.destroy');
     });
 
 

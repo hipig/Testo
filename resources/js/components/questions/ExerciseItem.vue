@@ -5,7 +5,14 @@
         <div class="text-gray-400 text-2xl font-semibold">{{ indexText }}</div>
         <div class="text-teal-500 text-lg ml-3">[{{ questionTypes[question.type].name }}]</div>
       </div>
-      <question-tool :question-id="question.id" :bank-item-id="bankItemId"/>
+      <question-tool
+        :is-collect="isCollect"
+        :visible-report="visibleReport"
+        :visible-note="visibleNote"
+        @on-report="handleReport"
+        @on-note="handleNote"
+        @on-collect="handleCollect"
+      />
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
@@ -85,6 +92,7 @@
 <script>
   import QuestionTool from "./QuestionTool"
   import QuestionType from "@/mixins/QuestionType"
+  import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
 
   export default {
     name: "ExerciseItem",
@@ -96,7 +104,7 @@
         type: Number,
         default: 0
       },
-      question: Object,
+      item: Object,
       answer: {
         type: String | Number | Array,
         default: []
@@ -106,11 +114,21 @@
     mixins: [QuestionType],
     data () {
       return {
+        question: this.item.question,
         currentAnswer: this.answer || [],
         multiSelectAnswer: [],
         fillBlackAnswer: [],
         showAnswer: false,
-        isAnswered: false
+        isAnswered: false,
+        isCollect: this.item.is_collect || false,
+        toolForm: {
+          subject_id: this.item.subject_id,
+          bank_item_id: this.item.bank_item_id,
+          question_id: this.item.question.id,
+          question_type: this.item.question.type
+        },
+        visibleReport: null,
+        visibleNote: null
       }
     },
     created() {
@@ -206,6 +224,20 @@
             break
         }
         return true
+      },
+      handleReport() {
+
+      },
+      handleNote() {
+
+      },
+      handleCollect() {
+        let request =  this.isCollect ? deleteUserCollects : storeUserCollects
+        request(this.toolForm)
+          .then((res) => {
+            this.isCollect = !this.isCollect
+            this.$Message.success((this.isCollect ? '收藏' : '取消收藏') + '成功！')
+          })
       }
     }
   }

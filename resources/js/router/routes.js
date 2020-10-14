@@ -20,6 +20,7 @@ import MyIndex from "@/views/my/info/Index"
 import MyChangePassword from "@/views/my/info/ChangePassword"
 import MyLearn from "@/views/my/learn/Index"
 import MyExam from "@/views/my/learn/Exam"
+import MyCollect from "@/views/my/learn/Collect"
 
 export default [
   {
@@ -39,7 +40,7 @@ export default [
         component: Subjects
       },
       {
-        path: '/subjects/:sid/:ssid?',
+        path: '/subjects/:pid/:id?',
         name: 'subjects.show',
         component: SubjectsShow
       },
@@ -95,7 +96,7 @@ export default [
       {
         path: '/my',
         name: 'my',
-        redirect: '/',
+        redirect: '/my/',
         component: MyLayout,
         children: [
           {
@@ -117,6 +118,11 @@ export default [
             path: 'exam',
             name: 'my.exam',
             component: MyExam
+          },
+          {
+            path: 'collect',
+            name: 'my.collect',
+            component: MyCollect
           }
         ]
       }

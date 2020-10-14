@@ -18,6 +18,10 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use((response) => {
+  const token = response.headers.authorization
+  if (token) {
+    store.dispatch('user/refreshToken', token)
+  }
   return response.data
 }, (error) => {
   const response = error.response
@@ -32,8 +36,7 @@ service.interceptors.response.use((response) => {
       if (token) {
         store.dispatch('user/clear')
       }
-      router.push({name: 'auth.login'})
-      message.error('尚未登录，请先登录后再开始答题！')
+      message.error('尚未登录，请您先登录！')
       break;
     case 403:
       message.error('您的权限不足，拒绝访问！')
@@ -44,11 +47,9 @@ service.interceptors.response.use((response) => {
     case 429:
       message.error('重复访问次数过多！')
       break;
+    case 400:
     case 500:
-      message.error('请求出现错误或服务器异常，请稍后再试！')
-      break;
-    default:
-      message.error(response.data.message|| '请求出现错误或服务器异常，请稍后再试！')
+      message.error(response.data.message || '请求出现错误或服务器异常，请稍后再试！')
       break;
   }
   return Promise.reject(response)

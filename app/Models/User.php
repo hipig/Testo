@@ -68,6 +68,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserCollect::class);
     }
 
+    public function collectItems()
+    {
+        return $this->hasManyThrough(BankItem::class, UserCollect::class, 'user_id', 'id', 'id', 'bank_item_id');
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = \Hash::make($value);

@@ -14,7 +14,7 @@
           </div>
           <div v-loading="isLoading" loading-custom-class="h-56">
             <template v-for="(item, index) in recordItems">
-              <exam-item :id="'q-'+index" :key="index" :question="item.question" :bank-item-id="item.id" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
+              <exam-item :id="'q-'+index" :key="index" :item="item" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
             </template>
           </div>
           <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
@@ -198,7 +198,6 @@
         updateRecords(this.recordId, params)
           .then((res) => {
             this.submitModalVisible = false
-            this.$Message.success('交卷成功，正在计算得分!')
             this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
           })
       }

@@ -11,13 +11,8 @@ use App\Http\Requests\Api\LearnRecordTestStoreRequest;
 use App\Http\Requests\Api\LearnRecordUpdateRequest;
 use App\Http\Resources\LearnRecordShowResource;
 use App\Http\Resources\LearnRecordResource;
-use App\Http\Resources\LearnRecordTestShowResource;
 use App\Models\Bank;
-use App\Models\BankItem;
 use App\Models\LearnRecord;
-use App\Models\LearnRecordItem;
-use App\Models\Question;
-use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,31 +20,17 @@ class LearnRecordsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = optional($request->user('api'))->records()->with('bank', 'bank.subject');
+        $learnRecords = optional($request->user('api'))
+            ->records()
+            ->with('bank', 'bank.subject')
+            ->inSubject($request->subject_pid)
+            ->inBank($request->subject_id)
+            ->betweenDate($request->date)
+            ->inType($request->type)
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('api.page_size'));
 
-        if ($subjectPid = $request->subject_pid) {
-            $subjectIds = Subject::query()->where('parent_id', $subjectPid)->pluck('id');
-            $bankIds = Bank::query()->whereIn('subject_id', $subjectIds)->pluck('id');
-            $query->whereIn('bank_id', $bankIds);
-        }
-
-        if ($subjectId = $request->subject_id) {
-            $query->where('bank_id', $subjectId);
-        }
-
-        if ($date = $request->date) {
-            !is_array($date) && $date = explode('-', $date);
-            $query->whereBetween('created_at', $date);
-        }
-
-        if ($type = $request->type) {
-            !is_array($type) && $type = explode(',', $type);
-            $query->whereIn('type', $type);
-        }
-
-        $records = $query->orderBy('updated_at', 'desc')->paginate(config('api.page_size'));
-
-        return LearnRecordResource::collection($records);
+        return LearnRecordResource::collection($learnRecords);
     }
 
     public function show(Request $request, LearnRecord $record)
@@ -58,7 +39,9 @@ class LearnRecordsController extends Controller
             throw new InvalidRequestException('考试已结束！');
         }
 
-        $record->load('bank.groups.items');
+        if ($record->is_group) {
+            $record->load('bank.groups.items');
+        }
 
         return LearnRecordShowResource::make($record);
     }
@@ -71,13 +54,11 @@ class LearnRecordsController extends Controller
 
         $record->load('items');
         $record->withResult = true;
-
         return LearnRecordShowResource::make($record);
     }
 
     public function storeTest(LearnRecordTestStoreRequest $request)
     {
-        $type = $request->type;
         $mode = $request->mode ?? 1;
         $number = $request->number;
 
@@ -101,7 +82,7 @@ class LearnRecordsController extends Controller
                 $query = $bankItems->whereIn($columnPrefix.'id', $errorIds);
         }
 
-        if ($type != 0) {
+        if ($type = $request->type) {
             $query->where($columnPrefix.'type', $type);
         }
 
@@ -109,14 +90,15 @@ class LearnRecordsController extends Controller
         $count = $idPluck->count();
         $ids = $idPluck->random($number >= $count ? $count : $number);
 
-        $record = LearnRecord::create([
-            'user_id' => optional($request->user('api'))->id,
-            'bank_id' => $bank->id,
-            'quiz_mode' => $mode,
-            'type' => $bank->type,
-            'question_ids' => $ids->toArray(),
-            'total_count' => $ids->count()
-        ]);
+        $record = optional($request->user('api'))
+            ->records()
+            ->create([
+                'bank_id' => $bank->id,
+                'quiz_mode' => $mode,
+                'type' => $bank->type,
+                'question_ids' => $ids->toArray(),
+                'total_count' => $ids->count()
+            ]);
 
         return LearnRecordResource::make($record);
     }
@@ -126,13 +108,14 @@ class LearnRecordsController extends Controller
         $bank = Bank::query()->findOrFail($request->bank_id);
         $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
 
-        $record = LearnRecord::create([
-            'user_id' => optional($request->user('api'))->id,
-            'bank_id' => $bank->id,
-            'quiz_mode' => LearnRecord::QUIZ_EXAM,
-            'type' => $bank->type,
-            'total_count' => $bankItems->count()
-        ]);
+        $record = optional($request->user('api'))
+            ->records()
+            ->create([
+                'bank_id' => $bank->id,
+                'quiz_mode' => LearnRecord::QUIZ_EXAM,
+                'type' => $bank->type,
+                'total_count' => $bankItems->count()
+            ]);
 
         return LearnRecordResource::make($record);
     }

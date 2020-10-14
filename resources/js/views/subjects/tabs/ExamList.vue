@@ -53,6 +53,9 @@
     watch: {
       type(val) {
         this.getExamList()
+      },
+      subjectId(val) {
+        this.getDailyTestList()
       }
     },
     methods: {

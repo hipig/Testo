@@ -1,29 +1,29 @@
 <template>
   <div class="flex flex-wrap">
-    <div class="flex items-center cursor-pointer mr-8" v-if="showReport" @click="handleReport">
+    <div class="flex items-center cursor-pointer mr-8" v-if="showReport" @click="reportModalVisible = true">
       <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
       </svg>
       <span class="text-base text-gray-900">纠错</span>
     </div>
-    <div class="flex items-center cursor-pointer mr-8" v-if="showNote" @click="handleNote">
+    <div class="flex items-center cursor-pointer mr-8" v-if="showNote" @click="noteModalVisible = true">
       <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
       </svg>
       <span class="text-base text-gray-900">写笔记</span>
     </div>
-    <div class="flex items-center cursor-pointer" v-if="showCollect" @click="handleCollect">
+    <div class="flex items-center cursor-pointer" v-if="showCollect" @click="submitCollect">
       <svg class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24" :class="[isCollect ? 'fill-current text-teal-500' : 'stroke-current text-gray-400']">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
       </svg>
-      <span class="text-base text-gray-900">收藏</span>
+      <span class="text-base" :class="[isCollect ? 'text-teal-500' : 'text-gray-900']">收藏</span>
     </div>
-    <t-modal title="纠错" v-model="reportModalVisible" size="3xl" :mask-closable="false" @close="closeReportModal">
+    <t-modal title="纠错" v-model="reportModalVisible" size="3xl" :mask-closable="false" @close="reportModalVisible = false">
       <div class="flex flex-col">
         <div class="mb-5">
           <div class="flex flex-wrap -mx-3">
             <div class="w-1/6 px-3" v-for="(item, key) in reportTypes" :key="key">
-              <div class="flex items-center justify-center py-2 rounded-sm cursor-pointer" :class="[reportForm.type == key ? 'text-white bg-teal-500' : 'bg-gray-100']" @click="changeReportType(key)">{{ item }}</div>
+              <div class="flex items-center justify-center py-2 rounded-sm cursor-pointer" :class="[reportForm.type == key ? 'text-white bg-teal-500' : 'bg-gray-100']" @click="reportForm.type = key">{{ item }}</div>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
         </div>
       </div>
     </t-modal>
-    <t-modal title="写笔记" v-model="noteModalVisible" size="3xl" :mask-closable="false" @close="closeNoteModal">
+    <t-modal title="写笔记" v-model="noteModalVisible" size="3xl" :mask-closable="false" @close="noteModalVisible = false">
       <div class="flex flex-col">
         <div class="mb-5">
           <label class="flex w-full relative">
@@ -86,8 +86,6 @@
       TModal
     },
     props: {
-      bankItemId: Number,
-      questionId: Number,
       showReport: {
         type: Boolean,
         default: true
@@ -96,16 +94,27 @@
         type: Boolean,
         default: true
       },
+      visibleReport: {
+        type: Boolean,
+        default: false
+      },
+      visibleNote: {
+        type: Boolean,
+        default: false
+      },
       showCollect: {
         type: Boolean,
         default: true
+      },
+      isCollect: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
       return {
-        reportModalVisible: false,
-        noteModalVisible: false,
-        isCollect: false,
+        reportModalVisible: this.visibleReport,
+        noteModalVisible: this.visibleNote,
         reportTypes: {
           1: '错别字',
           2: '答案有误',
@@ -126,31 +135,14 @@
       }
     },
     methods: {
-      handleReport() {
-        this.reportModalVisible = true
-      },
-      handleNote() {
-        this.remarkModalVisible = true
-      },
-      handleCollect() {
-        this.isCollect = !this.isCollect
-      },
-      closeReportModal() {
-        this.reportModalVisible = false
-      },
-      closeNoteModal() {
-        this.noteModalVisible = false
-      },
-      changeReportType(type) {
-        this.reportForm.type = type
-      },
       submitReport() {
-        let params = this.reportForm
-        params.bank_item_id = this.bankItemId
+        this.$emit('on-report', this.reportForm)
       },
       submitNote() {
-        let params = this.noteForm
-        params.bank_item_id = this.bankItemId
+        this.$emit('on-note', this.noteForm)
+      },
+      submitCollect() {
+        this.$emit('on-collect')
       }
     }
   }

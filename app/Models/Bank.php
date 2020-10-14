@@ -18,12 +18,14 @@ class Bank extends Model
 
     protected $fillable = [
         'title', 'subject_id', 'parent_id', 'type',
-        'is_free', 'price', 'time_limit', 'total_score',
-        'total_count', 'source', 'remark', 'status', 'index'
+        'is_free', 'price', 'is_group', 'time_limit',
+        'total_score', 'total_count', 'source', 'remark',
+        'status', 'index'
     ];
 
     protected $casts = [
         'is_free' => 'boolean',
+        'is_group' => 'boolean',
         'status' => 'boolean'
     ];
 
@@ -74,10 +76,5 @@ class Bank extends Model
     public function getHasChildrenAttribute()
     {
         return $this->children->isNotEmpty();
-    }
-
-    public function getIsGroupAttribute()
-    {
-        return $this->groups->isNotEmpty();
     }
 }

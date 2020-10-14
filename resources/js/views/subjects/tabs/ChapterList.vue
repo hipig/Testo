@@ -168,6 +168,11 @@
         }, 200)
       } , true)
     },
+    watch: {
+      subjectId(val) {
+        this.getChapterTestList()
+      }
+    },
     methods: {
       getChapterTestList() {
         this.isLoading = true
