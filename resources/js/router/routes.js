@@ -20,6 +20,7 @@ import MyIndex from "@/views/my/info/Index"
 import MyChangePassword from "@/views/my/info/ChangePassword"
 import MyLearn from "@/views/my/learn/Index"
 import MyExam from "@/views/my/learn/Exam"
+import MyNote from "@/views/my/learn/Note"
 import MyCollect from "@/views/my/learn/Collect"
 
 export default [
@@ -118,6 +119,11 @@ export default [
             path: 'exam',
             name: 'my.exam',
             component: MyExam
+          },
+          {
+            path: 'note',
+            name: 'my.note',
+            component: MyNote
           },
           {
             path: 'collect',

@@ -1,9 +1,13 @@
 import Pagination from '@/components/common/pagination'
 import Message from '@/components/common/message'
 import Loading from '@/components/common/loading'
+import Progress from '@/components/common/progress'
+import Upload from '@/components/common/upload'
 
 const components = [
-  Pagination
+  Pagination,
+  Progress,
+  Upload
 ]
 
 const install = function(Vue, opts = {}) {

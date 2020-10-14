@@ -25,4 +25,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
         }
       }
     })
+    .babelConfig({
+      presets: ["@vue/babel-preset-jsx"]
+    })
     .version();

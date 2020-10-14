@@ -1,3 +1,3 @@
-import message from './src/message'
+import Message from './src/message'
 
-export default message
+export default Message

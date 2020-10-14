@@ -55,7 +55,7 @@
         this.getExamList()
       },
       subjectId(val) {
-        this.getDailyTestList()
+        this.getExamList()
       }
     },
     methods: {
