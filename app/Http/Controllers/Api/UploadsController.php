@@ -15,8 +15,9 @@ class UploadsController extends Controller
 
         $filePath = $request->file->store($path, config('api.storage_disk'));
 
-        $upload = optional($request->user())->uploads()->create([
-           'path' => $filePath
+        $upload = optional($request->user('api'))->uploads()->create([
+            'name' => $request->file->getClientOriginalName(),
+            'path' => $filePath
         ]);
 
         return UploadsResource::make($upload);

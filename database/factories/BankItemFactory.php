@@ -12,7 +12,8 @@ $factory->define(BankItem::class, function (Faker $faker) {
     $banks = Bank::query()->get();
 
     $bankId = $faker->randomElement($banks->pluck('id')->toArray());
-    $isGroup = $banks->find($bankId)->is_group ?? 0;
+    $bank = $banks->find($bankId);
+    $isGroup = $bank->is_group ?? 0;
 
     $groupId = null;
     $questionType = $faker->randomElement(array_keys(Question::$typeMap));
@@ -30,6 +31,7 @@ $factory->define(BankItem::class, function (Faker $faker) {
     $questionId = $faker->randomElement($questionIds);
 
     return [
+        'subject_id' => $bank->subject_id,
         'bank_id' => $bankId,
         'group_id' => $groupId,
         'question_id' => $questionId,

@@ -73,7 +73,14 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::get('user/collects/item', 'UserCollectsController@show')->name('userCollects.show');
         Route::delete('user/collects/{userCollect}', 'UserCollectsController@destroy')->name('userCollects.destroy');
         Route::delete('user/collects/item', 'UserCollectsController@delete')->name('userCollects.delete');
+        // 题目纠错
+        Route::post('user/reports', 'UserReportsController@store')->name('userReports.store');
+        // 题目笔记
+        Route::get('user/notes', 'UserNotesController@index')->name('userNotes.index');
+        Route::post('user/notes', 'UserNotesController@store')->name('userNotes.store');
+        Route::delete('user/notes/{userNote}', 'UserNotesController@destroy')->name('userNotes.destroy');
 
+        // 文件上传
         Route::post('uploads', 'UploadsController@store')->name('uploads.store');
     });
 

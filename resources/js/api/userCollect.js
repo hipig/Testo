@@ -1,5 +1,5 @@
 import service from '@/utils/request'
-import {sprintf} from "../utils/util";
+import { sprintf } from "../utils/util"
 
 const api = {
   userCollects: '/user/collects',

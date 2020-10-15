@@ -308,8 +308,6 @@ export default {
     const trigger = this.$slots.trigger || this.$slots.default
     const uploadComponent = <upload {...uploadData}>{trigger}</upload>
 
-    console.log(uploadComponent)
-
     return (
       <div>
         { this.listType === 'picture-card' ? uploadList : ''}

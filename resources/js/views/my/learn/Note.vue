@@ -2,70 +2,107 @@
   <div class="bg-white shadow rounded-lg">
     <learn-tab active="note"/>
     <div class="p-5">
-      <t-upload
-        class="w-64"
-        :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
-        :action="uploadUrl"
-        :data="{type: 'image'}"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-        list-type="picture-card">
-        <div class="flex flex-col items-center justify-center">
-          <svg class="w-12 h-12 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-          </svg>
-          <div class="mt-1">将文件拖到此处，或点击上传</div>
+      <learn-filter :show-question-type-select="true" @on-select="handleSelect"/>
+      <div v-loading="isLoading" loading-custom-class="h-56">
+        <div class="pt-5 pb-4 border-b border-gray-100" v-for="(item, index) in notes" :key="index">
+          <div class="flex justify-between text-xs leading-none mb-3">
+            <div class="flex flex-col flex-1">
+              <div class="text-base" v-html="item.content"></div>
+              <div class="flex flex-wrap -mr-3 mt-3">
+                <img class="h-24 mr-3" v-for="(v, k) in item.upload_items" :key="k" :src="v.url" :alt="v.name">
+              </div>
+            </div>
+            <div class="pl-2 text-gray-400">{{ item.created_at }}</div>
+          </div>
+          <div class="flex flex-col p-3 mb-3 bg-gray-100 border border-gray-200 rounded">
+            <div class="flex items-baseline text-base mb-2">
+              <div class="text-teal-500 w-16">{{ `[${questionTypes[item.question_type].name}]` }}</div>
+              <div class="flex-1">{{ item.question_title }}</div>
+            </div>
+            <div class="text-gray-400 text-xs mr-2 truncate flex items-center">
+              来源：<span class="text-gray-900">{{ item.subject_title }}</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="cursor-pointer text-xs text-gray-400" @click="handleDelete(item)">删除</div>
+            <div class="cursor-pointer font-semibold text-teal-500" @click="handleContinue(item)">查看详情</div>
+          </div>
         </div>
-        <div class="mt-2 text-xs" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-      </t-upload>
+        <div class="pt-5 pb-1 flex justify-end" v-if="total > 0">
+          <t-pagination :total="total" :current="currentPage" @page-change="changePage"/>
+        </div>
+      </div>
+      <empty-data :class="['shadow-none']" :show="isLoading === false && notes.length === 0"/>
     </div>
   </div>
-
 </template>
 
 <script>
-import LearnTab from "./LearnTab"
+  import LearnTab from "./LearnTab"
+  import LearnFilter from "./LearnFilter"
+  import QuestionType from "@/mixins/QuestionType"
+  import EmptyData from "@/components/common/EmptyData"
+  import { getUserNotes, destroyUserNotes } from "@/api/userNote"
 
-export default {
+  export default {
     name: "my.note",
     components: {
-      LearnTab
+      LearnTab,
+      LearnFilter,
+      EmptyData
     },
-    data() {
+    mixins: [QuestionType],
+    data () {
       return {
-        uploadUrl: window.config.api_url + '/uploads',
-        fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          },
-          {
-            name: 'food2.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
-        ]
+        notes: [],
+        filterForm: {},
+        currentPage: 1,
+        total: 0,
+        isLoading: null
       }
     },
+    mounted() {
+      this.getUserNotes()
+    },
     methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList)
+      getUserNotes() {
+        this.isLoading = true
+        let params = this.filterForm
+        params.page = this.currentPage
+
+        getUserNotes(params)
+          .then((res) => {
+            this.notes = res.data
+            this.total = res.meta.total
+          })
+          .finally(() => {
+            this.isLoading = false
+          })
       },
-      handlePreview(file) {
-        console.log(file)
+      handleSelect(form) {
+        this.filterForm = form
+        this.getUserNotes()
       },
-      handleExceed(files, fileList) {
-        this.$Message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      handleContinue(val) {
+        this.$router.push({name: 'home'})
       },
-      beforeRemove(file, fileList) {
+      changePage(page) {
+        this.currentPage = page
+        this.getUserNotes()
+      },
+      handleDelete(item) {
         return this.$Dialog.confirm({
-          title: '提示',
-          content: `确定移除 ${file.name}？`
+          title: '温馨提示',
+          content: `是否删除该条笔记？`
         })
+          .then(_ => {
+            destroyUserNotes(item.id)
+              .then(_ => {
+                this.$Message.success('删除成功')
+                this.getUserNotes()
+              })
+          })
+          .catch(_ => {})
       }
     }
   }

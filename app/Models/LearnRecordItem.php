@@ -5,7 +5,7 @@ namespace App\Models;
 class LearnRecordItem extends Model
 {
     protected $fillable = [
-        'record_id', 'bank_item_id', 'question_id', 'question_type',
+        'record_id', 'bank_id', 'bank_item_id', 'question_id', 'question_type',
         'answer', 'is_right', 'score'
     ];
 

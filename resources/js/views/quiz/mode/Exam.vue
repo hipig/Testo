@@ -182,6 +182,7 @@
                 item.items.forEach((v, i) => {
                   answerList[index+'-'+i] = {
                     record_id: this.recordId,
+                    bank_id: res.bank_id,
                     bank_item_id: v.id,
                     question_id: v.question.id,
                     question_type: v.question.type,
@@ -191,6 +192,7 @@
               } else {
                 answerList[index] = {
                   record_id: this.recordId,
+                  bank_id: res.bank_id,
                   bank_item_id: item.id,
                   question_id: item.question.id,
                   question_type: item.question.type,

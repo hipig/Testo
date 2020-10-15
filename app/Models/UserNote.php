@@ -6,17 +6,27 @@ use App\Models\Traits\DateScopeTrait;
 use App\Models\Traits\QuestionScopeTrait;
 use App\Models\Traits\SubjectScopeTrait;
 
-class UserCollect extends Model
+class UserNote extends Model
 {
     use SubjectScopeTrait, QuestionScopeTrait, DateScopeTrait;
 
     protected $fillable = [
-        'user_id', 'subject_id', 'bank_item_id', 'question_id', 'question_type'
+        'user_id', 'subject_id', 'bank_item_id', 'question_id',
+        'question_type', 'content', 'upload_ids'
     ];
+
+    protected $casts = [
+        'upload_ids' => 'json'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function subject()
     {
-        return $this->belongsTo(Subject::class, 'subject_id');
+        return $this->belongsTo(Subject::class);
     }
 
     public function bankItem()
@@ -27,5 +37,10 @@ class UserCollect extends Model
     public function question()
     {
         return $this->belongsTo(Question::class, 'question_id');
+    }
+
+    public function getUploadItemsAttribute()
+    {
+        return Upload::query()->whereIn('id', $this->upload_ids)->get();
     }
 }

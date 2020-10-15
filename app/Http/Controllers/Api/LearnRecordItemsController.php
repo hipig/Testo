@@ -18,7 +18,7 @@ class LearnRecordItemsController extends Controller
     public function store(LearnRecordItemRequest $request, LearnRecord $record)
     {
         $recordItem = $record->items()->updateOrCreate(
-            $request->only('record_id', 'bank_item_id', 'question_id'),
+            $request->only('record_id', 'bank_id', 'bank_item_id', 'question_id'),
             $request->all()
         );
 

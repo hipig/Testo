@@ -68,14 +68,24 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserCollect::class);
     }
 
+    public function collectItems()
+    {
+        return $this->hasManyThrough(BankItem::class, UserCollect::class, 'user_id', 'id', 'id', 'bank_item_id');
+    }
+
     public function uploads()
     {
         return $this->hasMany(Upload::class);
     }
 
-    public function collectItems()
+    public function reports()
     {
-        return $this->hasManyThrough(BankItem::class, UserCollect::class, 'user_id', 'id', 'id', 'bank_item_id');
+        return $this->hasMany(UserReport::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(UserNote::class);
     }
 
     public function setPasswordAttribute($value)

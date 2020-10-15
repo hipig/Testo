@@ -18,7 +18,7 @@
       </svg>
       <span class="text-base" :class="[isCollect ? 'text-teal-500' : 'text-gray-900']">收藏</span>
     </div>
-    <t-modal title="纠错" v-model="reportModalVisible" size="max-w-3xl" :mask-closable="false" @close="reportModalVisible = false">
+    <t-modal title="纠错" v-model="reportModalVisible" size="max-w-3xl" :mask-closable="false" @close="closeReportModal">
       <div class="flex flex-col">
         <div class="mb-5">
           <div class="flex flex-wrap -mx-3">
@@ -33,14 +33,28 @@
           </label>
         </div>
         <div class="mb-5">
-          <div class="flex items-end">
+          <t-upload
+            class="flex items-center"
+            :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
+            :action="uploadUrl"
+            :data="{type: 'image'}"
+            :on-success="handleSuccessReport"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-exceed="handleExceed"
+            multiple
+            :limit="3"
+            :file-list="reportFileList"
+            list-type="picture-card"
+          >
             <div class="w-24 h-24 bg-gray-100 flex items-center justify-center rounded-sm cursor-pointer">
               <svg class="w-7 h-7 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
               </svg>
             </div>
-            <div class="text-gray-400 leading-none ml-4">最多上传3张图片</div>
-          </div>
+            <div slot="tip" class="text-gray-400 leading-none ml-4">最多上传3张图片</div>
+          </t-upload>
         </div>
       </div>
       <div slot="footer">
@@ -49,7 +63,7 @@
         </div>
       </div>
     </t-modal>
-    <t-modal title="写笔记" v-model="noteModalVisible" size="max-w-3xl" :mask-closable="false" @close="noteModalVisible = false">
+    <t-modal title="写笔记" v-model="noteModalVisible" size="max-w-3xl" :mask-closable="false" @close="closeNoteModal">
       <div class="flex flex-col">
         <div class="mb-5">
           <label class="flex w-full relative">
@@ -58,14 +72,28 @@
           </label>
         </div>
         <div class="mb-5">
-          <div class="flex items-end">
+          <t-upload
+            class="flex items-center"
+            :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
+            :action="uploadUrl"
+            :data="{type: 'image'}"
+            :on-success="handleSuccessNote"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-exceed="handleExceed"
+            multiple
+            :limit="3"
+            :file-list="noteFileList"
+            list-type="picture-card"
+          >
             <div class="w-24 h-24 bg-gray-100 flex items-center justify-center rounded-sm cursor-pointer">
               <svg class="w-7 h-7 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
               </svg>
             </div>
-            <div class="text-gray-400 leading-none ml-4">最多上传3张图片</div>
-          </div>
+            <div slot="tip" class="text-gray-400 leading-none ml-4">最多上传3张图片</div>
+          </t-upload>
         </div>
       </div>
       <div slot="footer">
@@ -94,14 +122,6 @@
         type: Boolean,
         default: true
       },
-      visibleReport: {
-        type: Boolean,
-        default: false
-      },
-      visibleNote: {
-        type: Boolean,
-        default: false
-      },
       showCollect: {
         type: Boolean,
         default: true
@@ -113,8 +133,8 @@
     },
     data () {
       return {
-        reportModalVisible: this.visibleReport,
-        noteModalVisible: this.visibleNote,
+        reportModalVisible: false,
+        noteModalVisible: false,
         reportTypes: {
           1: '错别字',
           2: '答案有误',
@@ -126,19 +146,61 @@
         reportForm: {
           type: 1,
           content: '',
-          images: []
+          upload_ids: []
         },
         noteForm: {
           content: '',
-          images: []
-        }
+          upload_ids: []
+        },
+        uploadUrl: window.config.api_url + '/uploads',
+        reportFileList: [],
+        noteFileList: []
       }
     },
     methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList)
+      },
+      handlePreview(file) {
+        console.log(file)
+      },
+      handleExceed(files, fileList) {
+        this.$Message.warning(`最多上传 3 张图片，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      },
+      beforeRemove(file, fileList) {
+        return this.$Dialog.confirm({
+          title: '提示',
+          content: `确定移除 ${file.name}？`
+        })
+      },
+      handleSuccessReport(response) {
+        this.reportForm.upload_ids.push(response.id)
+        console.log(this.reportForm)
+      },
+      handleSuccessNote(response) {
+        this.noteForm.upload_ids.push(response.id)
+      },
+      closeReportModal() {
+        this.reportModalVisible = false
+        this.reportForm = {
+          type: 1,
+            content: '',
+            upload_ids: []
+        }
+      },
+      closeNoteModal() {
+        this.noteModalVisible = false
+        this.noteForm = {
+          content: '',
+          upload_ids: []
+        }
+      },
       submitReport() {
+        this.reportModalVisible = false
         this.$emit('on-report', this.reportForm)
       },
       submitNote() {
+        this.noteModalVisible = false
         this.$emit('on-note', this.noteForm)
       },
       submitCollect() {

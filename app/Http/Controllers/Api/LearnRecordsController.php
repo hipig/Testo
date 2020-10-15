@@ -22,13 +22,13 @@ class LearnRecordsController extends Controller
     {
         $learnRecords = optional($request->user('api'))
             ->records()
-            ->with('bank', 'bank.subject')
+            ->with('bank:id,subject_id,title', 'bank.subject:id,title')
             ->inSubject($request->subject_pid)
             ->inBank($request->subject_id)
             ->betweenDate($request->date)
             ->inType($request->type)
             ->orderBy('created_at', 'desc')
-            ->paginate(config('api.page_size'));
+            ->paginate($request->page_size ?? config('api.page_size'));
 
         return LearnRecordResource::collection($learnRecords);
     }
@@ -63,30 +63,32 @@ class LearnRecordsController extends Controller
         $number = $request->number;
 
         $bank = Bank::query()->findOrFail($request->bank_id);
-        $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
-        $columnPrefix = $bank->has_children ? 'bank_items.' : '';
+        $user = optional($request->user('api'));
+        $hasChildren = $bank->has_children;
+
+        $bankIds = $hasChildren ? $bank->children()->pluck('id')->toArray() : [$bank->id];
+        $bankItems = $hasChildren ? $bank->childrenItems() : $bank->items();
+        $columnPrefix = $hasChildren ? 'bank_items.' : '';
         switch ($request->range) {
-            case 'all':
-                $query = $bankItems;
-                break;
             case 'undone':
-                $doneIds = $bank->recordItems()->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
+                $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
                 break;
             case 'done':
-                $doneIds = $bank->recordItems()->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
+                $bankItems->whereIn($columnPrefix.'id', $doneIds);
                 break;
             case 'error':
-                $errorIds = $bank->recordItems()->where('is_right', false)->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereIn($columnPrefix.'id', $errorIds);
+                $errorIds = $user->errors()->whereIn('bank_id', $bankIds)->pluck('bank_item_id');
+                $bankItems->whereIn($columnPrefix.'id', $errorIds);
+                break;
         }
 
         if ($type = $request->type) {
-            $query->where($columnPrefix.'type', $type);
+            $bankItems->where($columnPrefix.'type', $type);
         }
 
-        $idPluck = $query->pluck($columnPrefix.'id');
+        $idPluck = $bankItems->pluck($columnPrefix.'id');
         $count = $idPluck->count();
         $ids = $idPluck->random($number >= $count ? $count : $number);
 
@@ -133,7 +135,7 @@ class LearnRecordsController extends Controller
 
             $items = $request->items;
             foreach ($items as $data) {
-                $selectData = collect($data)->only('record_id', 'bank_item_id', 'question_id')->toArray();
+                $selectData = collect($data)->only('record_id', 'bank_id', 'bank_item_id', 'question_id')->toArray();
 
                 $recordItem = $record->items()->updateOrCreate(
                     $selectData,

@@ -7,8 +7,6 @@
       </div>
       <question-tool
         :is-collect="isCollect"
-        :visible-report="visibleReport"
-        :visible-note="visibleNote"
         @on-report="handleReport"
         @on-note="handleNote"
         @on-collect="handleCollect"
@@ -93,6 +91,8 @@
   import QuestionTool from "./QuestionTool"
   import QuestionType from "@/mixins/QuestionType"
   import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
+  import { storeUserReports } from "@/api/userReport"
+  import { storeUserNotes } from "@/api/userNote"
 
   export default {
     name: "ExerciseItem",
@@ -126,9 +126,7 @@
           bank_item_id: this.item.bank_item_id,
           question_id: this.item.question.id,
           question_type: this.item.question.type
-        },
-        visibleReport: null,
-        visibleNote: null
+        }
       }
     },
     created() {
@@ -225,11 +223,19 @@
         }
         return true
       },
-      handleReport() {
-
+      handleReport(form) {
+        let params = Object.assign({}, this.toolForm, form)
+        storeUserReports(params)
+          .then(_ => {
+            this.$Message.success('提交成功！')
+          })
       },
-      handleNote() {
-
+      handleNote(form) {
+        let params = Object.assign({}, this.toolForm, form)
+        storeUserNotes(params)
+          .then(_ => {
+            this.$Message.success('提交成功！')
+          })
       },
       handleCollect() {
         let request =  this.isCollect ? deleteUserCollects : storeUserCollects

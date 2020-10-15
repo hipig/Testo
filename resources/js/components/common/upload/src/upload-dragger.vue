@@ -1,8 +1,8 @@
 <template>
   <div
-    class="w-64 h-32 flex items-center justify-center bg-white relative overflow-hidden border border-gray-200 border-dashed rounded"
+    class="w-64 h-32 flex items-center justify-center bg-gray-100 relative overflow-hidden border-2 border-gray-200 border-dashed rounded"
     :class="{
-      'is-dragover': dragover
+      'opacity-50 cursor-not-allowed': dragover
     }"
     @drop.prevent="onDrop"
     @dragover.prevent="onDragover"

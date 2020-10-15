@@ -13,13 +13,13 @@ class UserCollectsController extends Controller
     {
         $userCollects = optional($request->user('api'))
             ->collects()
-            ->with('subject', 'question')
+            ->with('subject:id,title', 'question:id,title')
             ->inSubject($request->subject_pid)
             ->onlySubject($request->subject_id)
             ->onlyQuestionType($request->question_type)
             ->betweenDate($request->date)
             ->orderBy('created_at', 'desc')
-            ->paginate(config('api.page_size'));
+            ->paginate($request->page_size ?? config('api.page_size'));
 
         return UserCollectResource::collection($userCollects);
     }
@@ -28,7 +28,9 @@ class UserCollectsController extends Controller
     {
         $userCollect = optional($request->user('api'))
             ->collects()
-            ->create($request->only('subject_id', 'bank_item_id', 'question_id', 'question_type'));
+            ->create(
+                $request->only('subject_id', 'bank_item_id', 'question_id', 'question_type')
+            );
 
         return UserCollectResource::make($userCollect);
     }

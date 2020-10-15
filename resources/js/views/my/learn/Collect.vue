@@ -41,7 +41,7 @@ import EmptyData from "@/components/common/EmptyData"
 import { getUserCollects, destroyUserCollects } from "@/api/userCollect"
 
 export default {
-  name: "my.exam",
+  name: "my.collect",
   components: {
     LearnTab,
     LearnFilter,

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative inline-block z-50" v-clickoutside="handleClose">
+  <div class="relative inline-block z-10" v-clickoutside="handleClose">
     <div @click="show = !show">
       <slot></slot>
     </div>
@@ -11,7 +11,7 @@
       leave-active-class="transition ease-in duration-75"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <div class="origin-top-right absolute right-0 mt-2" v-show="show">
+      <div class="origin-top-right absolute right-0 mt-2 z-30" v-show="show">
         <slot name="dropdown-menu"></slot>
       </div>
     </transition>

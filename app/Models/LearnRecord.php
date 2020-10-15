@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Traits\DateScopeTrait;
+
 class LearnRecord extends Model
 {
+    use DateScopeTrait;
+
     const CHAPTER_TEST = 1;
     const MOCK_EXAM = 2;
     const OLD_EXAM = 3;
@@ -72,15 +76,6 @@ class LearnRecord extends Model
         if ($subjectId) {
             $bankIds = Bank::query()->where('subject_id', $subjectId)->pluck('id');
             $query->whereIn('bank_id', $bankIds);
-        }
-        return $query;
-    }
-
-    public function scopeBetweenDate($query, $date)
-    {
-        if ($date) {
-            !is_array($date) && $date = explode('-', $date);
-            $query->whereBetween('updated_at', $date);
         }
         return $query;
     }

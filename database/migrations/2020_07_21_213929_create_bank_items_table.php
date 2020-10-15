@@ -15,6 +15,7 @@ class CreateBankItemsTable extends Migration
     {
         Schema::create('bank_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subject_id')->comment('科目ID');
             $table->unsignedBigInteger('bank_id')->comment('题库ID');
             $table->unsignedBigInteger('group_id')->nullable()->comment('题组ID');
             $table->unsignedBigInteger('question_id')->comment('题目ID');

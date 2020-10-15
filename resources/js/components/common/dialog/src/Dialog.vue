@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="z-10">
     <transition
       enter-class="opacity-0"
       enter-active-class="ease-out duration-300"
@@ -8,9 +8,9 @@
       leave-active-class="ease-in duration-200"
       leave-to-class="opacity-0"
     >
-      <div class="fixed inset-0 transition-opacity bg-black bg-opacity-25" v-show="visible" @click="handleMaskClick"></div>
+      <div class="fixed inset-0 transition-opacity bg-black bg-opacity-25 z-40" v-show="visible" @click="handleMaskClick"></div>
     </transition>
-    <div class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center" v-show="wrapShow" @click.self="handleWrapperClick">
+    <div class="fixed bottom-0 inset-x-0 px-4 pb-4 sm:inset-0 sm:flex sm:items-center sm:justify-center z-50" v-show="wrapShow" @click.self="handleWrapperClick">
       <transition
         enter-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         enter-active-class="ease-out duration-300"

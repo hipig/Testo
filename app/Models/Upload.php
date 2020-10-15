@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Storage;
 class Upload extends Model
 {
     protected $fillable = [
-        'disk', 'path'
+        'user_id', 'name', 'disk', 'path'
+    ];
+
+    protected $appends = [
+        'url'
     ];
 
     protected static function boot()

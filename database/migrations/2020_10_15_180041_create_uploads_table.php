@@ -16,6 +16,7 @@ class CreateUploadsTable extends Migration
         Schema::create('uploads', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->comment('用户ID');
+            $table->string('name')->comment('文件名称');
             $table->string('disk')->comment('存储盘');
             $table->string('path', 2560)->comment('存储路径');
             $table->timestamps();

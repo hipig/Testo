@@ -47,32 +47,34 @@ class BanksController extends Controller
 
     public function getTypeCount(Request $request, Bank $bank)
     {
-        $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
-        $columnPrefix = $bank->has_children ? 'bank_items.' : '';
+        $user = optional($request->user('api'));
+        $hasChildren = $bank->has_children;
+
+        $bankIds = $hasChildren ? $bank->children()->pluck('id')->toArray() : [$bank->id];
+        $bankItems = $hasChildren ? $bank->childrenItems() : $bank->items();
+        $columnPrefix = $hasChildren ? 'bank_items.' : '';
         switch ($request->type) {
             case 'undone':
-                $doneIds = $bank->recordItems()->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
+                $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
                 break;
             case 'done':
-                $doneIds = $bank->recordItems()->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
+                $bankItems->whereIn($columnPrefix.'id', $doneIds);
                 break;
             case 'error':
-                $errorIds = $bank->recordItems()->where('is_right', false)->pluck('bank_item_id')->toArray();
-                $query = $bankItems->whereIn($columnPrefix.'id', $errorIds);
+                $errorIds = $user->errors()->whereIn('bank_id', $bankIds)->pluck('bank_item_id')->toArray();
+                $bankItems->whereIn($columnPrefix.'id', $errorIds);
                 break;
-            default:
-                $query = $bankItems;
         }
 
         $list = [
-            0 => (clone $query)->count(),
-            1 => (clone $query)->where($columnPrefix.'type', Question::SINGLE_SELECT)->count(),
-            2 => (clone $query)->where($columnPrefix.'type', Question::MULTI_SELECT)->count(),
-            3 => (clone $query)->where($columnPrefix.'type', Question::JUDGE_SELECT)->count(),
-            4 => (clone $query)->where($columnPrefix.'type', Question::FILL_BLANK)->count(),
-            5 => (clone $query)->where($columnPrefix.'type', Question::SHORT_ANSWER)->count(),
+            0 => (clone $bankItems)->count(),
+            1 => (clone $bankItems)->where($columnPrefix.'type', Question::SINGLE_SELECT)->count(),
+            2 => (clone $bankItems)->where($columnPrefix.'type', Question::MULTI_SELECT)->count(),
+            3 => (clone $bankItems)->where($columnPrefix.'type', Question::JUDGE_SELECT)->count(),
+            4 => (clone $bankItems)->where($columnPrefix.'type', Question::FILL_BLANK)->count(),
+            5 => (clone $bankItems)->where($columnPrefix.'type', Question::SHORT_ANSWER)->count(),
         ];
 
         return response()->json($list);

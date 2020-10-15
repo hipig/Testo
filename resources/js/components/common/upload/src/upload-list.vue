@@ -1,25 +1,22 @@
 <template>
   <transition-group
     tag="ul"
-    class=""
     :class="[
-      'el-upload-list',
-      'el-upload-list--' + listType,
-      { 'is-disabled': disabled },
+      { 'opacity-50 cursor-not-allowed': disabled },
       {'inline-flex': listType === 'picture-card'}
     ]"
-    name="el-list"
+    enter-class="opacity-0 transform -translate-y-8"
+    enter-active-class="transition-all duration-700"
+    leave-class="opacity-0 transform -translate-y-8"
+    leave-active-class="transition-all duration-700"
   >
     <li
       v-for="file in files"
       class="relative items-center rounded group cursor-pointer focus:outline-none transition-all ease-slide duration-50"
-      :class="[itemClasses, 'is-' + file.status, focusing ? 'focusing' : '']"
+      :class="[itemClasses, 'is-' + file.status]"
       :key="file.uid"
       tabindex="0"
       @keydown.delete="!disabled && $emit('remove', file)"
-      @focus="focusing = true"
-      @blur="focusing = false"
-      @click="focusing = false"
     >
       <slot :file="file">
         <img
@@ -104,9 +101,7 @@
   export default {
     name: 'TUploadList',
     data() {
-      return {
-        focusing: false
-      }
+      return {}
     },
     components: { TProgress },
 
