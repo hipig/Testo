@@ -9,7 +9,7 @@
             <div class="flex items-center">
               <div>{{ item.created_at }}</div>
             </div>
-            <div class="cursor-pointer">取消收藏</div>
+            <div class="cursor-pointer" @click="handleCancelCollect(item)">取消收藏</div>
           </div>
           <div class="flex items-baseline text-base mb-2">
             <div class="text-teal-500 w-16">{{ `[${questionTypes[item.question_type].name}]` }}</div>
@@ -17,7 +17,7 @@
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="text-gray-400 text-xs w-40 mr-2 truncate flex items-center">
+              <div class="text-gray-400 text-xs mr-2 truncate flex items-center">
                 来源：<span class="text-gray-900">{{ item.subject_title }}</span>
               </div>
             </div>
@@ -38,7 +38,7 @@ import LearnTab from "./LearnTab"
 import LearnFilter from "./LearnFilter"
 import QuestionType from "@/mixins/QuestionType"
 import EmptyData from "@/components/common/EmptyData"
-import { getUserCollects } from "@/api/userCollect"
+import { getUserCollects, destroyUserCollects } from "@/api/userCollect"
 
 export default {
   name: "my.exam",
@@ -85,6 +85,20 @@ export default {
     changePage(page) {
       this.currentPage = page
       this.getUserCollects()
+    },
+    handleCancelCollect(item) {
+      return this.$Dialog.confirm({
+        title: '温馨提示',
+        content: `确认取消收藏？`
+      })
+      .then(_ => {
+        destroyUserCollects(item.id)
+          .then(_ => {
+            this.$Message.success('取消收藏成功')
+            this.getUserCollects()
+          })
+      })
+      .catch(_ => {})
     }
   }
 }

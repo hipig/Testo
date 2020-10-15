@@ -11,7 +11,7 @@
               <div class="mr-10">{{ item.created_at }}</div>
               <div class="border border-red-500 text-red-500 leading-tight px-2 rounded" v-if="item.is_end">{{ item.score }} 分</div>
             </div>
-            <div class="cursor-pointer">删除</div>
+            <div class="cursor-pointer" @click="handleDelete">删除</div>
           </div>
           <div class="text-base mb-2 truncate">{{ item.bank_title }}</div>
           <div class="flex items-center justify-between">
@@ -92,6 +92,18 @@
       changePage(page) {
         this.currentPage = page
         this.getRecordList()
+      },
+      handleDelete() {
+        return this.$Dialog.confirm({
+          title: '温馨提示',
+          content: `确定删除该考试记录？`
+        })
+        .then(_ => {
+          this.$Message.success('删除成功！')
+        })
+        .catch(_ => {
+          this.$Message('取消删除！')
+        })
       }
     }
   }

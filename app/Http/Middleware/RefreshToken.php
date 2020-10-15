@@ -38,7 +38,7 @@ class RefreshToken extends BaseMiddleware
                 auth('api')->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
                 return $next($request)->withHeaders([
                     'Access-Control-Expose-Headers' => 'Authorization',
-                    'Authorization' => 'Bearer ' . $token
+                    'Authorization' => $token
                 ]);
             } catch (JWTException $e) {
                 // 如果捕获到此异常，即代表 refresh 也过期了，用户无法刷新令牌，需要重新登录。

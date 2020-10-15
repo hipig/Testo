@@ -71,7 +71,10 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::get('user/collects', 'UserCollectsController@index')->name('userCollects.index');
         Route::post('user/collects', 'UserCollectsController@store')->name('userCollects.store');
         Route::get('user/collects/item', 'UserCollectsController@show')->name('userCollects.show');
-        Route::delete('user/collects/item', 'UserCollectsController@destroy')->name('userCollects.destroy');
+        Route::delete('user/collects/{userCollect}', 'UserCollectsController@destroy')->name('userCollects.destroy');
+        Route::delete('user/collects/item', 'UserCollectsController@delete')->name('userCollects.delete');
+
+        Route::post('uploads', 'UploadsController@store')->name('uploads.store');
     });
 
 

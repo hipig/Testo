@@ -1,8 +1,10 @@
 import service from '@/utils/request'
+import {sprintf} from "../utils/util";
 
 const api = {
   userCollects: '/user/collects',
-  showUserCollects: '/user/collects/item'
+  showUserCollects: '/user/collects/item',
+  destroyUserCollects: '/user/collects/%s',
 }
 
 export const getUserCollects = (params) => service({
@@ -27,4 +29,9 @@ export const deleteUserCollects = (params) => service({
   url: api.showUserCollects,
   method: 'delete',
   data: params
+})
+
+export const destroyUserCollects = (id) => service({
+  url: sprintf(api.destroyUserCollects, id),
+  method: 'delete'
 })

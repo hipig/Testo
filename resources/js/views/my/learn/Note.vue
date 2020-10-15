@@ -3,8 +3,10 @@
     <learn-tab active="note"/>
     <div class="p-5">
       <t-upload
-        class="flex items-center"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        class="w-64"
+        :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
+        :action="uploadUrl"
+        :data="{type: 'image'}"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
@@ -13,11 +15,13 @@
         :on-exceed="handleExceed"
         :file-list="fileList"
         list-type="picture-card">
-        <div class="w-24 h-24 bg-gray-100 inline-flex items-center justify-center rounded-sm cursor-pointer">
-          <svg fill="none" viewBox="0 0 24 24" class="w-7 h-7 stroke-current text-gray-400">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        <div class="flex flex-col items-center justify-center">
+          <svg class="w-12 h-12 stroke-current text-gray-400" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
           </svg>
+          <div class="mt-1">将文件拖到此处，或点击上传</div>
         </div>
+        <div class="mt-2 text-xs" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
       </t-upload>
     </div>
   </div>
@@ -25,15 +29,16 @@
 </template>
 
 <script>
-  import LearnTab from "./LearnTab"
+import LearnTab from "./LearnTab"
 
-  export default {
+export default {
     name: "my.note",
     components: {
       LearnTab
     },
     data() {
       return {
+        uploadUrl: window.config.api_url + '/uploads',
         fileList: [
           {
             name: 'food.jpeg',
@@ -54,10 +59,13 @@
         console.log(file)
       },
       handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+        this.$Message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
       },
       beforeRemove(file, fileList) {
-        return alert(`确定移除 ${ file.name }？`)
+        return this.$Dialog.confirm({
+          title: '提示',
+          content: `确定移除 ${file.name}？`
+        })
       }
     }
   }

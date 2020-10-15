@@ -56,7 +56,7 @@
         <daily-list :subject-id="id" v-if="parseInt(activeTab) === 4 && id"></daily-list>
       </div>
     </div>
-    <t-modal v-model="switchSubjectVisible" title="切换考试" size="4xl" :show-footer="false" @close="closeSwitchSubjectModal">
+    <t-modal v-model="switchSubjectVisible" title="切换考试" size="max-w-4xl" :show-footer="false" @close="closeSwitchSubjectModal">
       <div class="w-full" v-loading="listLoading">
         <div class="mb-5" v-for="(value, key) in subjectList" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>

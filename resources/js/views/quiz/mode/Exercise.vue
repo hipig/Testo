@@ -73,7 +73,7 @@
         </div>
       </div>
     </div>
-    <t-modal v-model="submitModalVisible" title="结束作答" size="md" :mask-closable="false" @close="submitModalVisible = false">
+    <t-modal v-model="submitModalVisible" title="结束作答" size="max-w-md" :mask-closable="false" @close="submitModalVisible = false">
       <div class="flex flex-col">
         <div class="text-gray-900 text-lg flex justify-center mb-5">你已全部作答完毕，是否确认交卷？</div>
       </div>

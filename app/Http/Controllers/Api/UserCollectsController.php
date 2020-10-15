@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\UserCollectRequest;
 use App\Http\Resources\UserCollectResource;
+use App\Models\UserCollect;
 use Illuminate\Http\Request;
 
 class UserCollectsController extends Controller
@@ -42,7 +43,16 @@ class UserCollectsController extends Controller
         return UserCollectResource::make($userCollect);
     }
 
-    public function destroy(UserCollectRequest $request)
+    public function destroy(Request $request, UserCollect $userCollect)
+    {
+        $this->authorize('own', $userCollect);
+
+        $userCollect->delete();
+
+        return response(null, 204);
+    }
+
+    public function delete(UserCollectRequest $request)
     {
         $userCollect = optional($request->user('api'))
             ->collects()

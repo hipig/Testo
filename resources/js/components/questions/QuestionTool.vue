@@ -18,7 +18,7 @@
       </svg>
       <span class="text-base" :class="[isCollect ? 'text-teal-500' : 'text-gray-900']">收藏</span>
     </div>
-    <t-modal title="纠错" v-model="reportModalVisible" size="3xl" :mask-closable="false" @close="reportModalVisible = false">
+    <t-modal title="纠错" v-model="reportModalVisible" size="max-w-3xl" :mask-closable="false" @close="reportModalVisible = false">
       <div class="flex flex-col">
         <div class="mb-5">
           <div class="flex flex-wrap -mx-3">
@@ -49,7 +49,7 @@
         </div>
       </div>
     </t-modal>
-    <t-modal title="写笔记" v-model="noteModalVisible" size="3xl" :mask-closable="false" @close="noteModalVisible = false">
+    <t-modal title="写笔记" v-model="noteModalVisible" size="max-w-3xl" :mask-closable="false" @close="noteModalVisible = false">
       <div class="flex flex-col">
         <div class="mb-5">
           <label class="flex w-full relative">

@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <t-modal v-model="submitModalVisible" title="结束作答" size="md" :mask-closable="false" @close="submitModalVisible = false">
+    <t-modal v-model="submitModalVisible" title="结束作答" size="max-w-md" :mask-closable="false" @close="submitModalVisible = false">
       <div class="flex flex-col">
         <div class="text-gray-900 text-lg flex justify-center mb-5"><span v-if="undoneCount > 0">你还有 <span class="text-red-500">{{ undoneCount }}</span> 道题未作答，</span>是否确认交卷？</div>
       </div>
@@ -82,7 +82,7 @@
         </div>
       </div>
     </t-modal>
-    <t-modal v-model="pauseModalVisible" size="md" :show-close="false" :show-footer="false" :mask-closable="false">
+    <t-modal v-model="pauseModalVisible" size="max-w-md" :show-close="false" :show-footer="false" :mask-closable="false">
       <div class="flex flex-col items-center justify-center py-10">
         <div class="cursor-pointer" @click="isPause = false">
           <svg class="stroke-current text-gray-500" fill="none" viewBox="0 0 24 24">

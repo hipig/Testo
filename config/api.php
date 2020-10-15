@@ -19,5 +19,7 @@ return [
     /**
      * 数据分页大小
      */
-    'page_size' => env('PAGE_SIZE', 10)
+    'page_size' => env('PAGE_SIZE', 10),
+
+    'storage_disk' => env('STORAGE_DISK', 'uploads')
 ];

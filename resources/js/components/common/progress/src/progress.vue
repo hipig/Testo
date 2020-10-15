@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative leading-none inline-flex items-center"
+    class="relative leading-none flex items-center"
     :class="[
       'el-progress--' + type,
       status ? 'is-' + status : '',
@@ -14,7 +14,7 @@
     aria-valuemin="0"
     aria-valuemax="100"
   >
-    <div class="w-full flex items-center" :class="[textInside ? '': '-mr-20 pr-20']" v-if="type === 'line'">
+    <div class="w-full flex items-center" :class="[textInside ? '': '-mr-10 pr-10']" v-if="type === 'line'">
       <div class="w-full relative bg-gray-100 overflow-hidden rounded-full" :style="{height: strokeWidth + 'px'}">
         <div class="absolute top-0 left-0 h-full rounded-full flex items-center transition ease-in duration-700" :class="[status || 'bg-teal-500']" :style="barStyle">
           <div class="mx-1 text-white text-xs" v-if="showText && textInside">{{content}}</div>

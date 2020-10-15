@@ -19,7 +19,7 @@
         leave-active-class="ease-in duration-200"
         leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       >
-        <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full relative" :class="modalClasses" v-show="visible">
+        <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full relative" :class="[size || 'max-w-lg']" v-show="visible">
           <div class="absolute top-0 right-0 mt-8 mr-8 cursor-pointer" v-if="showClose"  @click="handleClose">
             <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -27,7 +27,7 @@
           </div>
           <div class="px-8 pt-8 pb-4 flex items-center justify-center sm:justify-between" v-if="showHead && ($slots.header || this.title)">
             <slot name="header">
-              <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
                 {{ title }}
               </h3>
             </slot>
@@ -56,7 +56,7 @@ export default {
     },
     size: {
       type: String,
-      default: 'lg'
+      default: 'sm:max-w-lg'
     },
     maskClosable: {
       type: Boolean,
@@ -77,24 +77,12 @@ export default {
     closeOnPressEsc: {
       type: Boolean,
       default: true
-    },
-    styles: {
-      type: Object,
-      default () {
-        return {}
-      }
     }
   },
   data () {
     return {
       wrapShow: false,
       visible: this.value
-    }
-  },
-  computed: {
-    modalClasses () {
-      let widthClasses = 'max-w-' + this.size || 'lg'
-      return {[widthClasses]: true}
     }
   },
   watch: {

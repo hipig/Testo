@@ -1,6 +1,6 @@
 <template>
   <div
-    class="el-upload-dragger"
+    class="w-64 h-32 flex items-center justify-center bg-white relative overflow-hidden border border-gray-200 border-dashed rounded"
     :class="{
       'is-dragover': dragover
     }"

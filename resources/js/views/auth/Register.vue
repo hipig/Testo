@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <t-modal v-model="captchaModalVisible" :show-head="false" :show-footer="false" :show-close="false" :mask-closable="false" size="md" @close="closeCaptchaModal">
+    <t-modal v-model="captchaModalVisible" :show-head="false" :show-footer="false" :show-close="false" :mask-closable="false" size="max-w-md" @close="closeCaptchaModal">
       <div class="w-full py-8">
         <div class="mb-2">
           <img class="cursor-pointer" :src="captchaImg" width="120" height="36" alt="captcha" @click="submitCaptchas">

@@ -20,7 +20,7 @@
       </div>
       <empty-data :show="isLoading === false && list.length === 0"/>
     </div>
-    <t-modal v-model="filterVisible" title="练习筛选" size="4xl" @close="resetOption">
+    <t-modal v-model="filterVisible" title="练习筛选" size="max-w-4xl" @close="resetOption">
       <div class="w-full -mb-5">
         <filter-item v-for="(item, index) in filterOptions" :key="index" :title="item.title" :name="item.name" v-model="filterValue[item.name]" :options="item.options" @on-change="optionChange"/>
       </div>

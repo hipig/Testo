@@ -1,4 +1,5 @@
 import Pagination from '@/components/common/pagination'
+import Dialog from '@/components/common/dialog'
 import Message from '@/components/common/message'
 import Loading from '@/components/common/loading'
 import Progress from '@/components/common/progress'
@@ -18,6 +19,7 @@ const install = function(Vue, opts = {}) {
   Vue.use(Loading.directive)
 
   Vue.prototype.$Loading = Loading.loading
+  Vue.prototype.$Dialog = Dialog
   Vue.prototype.$Message = Message
 }
 

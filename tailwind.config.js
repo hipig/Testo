@@ -11,6 +11,9 @@ module.exports = {
       },
       width: {
         '28': '7rem'
+      },
+      transitionTimingFunction: {
+        'easy-slide': 'cubic-bezier(.55, 0, .1, 1)'
       }
     },
   },

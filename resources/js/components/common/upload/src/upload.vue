@@ -1,11 +1,11 @@
 <script>
 import ajax from './ajax'
-import UploadDragger from './upload-dragger.vue'
+import UploadDrag from './upload-dragger'
 
 export default {
   inject: ['uploader'],
   components: {
-    UploadDragger
+    UploadDrag
   },
   props: {
     type: String,
@@ -188,7 +188,7 @@ export default {
     } = this
     const data = {
       class: {
-        'inline-block cursor-pointer outline-none': true
+        'inline-flex cursor-pointer outline-none': true
       },
       on: {
         click: handleClick,
@@ -196,11 +196,12 @@ export default {
       }
     }
     data.class[`el-upload--${listType}`] = true
+
     return (
       <div {...data} tabindex="0" >
         {
           drag
-            ? <upload-dragger disabled={disabled} on-file={uploadFiles}>{this.$slots.default}</upload-dragger>
+            ? <upload-drag disabled={disabled} on-file={uploadFiles}>{this.$slots.default}</upload-drag>
             : this.$slots.default
         }
         <input class="hidden" type="file" ref="input" name={name} on-change={handleChange} multiple={multiple} accept={accept}></input>
