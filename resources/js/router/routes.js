@@ -1,20 +1,21 @@
-import MainLayout from '@/layout/MainLayout'
-import BlankLayout from '@/layout/BlankLayout'
+import MainLayout from "@/layout/MainLayout"
+import BlankLayout from "@/layout/BlankLayout"
 import MyLayout from "@/layout/MyLayout"
 
 
-import Home from '@/views/Home'
-import Subjects from '@/views/subjects/Index'
-import SubjectsShow from '@/views/subjects/Show'
+import Home from "@/views/Home"
+import Subjects from "@/views/subjects/Index"
+import SubjectsShow from "@/views/subjects/Show"
 
-import QuizModeExercise from '@/views/quiz/mode/Exercise'
-import QuizModeTest from '@/views/quiz/mode/Test'
-import QuizModeExam from '@/views/quiz/mode/Exam'
-import QuizResult from '@/views/quiz/Result'
-import QuizResultDetail from '@/views/quiz/ResultDetail'
+import QuizModeExercise from "@/views/quiz/mode/Exercise"
+import QuizModeTest from "@/views/quiz/mode/Test"
+import QuizModeExam from "@/views/quiz/mode/Exam"
+import QuizResult from "@/views/quiz/Result"
+import QuizResultDetail from "@/views/quiz/ResultDetail"
+import QuizItems from "@/views/quiz/Items"
 
-import AuthLogin from '@/views/auth/Login'
-import AuthRegister from '@/views/auth/Register'
+import AuthLogin from "@/views/auth/Login"
+import AuthRegister from "@/views/auth/Register"
 
 import MyIndex from "@/views/my/info/Index"
 import MyChangePassword from "@/views/my/info/ChangePassword"
@@ -74,6 +75,11 @@ export default [
             path: 'result/:id/detail',
             name: 'quiz.result.detail',
             component: QuizResultDetail
+          },
+          {
+            path: 'items/:type',
+            name: 'quiz.items',
+            component: QuizItems
           }
         ]
       },

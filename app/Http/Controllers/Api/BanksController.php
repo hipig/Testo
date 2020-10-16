@@ -70,11 +70,11 @@ class BanksController extends Controller
 
         $list = [
             0 => (clone $bankItems)->count(),
-            1 => (clone $bankItems)->where($columnPrefix.'type', Question::SINGLE_SELECT)->count(),
-            2 => (clone $bankItems)->where($columnPrefix.'type', Question::MULTI_SELECT)->count(),
-            3 => (clone $bankItems)->where($columnPrefix.'type', Question::JUDGE_SELECT)->count(),
-            4 => (clone $bankItems)->where($columnPrefix.'type', Question::FILL_BLANK)->count(),
-            5 => (clone $bankItems)->where($columnPrefix.'type', Question::SHORT_ANSWER)->count(),
+            1 => (clone $bankItems)->where($columnPrefix.'question_type', Question::SINGLE_SELECT)->count(),
+            2 => (clone $bankItems)->where($columnPrefix.'question_type', Question::MULTI_SELECT)->count(),
+            3 => (clone $bankItems)->where($columnPrefix.'question_type', Question::JUDGE_SELECT)->count(),
+            4 => (clone $bankItems)->where($columnPrefix.'question_type', Question::FILL_BLANK)->count(),
+            5 => (clone $bankItems)->where($columnPrefix.'question_type', Question::SHORT_ANSWER)->count(),
         ];
 
         return response()->json($list);

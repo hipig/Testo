@@ -9,7 +9,9 @@ use App\Models\Question;
 use Faker\Generator as Faker;
 
 $factory->define(BankItem::class, function (Faker $faker) {
-    $banks = Bank::query()->get();
+    $banks = Bank::query()->whereNotNull('parent_id')->orWhere(function ($query) {
+        $query->whereIn('type', [2, 3, 4]);
+    })->get();
 
     $bankId = $faker->randomElement($banks->pluck('id')->toArray());
     $bank = $banks->find($bankId);
@@ -35,7 +37,7 @@ $factory->define(BankItem::class, function (Faker $faker) {
         'bank_id' => $bankId,
         'group_id' => $groupId,
         'question_id' => $questionId,
-        'type' => $questionType,
+        'question_type' => $questionType,
         'score' => $score
     ];
 });

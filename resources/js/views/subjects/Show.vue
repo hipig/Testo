@@ -21,18 +21,18 @@
             </button>
           </div>
           <div class="flex">
-            <a href="#" class="flex items-center text-teal-500">
+            <router-link :to="{name: 'quiz.items', params: {type: 'collect'}, query: {subject_id: id}}" class="flex items-center text-teal-500">
               <svg class="w-5 h-5 fill-current" fill="none" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
               </svg>
               <span class="ml-1">题目收藏</span>
-            </a>
-            <a href="#" class="ml-10 flex items-center text-teal-500">
+            </router-link>
+            <router-link :to="{name: 'quiz.items', params: {type: 'error'}, query: {subject_id: id}}" class="ml-10 flex items-center text-teal-500">
               <svg class="w-5 h-5 fill-current" fill="none" viewBox="0 0 20 20">
                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
               </svg>
               <span class="ml-1">错题练习</span>
-            </a>
+            </router-link>
           </div>
         </div>
         <div class="flex flex-col">

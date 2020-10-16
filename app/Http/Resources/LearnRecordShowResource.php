@@ -2,10 +2,8 @@
 
 namespace App\Http\Resources;
 
-use App\Models\LearnRecord;
 use App\Models\Question;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class LearnRecordShowResource extends JsonResource
 {
@@ -17,59 +15,32 @@ class LearnRecordShowResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user = optional($request->user('api'))->load('recordItems', 'collectItems');
         $bank = optional($this->bank);
-        switch ($this->type) {
-            case LearnRecord::CHAPTER_TEST:
-                $items = $this->question_items;
-                break;
-            case LearnRecord::MOCK_EXAM:
-            case LearnRecord::OLD_EXAM:
-                $items = $bank->is_group ? $bank->groups : $bank->items;
-                break;
-            case LearnRecord::DAILY_TEST:
-                $items = $bank->items;
-                break;
+
+        if ($bank->is_group) {
+            $groups = $bank->groups->map(function ($item) {
+               $item->transmit_record_id = $this->id;
+               return $item;
+            });
+            $items = BankGroupResource::collection($groups);
+        } else {
+            $bankItems = $this->bank_items->map(function ($item) use ($request) {
+                $item->record = optional($request->user('api'))->recordItems()
+                    ->where('record_id', $this->id)
+                    ->where('bank_item_id', $item->id)
+                    ->first();
+                return $item;
+            });
+            $items = BankItemResource::collection($bankItems);
         }
 
-        $items = $items->map(function ($item) use ($bank, $user) {
-           if ($bank->is_group) {
-               $item->items = $item->items->map(function ($i) use ($bank, $user) {
-                   $i->subject_id = $bank->subject_id;
-                   $i->bank_item_id = $i->id;
-                   $i->record = $user->recordItems()
-                       ->where('record_id', $this->id)
-                       ->where('bank_item_id', $i->id)
-                       ->first();
-                   $i->is_collect = $user->collectItems()
-                       ->where('bank_item_id', $i->id)
-                       ->exists();
-                   return $i;
-               });
-           } else {
-               $item->subject_id = $bank->subject_id;
-               $item->bank_item_id = $item->id;
-               $item->record = $user->recordItems()
-                   ->where('record_id', $this->id)
-                   ->where('bank_item_id', $item->id)
-                   ->first();
-               $item->is_collect = $user->collectItems()
-                   ->where('bank_item_id', $item->id)
-                   ->exists();
-           }
-
-           return $item;
-        });
-
-        $resultScore = 0;
         foreach (Question::$typeMap as $key => $value) {
             $result[$key] = $this->getItemsResult($key);
-            $resultScore += $result[$key]['score'] ?? 0;
         }
 
         return [
             'id' => $this->id,
-            'bank_id' => $this->bank_id,
+            'bank_id' => $bank->id,
             'subject_id' => $bank->subject_id,
             'score' => $bank->total_score,
             'time_limit' => $bank->time_limit,
@@ -81,7 +52,7 @@ class LearnRecordShowResource extends JsonResource
             'breadcrumb' => optional($bank->subject)->ancestors,
             'items' => $items,
             'result' => $this->when($this->withResult, $result),
-            'result_score' => $resultScore
+            'result_score' => $this->score
         ];
     }
 }

@@ -17,7 +17,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center" :class="[showAnswer ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']">
-            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer" @change="submit">
+            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2" :class="[isAnswered ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showAnswer" @change="submit">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -27,7 +27,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center" :class="[showAnswer ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']">
-            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showAnswer">
+            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2" :class="[isAnswered ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showAnswer">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -35,8 +35,8 @@
     </template>
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
-        <label class="flex w-full mb-2" v-for="(v,i) in question.answer" :key="i">
-          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" :disabled="showAnswer">
+        <label class="flex w-full mb-2" v-for="(_,i) in question.answer" :key="i">
+          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[isAnswered ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" placeholder="请输入答案" :disabled="showAnswer">
         </label>
       </div>
     </template>
@@ -116,14 +116,13 @@
       return {
         question: this.item.question,
         currentAnswer: this.answer || [],
-        multiSelectAnswer: [],
-        fillBlackAnswer: [],
+        fillBlackAnswer: this.answer || [],
         showAnswer: false,
         isAnswered: false,
         isCollect: this.item.is_collect || false,
         toolForm: {
           subject_id: this.item.subject_id,
-          bank_item_id: this.item.bank_item_id,
+          bank_item_id: this.item.id,
           question_id: this.item.question.id,
           question_type: this.item.question.type
         }
@@ -146,34 +145,7 @@
         return typeof answer === "object" ? answer.join(',') : answer
       },
       isRight() {
-        let status = true
-        let questionType = this.question.type
-        let rightAnswer = this.question.answer
-        let answer = this.currentAnswer
-
-        switch (questionType) {
-          // 单选 判断
-          case 1:
-          case 3:
-            status = answer == rightAnswer
-            break
-          // 多选
-          case 2:
-            status = JSON.stringify(answer.sort()) == JSON.stringify(rightAnswer.sort())
-            break
-          // 填空
-          case 4:
-            rightAnswer.forEach((v, i) => {
-              if (answer[i] != v) {
-                status = false
-              }
-            })
-            break
-          default:
-            status = true
-        }
-
-        return status
+        return this.checkRight(this.currentAnswer, this.question.answer, this.question.type)
       },
       showAnswerBar() {
         let type = this.question.type
@@ -222,6 +194,33 @@
             break
         }
         return true
+      },
+      checkRight(answer, rightAnswer, type) {
+        let status = false
+        switch (type) {
+          // 单选 判断
+          case 1:
+          case 3:
+            status = answer == rightAnswer
+            break
+          // 多选
+          case 2:
+            status = JSON.stringify(answer.sort()) == JSON.stringify(rightAnswer.sort())
+            break
+          // 填空
+          case 4:
+            rightAnswer.forEach((v, i) => {
+              if (answer[i] != v) {
+                status = false
+              }
+            })
+            break
+          case 5:
+            status = answer.length > 0
+            break
+        }
+
+        return status
       },
       handleReport(form) {
         let params = Object.assign({}, this.toolForm, form)

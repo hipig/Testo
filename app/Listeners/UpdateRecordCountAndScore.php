@@ -30,9 +30,7 @@ class UpdateRecordCountAndScore
 
         $record->load('items', 'items.bankItem');
         $record->done_count = $record->items->whereNotNull('is_right')->count();
-        $record->score = $record->items->sum(function ($item) {
-            return optional($item->bank_item)->score ?? 0;
-        });
+        $record->score = $record->items->sum('score');
         $record->save();
     }
 }

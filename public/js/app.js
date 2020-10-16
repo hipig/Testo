@@ -2107,6 +2107,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Breadcrumb",
   props: {
@@ -4434,6 +4435,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
 
 
 
@@ -4452,11 +4456,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     item: Object,
     answer: {
       type: String | Number | Array,
-      "default": []
+      "default": ""
     },
     showParse: {
       type: Boolean,
       "default": false
+    },
+    showCheckResult: {
+      type: Boolean,
+      "default": true
     },
     showReport: {
       type: Boolean,
@@ -4480,7 +4488,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       isCollect: this.item.is_collect || false,
       toolForm: {
         subject_id: this.item.subject_id,
-        bank_item_id: this.item.bank_item_id,
+        bank_item_id: this.item.id,
         question_id: this.item.question.id,
         question_type: this.item.question.type
       }
@@ -4501,12 +4509,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return _typeof(answer) === "object" ? answer.join(',') : answer;
     },
     isRight: function isRight() {
+      return this.checkRight(this.currentAnswer, this.question.answer, this.question.type);
+    },
+    showAnswerBar: function showAnswerBar() {
+      var type = this.question.type;
+      return type !== 5;
+    }
+  },
+  watch: {
+    fillBlackAnswer: function fillBlackAnswer(val) {
+      this.currentAnswer = val;
+    }
+  },
+  methods: {
+    // 提交答案
+    submit: function submit() {
+      this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question);
+    },
+    checkRight: function checkRight(answer, rightAnswer, type) {
       var status = false;
-      var questionType = this.question.type;
-      var rightAnswer = this.question.answer;
-      var answer = this.currentAnswer;
 
-      switch (questionType) {
+      switch (type) {
         // 单选 判断
         case 1:
         case 3:
@@ -4533,21 +4556,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       return status;
-    },
-    showAnswerBar: function showAnswerBar() {
-      var type = this.question.type;
-      return type !== 5;
-    }
-  },
-  watch: {
-    fillBlackAnswer: function fillBlackAnswer(val) {
-      this.currentAnswer = val;
-    }
-  },
-  methods: {
-    // 提交答案
-    submit: function submit() {
-      this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question);
     },
     handleReport: function handleReport(form) {
       var _this = this;
@@ -4712,14 +4720,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     return {
       question: this.item.question,
       currentAnswer: this.answer || [],
-      multiSelectAnswer: [],
-      fillBlackAnswer: [],
+      fillBlackAnswer: this.answer || [],
       showAnswer: false,
       isAnswered: false,
       isCollect: this.item.is_collect || false,
       toolForm: {
         subject_id: this.item.subject_id,
-        bank_item_id: this.item.bank_item_id,
+        bank_item_id: this.item.id,
         question_id: this.item.question.id,
         question_type: this.item.question.type
       }
@@ -4742,37 +4749,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       return _typeof(answer) === "object" ? answer.join(',') : answer;
     },
     isRight: function isRight() {
-      var status = true;
-      var questionType = this.question.type;
-      var rightAnswer = this.question.answer;
-      var answer = this.currentAnswer;
-
-      switch (questionType) {
-        // 单选 判断
-        case 1:
-        case 3:
-          status = answer == rightAnswer;
-          break;
-        // 多选
-
-        case 2:
-          status = JSON.stringify(answer.sort()) == JSON.stringify(rightAnswer.sort());
-          break;
-        // 填空
-
-        case 4:
-          rightAnswer.forEach(function (v, i) {
-            if (answer[i] != v) {
-              status = false;
-            }
-          });
-          break;
-
-        default:
-          status = true;
-      }
-
-      return status;
+      return this.checkRight(this.currentAnswer, this.question.answer, this.question.type);
     },
     showAnswerBar: function showAnswerBar() {
       var type = this.question.type;
@@ -4828,6 +4805,37 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       return true;
     },
+    checkRight: function checkRight(answer, rightAnswer, type) {
+      var status = false;
+
+      switch (type) {
+        // 单选 判断
+        case 1:
+        case 3:
+          status = answer == rightAnswer;
+          break;
+        // 多选
+
+        case 2:
+          status = JSON.stringify(answer.sort()) == JSON.stringify(rightAnswer.sort());
+          break;
+        // 填空
+
+        case 4:
+          rightAnswer.forEach(function (v, i) {
+            if (answer[i] != v) {
+              status = false;
+            }
+          });
+          break;
+
+        case 5:
+          status = answer.length > 0;
+          break;
+      }
+
+      return status;
+    },
     handleReport: function handleReport(form) {
       var _this = this;
 
@@ -4869,6 +4877,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+//
 //
 //
 //
@@ -5044,7 +5053,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleSuccessReport: function handleSuccessReport(response) {
       this.reportForm.upload_ids.push(response.id);
-      console.log(this.reportForm);
     },
     handleSuccessNote: function handleSuccessNote(response) {
       this.noteForm.upload_ids.push(response.id);
@@ -5192,7 +5200,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       currentMenu: '',
       routerList: {
-        learn: ['my.learn', 'my.exam', 'my.collect', 'my.error'],
+        learn: ['my.learn', 'my.exam', 'my.note', 'my.collect', 'my.error'],
         info: ['my.index', 'my.change.password']
       }
     };
@@ -5944,10 +5952,11 @@ __webpack_require__.r(__webpack_exports__);
         title: '温馨提示',
         content: "\u786E\u5B9A\u5220\u9664\u8BE5\u8003\u8BD5\u8BB0\u5F55\uFF1F"
       }).then(function (_) {
-        _this2.$Message.success('删除成功！');
-      })["catch"](function (_) {
-        _this2.$Message('取消删除！');
-      });
+        Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["deleteRecords"])(item.id);
+        then(function (_) {
+          _this2.$Message.success('删除成功！');
+        });
+      })["catch"](function (_) {});
     }
   }
 });
@@ -6074,17 +6083,18 @@ __webpack_require__.r(__webpack_exports__);
       this.currentPage = page;
       this.getRecordList();
     },
-    handleDelete: function handleDelete() {
+    handleDelete: function handleDelete(item) {
       var _this2 = this;
 
       return this.$Dialog.confirm({
         title: '温馨提示',
-        content: "\u786E\u5B9A\u5220\u9664\u8BE5\u8003\u8BD5\u8BB0\u5F55\uFF1F"
+        content: "\u786E\u5B9A\u5220\u9664\u8BE5\u5B66\u4E60\u8BB0\u5F55\uFF1F"
       }).then(function (_) {
-        _this2.$Message.success('删除成功！');
-      })["catch"](function (_) {
-        _this2.$Message('取消删除！');
-      });
+        Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["deleteRecords"])(item.id);
+        then(function (_) {
+          _this2.$Message.success('删除成功！');
+        });
+      })["catch"](function (_) {});
     }
   }
 });
@@ -6367,9 +6377,15 @@ __webpack_require__.r(__webpack_exports__);
       this.filterForm = form;
       this.getUserNotes();
     },
-    handleContinue: function handleContinue(val) {
+    handleView: function handleView(item) {
       this.$router.push({
-        name: 'home'
+        name: 'quiz.items',
+        params: {
+          type: 'note'
+        },
+        query: Object.assign({}, this.filterForm, {
+          index: "q-".concat(item.id)
+        })
       });
     },
     changePage: function changePage(page) {
@@ -6389,6 +6405,219 @@ __webpack_require__.r(__webpack_exports__);
           _this2.getUserNotes();
         });
       })["catch"](function (_) {});
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/Items.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/Items.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/Breadcrumb */ "./resources/js/components/common/Breadcrumb.vue");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
+/* harmony import */ var _api_userNote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/api/userNote */ "./resources/js/api/userNote.js");
+/* harmony import */ var _api_userError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/api/userError */ "./resources/js/api/userError.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "quiz.items",
+  components: {
+    Breadcrumb: _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_3__["default"]],
+  data: function data() {
+    return {
+      type: this.$route.params.type,
+      form: {
+        subject_pid: this.$route.query.subject_pid || "",
+        subject_id: this.$route.query.subject_id || "",
+        question_type: this.$route.query.question_type || "",
+        date: this.$route.query.date || []
+      },
+      index: this.$route.query.index,
+      subject: {},
+      breadcrumb: [{
+        title: this.typeTitle
+      }],
+      items: [],
+      page: 1,
+      totalPage: 0,
+      total: 0,
+      isLoading: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.getItems();
+    this.form.subject_id && this.getSubject();
+    this.$nextTick(function () {
+      document.addEventListener('scroll', _this.onScroll);
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    document.removeEventListener('scroll', this.onScroll);
+  },
+  computed: {
+    typeTitle: function typeTitle() {
+      var typeTitles = {
+        'collect': '收藏集',
+        'error': '错题集',
+        'note': '笔记'
+      };
+      return typeTitles[this.type];
+    }
+  },
+  methods: {
+    onScroll: function onScroll() {
+      var _this2 = this;
+
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+
+      if (scrollHeight - scrollTop - clientHeight < 100 && !this.isLoading && this.page !== this.totalPage) {
+        setTimeout(function () {
+          _this2.getItems();
+        }, 500);
+      }
+    },
+    getSubject: function getSubject() {
+      var _this3 = this;
+
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_4__["getSubjectsShow"])(this.form.subject_id).then(function (res) {
+        _this3.subject = res;
+      });
+    },
+    getItems: function getItems() {
+      var _this4 = this;
+
+      this.isLoading = true;
+      var requests = {
+        'collect': _api_userCollect__WEBPACK_IMPORTED_MODULE_5__["getUserCollects"],
+        'note': _api_userNote__WEBPACK_IMPORTED_MODULE_6__["getUserNotes"],
+        'error': _api_userError__WEBPACK_IMPORTED_MODULE_7__["getUserErrors"]
+      };
+      var params = this.form;
+      params.page = this.page;
+      requests[this.type](params).then(function (res) {
+        _this4.items = _this4.items.concat(res.data);
+        _this4.totalPage = res.meta.last_page;
+        _this4.index && _this4.toIndex(_this4.index);
+        _this4.totalPage > _this4.page && _this4.page++;
+      })["finally"](function () {
+        _this4.isLoading = false;
+      });
+    },
+    handleDelete: function handleDelete(item) {
+      var _this5 = this;
+
+      var requests = {
+        'collect': _api_userCollect__WEBPACK_IMPORTED_MODULE_5__["destroyUserCollects"],
+        'note': _api_userNote__WEBPACK_IMPORTED_MODULE_6__["destroyUserNotes"],
+        'error': _api_userError__WEBPACK_IMPORTED_MODULE_7__["destroyUserErrors"]
+      };
+      this.$Dialog.confirm('是否删除？', '提示').then(function (_) {
+        requests[_this5.type](item.id).then(function (_) {
+          _this5.$Message.success('删除成功');
+        });
+      })["catch"](function (_) {});
+    },
+    toIndex: function toIndex(index) {
+      this.$nextTick(function () {
+        document.getElementById(index).scrollIntoView({
+          behavior: "smooth"
+        });
+      });
+    },
+    handleBack: function handleBack() {
+      this.$router.go(-1);
     }
   }
 });
@@ -6564,10 +6793,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/Breadcrumb */ "./resources/js/components/common/Breadcrumb.vue");
 /* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
 /* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
-/* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
-/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
-/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 //
 //
 //
@@ -6642,8 +6869,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
 
 
 
@@ -6654,11 +6879,9 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Breadcrumb: _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
     EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__["default"],
-    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__["default"]
+    ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__["default"]],
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_3__["default"]],
   data: function data() {
     return {
       recordId: this.$route.params.id,
@@ -6705,7 +6928,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.isLoading = true;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["showRecordsResult"])(this.recordId).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["showRecordsResult"])(this.recordId).then(function (res) {
         _this.record = res;
         _this.recordItems = res.items;
         var answerList = {};
@@ -6965,7 +7188,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             item.items.forEach(function (v, i) {
               answerList[index + '-' + i] = {
                 record_id: _this.recordId,
-                bank_id: res.bank_id,
+                bank_id: v.bank_id,
                 bank_item_id: v.id,
                 question_id: v.question.id,
                 question_type: v.question.type,
@@ -6975,7 +7198,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           } else {
             answerList[index] = {
               record_id: _this.recordId,
-              bank_id: res.bank_id,
+              bank_id: item.bank_id,
               bank_item_id: item.id,
               question_id: item.question.id,
               question_type: item.question.type,
@@ -7229,7 +7452,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.answerList = res.items.map(function (item) {
           return {
             record_id: _this2.recordId,
-            bank_id: res.bank_id,
+            bank_id: item.bank_id,
             bank_item_id: item.id,
             question_id: item.question.id,
             question_type: item.question.type,
@@ -7261,6 +7484,8 @@ __webpack_require__.r(__webpack_exports__);
       if (this.activeIndex < this.questions.length - 1) this.activeIndex++;
     },
     handleAnswer: function handleAnswer(answer, isRight) {
+      var _this3 = this;
+
       this.answerList[this.activeIndex] = Object.assign({}, this.answerList[this.activeIndex], {
         answer: answer,
         is_right: isRight
@@ -7281,24 +7506,26 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.undoneCount === 0) {
         this.submitActionShow = true;
-        this.submitModalVisible = true;
+        setTimeout(function () {
+          _this3.submitModalVisible = true;
+        }, 800);
       }
     },
     submitRecord: function submitRecord() {
-      var _this3 = this;
+      var _this4 = this;
 
       var params = {
         done_time: this.doneTime,
         type: 'end',
         items: []
       };
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["updateRecords"])(this.recordId, params).then(function (res) {
-        _this3.submitModalVisible = false;
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_4__["updateRecords"])(this.recordId, params).then(function (_) {
+        _this4.submitModalVisible = false;
 
-        _this3.$router.push({
+        _this4.$router.push({
           name: 'quiz.result',
           params: {
-            id: _this3.recordId
+            id: _this4.recordId
           }
         });
       });
@@ -7479,7 +7706,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.answerList = res.items.map(function (item) {
           return {
             record_id: _this.recordId,
-            bank_id: res.bank_id,
+            bank_id: item.bank_id,
             bank_item_id: item.id,
             question_id: item.question.id,
             question_type: item.question.type,
@@ -9316,7 +9543,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass: "w-2/3 flex items-center",
+              staticClass: "w-2/3 flex items-center pr-5",
               class: { "pl-10": _vm.second }
             },
             [
@@ -9384,7 +9611,7 @@ var render = function() {
                 2
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "text-base" }, [
+              _c("div", { staticClass: "text-base truncate" }, [
                 _vm._v(_vm._s(_vm.title))
               ])
             ]
@@ -9538,7 +9765,7 @@ var render = function() {
             return [
               index !== _vm.breadcrumbList.length - 1
                 ? [
-                    _c("a", { attrs: { href: item.href } }, [
+                    _c("router-link", { attrs: { to: { path: item.path } } }, [
                       _vm._v(_vm._s(item.title))
                     ]),
                     _vm._v(" "),
@@ -12147,19 +12374,24 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("question-tool", {
-            attrs: {
-              "show-report": _vm.showReport,
-              "show-note": _vm.showNote,
-              "show-collect": _vm.showCollect,
-              "is-collect": _vm.isCollect
+          _c(
+            "question-tool",
+            {
+              attrs: {
+                "show-report": _vm.showReport,
+                "show-note": _vm.showNote,
+                "show-collect": _vm.showCollect,
+                "is-collect": _vm.isCollect
+              },
+              on: {
+                "on-report": _vm.handleReport,
+                "on-note": _vm.handleNote,
+                "on-collect": _vm.handleCollect
+              }
             },
-            on: {
-              "on-report": _vm.handleReport,
-              "on-note": _vm.handleNote,
-              "on-collect": _vm.handleCollect
-            }
-          })
+            [_vm._t("tool")],
+            2
+          )
         ],
         1
       ),
@@ -12188,8 +12420,14 @@ var render = function() {
                             expression: "currentAnswer"
                           }
                         ],
-                        staticClass:
-                          "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                        staticClass: "form-radio w-5 h-5 border-2",
+                        class: [
+                          _vm.showParse
+                            ? _vm.isRight
+                              ? "text-green-500 focus:shadow-outline-green"
+                              : "text-red-500 focus:shadow-outline-red"
+                            : "text-teal-500 focus:shadow-outline-teal"
+                        ],
                         attrs: { type: "radio", disabled: _vm.showParse },
                         domProps: {
                           value: index,
@@ -12237,8 +12475,14 @@ var render = function() {
                             expression: "currentAnswer"
                           }
                         ],
-                        staticClass:
-                          "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                        staticClass: "form-checkbox w-5 h-5 border-2",
+                        class: [
+                          _vm.showParse
+                            ? _vm.isRight
+                              ? "text-green-500 focus:shadow-outline-green"
+                              : "text-red-500 focus:shadow-outline-red"
+                            : "text-teal-500 focus:shadow-outline-teal"
+                        ],
                         attrs: { type: "checkbox", disabled: _vm.showParse },
                         domProps: {
                           value: index,
@@ -12301,8 +12545,14 @@ var render = function() {
                         expression: "fillBlackAnswer[i]"
                       }
                     ],
-                    staticClass:
-                      "w-full px-4 py-3 bg-gray-100 rounded focus:outline-none",
+                    staticClass: "w-full px-4 py-3 rounded focus:outline-none",
+                    class: [
+                      _vm.showParse
+                        ? _vm.isRight
+                          ? "text-green-500 bg-green-100"
+                          : "text-red-500 bg-red-100"
+                        : "bg-gray-100"
+                    ],
                     attrs: {
                       placeholder: "请输入答案",
                       disabled: _vm.showParse
@@ -12364,116 +12614,128 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.showParse
-        ? _c("div", { staticClass: "mb-3" }, [
-            _c(
-              "div",
-              {
-                staticClass: "py-2 px-5 bg-gray-100 flex leading-tight rounded",
-                class: [
-                  _vm.question.type === 4
-                    ? "flex-col"
-                    : "flex-wrap items-center"
-                ]
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass: "mr-10 py-1",
-                    class: [
-                      _vm.answer.length > 0
-                        ? _vm.isRight
-                          ? "text-green-500"
-                          : "text-red-500"
-                        : ""
-                    ]
-                  },
-                  [
-                    _vm._v(
-                      _vm._s(
-                        _vm.answer.length > 0
-                          ? _vm.isRight
-                            ? "回答正确"
-                            : "回答错误"
-                          : "没有回答"
-                      )
-                    )
+        ? _c(
+            "div",
+            { staticClass: "mb-3" },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "py-2 px-5 bg-gray-100 flex leading-tight rounded",
+                  class: [
+                    _vm.question.type === 4
+                      ? "flex-col"
+                      : "flex-wrap items-center"
                   ]
-                ),
-                _vm._v(" "),
-                _vm.showAnswerBar
-                  ? [
-                      _c(
+                },
+                [
+                  _vm.showCheckResult
+                    ? _c(
                         "div",
                         {
-                          staticClass: "mr-10 py-1 flex",
+                          staticClass: "mr-10 py-1",
                           class: [
-                            _vm.question.type === 4
-                              ? "items-baseline"
-                              : "items-center"
+                            _vm.answer.length > 0
+                              ? _vm.isRight
+                                ? "text-green-500"
+                                : "text-red-500"
+                              : ""
                           ]
                         },
                         [
-                          _c("span", { staticClass: "text-gray-500" }, [
-                            _vm._v("正确答案：")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            {
-                              staticClass:
-                                "flex-1 text-green-500 text-base font-semibold leading-tight"
-                            },
-                            [_vm._v(_vm._s(_vm.rightAnswerText))]
+                          _vm._v(
+                            _vm._s(
+                              _vm.answer.length > 0
+                                ? _vm.isRight
+                                  ? "回答正确"
+                                  : "回答错误"
+                                : "没有回答"
+                            )
                           )
                         ]
-                      ),
-                      _vm._v(" "),
-                      _vm.answer.length > 0 && !_vm.isRight
-                        ? _c(
-                            "div",
-                            {
-                              staticClass: "mr-10 py-1 flex",
-                              class: [
-                                _vm.question.type === 4
-                                  ? "items-baseline"
-                                  : "items-center"
-                              ]
-                            },
-                            [
-                              _c("span", { staticClass: "text-gray-500" }, [
-                                _vm._v("你的答案：")
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "span",
-                                {
-                                  staticClass:
-                                    "flex-1 text-base font-semibold leading-tight"
-                                },
-                                [_vm._v(_vm._s(_vm.answerText))]
-                              )
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.showAnswerBar
+                    ? [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "mr-10 py-1 flex",
+                            class: [
+                              _vm.question.type === 4
+                                ? "items-baseline"
+                                : "items-center"
                             ]
-                          )
-                        : _vm._e()
-                    ]
-                  : _vm._e()
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "px-5 mt-5" }, [
-              _c("div", { staticClass: "flex flex-wrap items-baseline" }, [
-                _c("div", { staticClass: "text-gray-400" }, [_vm._v("解析：")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex-1 text-base" }, [
-                  _vm._v(
-                    "\n          " + _vm._s(_vm.question.parse) + "\n        "
-                  )
+                          },
+                          [
+                            _c("span", { staticClass: "text-gray-500" }, [
+                              _vm._v("正确答案：")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "flex-1 text-green-500 text-base font-semibold leading-tight"
+                              },
+                              [_vm._v(_vm._s(_vm.rightAnswerText))]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.answer.length > 0 && !_vm.isRight
+                          ? _c(
+                              "div",
+                              {
+                                staticClass: "mr-10 py-1 flex",
+                                class: [
+                                  _vm.question.type === 4
+                                    ? "items-baseline"
+                                    : "items-center"
+                                ]
+                              },
+                              [
+                                _c("span", { staticClass: "text-gray-500" }, [
+                                  _vm._v("你的答案：")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "flex-1 text-base font-semibold leading-tight"
+                                  },
+                                  [_vm._v(_vm._s(_vm.answerText))]
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    : _vm._e()
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "px-5 mt-5" }, [
+                _c("div", { staticClass: "flex flex-wrap items-baseline" }, [
+                  _c("div", { staticClass: "text-gray-400" }, [
+                    _vm._v("解析：")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex-1 text-base" }, [
+                    _vm._v(
+                      "\n          " + _vm._s(_vm.question.parse) + "\n        "
+                    )
+                  ])
                 ])
-              ])
-            ])
-          ])
+              ]),
+              _vm._v(" "),
+              _vm._t("footer")
+            ],
+            2
+          )
         : _vm._e()
     ],
     2
@@ -12567,8 +12829,14 @@ var render = function() {
                               expression: "currentAnswer"
                             }
                           ],
-                          staticClass:
-                            "form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                          staticClass: "form-radio w-5 h-5 border-2",
+                          class: [
+                            _vm.isAnswered
+                              ? _vm.isRight
+                                ? "text-green-500 focus:shadow-outline-green"
+                                : "text-red-500 focus:shadow-outline-red"
+                              : "text-teal-500 focus:shadow-outline-teal"
+                          ],
                           attrs: { type: "radio", disabled: _vm.showAnswer },
                           domProps: {
                             value: index,
@@ -12627,8 +12895,14 @@ var render = function() {
                               expression: "currentAnswer"
                             }
                           ],
-                          staticClass:
-                            "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                          staticClass: "form-checkbox w-5 h-5 border-2",
+                          class: [
+                            _vm.isAnswered
+                              ? _vm.isRight
+                                ? "text-green-500 focus:shadow-outline-green"
+                                : "text-red-500 focus:shadow-outline-red"
+                              : "text-teal-500 focus:shadow-outline-teal"
+                          ],
                           attrs: { type: "checkbox", disabled: _vm.showAnswer },
                           domProps: {
                             value: index,
@@ -12678,7 +12952,7 @@ var render = function() {
             _c(
               "div",
               { staticClass: "flex flex-col mb-3" },
-              _vm._l(_vm.question.answer, function(v, i) {
+              _vm._l(_vm.question.answer, function(_, i) {
                 return _c(
                   "label",
                   { key: i, staticClass: "flex w-full mb-2" },
@@ -12693,7 +12967,14 @@ var render = function() {
                         }
                       ],
                       staticClass:
-                        "w-full px-4 py-3 bg-gray-100 rounded focus:outline-none",
+                        "w-full px-4 py-3 rounded focus:outline-none",
+                      class: [
+                        _vm.isAnswered
+                          ? _vm.isRight
+                            ? "text-green-500 bg-green-100"
+                            : "text-red-500 bg-red-100"
+                          : "bg-gray-100"
+                      ],
                       attrs: {
                         placeholder: "请输入答案",
                         disabled: _vm.showAnswer
@@ -12978,6 +13259,8 @@ var render = function() {
     "div",
     { staticClass: "flex flex-wrap" },
     [
+      _vm._t("default"),
+      _vm._v(" "),
       _vm.showReport
         ? _c(
             "div",
@@ -13398,7 +13681,7 @@ var render = function() {
         ]
       )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -15036,7 +15319,11 @@ var render = function() {
                           "div",
                           {
                             staticClass: "cursor-pointer",
-                            on: { click: _vm.handleDelete }
+                            on: {
+                              click: function($event) {
+                                return _vm.handleDelete(item)
+                              }
+                            }
                           },
                           [_vm._v("删除")]
                         )
@@ -15658,7 +15945,7 @@ var render = function() {
                               "cursor-pointer font-semibold text-teal-500",
                             on: {
                               click: function($event) {
-                                return _vm.handleContinue(item)
+                                return _vm.handleView(item)
                               }
                             }
                           },
@@ -15697,6 +15984,286 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5& ***!
+  \********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "pt-5 pb-20 px-4" }, [
+    _c("div", { staticClass: "max-w-6xl mx-auto" }, [
+      _c(
+        "div",
+        { staticClass: "text-sm" },
+        [
+          _c("router-link", { attrs: { to: { name: "home" } } }, [
+            _vm._v("首页")
+          ]),
+          _vm._v(" "),
+          _c("span", [_vm._v(" / ")]),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-gray-400" }, [
+            _vm._v(_vm._s(_vm.typeTitle))
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "mt-5 flex flex-wrap -mx-3" }, [
+        _c(
+          "div",
+          { staticClass: "w-2/3 px-3" },
+          [
+            _c("div", { staticClass: "bg-white shadow rounded-lg p-5 mb-5" }, [
+              _c("div", { staticClass: "flex items-center" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "text-2xl text-gray-900 leading-none truncate"
+                  },
+                  [_vm._v(_vm._s(_vm.typeTitle))]
+                )
+              ]),
+              _vm._v(" "),
+              _vm.form.subject_id
+                ? _c(
+                    "div",
+                    {
+                      staticClass:
+                        "mt-4 flex flex-warp items-center text-gray-400"
+                    },
+                    [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.subject.title) +
+                          "\n          "
+                      )
+                    ]
+                  )
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.items, function(item, index) {
+              return _c(
+                "exam-item",
+                {
+                  key: index,
+                  attrs: {
+                    id: "q-" + item.id,
+                    item: item.bank_item,
+                    index: index,
+                    answer: item.bank_item.question.answer,
+                    "show-parse": true,
+                    "show-check-result": false,
+                    "show-collect": _vm.type !== "collect"
+                  }
+                },
+                [
+                  _c("div", { attrs: { slot: "tool" }, slot: "tool" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "flex items-center cursor-pointer mr-8",
+                        on: {
+                          click: function($event) {
+                            return _vm.handleDelete(item)
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass:
+                              "w-6 h-6 stroke-current text-gray-400 mr-1",
+                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2",
+                                d:
+                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "text-base text-gray-900" }, [
+                          _vm._v(
+                            _vm._s(_vm.type === "collect" ? "取消收藏" : "删除")
+                          )
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm.type === "note"
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "mt-5",
+                          attrs: { slot: "footer" },
+                          slot: "footer"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "border-2 border-dashed border-gray-100 p-4 rounded"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "flex flex-wrap items-baseline"
+                                },
+                                [
+                                  _c("div", [_vm._v("笔记：")]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "flex-1 text-base" },
+                                    [
+                                      _c("div", {
+                                        domProps: {
+                                          innerHTML: _vm._s(item.content)
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "flex flex-wrap -mr-3 mt-3"
+                                        },
+                                        _vm._l(item.upload_items, function(
+                                          v,
+                                          k
+                                        ) {
+                                          return _c("img", {
+                                            key: k,
+                                            staticClass: "h-24 mr-3",
+                                            attrs: { src: v.url, alt: v.name }
+                                          })
+                                        }),
+                                        0
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              )
+            }),
+            _vm._v(" "),
+            _c("div", {
+              directives: [
+                {
+                  name: "loading",
+                  rawName: "v-loading",
+                  value: _vm.isLoading,
+                  expression: "isLoading"
+                }
+              ],
+              attrs: { "loading-custom-class": "h-56" }
+            }),
+            _vm._v(" "),
+            _c("empty-data", {
+              staticClass: "mt-5",
+              attrs: { show: _vm.isLoading === false && _vm.items.length === 0 }
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-1/3 px-3 relative" }, [
+          _c("div", { staticClass: "sticky top-1" }, [
+            _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold"
+                },
+                [_vm._v("选项卡")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "px-5 py-4" }, [
+                _c(
+                  "div",
+                  { staticClass: "flex flex-wrap -mx-1" },
+                  _vm._l(_vm.items, function(item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass:
+                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-100 hover:border-teal-500 text-gray-500 text-xs rounded-sm cursor-pointer",
+                        on: {
+                          click: function($event) {
+                            return _vm.toIndex("q-" + item.id)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(index + 1))]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _vm.isLoading === false && _vm.items.length === 0
+                  ? _c("div", { staticClass: "text-gray-400" }, [
+                      _vm._v("还没有数据哦~")
+                    ])
+                  : _vm._e()
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "bg-white shadow rounded-lg py-3 mb-5" }, [
+              _c("div", { staticClass: "flex justify-center" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "px-4 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none",
+                    attrs: { type: "button" },
+                    on: { click: _vm.handleBack }
+                  },
+                  [_vm._v("返回上级")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -16180,13 +16747,13 @@ var render = function() {
                               _c(
                                 "div",
                                 { staticClass: "flex flex-wrap -mx-1" },
-                                _vm._l(item.items, function(v, i) {
+                                _vm._l(item.items, function(_, i) {
                                   return _c(
                                     "div",
                                     {
                                       key: i,
                                       staticClass:
-                                        "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                        "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                       class: [
                                         _vm.answerList[index + "-" + i] &&
                                         _vm.answerList[index + "-" + i].answer
@@ -16217,13 +16784,13 @@ var render = function() {
                       : _c(
                           "div",
                           { staticClass: "flex flex-wrap -mx-1" },
-                          _vm._l(_vm.recordItems, function(item, index) {
+                          _vm._l(_vm.recordItems, function(_, index) {
                             return _c(
                               "div",
                               {
                                 key: index,
                                 staticClass:
-                                  "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                  "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                 class: [
                                   _vm.answerList[index] &&
                                   _vm.answerList[index].answer.length === 0
@@ -16233,9 +16800,6 @@ var render = function() {
                                     ? "text-white bg-green-500 border-green-500"
                                     : "text-white bg-red-500 border-red-500"
                                 ],
-                                attrs: {
-                                  "data-i": _vm.answerList[index].is_right
-                                },
                                 on: {
                                   click: function($event) {
                                     return _vm.toIndex("q-" + index)
@@ -16311,7 +16875,7 @@ var render = function() {
                       "button",
                       {
                         staticClass:
-                          "px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none",
+                          "px-4 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none",
                         attrs: { type: "button" },
                         on: { click: _vm.handleBack }
                       },
@@ -16463,7 +17027,7 @@ var render = function() {
                             [
                               _c(
                                 "div",
-                                { staticClass: "text-base font-semibold" },
+                                { staticClass: "text-base font-semibold mb-3" },
                                 [
                                   _vm._v(
                                     _vm._s(
@@ -16587,13 +17151,13 @@ var render = function() {
                                 _c(
                                   "div",
                                   { staticClass: "flex flex-wrap -mx-1" },
-                                  _vm._l(item.items, function(v, i) {
+                                  _vm._l(item.items, function(_, i) {
                                     return _c(
                                       "div",
                                       {
                                         key: i,
                                         staticClass:
-                                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                         class: [
                                           _vm.answerList[index + "-" + i] &&
                                           _vm.answerList[index + "-" + i].answer
@@ -16620,13 +17184,13 @@ var render = function() {
                         : _c(
                             "div",
                             { staticClass: "flex flex-wrap -mx-1" },
-                            _vm._l(_vm.recordItems, function(item, index) {
+                            _vm._l(_vm.recordItems, function(_, index) {
                               return _c(
                                 "div",
                                 {
                                   key: index,
                                   staticClass:
-                                    "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                    "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                   class: [
                                     _vm.answerList[index] &&
                                     _vm.answerList[index].answer.length === 0
@@ -17207,7 +17771,7 @@ var render = function() {
                               {
                                 key: index,
                                 staticClass:
-                                  "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                  "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                 class: [
                                   item.answer.length === 0
                                     ? _vm.activeIndex === index
@@ -17217,7 +17781,6 @@ var render = function() {
                                     ? "text-white bg-green-500 border-green-500"
                                     : "text-white bg-red-500 border-red-500"
                                 ],
-                                attrs: { "item-data": item.answer },
                                 on: {
                                   click: function($event) {
                                     return _vm.toIndex(index)
@@ -17581,7 +18144,7 @@ var render = function() {
                                 {
                                   key: index,
                                   staticClass:
-                                    "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer",
+                                    "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                   class: [
                                     item.answer.length === 0
                                       ? "text-gray-500 border-gray-100 hover:border-teal-500"
@@ -18164,67 +18727,84 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "flex" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "flex items-center text-teal-500",
-                        attrs: { href: "#" }
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "w-5 h-5 fill-current",
-                            attrs: { fill: "none", viewBox: "0 0 20 20" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                "fill-rule": "evenodd",
-                                d:
-                                  "M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z",
-                                "clip-rule": "evenodd"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-1" }, [
-                          _vm._v("题目收藏")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "ml-10 flex items-center text-teal-500",
-                        attrs: { href: "#" }
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "w-5 h-5 fill-current",
-                            attrs: { fill: "none", viewBox: "0 0 20 20" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-1" }, [
-                          _vm._v("错题练习")
-                        ])
-                      ]
-                    )
-                  ])
+                  _c(
+                    "div",
+                    { staticClass: "flex" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "flex items-center text-teal-500",
+                          attrs: {
+                            to: {
+                              name: "quiz.items",
+                              params: { type: "collect" },
+                              query: { subject_id: _vm.id }
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-5 h-5 fill-current",
+                              attrs: { fill: "none", viewBox: "0 0 20 20" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "fill-rule": "evenodd",
+                                  d:
+                                    "M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z",
+                                  "clip-rule": "evenodd"
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "ml-1" }, [
+                            _vm._v("题目收藏")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "ml-10 flex items-center text-teal-500",
+                          attrs: {
+                            to: {
+                              name: "quiz.items",
+                              params: { type: "error" },
+                              query: { subject_id: _vm.id }
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-5 h-5 fill-current",
+                              attrs: { fill: "none", viewBox: "0 0 20 20" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "ml-1" }, [
+                            _vm._v("错题练习")
+                          ])
+                        ]
+                      )
+                    ],
+                    1
+                  )
                 ]
               ),
               _vm._v(" "),
@@ -35480,7 +36060,7 @@ var geCountTypeTotal = function geCountTypeTotal(id, params) {
 /*!*****************************************!*\
   !*** ./resources/js/api/learnRecord.js ***!
   \*****************************************/
-/*! exports provided: getRecords, showRecords, showRecordsResult, storeTestRecords, storeExamRecords, storeRecordItems, updateRecords */
+/*! exports provided: getRecords, showRecords, showRecordsResult, storeTestRecords, storeExamRecords, storeRecordItems, updateRecords, deleteRecords */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -35492,6 +36072,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeExamRecords", function() { return storeExamRecords; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeRecordItems", function() { return storeRecordItems; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecords", function() { return updateRecords; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteRecords", function() { return deleteRecords; });
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
 
@@ -35552,6 +36133,12 @@ var updateRecords = function updateRecords(id, params) {
     url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.updateRecords, id),
     method: 'put',
     data: params
+  });
+};
+var deleteRecords = function deleteRecords(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.updateRecords, id),
+    method: 'delete'
   });
 };
 
@@ -35729,6 +36316,41 @@ var deleteUserCollects = function deleteUserCollects(params) {
 var destroyUserCollects = function destroyUserCollects(id) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.destroyUserCollects, id),
+    method: 'delete'
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/api/userError.js":
+/*!***************************************!*\
+  !*** ./resources/js/api/userError.js ***!
+  \***************************************/
+/*! exports provided: getUserErrors, destroyUserErrors */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserErrors", function() { return getUserErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyUserErrors", function() { return destroyUserErrors; });
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/util */ "./resources/js/utils/util.js");
+
+
+var api = {
+  userErrors: '/user/errors',
+  destroyUserErrors: '/user/errors/%s'
+};
+var getUserErrors = function getUserErrors(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.userErrors,
+    method: 'get',
+    params: params
+  });
+};
+var destroyUserErrors = function destroyUserErrors(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.destroyUserErrors, id),
     method: 'delete'
   });
 };
@@ -38464,14 +39086,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_quiz_mode_Exam__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/views/quiz/mode/Exam */ "./resources/js/views/quiz/mode/Exam.vue");
 /* harmony import */ var _views_quiz_Result__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/views/quiz/Result */ "./resources/js/views/quiz/Result.vue");
 /* harmony import */ var _views_quiz_ResultDetail__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/views/quiz/ResultDetail */ "./resources/js/views/quiz/ResultDetail.vue");
-/* harmony import */ var _views_auth_Login__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/views/auth/Login */ "./resources/js/views/auth/Login.vue");
-/* harmony import */ var _views_auth_Register__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/views/auth/Register */ "./resources/js/views/auth/Register.vue");
-/* harmony import */ var _views_my_info_Index__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/views/my/info/Index */ "./resources/js/views/my/info/Index.vue");
-/* harmony import */ var _views_my_info_ChangePassword__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @/views/my/info/ChangePassword */ "./resources/js/views/my/info/ChangePassword.vue");
-/* harmony import */ var _views_my_learn_Index__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @/views/my/learn/Index */ "./resources/js/views/my/learn/Index.vue");
-/* harmony import */ var _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @/views/my/learn/Exam */ "./resources/js/views/my/learn/Exam.vue");
-/* harmony import */ var _views_my_learn_Note__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @/views/my/learn/Note */ "./resources/js/views/my/learn/Note.vue");
-/* harmony import */ var _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @/views/my/learn/Collect */ "./resources/js/views/my/learn/Collect.vue");
+/* harmony import */ var _views_quiz_Items__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/views/quiz/Items */ "./resources/js/views/quiz/Items.vue");
+/* harmony import */ var _views_auth_Login__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/views/auth/Login */ "./resources/js/views/auth/Login.vue");
+/* harmony import */ var _views_auth_Register__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/views/auth/Register */ "./resources/js/views/auth/Register.vue");
+/* harmony import */ var _views_my_info_Index__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @/views/my/info/Index */ "./resources/js/views/my/info/Index.vue");
+/* harmony import */ var _views_my_info_ChangePassword__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @/views/my/info/ChangePassword */ "./resources/js/views/my/info/ChangePassword.vue");
+/* harmony import */ var _views_my_learn_Index__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @/views/my/learn/Index */ "./resources/js/views/my/learn/Index.vue");
+/* harmony import */ var _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @/views/my/learn/Exam */ "./resources/js/views/my/learn/Exam.vue");
+/* harmony import */ var _views_my_learn_Note__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @/views/my/learn/Note */ "./resources/js/views/my/learn/Note.vue");
+/* harmony import */ var _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @/views/my/learn/Collect */ "./resources/js/views/my/learn/Collect.vue");
+
 
 
 
@@ -38532,6 +39156,10 @@ __webpack_require__.r(__webpack_exports__);
       path: 'result/:id/detail',
       name: 'quiz.result.detail',
       component: _views_quiz_ResultDetail__WEBPACK_IMPORTED_MODULE_10__["default"]
+    }, {
+      path: 'items/:type',
+      name: 'quiz.items',
+      component: _views_quiz_Items__WEBPACK_IMPORTED_MODULE_11__["default"]
     }]
   }, {
     path: '/auth',
@@ -38540,11 +39168,11 @@ __webpack_require__.r(__webpack_exports__);
     children: [{
       path: 'login',
       name: 'auth.login',
-      component: _views_auth_Login__WEBPACK_IMPORTED_MODULE_11__["default"]
+      component: _views_auth_Login__WEBPACK_IMPORTED_MODULE_12__["default"]
     }, {
       path: 'register',
       name: 'auth.register',
-      component: _views_auth_Register__WEBPACK_IMPORTED_MODULE_12__["default"]
+      component: _views_auth_Register__WEBPACK_IMPORTED_MODULE_13__["default"]
     }]
   }, {
     path: '/my',
@@ -38554,27 +39182,27 @@ __webpack_require__.r(__webpack_exports__);
     children: [{
       path: '/',
       name: 'my.index',
-      component: _views_my_info_Index__WEBPACK_IMPORTED_MODULE_13__["default"]
+      component: _views_my_info_Index__WEBPACK_IMPORTED_MODULE_14__["default"]
     }, {
       path: 'change-password',
       name: 'my.change.password',
-      component: _views_my_info_ChangePassword__WEBPACK_IMPORTED_MODULE_14__["default"]
+      component: _views_my_info_ChangePassword__WEBPACK_IMPORTED_MODULE_15__["default"]
     }, {
       path: 'learn',
       name: 'my.learn',
-      component: _views_my_learn_Index__WEBPACK_IMPORTED_MODULE_15__["default"]
+      component: _views_my_learn_Index__WEBPACK_IMPORTED_MODULE_16__["default"]
     }, {
       path: 'exam',
       name: 'my.exam',
-      component: _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_16__["default"]
+      component: _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_17__["default"]
     }, {
       path: 'note',
       name: 'my.note',
-      component: _views_my_learn_Note__WEBPACK_IMPORTED_MODULE_17__["default"]
+      component: _views_my_learn_Note__WEBPACK_IMPORTED_MODULE_18__["default"]
     }, {
       path: 'collect',
       name: 'my.collect',
-      component: _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_18__["default"]
+      component: _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_19__["default"]
     }]
   }]
 }]);
@@ -39935,6 +40563,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/quiz/Items.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/views/quiz/Items.vue ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Items.vue?vue&type=template&id=05bedaa5& */ "./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5&");
+/* harmony import */ var _Items_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Items.vue?vue&type=script&lang=js& */ "./resources/js/views/quiz/Items.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Items_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/quiz/Items.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/quiz/Items.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/views/quiz/Items.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Items.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/Items.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5& ***!
+  \**************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Items.vue?vue&type=template&id=05bedaa5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/Items.vue?vue&type=template&id=05bedaa5&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Items_vue_vue_type_template_id_05bedaa5___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/views/quiz/Result.vue":
 /*!********************************************!*\
   !*** ./resources/js/views/quiz/Result.vue ***!
@@ -40643,8 +41340,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

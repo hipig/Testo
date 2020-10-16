@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="pr-5 py-4 flex items-center border-b border-gray-100" :class="{'ml-5': !second}">
-      <div class="w-2/3 flex items-center" :class="{'pl-10': second}">
+      <div class="w-2/3 flex items-center pr-5" :class="{'pl-10': second}">
         <div class="mr-4" @click="toggle">
           <template v-if="second">
             <span class="block w-2 h-2 rounded-full border-teal-500 border-2"></span>
@@ -15,7 +15,7 @@
             </svg>
           </template>
         </div>
-        <div class="text-base">{{ title }}</div>
+        <div class="text-base truncate">{{ title }}</div>
       </div>
       <div class="w-1/3 flex items-center justify-between">
         <div class="text-gray-400"><span class="text-teal-500">{{ number[0]||0 }}</span>/{{ number[1]||0 }}</div>

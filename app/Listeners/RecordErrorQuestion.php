@@ -31,10 +31,15 @@ class RecordErrorQuestion
     {
         $recordItem = $event->getRecordItem();
 
+        if ($recordItem->is_right) {
+            $recordItem->score = optional($recordItem->bankItem)->score;
+            $recordItem->save();
+        }
+
         if (in_array($recordItem->question_type, Question::$checkRightType) && $recordItem->is_right === false) {
             $userError = optional(Auth::guard('api')->user())->errors();
             $userError->updateOrCreate([
-                'subject_id' => optional($recordItem->bankItem)->subject_id,
+                'subject_id' => optional($recordItem->bank)->subject_id,
                 'bank_id' => $recordItem->bank_id,
                 'bank_item_id' => $recordItem->bank_item_id,
                 'question_id' => $recordItem->question_id,

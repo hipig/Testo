@@ -25,7 +25,7 @@
               <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
               <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
                 <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
-                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
+                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
                 <div class="text-gray-400" v-if="isLoading === false && answerList.length === 0">还没有数据哦~</div>
               </div>
@@ -152,7 +152,7 @@
             this.answerList = res.items.map(item => {
               return {
                 record_id: this.recordId,
-                bank_id: res.bank_id,
+                bank_id: item.bank_id,
                 bank_item_id: item.id,
                 question_id: item.question.id,
                 question_type: item.question.type,

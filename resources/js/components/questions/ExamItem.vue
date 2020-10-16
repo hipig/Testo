@@ -13,14 +13,16 @@
         @on-report="handleReport"
         @on-note="handleNote"
         @on-collect="handleCollect"
-      />
+      >
+        <slot name="tool"></slot>
+      </question-tool>
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
     <template v-if="question.type === 1 || question.type === 3">
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showParse" @change="submit">
+            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -30,7 +32,7 @@
       <div class="flex flex-col mb-3">
         <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
           <label class="inline-flex items-center">
-            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" :disabled="showParse" @change="submit">
+            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
             <span class="ml-3">{{ item }}</span>
           </label>
         </div>
@@ -39,7 +41,7 @@
     <template v-if="question.type === 4">
       <div class="flex flex-col mb-3">
         <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 bg-gray-100 rounded focus:outline-none" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
+          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[showParse ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
         </label>
       </div>
     </template>
@@ -53,7 +55,7 @@
     </template>
     <div  class="mb-3" v-if="showParse">
       <div class="py-2 px-5 bg-gray-100 flex leading-tight rounded" :class="[question.type === 4 ? 'flex-col' : 'flex-wrap items-center']">
-        <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
+        <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']" v-if="showCheckResult">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
         <template  v-if="showAnswerBar">
           <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']">
             <span class="text-gray-500">正确答案：</span>
@@ -73,6 +75,7 @@
           </div>
         </div>
       </div>
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
@@ -97,11 +100,15 @@
       item: Object,
       answer: {
         type: String | Number | Array,
-        default: []
+        default: ""
       },
       showParse: {
         type: Boolean,
         default: false
+      },
+      showCheckResult: {
+        type: Boolean,
+        default: true
       },
       showReport: {
         type: Boolean,
@@ -125,7 +132,7 @@
         isCollect: this.item.is_collect || false,
         toolForm: {
           subject_id: this.item.subject_id,
-          bank_item_id: this.item.bank_item_id,
+          bank_item_id: this.item.id,
           question_id: this.item.question.id,
           question_type: this.item.question.type
         }
@@ -146,12 +153,26 @@
         return typeof answer === "object" ? answer.join(',') : answer
       },
       isRight() {
+        return this.checkRight(this.currentAnswer, this.question.answer, this.question.type)
+      },
+      showAnswerBar() {
+        let type = this.question.type
+        return type !== 5
+      }
+    },
+    watch: {
+      fillBlackAnswer(val) {
+        this.currentAnswer = val
+      }
+    },
+    methods: {
+      // 提交答案
+      submit() {
+        this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
+      },
+      checkRight(answer, rightAnswer, type) {
         let status = false
-        let questionType = this.question.type
-        let rightAnswer = this.question.answer
-        let answer = this.currentAnswer
-
-        switch (questionType) {
+        switch (type) {
           // 单选 判断
           case 1:
           case 3:
@@ -175,21 +196,6 @@
         }
 
         return status
-      },
-      showAnswerBar() {
-        let type = this.question.type
-        return type !== 5
-      }
-    },
-    watch: {
-      fillBlackAnswer(val) {
-        this.currentAnswer = val
-      }
-    },
-    methods: {
-      // 提交答案
-      submit() {
-        this.$emit('answer', this.currentAnswer, this.isRight, this.index, this.question)
       },
       handleReport(form) {
         let params = Object.assign({}, this.toolForm, form)

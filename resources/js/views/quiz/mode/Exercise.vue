@@ -30,7 +30,7 @@
             <div class="px-5 py-3 border-b border-gray-100 text-base text-gray-900 font-semibold">答题卡</div>
             <div class="px-5 py-4 h-36 overflow-auto scrollbar-hover">
               <div class="flex flex-wrap -mx-1 -mb-2" v-if="answerList.length > 0">
-                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :item-data="item.answer" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.is_right ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
+                <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(item, index) in answerList" :key="index" :class="[item.answer.length === 0 ? (activeIndex === index ? 'text-gray-500 border-teal-500' : 'text-gray-500 border-gray-100 hover:border-teal-500') : (item.is_right ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500') ]" @click="toIndex(index)">{{ index+1 }}</div>
               </div>
               <div class="text-gray-400" v-if="isLoading === false && answerList.length === 0">还没有数据哦~</div>
             </div>
@@ -161,7 +161,7 @@
             this.answerList = res.items.map(item => {
               return {
                 record_id: this.recordId,
-                bank_id: res.bank_id,
+                bank_id: item.bank_id,
                 bank_item_id: item.id,
                 question_id: item.question.id,
                 question_type: item.question.type,
@@ -215,7 +215,9 @@
 
         if (this.undoneCount === 0) {
           this.submitActionShow = true
-          this.submitModalVisible = true
+          setTimeout(() => {
+            this.submitModalVisible = true
+          }, 800)
         }
       },
       submitRecord() {
@@ -225,7 +227,7 @@
           items: []
         }
         updateRecords(this.recordId, params)
-          .then((res) => {
+          .then(_ => {
             this.submitModalVisible = false
             this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
           })

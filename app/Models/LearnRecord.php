@@ -57,8 +57,29 @@ class LearnRecord extends Model
         return BankItem::query()
             ->whereIn('id', $this->question_ids)
             ->orderBy('index')
-            ->orderBy('type')
+            ->orderBy('question_type')
             ->get();
+    }
+
+    public function getBankItemsAttribute()
+    {
+        switch ($this->type) {
+            case self::CHAPTER_TEST:
+                $items = BankItem::query()
+                    ->whereIn('id', $this->question_ids)
+                    ->orderBy('index')
+                    ->orderBy('question_type')
+                    ->get();
+                break;
+            case self::MOCK_EXAM:
+            case self::OLD_EXAM:
+                $items = $this->is_group ? $this->groups : $this->items;
+                break;
+            case self::DAILY_TEST:
+                $items = $this->items;
+                break;
+        }
+        return $items;
     }
 
     public function scopeInSubject($query, $subjectPid)

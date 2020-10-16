@@ -52,3 +52,8 @@ export const updateRecords = (id, params) => service({
   method: 'put',
   data: params
 })
+
+export const deleteRecords = (id) => service({
+  url: sprintf(api.updateRecords, id),
+  method: 'delete'
+})

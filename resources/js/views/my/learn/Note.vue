@@ -25,7 +25,7 @@
           </div>
           <div class="flex items-center justify-between">
             <div class="cursor-pointer text-xs text-gray-400" @click="handleDelete(item)">删除</div>
-            <div class="cursor-pointer font-semibold text-teal-500" @click="handleContinue(item)">查看详情</div>
+            <div class="cursor-pointer font-semibold text-teal-500" @click="handleView(item)">查看详情</div>
           </div>
         </div>
         <div class="pt-5 pb-1 flex justify-end" v-if="total > 0">
@@ -83,8 +83,8 @@
         this.filterForm = form
         this.getUserNotes()
       },
-      handleContinue(val) {
-        this.$router.push({name: 'home'})
+      handleView(item) {
+        this.$router.push({name: 'quiz.items', params: {type: 'note'}, query: Object.assign({}, this.filterForm, {index: `q-${item.id}`})})
       },
       changePage(page) {
         this.currentPage = page

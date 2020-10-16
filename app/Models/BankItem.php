@@ -6,7 +6,7 @@ class BankItem extends Model
 {
     protected $fillable = [
         'bank_id', 'group_id', 'question_id',
-        'type', 'score', 'status', 'index'
+        'question_type', 'score', 'status', 'index'
     ];
 
     protected $casts = [
@@ -30,5 +30,15 @@ class BankItem extends Model
     public function question()
     {
         return $this->belongsTo(Question::class, 'question_id');
+    }
+
+    public function recordItems()
+    {
+        return $this->hasMany(LearnRecordItem::class, 'bank_item_id');
+    }
+
+    public function collects()
+    {
+        return $this->hasMany(UserCollect::class, 'bank_item_id');
     }
 }

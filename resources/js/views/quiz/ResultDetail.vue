@@ -37,12 +37,12 @@
                   <div class="mb-4" v-for="(item, index) in recordItems" :key="index">
                     <div class="mb-2 text-gray-900 flex items-center leading-none"><span class="font-semibold text-base">{{ questionTypes[item.item_type].name }}</span><span class="text-gray-400">{{ '（共'+item.item_count+'题，每题'+item.item_score+'分）' }}</span> </div>
                     <div class="flex flex-wrap -mx-1">
-                      <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(v, i) in item.items" :key="i" :class="[(answerList[index+'-'+i] && answerList[index+'-'+i].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : ((answerList[index+'-'+i] && answerList[index+'-'+i].is_right) ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500')]" @click="toIndex('q-'+index+'-'+i)">{{ i+1 }}</div>
+                      <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(_, i) in item.items" :key="i" :class="[(answerList[index+'-'+i] && answerList[index+'-'+i].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : ((answerList[index+'-'+i] && answerList[index+'-'+i].is_right) ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500')]" @click="toIndex('q-'+index+'-'+i)">{{ i+1 }}</div>
                     </div>
                   </div>
                 </template>
                 <div class="flex flex-wrap -mx-1" v-else>
-                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : ((answerList[index] && answerList[index].is_right) ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500')]" :data-i="answerList[index].is_right" @click="toIndex('q-'+index)">{{ index+1 }}</div>
+                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(_, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : ((answerList[index] && answerList[index].is_right) ? 'text-white bg-green-500 border-green-500' : 'text-white bg-red-500 border-red-500')]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
                 <div class="text-gray-400" v-if="isLoading === false  && Object.keys(answerList).length === 0">还没有数据哦~</div>
               </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="bg-white shadow rounded-lg py-3 mb-5">
               <div class="flex justify-center">
-                <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none" @click="handleBack">返回学习记录</button>
+                <button type="button" class="px-4 h-8 flex items-center justify-center border border-teal-500 text-teal-500 bg-white rounded focus:outline-none" @click="handleBack">返回学习记录</button>
               </div>
             </div>
           </div>
@@ -73,113 +73,109 @@
 </template>
 
 <script>
-import Breadcrumb from "@/components/common/Breadcrumb"
-import EmptyData from "@/components/common/EmptyData"
-import ExamItem from "@/components/questions/ExamItem"
-import Timing from "@/components/common/Timing"
-import QuestionType from "@/mixins/QuestionType"
-import TModal from "@/components/common/modal/Modal"
-import { showRecordsResult } from "@/api/learnRecord"
+  import Breadcrumb from "@/components/common/Breadcrumb"
+  import EmptyData from "@/components/common/EmptyData"
+  import ExamItem from "@/components/questions/ExamItem"
+  import QuestionType from "@/mixins/QuestionType"
+  import { showRecordsResult } from "@/api/learnRecord"
 
-export default {
-  name: "quiz.result.detail",
-  components: {
-    Breadcrumb,
-    EmptyData,
-    ExamItem,
-    Timing,
-    TModal
-  },
-  mixins: [QuestionType],
-  data () {
-    return {
-      recordId: this.$route.params.id,
-      record:{},
-      recordItems: [],
-      answerList: [],
-      rightCount: 0,
-      errorCount: 0,
-      undoneCount: 0,
-      isLoading: null
-    }
-  },
-  mounted() {
-    this.showRecordsResult()
-  },
-  filters: {
-    formatModeName(val) {
-      let name
-      switch (parseInt(val.type)) {
-        case 1:
-          name = parseInt(val.quiz_mode) === 1 ? '练习模式' : '考试模式'
-          break
-        case 2:
-          name = '模拟考试'
-          break
-        case 3:
-          name = '历年真题'
-          break
-        case 4:
-          name = '每日一练'
-          break
+  export default {
+    name: "quiz.result.detail",
+    components: {
+      Breadcrumb,
+      EmptyData,
+      ExamItem
+    },
+    mixins: [QuestionType],
+    data () {
+      return {
+        recordId: this.$route.params.id,
+        record:{},
+        recordItems: [],
+        answerList: [],
+        rightCount: 0,
+        errorCount: 0,
+        undoneCount: 0,
+        isLoading: null
       }
+    },
+    mounted() {
+      this.showRecordsResult()
+    },
+    filters: {
+      formatModeName(val) {
+        let name
+        switch (parseInt(val.type)) {
+          case 1:
+            name = parseInt(val.quiz_mode) === 1 ? '练习模式' : '考试模式'
+            break
+          case 2:
+            name = '模拟考试'
+            break
+          case 3:
+            name = '历年真题'
+            break
+          case 4:
+            name = '每日一练'
+            break
+        }
 
-      return name
-    }
-  },
-  methods: {
-    showRecordsResult() {
-      this.isLoading = true
-      showRecordsResult(this.recordId)
-        .then((res) => {
-          this.record = res
-          this.recordItems = res.items
+        return name
+      }
+    },
+    methods: {
+      showRecordsResult() {
+        this.isLoading = true
+        showRecordsResult(this.recordId)
+          .then((res) => {
+            this.record = res
+            this.recordItems = res.items
 
-          let answerList = {}
-          this.recordItems.forEach((item, index) => {
-            if (res.is_group) {
-              item.items.forEach((v, i) => {
-                answerList[index+'-'+i] = {
-                  bank_item_id: v.id,
-                  question_id: v.question.id,
-                  question_type: v.question.type,
-                  answer: (v.record && v.record.answer) || "",
-                  is_right: v.record && v.record.is_right
+            let answerList = {}
+            this.recordItems.forEach((item, index) => {
+              if (res.is_group) {
+                item.items.forEach((v, i) => {
+                  answerList[index+'-'+i] = {
+                    bank_item_id: v.id,
+                    question_id: v.question.id,
+                    question_type: v.question.type,
+                    answer: (v.record && v.record.answer) || "",
+                    is_right: v.record && v.record.is_right
+                  }
+                })
+              } else {
+                answerList[index] = {
+                  bank_item_id: item.id,
+                  question_id: item.question.id,
+                  question_type: item.question.type,
+                  answer: (item.record && item.record.answer) || "",
+                  is_right: item.record && item.record.is_right
                 }
-              })
-            } else {
-              answerList[index] = {
-                bank_item_id: item.id,
-                question_id: item.question.id,
-                question_type: item.question.type,
-                answer: (item.record && item.record.answer) || "",
-                is_right: item.record && item.record.is_right
               }
-            }
+            })
+            this.answerList = answerList
+            this.rightCount = Object.values(answerList).filter(item => {
+              return item.is_right
+            }).length
+            this.errorCount = Object.values(answerList).filter(item => {
+              return item.is_right === false
+            }).length
+            this.undoneCount = Object.values(answerList).filter(item => {
+              return item.answer.length === 0 || item.is_right === null
+            }).length
           })
-          this.answerList = answerList
-          this.rightCount = Object.values(answerList).filter(item => {
-            return item.is_right
-          }).length
-          this.errorCount = Object.values(answerList).filter(item => {
-            return item.is_right === false
-          }).length
-          this.undoneCount = Object.values(answerList).filter(item => {
-            return item.answer.length === 0 || item.is_right === null
-          }).length
+          .finally(() => {
+            this.isLoading = false
+          })
+      },
+      toIndex(index) {
+        this.$nextTick(() => {
+          document.getElementById(index).scrollIntoView({ behavior: "smooth" })
         })
-        .finally(() => {
-          this.isLoading = false
-        })
-    },
-    toIndex(index) {
-      this.$nextTick(() => {
-        document.getElementById(index).scrollIntoView({ behavior: "smooth" })
-      })
-    },
-    handleBack() {
-      this.$router.push({name: 'my.learn'})
+      },
+      handleBack() {
+        this.$router.push({name: 'my.learn'})
+      }
     }
   }
-}
 </script>

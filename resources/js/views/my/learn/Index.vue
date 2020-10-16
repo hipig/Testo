@@ -7,7 +7,7 @@
         <div class="pt-5 pb-4 border-b border-gray-100" v-for="(item, index) in records" :key="index">
           <div class="flex items-center justify-between text-gray-500 text-xs leading-none mb-2">
             <div>{{ item.created_at }}</div>
-            <div class="cursor-pointer" @click="handleDelete">删除</div>
+            <div class="cursor-pointer" @click="handleDelete(item)">删除</div>
           </div>
           <div class="text-base mb-2">{{ item.bank_title }}</div>
           <div class="flex items-center justify-between">
@@ -34,7 +34,7 @@
   import LearnTab from "./LearnTab"
   import LearnFilter from "./LearnFilter"
   import EmptyData from "@/components/common/EmptyData"
-  import { getRecords } from "@/api/learnRecord"
+  import { getRecords, deleteRecords } from "@/api/learnRecord"
 
   export default {
     name: "my.learn",
@@ -104,17 +104,18 @@
         this.currentPage = page
         this.getRecordList()
       },
-      handleDelete() {
+      handleDelete(item) {
         return this.$Dialog.confirm({
           title: '温馨提示',
-          content: `确定删除该考试记录？`
+          content: `确定删除该学习记录？`
         })
         .then(_ => {
-          this.$Message.success('删除成功！')
+          deleteRecords(item.id)
+            then(_ => {
+              this.$Message.success('删除成功！')
+            })
         })
-        .catch(_ => {
-          this.$Message('取消删除！')
-        })
+        .catch(_ => {})
       }
     }
   }

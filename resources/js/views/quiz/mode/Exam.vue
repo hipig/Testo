@@ -20,7 +20,7 @@
           <div v-loading="isLoading" loading-custom-class="h-56">
             <template v-if="record.is_group">
               <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
-                <div class="text-base font-semibold">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
+                <div class="text-base font-semibold mb-3">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
                 <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :item="v" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-report="false" :show-note="false" @answer="handleAnswer"></exam-item>
               </div>
             </template>
@@ -37,12 +37,12 @@
                   <div class="mb-4" v-for="(item, index) in recordItems" :key="index">
                     <div class="mb-2 text-gray-900 flex items-center leading-none"><span class="font-semibold text-base">{{ questionTypes[item.item_type].name }}</span><span class="text-gray-400">{{ '（共'+item.item_count+'题，每题'+item.item_score+'分）' }}</span> </div>
                     <div class="flex flex-wrap -mx-1">
-                      <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(v, i) in item.items" :key="i" :class="[(answerList[index+'-'+i] && answerList[index+'-'+i].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index+'-'+i)">{{ i+1 }}</div>
+                      <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(_, i) in item.items" :key="i" :class="[(answerList[index+'-'+i] && answerList[index+'-'+i].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index+'-'+i)">{{ i+1 }}</div>
                     </div>
                   </div>
                 </template>
                 <div class="flex flex-wrap -mx-1" v-else>
-                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border border-gray-200 text-xs rounded-sm cursor-pointer" v-for="(item, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
+                  <div class="w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer" v-for="(_, index) in recordItems" :key="index" :class="[(answerList[index] && answerList[index].answer.length === 0) ? 'text-gray-500 border-gray-100 hover:border-teal-500' : 'text-white bg-gray-400 border-gray-400' ]" @click="toIndex('q-'+index)">{{ index+1 }}</div>
                 </div>
                 <div class="text-gray-400" v-if="isLoading === false  && Object.keys(answerList).length === 0">还没有数据哦~</div>
               </div>
@@ -182,7 +182,7 @@
                 item.items.forEach((v, i) => {
                   answerList[index+'-'+i] = {
                     record_id: this.recordId,
-                    bank_id: res.bank_id,
+                    bank_id: v.bank_id,
                     bank_item_id: v.id,
                     question_id: v.question.id,
                     question_type: v.question.type,
@@ -192,7 +192,7 @@
               } else {
                 answerList[index] = {
                   record_id: this.recordId,
-                  bank_id: res.bank_id,
+                  bank_id: item.bank_id,
                   bank_item_id: item.id,
                   question_id: item.question.id,
                   question_type: item.question.type,

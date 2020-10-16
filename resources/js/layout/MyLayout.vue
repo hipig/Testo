@@ -48,7 +48,7 @@ export default {
     return {
       currentMenu: '',
       routerList: {
-        learn: ['my.learn', 'my.exam', 'my.collect', 'my.error'],
+        learn: ['my.learn', 'my.exam', 'my.note', 'my.collect', 'my.error'],
         info: ['my.index', 'my.change.password']
       }
     }

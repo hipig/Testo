@@ -13,12 +13,13 @@ class UserCollectsController extends Controller
     {
         $userCollects = optional($request->user('api'))
             ->collects()
-            ->with('subject:id,title', 'question:id,title')
+            ->with('subject:id,title', 'question:id,title', 'bankItem', 'bankItem.collects')
             ->inSubject($request->subject_pid)
             ->onlySubject($request->subject_id)
             ->onlyQuestionType($request->question_type)
             ->betweenDate($request->date)
             ->orderBy('created_at', 'desc')
+            ->orderBy('question_type')
             ->paginate($request->page_size ?? config('api.page_size'));
 
         return UserCollectResource::collection($userCollects);

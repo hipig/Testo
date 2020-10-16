@@ -20,6 +20,11 @@ class BankGroup extends Model
 
     public function items()
     {
-        return $this->hasMany(BankItem::class, 'group_id')->orderBy('index')->orderBy('type');
+        return $this->hasMany(BankItem::class, 'group_id')->orderBy('index')->orderBy('question_type');
+    }
+
+    public function recordItems()
+    {
+        return $this->hasMany(LearnRecordItem::class, 'bank_id');
     }
 }

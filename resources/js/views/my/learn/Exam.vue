@@ -37,7 +37,7 @@
   import LearnTab from "./LearnTab"
   import LearnFilter from "./LearnFilter"
   import EmptyData from "@/components/common/EmptyData"
-  import { getRecords } from "@/api/learnRecord"
+  import { getRecords, deleteRecords } from "@/api/learnRecord"
 
   export default {
     name: "my.exam",
@@ -99,11 +99,12 @@
           content: `确定删除该考试记录？`
         })
         .then(_ => {
-          this.$Message.success('删除成功！')
+          deleteRecords(item.id)
+          then(_ => {
+            this.$Message.success('删除成功！')
+          })
         })
-        .catch(_ => {
-          this.$Message('取消删除！')
-        })
+        .catch(_ => {})
       }
     }
   }

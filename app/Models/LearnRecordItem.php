@@ -18,6 +18,11 @@ class LearnRecordItem extends Model
         return $this->belongsTo(LearnRecord::class, 'record_id');
     }
 
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
     public function bankItem()
     {
         return $this->belongsTo(bankItem::class, 'bank_item_id');

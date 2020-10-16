@@ -40,7 +40,9 @@ class LearnRecordsController extends Controller
         }
 
         if ($record->is_group) {
-            $record->load('bank.groups.items');
+            $record->load('user.recordItems', 'bank.groups', 'bank.groups.items', 'bank.groups.items.collects');
+        } else {
+            $record->load('user.recordItems', 'bank.items', 'bank.items.collects');
         }
 
         return LearnRecordShowResource::make($record);
@@ -85,7 +87,7 @@ class LearnRecordsController extends Controller
         }
 
         if ($type = $request->type) {
-            $bankItems->where($columnPrefix.'type', $type);
+            $bankItems->where($columnPrefix.'question_type', $type);
         }
 
         $idPluck = $bankItems->pluck($columnPrefix.'id');
@@ -151,5 +153,14 @@ class LearnRecordsController extends Controller
         event(new LearnRecordSubmitted($record));
 
         return LearnRecordResource::make($record);
+    }
+
+    public function destroy(Request $request, LearnRecord $record)
+    {
+        $this->authorize('own', $record);
+
+        $record->delete();
+
+        return response(null, 204);
     }
 }

@@ -55,7 +55,7 @@ class Bank extends Model
 
     public function items()
     {
-        return $this->hasMany(BankItem::class, 'bank_id')->orderBy('index')->orderBy('type');
+        return $this->hasMany(BankItem::class, 'bank_id')->orderBy('index')->orderBy('question_type');
     }
 
     public function childrenItems()
@@ -75,6 +75,6 @@ class Bank extends Model
 
     public function getHasChildrenAttribute()
     {
-        return $this->children->isNotEmpty();
+        return is_null($this->parent_id);
     }
 }

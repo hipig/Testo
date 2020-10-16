@@ -2,7 +2,8 @@
   <div class="text-sm" v-if="list.length > 0">
     <template v-for="(item, index) in breadcrumbList">
       <template v-if="index !== breadcrumbList.length-1">
-        <a :href="item.href">{{ item.title }}</a> <span> / </span>
+        <router-link :to="{path: item.path}">{{ item.title }}</router-link>
+        <span> / </span>
       </template>
       <span class="text-gray-400" v-else>{{ item.title }}</span>
     </template>

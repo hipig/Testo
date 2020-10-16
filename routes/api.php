@@ -66,6 +66,8 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::put('records/{record}', 'LearnRecordsController@update')->name('learnRecords.update');
         // 生成练习答题记录
         Route::post('records/{record}/items', 'LearnRecordItemsController@store')->name('learnRecordItems.store');
+        // 删除答题记录
+        Route::delete('records/{record}', 'LearnRecordsController@destroy')->name('learnRecords.destroy');
 
         // 题目收藏
         Route::get('user/collects', 'UserCollectsController@index')->name('userCollects.index');
@@ -79,6 +81,9 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::get('user/notes', 'UserNotesController@index')->name('userNotes.index');
         Route::post('user/notes', 'UserNotesController@store')->name('userNotes.store');
         Route::delete('user/notes/{userNote}', 'UserNotesController@destroy')->name('userNotes.destroy');
+        // 错题
+        Route::get('user/errors', 'UserErrorsController@index')->name('userErrors.index');
+        Route::delete('user/errors/{userError}', 'UserErrorsController@destroy')->name('userErrors.destroy');
 
         // 文件上传
         Route::post('uploads', 'UploadsController@store')->name('uploads.store');
