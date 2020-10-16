@@ -18,7 +18,7 @@ class LearnRecordShowResource extends JsonResource
         $bank = optional($this->bank);
 
         if ($bank->is_group) {
-            $groups = $bank->groups->map(function ($item) {
+            $groups = $this->bank_items->map(function ($item) {
                $item->transmit_record_id = $this->id;
                return $item;
             });
@@ -44,6 +44,7 @@ class LearnRecordShowResource extends JsonResource
             'subject_id' => $bank->subject_id,
             'score' => $bank->total_score,
             'time_limit' => $bank->time_limit,
+            'total_count' => $bank->total_count,
             'is_group' => $bank->is_group,
             'bank_title' => $bank->title,
             'type' => $this->type,

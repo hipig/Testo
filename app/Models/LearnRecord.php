@@ -52,15 +52,6 @@ class LearnRecord extends Model
         return $this->hasMany(LearnRecordItem::class, 'record_id');
     }
 
-    public function getQuestionItemsAttribute()
-    {
-        return BankItem::query()
-            ->whereIn('id', $this->question_ids)
-            ->orderBy('index')
-            ->orderBy('question_type')
-            ->get();
-    }
-
     public function getBankItemsAttribute()
     {
         switch ($this->type) {
@@ -73,10 +64,10 @@ class LearnRecord extends Model
                 break;
             case self::MOCK_EXAM:
             case self::OLD_EXAM:
-                $items = $this->is_group ? $this->groups : $this->items;
+                $items = $this->bank->is_group ? $this->bank->groups : $this->bank->items;
                 break;
             case self::DAILY_TEST:
-                $items = $this->items;
+                $items = $this->bank->items;
                 break;
         }
         return $items;

@@ -111,8 +111,9 @@
     },
     watch: {
       $route(to,from){
-        this.id = to.params.id
+        this.pid = to.params.pid
         this.getSubject()
+        console.log(to)
       }
     },
     methods: {

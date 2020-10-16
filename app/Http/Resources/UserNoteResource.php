@@ -15,8 +15,6 @@ class UserNoteResource extends JsonResource
      */
     public function toArray($request)
     {
-
-
         return [
             'id' => $this->id,
             'subject_id' => $this->subject_id,
@@ -28,7 +26,7 @@ class UserNoteResource extends JsonResource
             'content' => $this->content,
             'upload_ids' => $this->upload_ids,
             'upload_items' => $this->upload_items,
-            'bank_item' => BankItemResource::make($this->bankItem),
+            'bank_item' => BankItemResource::make($this->whenLoaded('bankItems')),
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i')
         ];
     }

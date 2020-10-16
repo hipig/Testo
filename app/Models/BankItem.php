@@ -41,4 +41,9 @@ class BankItem extends Model
     {
         return $this->hasMany(UserCollect::class, 'bank_item_id');
     }
+
+    public function notes()
+    {
+        return $this->hasMany(UserNote::class, 'bank_item_id')->orderBy('created_at', 'desc');
+    }
 }

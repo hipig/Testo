@@ -4351,9 +4351,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionTool__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionTool */ "./resources/js/components/questions/QuestionTool.vue");
 /* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
-/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
-/* harmony import */ var _api_userReport__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/userReport */ "./resources/js/api/userReport.js");
-/* harmony import */ var _api_userNote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/userNote */ "./resources/js/api/userNote.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -4440,9 +4437,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 
 
-
-
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ExamItem",
   components: {
@@ -4463,6 +4457,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       "default": false
     },
     showCheckResult: {
+      type: Boolean,
+      "default": true
+    },
+    showAnswerBar: {
       type: Boolean,
       "default": true
     },
@@ -4510,10 +4508,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
     isRight: function isRight() {
       return this.checkRight(this.currentAnswer, this.question.answer, this.question.type);
-    },
-    showAnswerBar: function showAnswerBar() {
-      var type = this.question.type;
-      return type !== 5;
     }
   },
   watch: {
@@ -4543,6 +4537,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         // 填空
 
         case 4:
+          status = true;
           rightAnswer.forEach(function (v, i) {
             if (answer[i] != v) {
               status = false;
@@ -4556,32 +4551,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       return status;
-    },
-    handleReport: function handleReport(form) {
-      var _this = this;
-
-      var params = Object.assign({}, this.toolForm, form);
-      Object(_api_userReport__WEBPACK_IMPORTED_MODULE_3__["storeUserReports"])(params).then(function (_) {
-        _this.$Message.success('提交成功！');
-      });
-    },
-    handleNote: function handleNote(form) {
-      var _this2 = this;
-
-      var params = Object.assign({}, this.toolForm, form);
-      Object(_api_userNote__WEBPACK_IMPORTED_MODULE_4__["storeUserNotes"])(params).then(function (_) {
-        _this2.$Message.success('提交成功！');
-      });
-    },
-    handleCollect: function handleCollect() {
-      var _this3 = this;
-
-      var request = this.isCollect ? _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["deleteUserCollects"] : _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["storeUserCollects"];
-      request(this.toolForm).then(function (res) {
-        _this3.isCollect = !_this3.isCollect;
-
-        _this3.$Message.success((_this3.isCollect ? '收藏' : '取消收藏') + '成功！');
-      });
     }
   }
 });
@@ -4599,9 +4568,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QuestionTool__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuestionTool */ "./resources/js/components/questions/QuestionTool.vue");
 /* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
-/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
-/* harmony import */ var _api_userReport__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/userReport */ "./resources/js/api/userReport.js");
-/* harmony import */ var _api_userNote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/userNote */ "./resources/js/api/userNote.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -4691,11 +4657,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
-//
-//
-
-
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4822,6 +4783,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         // 填空
 
         case 4:
+          status = true;
           rightAnswer.forEach(function (v, i) {
             if (answer[i] != v) {
               status = false;
@@ -4835,32 +4797,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }
 
       return status;
-    },
-    handleReport: function handleReport(form) {
-      var _this = this;
-
-      var params = Object.assign({}, this.toolForm, form);
-      Object(_api_userReport__WEBPACK_IMPORTED_MODULE_3__["storeUserReports"])(params).then(function (_) {
-        _this.$Message.success('提交成功！');
-      });
-    },
-    handleNote: function handleNote(form) {
-      var _this2 = this;
-
-      var params = Object.assign({}, this.toolForm, form);
-      Object(_api_userNote__WEBPACK_IMPORTED_MODULE_4__["storeUserNotes"])(params).then(function (_) {
-        _this2.$Message.success('提交成功！');
-      });
-    },
-    handleCollect: function handleCollect() {
-      var _this3 = this;
-
-      var request = this.isCollect ? _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["deleteUserCollects"] : _api_userCollect__WEBPACK_IMPORTED_MODULE_2__["storeUserCollects"];
-      request(this.toolForm).then(function (res) {
-        _this3.isCollect = !_this3.isCollect;
-
-        _this3.$Message.success((_this3.isCollect ? '收藏' : '取消收藏') + '成功！');
-      });
     }
   }
 });
@@ -4877,6 +4813,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
+/* harmony import */ var _api_userReport__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/userReport */ "./resources/js/api/userReport.js");
+/* harmony import */ var _api_userNote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/userNote */ "./resources/js/api/userNote.js");
 //
 //
 //
@@ -4985,6 +4924,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "QuestionTool",
@@ -5007,7 +4949,8 @@ __webpack_require__.r(__webpack_exports__);
     isCollect: {
       type: Boolean,
       "default": false
-    }
+    },
+    extraData: Object
   },
   data: function data() {
     return {
@@ -5057,31 +5000,58 @@ __webpack_require__.r(__webpack_exports__);
     handleSuccessNote: function handleSuccessNote(response) {
       this.noteForm.upload_ids.push(response.id);
     },
-    closeReportModal: function closeReportModal() {
-      this.reportModalVisible = false;
+    clearReportForm: function clearReportForm() {
       this.reportForm = {
         type: 1,
         content: '',
         upload_ids: []
       };
+      this.reportFileList = [];
     },
-    closeNoteModal: function closeNoteModal() {
-      this.noteModalVisible = false;
+    clearNoteForm: function clearNoteForm() {
       this.noteForm = {
         content: '',
         upload_ids: []
       };
+      this.noteFileList = [];
     },
-    submitReport: function submitReport() {
+    closeReportModal: function closeReportModal() {
       this.reportModalVisible = false;
-      this.$emit('on-report', this.reportForm);
+      this.clearReportForm();
     },
-    submitNote: function submitNote() {
+    closeNoteModal: function closeNoteModal() {
       this.noteModalVisible = false;
-      this.$emit('on-note', this.noteForm);
+      this.clearNoteForm();
     },
-    submitCollect: function submitCollect() {
-      this.$emit('on-collect');
+    handleReport: function handleReport() {
+      var _this = this;
+
+      var params = Object.assign({}, this.reportForm, this.extraData);
+      Object(_api_userReport__WEBPACK_IMPORTED_MODULE_2__["storeUserReports"])(params).then(function (_) {
+        _this.closeReportModal();
+
+        _this.$Message.success('提交成功！');
+      });
+    },
+    handleNote: function handleNote() {
+      var _this2 = this;
+
+      var params = Object.assign({}, this.noteForm, this.extraData);
+      Object(_api_userNote__WEBPACK_IMPORTED_MODULE_3__["storeUserNotes"])(params).then(function (_) {
+        _this2.closeNoteModal();
+
+        _this2.$Message.success('提交成功！');
+      });
+    },
+    handleCollect: function handleCollect() {
+      var _this3 = this;
+
+      var request = this.isCollect ? _api_userCollect__WEBPACK_IMPORTED_MODULE_1__["deleteUserCollects"] : _api_userCollect__WEBPACK_IMPORTED_MODULE_1__["storeUserCollects"];
+      request(this.extraData).then(function (_) {
+        _this3.isCollect = !_this3.isCollect;
+
+        _this3.$Message.success((_this3.isCollect ? '收藏' : '取消收藏') + '成功！');
+      });
     }
   }
 });
@@ -5808,9 +5778,15 @@ __webpack_require__.r(__webpack_exports__);
       this.filterForm = form;
       this.getUserCollects();
     },
-    handleContinue: function handleContinue(val) {
+    handleView: function handleView(item) {
       this.$router.push({
-        name: 'home'
+        name: 'quiz.items',
+        params: {
+          type: 'collect'
+        },
+        query: Object.assign({}, this.filterForm, {
+          index: "q-".concat(item.id)
+        })
       });
     },
     changePage: function changePage(page) {
@@ -6384,7 +6360,7 @@ __webpack_require__.r(__webpack_exports__);
           type: 'note'
         },
         query: Object.assign({}, this.filterForm, {
-          index: "q-".concat(item.id)
+          index: "q-".concat(item.bank_item_id)
         })
       });
     },
@@ -6495,6 +6471,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -6522,14 +6501,11 @@ __webpack_require__.r(__webpack_exports__);
       },
       index: this.$route.query.index,
       subject: {},
-      breadcrumb: [{
-        title: this.typeTitle
-      }],
       items: [],
-      page: 1,
+      page: this.$route.query.page || 1,
       totalPage: 0,
-      total: 0,
-      isLoading: null
+      isLoading: null,
+      isScroll: false
     };
   },
   mounted: function mounted() {
@@ -6549,7 +6525,7 @@ __webpack_require__.r(__webpack_exports__);
       var typeTitles = {
         'collect': '收藏集',
         'error': '错题集',
-        'note': '笔记'
+        'note': '我的笔记'
       };
       return typeTitles[this.type];
     }
@@ -6562,8 +6538,11 @@ __webpack_require__.r(__webpack_exports__);
       var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
       var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
 
-      if (scrollHeight - scrollTop - clientHeight < 100 && !this.isLoading && this.page !== this.totalPage) {
+      if (scrollHeight - scrollTop - clientHeight < 100 && !this.isScroll && this.totalPage > this.page) {
+        this.isScroll = true;
         setTimeout(function () {
+          _this2.page++;
+
           _this2.getItems();
         }, 500);
       }
@@ -6581,7 +6560,7 @@ __webpack_require__.r(__webpack_exports__);
       this.isLoading = true;
       var requests = {
         'collect': _api_userCollect__WEBPACK_IMPORTED_MODULE_5__["getUserCollects"],
-        'note': _api_userNote__WEBPACK_IMPORTED_MODULE_6__["getUserNotes"],
+        'note': _api_userNote__WEBPACK_IMPORTED_MODULE_6__["getUserNotesDetail"],
         'error': _api_userError__WEBPACK_IMPORTED_MODULE_7__["getUserErrors"]
       };
       var params = this.form;
@@ -6590,7 +6569,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.items = _this4.items.concat(res.data);
         _this4.totalPage = res.meta.last_page;
         _this4.index && _this4.toIndex(_this4.index);
-        _this4.totalPage > _this4.page && _this4.page++;
+        _this4.isScroll = _this4.page === _this4.totalPage;
       })["finally"](function () {
         _this4.isLoading = false;
       });
@@ -6603,9 +6582,11 @@ __webpack_require__.r(__webpack_exports__);
         'note': _api_userNote__WEBPACK_IMPORTED_MODULE_6__["destroyUserNotes"],
         'error': _api_userError__WEBPACK_IMPORTED_MODULE_7__["destroyUserErrors"]
       };
-      this.$Dialog.confirm('是否删除？', '提示').then(function (_) {
+      this.$Dialog.confirm(this.type === 'collect' ? '是否取消收藏？' : '是否删除？', '温馨提示').then(function (_) {
         requests[_this5.type](item.id).then(function (_) {
           _this5.$Message.success('删除成功');
+
+          _this5.getItems();
         });
       })["catch"](function (_) {});
     },
@@ -7954,8 +7935,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     $route: function $route(to, from) {
-      this.id = to.params.id;
+      this.pid = to.params.pid;
       this.getSubject();
+      console.log(to);
     }
   },
   methods: {
@@ -12381,12 +12363,8 @@ var render = function() {
                 "show-report": _vm.showReport,
                 "show-note": _vm.showNote,
                 "show-collect": _vm.showCollect,
-                "is-collect": _vm.isCollect
-              },
-              on: {
-                "on-report": _vm.handleReport,
-                "on-note": _vm.handleNote,
-                "on-collect": _vm.handleCollect
+                "is-collect": _vm.isCollect,
+                "extra-data": _vm.toolForm
               }
             },
             [_vm._t("tool")],
@@ -12396,347 +12374,383 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "text-gray-900 text-lg mb-5" }, [
-        _vm._v(_vm._s(_vm.question.title))
-      ]),
-      _vm._v(" "),
-      _vm.question.type === 1 || _vm.question.type === 3
-        ? [
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              _vm._l(_vm.question.option, function(item, index) {
-                return _c(
+      _c(
+        "div",
+        {
+          class: [
+            {
+              "border-2 border-dashed border-gray-200 p-4 rounded mb-5":
+                _vm.$slots.footer
+            }
+          ]
+        },
+        [
+          _c("div", { staticClass: "text-gray-900 text-lg mb-5" }, [
+            _vm._v(_vm._s(_vm.question.title))
+          ]),
+          _vm._v(" "),
+          _vm.question.type === 1 || _vm.question.type === 3
+            ? [
+                _c(
                   "div",
-                  { key: index, staticClass: "mb-2 text-base" },
-                  [
-                    _c("label", { staticClass: "inline-flex items-center" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.currentAnswer,
-                            expression: "currentAnswer"
-                          }
-                        ],
-                        staticClass: "form-radio w-5 h-5 border-2",
-                        class: [
-                          _vm.showParse
-                            ? _vm.isRight
-                              ? "text-green-500 focus:shadow-outline-green"
-                              : "text-red-500 focus:shadow-outline-red"
-                            : "text-teal-500 focus:shadow-outline-teal"
-                        ],
-                        attrs: { type: "radio", disabled: _vm.showParse },
-                        domProps: {
-                          value: index,
-                          checked: _vm._q(_vm.currentAnswer, index)
-                        },
-                        on: {
-                          change: [
-                            function($event) {
-                              _vm.currentAnswer = index
-                            },
-                            _vm.submit
-                          ]
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "ml-3" }, [
-                        _vm._v(_vm._s(item))
-                      ])
-                    ])
-                  ]
-                )
-              }),
-              0
-            )
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.question.type === 2
-        ? [
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              _vm._l(_vm.question.option, function(item, index) {
-                return _c(
-                  "div",
-                  { key: index, staticClass: "mb-2 text-base" },
-                  [
-                    _c("label", { staticClass: "inline-flex items-center" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.currentAnswer,
-                            expression: "currentAnswer"
-                          }
-                        ],
-                        staticClass: "form-checkbox w-5 h-5 border-2",
-                        class: [
-                          _vm.showParse
-                            ? _vm.isRight
-                              ? "text-green-500 focus:shadow-outline-green"
-                              : "text-red-500 focus:shadow-outline-red"
-                            : "text-teal-500 focus:shadow-outline-teal"
-                        ],
-                        attrs: { type: "checkbox", disabled: _vm.showParse },
-                        domProps: {
-                          value: index,
-                          checked: Array.isArray(_vm.currentAnswer)
-                            ? _vm._i(_vm.currentAnswer, index) > -1
-                            : _vm.currentAnswer
-                        },
-                        on: {
-                          change: [
-                            function($event) {
-                              var $$a = _vm.currentAnswer,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = index,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    (_vm.currentAnswer = $$a.concat([$$v]))
-                                } else {
-                                  $$i > -1 &&
-                                    (_vm.currentAnswer = $$a
-                                      .slice(0, $$i)
-                                      .concat($$a.slice($$i + 1)))
-                                }
-                              } else {
-                                _vm.currentAnswer = $$c
-                              }
-                            },
-                            _vm.submit
-                          ]
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "ml-3" }, [
-                        _vm._v(_vm._s(item))
-                      ])
-                    ])
-                  ]
-                )
-              }),
-              0
-            )
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.question.type === 4
-        ? [
-            _c(
-              "div",
-              { staticClass: "flex flex-col mb-3" },
-              _vm._l(_vm.question.answer, function(v, i) {
-                return _c("label", { staticClass: "flex w-full mb-2" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.fillBlackAnswer[i],
-                        expression: "fillBlackAnswer[i]"
-                      }
-                    ],
-                    staticClass: "w-full px-4 py-3 rounded focus:outline-none",
-                    class: [
-                      _vm.showParse
-                        ? _vm.isRight
-                          ? "text-green-500 bg-green-100"
-                          : "text-red-500 bg-red-100"
-                        : "bg-gray-100"
-                    ],
-                    attrs: {
-                      placeholder: "请输入答案",
-                      disabled: _vm.showParse
-                    },
-                    domProps: { value: _vm.fillBlackAnswer[i] },
-                    on: {
-                      change: _vm.submit,
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.fillBlackAnswer, i, $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              }),
-              0
-            )
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.question.type === 5
-        ? [
-            _c("div", { staticClass: "mb-2" }, [
-              _c("label", { staticClass: "flex w-full" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.currentAnswer,
-                      expression: "currentAnswer"
-                    }
-                  ],
-                  staticClass:
-                    "h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none",
-                  attrs: { placeholder: "请输入答案", disabled: _vm.showParse },
-                  domProps: { value: _vm.currentAnswer },
-                  on: {
-                    input: [
-                      function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.currentAnswer = $event.target.value
-                      },
-                      _vm.submit
-                    ]
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-5 text-gray-400" }, [
-              _vm._v("主观题仅提供作答，默认得分，不计入错题集，建议收藏。")
-            ])
-          ]
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.showParse
-        ? _c(
-            "div",
-            { staticClass: "mb-3" },
-            [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "py-2 px-5 bg-gray-100 flex leading-tight rounded",
-                  class: [
-                    _vm.question.type === 4
-                      ? "flex-col"
-                      : "flex-wrap items-center"
-                  ]
-                },
-                [
-                  _vm.showCheckResult
-                    ? _c(
-                        "div",
-                        {
-                          staticClass: "mr-10 py-1",
-                          class: [
-                            _vm.answer.length > 0
-                              ? _vm.isRight
-                                ? "text-green-500"
-                                : "text-red-500"
-                              : ""
-                          ]
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(
-                              _vm.answer.length > 0
-                                ? _vm.isRight
-                                  ? "回答正确"
-                                  : "回答错误"
-                                : "没有回答"
-                            )
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.showAnswerBar
-                    ? [
+                  { staticClass: "flex flex-col mb-3" },
+                  _vm._l(_vm.question.option, function(item, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "mb-2 text-base" },
+                      [
                         _c(
-                          "div",
-                          {
-                            staticClass: "mr-10 py-1 flex",
-                            class: [
-                              _vm.question.type === 4
-                                ? "items-baseline"
-                                : "items-center"
-                            ]
-                          },
+                          "label",
+                          { staticClass: "inline-flex items-center" },
                           [
-                            _c("span", { staticClass: "text-gray-500" }, [
-                              _vm._v("正确答案：")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "flex-1 text-green-500 text-base font-semibold leading-tight"
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.currentAnswer,
+                                  expression: "currentAnswer"
+                                }
+                              ],
+                              staticClass: "form-radio w-5 h-5 border-2",
+                              class: [
+                                _vm.showParse
+                                  ? _vm.isRight
+                                    ? "text-green-500 focus:shadow-outline-green"
+                                    : "text-red-500 focus:shadow-outline-red"
+                                  : "text-teal-500 focus:shadow-outline-teal"
+                              ],
+                              attrs: { type: "radio", disabled: _vm.showParse },
+                              domProps: {
+                                value: index,
+                                checked: _vm._q(_vm.currentAnswer, index)
                               },
-                              [_vm._v(_vm._s(_vm.rightAnswerText))]
-                            )
+                              on: {
+                                change: [
+                                  function($event) {
+                                    _vm.currentAnswer = index
+                                  },
+                                  _vm.submit
+                                ]
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "ml-3" }, [
+                              _vm._v(_vm._s(item))
+                            ])
                           ]
-                        ),
-                        _vm._v(" "),
-                        _vm.answer.length > 0 && !_vm.isRight
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.question.type === 2
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "flex flex-col mb-3" },
+                  _vm._l(_vm.question.option, function(item, index) {
+                    return _c(
+                      "div",
+                      { key: index, staticClass: "mb-2 text-base" },
+                      [
+                        _c(
+                          "label",
+                          { staticClass: "inline-flex items-center" },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.currentAnswer,
+                                  expression: "currentAnswer"
+                                }
+                              ],
+                              staticClass: "form-checkbox w-5 h-5 border-2",
+                              class: [
+                                _vm.showParse
+                                  ? _vm.isRight
+                                    ? "text-green-500 focus:shadow-outline-green"
+                                    : "text-red-500 focus:shadow-outline-red"
+                                  : "text-teal-500 focus:shadow-outline-teal"
+                              ],
+                              attrs: {
+                                type: "checkbox",
+                                disabled: _vm.showParse
+                              },
+                              domProps: {
+                                value: index,
+                                checked: Array.isArray(_vm.currentAnswer)
+                                  ? _vm._i(_vm.currentAnswer, index) > -1
+                                  : _vm.currentAnswer
+                              },
+                              on: {
+                                change: [
+                                  function($event) {
+                                    var $$a = _vm.currentAnswer,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = index,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          (_vm.currentAnswer = $$a.concat([
+                                            $$v
+                                          ]))
+                                      } else {
+                                        $$i > -1 &&
+                                          (_vm.currentAnswer = $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1)))
+                                      }
+                                    } else {
+                                      _vm.currentAnswer = $$c
+                                    }
+                                  },
+                                  _vm.submit
+                                ]
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "ml-3" }, [
+                              _vm._v(_vm._s(item))
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.question.type === 4
+            ? [
+                _c(
+                  "div",
+                  { staticClass: "flex flex-col mb-3" },
+                  _vm._l(_vm.question.answer, function(v, i) {
+                    return _c("label", { staticClass: "flex w-full mb-2" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fillBlackAnswer[i],
+                            expression: "fillBlackAnswer[i]"
+                          }
+                        ],
+                        staticClass:
+                          "w-full px-4 py-3 rounded focus:outline-none",
+                        class: [
+                          _vm.showParse
+                            ? _vm.isRight
+                              ? "text-green-500 bg-green-100"
+                              : "text-red-500 bg-red-100"
+                            : "bg-gray-100"
+                        ],
+                        attrs: {
+                          placeholder: "请输入答案",
+                          disabled: _vm.showParse
+                        },
+                        domProps: { value: _vm.fillBlackAnswer[i] },
+                        on: {
+                          change: _vm.submit,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.fillBlackAnswer,
+                              i,
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  }),
+                  0
+                )
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.question.type === 5
+            ? [
+                _c("div", { staticClass: "mb-2" }, [
+                  _c("label", { staticClass: "flex w-full" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.currentAnswer,
+                          expression: "currentAnswer"
+                        }
+                      ],
+                      staticClass:
+                        "h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none",
+                      attrs: {
+                        placeholder: "请输入答案",
+                        disabled: _vm.showParse
+                      },
+                      domProps: { value: _vm.currentAnswer },
+                      on: {
+                        input: [
+                          function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.currentAnswer = $event.target.value
+                          },
+                          _vm.submit
+                        ]
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-5 text-gray-400" }, [
+                  _vm._v("主观题仅提供作答，默认得分，不计入错题集，建议收藏。")
+                ])
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showParse
+            ? _c("div", { staticClass: "mb-3" }, [
+                _vm.showAnswerBar
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "py-2 px-5 bg-gray-100 flex leading-tight rounded",
+                        class: [
+                          _vm.question.type === 4
+                            ? "flex-col"
+                            : "flex-wrap items-center"
+                        ]
+                      },
+                      [
+                        _vm.showCheckResult
                           ? _c(
                               "div",
                               {
-                                staticClass: "mr-10 py-1 flex",
+                                staticClass: "mr-10 py-1",
                                 class: [
-                                  _vm.question.type === 4
-                                    ? "items-baseline"
-                                    : "items-center"
+                                  _vm.answer.length > 0
+                                    ? _vm.isRight
+                                      ? "text-green-500"
+                                      : "text-red-500"
+                                    : ""
                                 ]
                               },
                               [
-                                _c("span", { staticClass: "text-gray-500" }, [
-                                  _vm._v("你的答案：")
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "flex-1 text-base font-semibold leading-tight"
-                                  },
-                                  [_vm._v(_vm._s(_vm.answerText))]
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.answer.length > 0
+                                      ? _vm.isRight
+                                        ? "回答正确"
+                                        : "回答错误"
+                                      : "没有回答"
+                                  )
                                 )
                               ]
                             )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.question.type !== 5
+                          ? [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "mr-10 py-1 flex",
+                                  class: [
+                                    _vm.question.type === 4
+                                      ? "items-baseline"
+                                      : "items-center"
+                                  ]
+                                },
+                                [
+                                  _c("span", { staticClass: "text-gray-500" }, [
+                                    _vm._v("正确答案：")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass:
+                                        "flex-1 text-green-500 text-base font-semibold leading-tight"
+                                    },
+                                    [_vm._v(_vm._s(_vm.rightAnswerText))]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _vm.answer.length > 0 && !_vm.isRight
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "mr-10 py-1 flex",
+                                      class: [
+                                        _vm.question.type === 4
+                                          ? "items-baseline"
+                                          : "items-center"
+                                      ]
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "text-gray-500" },
+                                        [_vm._v("你的答案：")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "flex-1 text-base font-semibold leading-tight"
+                                        },
+                                        [_vm._v(_vm._s(_vm.answerText))]
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
                           : _vm._e()
-                      ]
-                    : _vm._e()
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "px-5 mt-5" }, [
-                _c("div", { staticClass: "flex flex-wrap items-baseline" }, [
-                  _c("div", { staticClass: "text-gray-400" }, [
-                    _vm._v("解析：")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "flex-1 text-base" }, [
-                    _vm._v(
-                      "\n          " + _vm._s(_vm.question.parse) + "\n        "
+                      ],
+                      2
                     )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "px-5 mt-5" }, [
+                  _c("div", { staticClass: "flex flex-wrap items-baseline" }, [
+                    _c("div", { staticClass: "text-gray-400" }, [
+                      _vm._v("解析：")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "flex-1 text-base" }, [
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.question.parse) +
+                          "\n          "
+                      )
+                    ])
                   ])
                 ])
-              ]),
-              _vm._v(" "),
-              _vm._t("footer")
-            ],
-            2
-          )
-        : _vm._e()
+              ])
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm._t("footer")
     ],
     2
   )
@@ -12784,12 +12798,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("question-tool", {
-            attrs: { "is-collect": _vm.isCollect },
-            on: {
-              "on-report": _vm.handleReport,
-              "on-note": _vm.handleNote,
-              "on-collect": _vm.handleCollect
-            }
+            attrs: { "is-collect": _vm.isCollect, "extra-data": _vm.toolForm }
           })
         ],
         1
@@ -13265,7 +13274,7 @@ var render = function() {
         ? _c(
             "div",
             {
-              staticClass: "flex items-center cursor-pointer mr-8",
+              staticClass: "flex items-center cursor-pointer ml-8",
               on: {
                 click: function($event) {
                   _vm.reportModalVisible = true
@@ -13303,7 +13312,7 @@ var render = function() {
         ? _c(
             "div",
             {
-              staticClass: "flex items-center cursor-pointer mr-8",
+              staticClass: "flex items-center cursor-pointer ml-8",
               on: {
                 click: function($event) {
                   _vm.noteModalVisible = true
@@ -13341,8 +13350,8 @@ var render = function() {
         ? _c(
             "div",
             {
-              staticClass: "flex items-center cursor-pointer",
-              on: { click: _vm.submitCollect }
+              staticClass: "flex items-center cursor-pointer ml-8",
+              on: { click: _vm.handleCollect }
             },
             [
               _c(
@@ -13534,7 +13543,7 @@ var render = function() {
                   staticClass:
                     "inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none",
                   attrs: { type: "button" },
-                  on: { click: _vm.submitReport }
+                  on: { click: _vm.handleReport }
                 },
                 [_vm._v("提交")]
               )
@@ -13672,7 +13681,7 @@ var render = function() {
                   staticClass:
                     "inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none",
                   attrs: { type: "button" },
-                  on: { click: _vm.submitNote }
+                  on: { click: _vm.handleNote }
                 },
                 [_vm._v("提交")]
               )
@@ -15019,7 +15028,7 @@ var render = function() {
                               "cursor-pointer font-semibold text-teal-500",
                             on: {
                               click: function($event) {
-                                return _vm.handleContinue(item)
+                                return _vm.handleView(item)
                               }
                             }
                           },
@@ -16067,115 +16076,148 @@ var render = function() {
                   key: index,
                   attrs: {
                     id: "q-" + item.id,
-                    item: item.bank_item,
+                    item: _vm.type === "note" ? item : item.bank_item,
                     index: index,
-                    answer: item.bank_item.question.answer,
+                    answer:
+                      _vm.type === "note"
+                        ? item.question.answer
+                        : item.bank_item.question.answer,
                     "show-parse": true,
                     "show-check-result": false,
+                    "show-answer-bar":
+                      (_vm.type === "note" ? item : item.bank_item)
+                        .question_type !== 5,
                     "show-collect": _vm.type !== "collect"
                   }
                 },
                 [
-                  _c("div", { attrs: { slot: "tool" }, slot: "tool" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "flex items-center cursor-pointer mr-8",
-                        on: {
-                          click: function($event) {
-                            return _vm.handleDelete(item)
-                          }
-                        }
-                      },
-                      [
+                  _vm.type !== "note"
+                    ? _c("div", { attrs: { slot: "tool" }, slot: "tool" }, [
                         _c(
-                          "svg",
+                          "div",
                           {
-                            staticClass:
-                              "w-6 h-6 stroke-current text-gray-400 mr-1",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                            staticClass: "flex items-center cursor-pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.handleDelete(item)
+                              }
+                            }
                           },
                           [
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              }
-                            })
+                            _c(
+                              "svg",
+                              {
+                                staticClass:
+                                  "w-6 h-6 stroke-current text-gray-400 mr-1",
+                                attrs: { fill: "none", viewBox: "0 0 24 24" }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d:
+                                      "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "text-base text-gray-900" },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.type === "collect" ? "取消收藏" : "移除"
+                                  )
+                                )
+                              ]
+                            )
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "text-base text-gray-900" }, [
-                          _vm._v(
-                            _vm._s(_vm.type === "collect" ? "取消收藏" : "删除")
-                          )
-                        ])
-                      ]
-                    )
-                  ]),
+                        )
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
-                  _vm.type === "note"
+                  _vm.type === "note" && item.notes
                     ? _c(
                         "div",
-                        {
-                          staticClass: "mt-5",
-                          attrs: { slot: "footer" },
-                          slot: "footer"
-                        },
-                        [
-                          _c(
+                        { attrs: { slot: "footer" }, slot: "footer" },
+                        _vm._l(item.notes, function(value, key) {
+                          return _c(
                             "div",
                             {
+                              key: key,
                               staticClass:
-                                "border-2 border-dashed border-gray-100 p-4 rounded"
+                                "mb-4 px-4 pb-3 border-b border-gray-100"
                             },
                             [
                               _c(
                                 "div",
                                 {
-                                  staticClass: "flex flex-wrap items-baseline"
+                                  staticClass:
+                                    "flex items-center justify-between text-xs text-gray-400"
                                 },
                                 [
-                                  _c("div", [_vm._v("笔记：")]),
+                                  _c("div", {}, [
+                                    _vm._v(_vm._s(value.created_at))
+                                  ]),
                                   _vm._v(" "),
                                   _c(
                                     "div",
-                                    { staticClass: "flex-1 text-base" },
-                                    [
-                                      _c("div", {
-                                        domProps: {
-                                          innerHTML: _vm._s(item.content)
+                                    {
+                                      staticClass: "cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.handleDelete(value)
                                         }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
+                                      }
+                                    },
+                                    [_vm._v("删除")]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "flex flex-col text-base" },
+                                [
+                                  _c("div", {
+                                    domProps: {
+                                      innerHTML: _vm._s(value.content)
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex flex-wrap -mb-3 -mr-3 mt-3"
+                                    },
+                                    _vm._l(value.upload_items, function(v, k) {
+                                      return _c(
                                         "div",
                                         {
-                                          staticClass:
-                                            "flex flex-wrap -mr-3 mt-3"
+                                          key: k,
+                                          staticClass: "pr-3 pb-3 flex"
                                         },
-                                        _vm._l(item.upload_items, function(
-                                          v,
-                                          k
-                                        ) {
-                                          return _c("img", {
-                                            key: k,
-                                            staticClass: "h-24 mr-3",
+                                        [
+                                          _c("img", {
+                                            staticClass: "h-24 max-w-full",
                                             attrs: { src: v.url, alt: v.name }
                                           })
-                                        }),
-                                        0
+                                        ]
                                       )
-                                    ]
+                                    }),
+                                    0
                                   )
                                 ]
                               )
                             ]
                           )
-                        ]
+                        }),
+                        0
                       )
                     : _vm._e()
                 ]
@@ -36361,12 +36403,13 @@ var destroyUserErrors = function destroyUserErrors(id) {
 /*!**************************************!*\
   !*** ./resources/js/api/userNote.js ***!
   \**************************************/
-/*! exports provided: getUserNotes, storeUserNotes, destroyUserNotes */
+/*! exports provided: getUserNotes, getUserNotesDetail, storeUserNotes, destroyUserNotes */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserNotes", function() { return getUserNotes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserNotesDetail", function() { return getUserNotesDetail; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeUserNotes", function() { return storeUserNotes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyUserNotes", function() { return destroyUserNotes; });
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
@@ -36375,11 +36418,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var api = {
   userNotes: '/user/notes',
+  userNotesDetail: 'user/notes/detail',
   destroyUserNotes: '/user/notes/%s'
 };
 var getUserNotes = function getUserNotes(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: api.userNotes,
+    method: 'get',
+    params: params
+  });
+};
+var getUserNotesDetail = function getUserNotesDetail(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.userNotesDetail,
     method: 'get',
     params: params
   });
@@ -36499,6 +36550,7 @@ var install = function install(Vue) {
   Vue.prototype.$Loading = _components_common_loading__WEBPACK_IMPORTED_MODULE_3__["default"].loading;
   Vue.prototype.$Dialog = _components_common_dialog__WEBPACK_IMPORTED_MODULE_1__["default"];
   Vue.prototype.$Message = _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"];
+  Vue.directive('auth');
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
@@ -39435,9 +39487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/router */ "./resources/js/router/index.js");
-/* harmony import */ var _components_common_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/message */ "./resources/js/components/common/message/index.js");
-
+/* harmony import */ var _components_common_message__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/message */ "./resources/js/components/common/message/index.js");
 
 
  // 创建 axios 实例
@@ -39479,24 +39529,24 @@ service.interceptors.response.use(function (response) {
         _store__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch('user/clear');
       }
 
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请您先登录！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('尚未登录，请您先登录！');
       break;
 
     case 403:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('您的权限不足，拒绝访问！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('您的权限不足，拒绝访问！');
       break;
 
     case 422:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(Object.values(response.data.errors)[0][0]);
+      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error(Object.values(response.data.errors)[0][0]);
       break;
 
     case 429:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('重复访问次数过多！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error('重复访问次数过多！');
       break;
 
     case 400:
     case 500:
-      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
+      _components_common_message__WEBPACK_IMPORTED_MODULE_2__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
       break;
   }
 
@@ -41340,8 +41390,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -84,7 +84,7 @@
         this.getUserNotes()
       },
       handleView(item) {
-        this.$router.push({name: 'quiz.items', params: {type: 'note'}, query: Object.assign({}, this.filterForm, {index: `q-${item.id}`})})
+        this.$router.push({name: 'quiz.items', params: {type: 'note'}, query: Object.assign({}, this.filterForm, {index: `q-${item.bank_item_id}`})})
       },
       changePage(page) {
         this.currentPage = page

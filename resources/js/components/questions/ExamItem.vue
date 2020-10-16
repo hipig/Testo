@@ -10,82 +10,79 @@
         :show-note="showNote"
         :show-collect="showCollect"
         :is-collect="isCollect"
-        @on-report="handleReport"
-        @on-note="handleNote"
-        @on-collect="handleCollect"
+        :extra-data="toolForm"
       >
         <slot name="tool"></slot>
       </question-tool>
     </div>
-    <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
-    <template v-if="question.type === 1 || question.type === 3">
-      <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
-          <label class="inline-flex items-center">
-            <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
-            <span class="ml-3">{{ item }}</span>
+    <div :class="[{'border-2 border-dashed border-gray-200 p-4 rounded mb-5': $slots.footer}]">
+      <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
+      <template v-if="question.type === 1 || question.type === 3">
+        <div class="flex flex-col mb-3">
+          <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
+            <label class="inline-flex items-center">
+              <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
+              <span class="ml-3">{{ item }}</span>
+            </label>
+          </div>
+        </div>
+      </template>
+      <template v-if="question.type === 2">
+        <div class="flex flex-col mb-3">
+          <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
+            <label class="inline-flex items-center">
+              <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
+              <span class="ml-3">{{ item }}</span>
+            </label>
+          </div>
+        </div>
+      </template>
+      <template v-if="question.type === 4">
+        <div class="flex flex-col mb-3">
+          <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
+            <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[showParse ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
           </label>
         </div>
-      </div>
-    </template>
-    <template v-if="question.type === 2">
-      <div class="flex flex-col mb-3">
-        <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
-          <label class="inline-flex items-center">
-            <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
-            <span class="ml-3">{{ item }}</span>
+      </template>
+      <template v-if="question.type === 5">
+        <div class="mb-2">
+          <label class="flex w-full">
+            <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案" :disabled="showParse" @input="submit"></textarea>
           </label>
         </div>
-      </div>
-    </template>
-    <template v-if="question.type === 4">
-      <div class="flex flex-col mb-3">
-        <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-          <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[showParse ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
-        </label>
-      </div>
-    </template>
-    <template v-if="question.type === 5">
-      <div class="mb-2">
-        <label class="flex w-full">
-          <textarea v-model="currentAnswer" class="h-24 w-full px-4 py-3 bg-gray-100 rounded resize-none focus:outline-none" placeholder="请输入答案" :disabled="showParse" @input="submit"></textarea>
-        </label>
-      </div>
-      <div class="mb-5 text-gray-400">主观题仅提供作答，默认得分，不计入错题集，建议收藏。</div>
-    </template>
-    <div  class="mb-3" v-if="showParse">
-      <div class="py-2 px-5 bg-gray-100 flex leading-tight rounded" :class="[question.type === 4 ? 'flex-col' : 'flex-wrap items-center']">
-        <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']" v-if="showCheckResult">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
-        <template  v-if="showAnswerBar">
-          <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']">
-            <span class="text-gray-500">正确答案：</span>
-            <span class="flex-1 text-green-500 text-base font-semibold leading-tight">{{ rightAnswerText }}</span>
-          </div>
-          <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']" v-if="answer.length > 0 && !isRight">
-            <span class="text-gray-500">你的答案：</span>
-            <span class="flex-1 text-base font-semibold leading-tight">{{ answerText }}</span>
-          </div>
-        </template>
-      </div>
-      <div class="px-5 mt-5">
-        <div class="flex flex-wrap items-baseline">
-          <div class="text-gray-400">解析：</div>
-          <div class="flex-1 text-base">
-            {{ question.parse }}
+        <div class="mb-5 text-gray-400">主观题仅提供作答，默认得分，不计入错题集，建议收藏。</div>
+      </template>
+      <div class="mb-3" v-if="showParse">
+        <div class="py-2 px-5 bg-gray-100 flex leading-tight rounded" :class="[question.type === 4 ? 'flex-col' : 'flex-wrap items-center']" v-if="showAnswerBar">
+          <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']" v-if="showCheckResult">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
+          <template  v-if="question.type !== 5">
+            <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']">
+              <span class="text-gray-500">正确答案：</span>
+              <span class="flex-1 text-green-500 text-base font-semibold leading-tight">{{ rightAnswerText }}</span>
+            </div>
+            <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']" v-if="answer.length > 0 && !isRight">
+              <span class="text-gray-500">你的答案：</span>
+              <span class="flex-1 text-base font-semibold leading-tight">{{ answerText }}</span>
+            </div>
+          </template>
+        </div>
+        <div class="px-5 mt-5">
+          <div class="flex flex-wrap items-baseline">
+            <div class="text-gray-400">解析：</div>
+            <div class="flex-1 text-base">
+              {{ question.parse }}
+            </div>
           </div>
         </div>
       </div>
-      <slot name="footer"></slot>
     </div>
+    <slot name="footer"></slot>
   </div>
 </template>
 
 <script>
   import QuestionTool from "./QuestionTool"
   import QuestionType from "@/mixins/QuestionType"
-  import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
-  import { storeUserReports } from "@/api/userReport"
-  import { storeUserNotes } from "@/api/userNote"
 
   export default {
     name: "ExamItem",
@@ -107,6 +104,10 @@
         default: false
       },
       showCheckResult: {
+        type: Boolean,
+        default: true
+      },
+      showAnswerBar: {
         type: Boolean,
         default: true
       },
@@ -154,10 +155,6 @@
       },
       isRight() {
         return this.checkRight(this.currentAnswer, this.question.answer, this.question.type)
-      },
-      showAnswerBar() {
-        let type = this.question.type
-        return type !== 5
       }
     },
     watch: {
@@ -184,6 +181,7 @@
             break
           // 填空
           case 4:
+            status = true
             rightAnswer.forEach((v, i) => {
               if (answer[i] != v) {
                 status = false
@@ -196,28 +194,6 @@
         }
 
         return status
-      },
-      handleReport(form) {
-        let params = Object.assign({}, this.toolForm, form)
-        storeUserReports(params)
-          .then(_ => {
-            this.$Message.success('提交成功！')
-          })
-      },
-      handleNote(form) {
-        let params = Object.assign({}, this.toolForm, form)
-        storeUserNotes(params)
-          .then(_ => {
-            this.$Message.success('提交成功！')
-          })
-      },
-      handleCollect() {
-        let request =  this.isCollect ? deleteUserCollects : storeUserCollects
-        request(this.toolForm)
-          .then((res) => {
-            this.isCollect = !this.isCollect
-            this.$Message.success((this.isCollect ? '收藏' : '取消收藏') + '成功！')
-          })
       }
     }
   }

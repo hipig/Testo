@@ -16,6 +16,8 @@ class BankItemSeeder extends Seeder
             $bank = $item->bank;
             if ($item->group_id) {
                 $bank = $item->group->bank;
+                $bank->increment('total_count');
+                $bank->increment('total_score', $item->score);
             }
 
             $bank->increment('total_count');

@@ -7,9 +7,7 @@
       </div>
       <question-tool
         :is-collect="isCollect"
-        @on-report="handleReport"
-        @on-note="handleNote"
-        @on-collect="handleCollect"
+        :extra-data="toolForm"
       />
     </div>
     <div class="text-gray-900 text-lg mb-5">{{ question.title }}</div>
@@ -90,9 +88,6 @@
 <script>
   import QuestionTool from "./QuestionTool"
   import QuestionType from "@/mixins/QuestionType"
-  import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
-  import { storeUserReports } from "@/api/userReport"
-  import { storeUserNotes } from "@/api/userNote"
 
   export default {
     name: "ExerciseItem",
@@ -209,6 +204,7 @@
             break
           // 填空
           case 4:
+            status = true
             rightAnswer.forEach((v, i) => {
               if (answer[i] != v) {
                 status = false
@@ -221,28 +217,6 @@
         }
 
         return status
-      },
-      handleReport(form) {
-        let params = Object.assign({}, this.toolForm, form)
-        storeUserReports(params)
-          .then(_ => {
-            this.$Message.success('提交成功！')
-          })
-      },
-      handleNote(form) {
-        let params = Object.assign({}, this.toolForm, form)
-        storeUserNotes(params)
-          .then(_ => {
-            this.$Message.success('提交成功！')
-          })
-      },
-      handleCollect() {
-        let request =  this.isCollect ? deleteUserCollects : storeUserCollects
-        request(this.toolForm)
-          .then((res) => {
-            this.isCollect = !this.isCollect
-            this.$Message.success((this.isCollect ? '收藏' : '取消收藏') + '成功！')
-          })
       }
     }
   }

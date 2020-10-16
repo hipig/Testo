@@ -8,6 +8,7 @@ use App\Models\Bank;
 use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BanksController extends Controller
@@ -53,19 +54,21 @@ class BanksController extends Controller
         $bankIds = $hasChildren ? $bank->children()->pluck('id')->toArray() : [$bank->id];
         $bankItems = $hasChildren ? $bank->childrenItems() : $bank->items();
         $columnPrefix = $hasChildren ? 'bank_items.' : '';
-        switch ($request->type) {
-            case 'undone':
-                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
-                $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
-                break;
-            case 'done':
-                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
-                $bankItems->whereIn($columnPrefix.'id', $doneIds);
-                break;
-            case 'error':
-                $errorIds = $user->errors()->whereIn('bank_id', $bankIds)->pluck('bank_item_id')->toArray();
-                $bankItems->whereIn($columnPrefix.'id', $errorIds);
-                break;
+        if (Auth::guard('api')->check()) {
+            switch ($request->type) {
+                case 'undone':
+                    $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray() ?? [];
+                    $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
+                    break;
+                case 'done':
+                    $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray() ?? [];
+                    $bankItems->whereIn($columnPrefix.'id', $doneIds);
+                    break;
+                case 'error':
+                    $errorIds = $user->errors()->whereIn('bank_id', $bankIds)->pluck('bank_item_id')->toArray() ?? [];
+                    $bankItems->whereIn($columnPrefix.'id', $errorIds);
+                    break;
+            }
         }
 
         $list = [

@@ -1,19 +1,19 @@
 <template>
   <div class="flex flex-wrap">
     <slot></slot>
-    <div class="flex items-center cursor-pointer mr-8" v-if="showReport" @click="reportModalVisible = true">
+    <div class="flex items-center cursor-pointer ml-8" v-if="showReport" @click="reportModalVisible = true">
       <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
       </svg>
       <span class="text-base text-gray-900">纠错</span>
     </div>
-    <div class="flex items-center cursor-pointer mr-8" v-if="showNote" @click="noteModalVisible = true">
+    <div class="flex items-center cursor-pointer ml-8" v-if="showNote" @click="noteModalVisible = true">
       <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
       </svg>
       <span class="text-base text-gray-900">写笔记</span>
     </div>
-    <div class="flex items-center cursor-pointer" v-if="showCollect" @click="submitCollect">
+    <div class="flex items-center cursor-pointer ml-8" v-if="showCollect" @click="handleCollect">
       <svg class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24" :class="[isCollect ? 'fill-current text-teal-500' : 'stroke-current text-gray-400']">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
       </svg>
@@ -60,7 +60,7 @@
       </div>
       <div slot="footer">
         <div class="flex items-center justify-end">
-          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="submitReport">提交</button>
+          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="handleReport">提交</button>
         </div>
       </div>
     </t-modal>
@@ -99,7 +99,7 @@
       </div>
       <div slot="footer">
         <div class="flex items-center justify-end">
-          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="submitNote">提交</button>
+          <button type="button" class="inline-flex py-2 px-12 text-base rounded text-white bg-gradient-to-r from-teal-400 to-teal-500 focus:outline-none" @click="handleNote">提交</button>
         </div>
       </div>
     </t-modal>
@@ -108,6 +108,9 @@
 
 <script>
   import TModal from "@/components/common/modal/Modal"
+  import { storeUserCollects, deleteUserCollects } from "@/api/userCollect"
+  import { storeUserReports } from "@/api/userReport"
+  import { storeUserNotes } from "@/api/userNote"
 
   export default {
     name: "QuestionTool",
@@ -130,7 +133,8 @@
       isCollect: {
         type: Boolean,
         default: false
-      }
+      },
+      extraData: Object
     },
     data () {
       return {
@@ -180,31 +184,52 @@
       handleSuccessNote(response) {
         this.noteForm.upload_ids.push(response.id)
       },
-      closeReportModal() {
-        this.reportModalVisible = false
+      clearReportForm() {
         this.reportForm = {
           type: 1,
-            content: '',
-            upload_ids: []
+          content: '',
+          upload_ids: []
         }
+        this.reportFileList = []
       },
-      closeNoteModal() {
-        this.noteModalVisible = false
+      clearNoteForm() {
         this.noteForm = {
           content: '',
           upload_ids: []
         }
+        this.noteFileList = []
       },
-      submitReport() {
+      closeReportModal() {
         this.reportModalVisible = false
-        this.$emit('on-report', this.reportForm)
+        this.clearReportForm()
       },
-      submitNote() {
+      closeNoteModal() {
         this.noteModalVisible = false
-        this.$emit('on-note', this.noteForm)
+        this.clearNoteForm()
       },
-      submitCollect() {
-        this.$emit('on-collect')
+      handleReport() {
+        let params = Object.assign({}, this.reportForm, this.extraData)
+        storeUserReports(params)
+          .then(_ => {
+            this.closeReportModal()
+            this.$Message.success('提交成功！')
+          })
+      },
+      handleNote() {
+        let params = Object.assign({}, this.noteForm, this.extraData)
+        storeUserNotes(params)
+          .then(_ => {
+            this.closeNoteModal()
+            this.$Message.success('提交成功！')
+          })
+      },
+      handleCollect() {
+        let request =  this.isCollect ? deleteUserCollects : storeUserCollects
+        request(this.extraData)
+          .then(_ => {
+            this.isCollect = !this.isCollect
+            this.$Message.success((this.isCollect ? '收藏' : '取消收藏') + '成功！')
+          })
       }
     }
   }

@@ -9,7 +9,7 @@ $factory->define(Bank::class, function (Faker $faker) {
     $subjectIds = \App\Models\Subject::query()->where('level', 2)->pluck('id')->toArray();
     $banks = Bank::query()->whereNull('parent_id')->get();
     $bankIds = $banks->pluck('id')->toArray();
-    $bankIds[] = null;
+    $bankIds[] = 0;
     $parentId = $faker->randomElement($bankIds);
     $subjectId = $faker->randomElement($subjectIds);
     if ($parentId) {
@@ -20,7 +20,7 @@ $factory->define(Bank::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'subject_id' => $subjectId,
-        'parent_id' => $type === Bank::CHAPTER_TEST ? $parentId : null,
+        'parent_id' => ($type === Bank::CHAPTER_TEST || $parentId !== 0) ? $parentId : null,
         'type' => $type,
         'is_group' => in_array($type, [2, 3]) ? $faker->randomElement([0, 1]) : 0,
         'time_limit' => $type === Bank::CHAPTER_TEST ? 0 : $faker->randomElement([120, 180]),

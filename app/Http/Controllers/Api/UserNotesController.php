@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UserNoteRequest;
+use App\Http\Resources\BankItemResource;
 use App\Http\Resources\UserNoteResource;
+use App\Models\BankItem;
 use App\Models\UserNote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserNotesController extends Controller
 {
@@ -24,6 +27,22 @@ class UserNotesController extends Controller
             ->paginate($request->page_size ?? config('api.page_size'));
 
         return  UserNoteResource::collection($userNotes);
+    }
+
+    public function indexDetail(Request $request)
+    {
+        $bankItemIds = optional($request->user('api'))
+            ->notes()
+            ->inSubject($request->subject_pid)
+            ->onlySubject($request->subject_id)
+            ->onlyQuestionType($request->question_type)
+            ->betweenDate($request->date)
+            ->pluck('bank_item_id')
+            ->toArray();
+
+        $bankItems = BankItem::query()->with('bank', 'question', 'notes')->whereIn('id', $bankItemIds)->paginate($request->page_size ?? config('api.page_size'));
+
+        return BankItemResource::collection($bankItems);
     }
 
     public function store(UserNoteRequest $request)

@@ -16,23 +16,26 @@
               {{ subject.title }}
             </div>
           </div>
-          <exam-item :id="'q-'+item.id" v-for="(item, index) in items" :key="index" :item="item.bank_item" :index="index" :answer="item.bank_item.question.answer" :show-parse="true" :show-check-result="false" :show-collect="type !== 'collect'">
-            <div slot="tool">
-              <div class="flex items-center cursor-pointer mr-8" @click="handleDelete(item)">
+          <exam-item :id="'q-'+item.id" v-for="(item, index) in items" :key="index" :item="type === 'note' ? item : item.bank_item" :index="index" :answer="type === 'note' ? item.question.answer : item.bank_item.question.answer" :show-parse="true" :show-check-result="false" :show-answer-bar="(type === 'note' ? item : item.bank_item).question_type !==5" :show-collect="type !== 'collect'">
+            <div slot="tool" v-if="type !== 'note'">
+              <div class="flex items-center cursor-pointer" @click="handleDelete(item)">
                 <svg class="w-6 h-6 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                 </svg>
-                <span class="text-base text-gray-900">{{ type === 'collect' ? '取消收藏' : '删除' }}</span>
+                <span class="text-base text-gray-900">{{ type === 'collect' ? '取消收藏' : '移除' }}</span>
               </div>
             </div>
-            <div class="mt-5" slot="footer" v-if="type === 'note'">
-              <div class="border-2 border-dashed border-gray-100 p-4 rounded">
-                <div class="flex flex-wrap items-baseline">
-                  <div>笔记：</div>
-                  <div class="flex-1 text-base">
-                    <div v-html="item.content"></div>
-                    <div class="flex flex-wrap -mr-3 mt-3">
-                      <img class="h-24 mr-3" v-for="(v, k) in item.upload_items" :key="k" :src="v.url" :alt="v.name">
+            <div slot="footer" v-if="type === 'note' && item.notes">
+              <div class="mb-4 px-4 pb-3 border-b border-gray-100" v-for="(value, key) in item.notes" :key="key">
+                <div class="flex items-center justify-between text-xs text-gray-400">
+                  <div class="">{{ value.created_at }}</div>
+                  <div class="cursor-pointer" @click="handleDelete(value)">删除</div>
+                </div>
+                <div class="flex flex-col text-base">
+                  <div v-html="value.content"></div>
+                  <div class="flex flex-wrap -mb-3 -mr-3 mt-3">
+                    <div class="pr-3 pb-3 flex" v-for="(v, k) in value.upload_items" :key="k">
+                      <img class="h-24 max-w-full" :src="v.url" :alt="v.name">
                     </div>
                   </div>
                 </div>
@@ -72,7 +75,7 @@
   import QuestionType from "@/mixins/QuestionType"
   import { getSubjectsShow } from "@/api/subject"
   import { getUserCollects, destroyUserCollects } from "@/api/userCollect"
-  import { getUserNotes, destroyUserNotes } from "@/api/userNote"
+  import { getUserNotesDetail, destroyUserNotes } from "@/api/userNote"
   import { getUserErrors, destroyUserErrors } from "@/api/userError"
 
   export default {
@@ -94,16 +97,11 @@
         },
         index: this.$route.query.index,
         subject:{},
-        breadcrumb: [
-          {
-            title: this.typeTitle
-          }
-        ],
         items: [],
-        page: 1,
+        page: this.$route.query.page || 1,
         totalPage: 0,
-        total: 0,
-        isLoading: null
+        isLoading: null,
+        isScroll: false
       }
     },
     mounted() {
@@ -121,7 +119,7 @@
         let typeTitles = {
           'collect': '收藏集',
           'error': '错题集',
-          'note': '笔记'
+          'note': '我的笔记'
         }
         return typeTitles[this.type]
       }
@@ -131,8 +129,10 @@
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
         let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-        if (scrollHeight - scrollTop - clientHeight < 100 && !this.isLoading && this.page !== this.totalPage) {
+        if (scrollHeight - scrollTop - clientHeight < 100 && !this.isScroll && this.totalPage > this.page) {
+          this.isScroll = true
           setTimeout(() => {
+            this.page++
             this.getItems()
           }, 500)
         }
@@ -148,7 +148,7 @@
 
         let requests = {
           'collect': getUserCollects,
-          'note': getUserNotes,
+          'note': getUserNotesDetail,
           'error': getUserErrors
         }
         let params = this.form
@@ -159,7 +159,7 @@
             this.totalPage = res.meta.last_page
 
             this.index && this.toIndex(this.index)
-            this.totalPage > this.page && this.page ++
+            this.isScroll = this.page === this.totalPage
           })
           .finally(() => {
             this.isLoading = false
@@ -171,11 +171,12 @@
           'note': destroyUserNotes,
           'error': destroyUserErrors
         }
-        this.$Dialog.confirm('是否删除？', '提示')
+        this.$Dialog.confirm(this.type === 'collect'? '是否取消收藏？' : '是否删除？', '温馨提示')
           .then(_ => {
             requests[this.type](item.id)
               .then(_ => {
                 this.$Message.success('删除成功')
+                this.getItems()
               })
           })
           .catch(_ => {})

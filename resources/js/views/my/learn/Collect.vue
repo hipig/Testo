@@ -21,7 +21,7 @@
                 来源：<span class="text-gray-900">{{ item.subject_title }}</span>
               </div>
             </div>
-            <div class="cursor-pointer font-semibold text-teal-500" @click="handleContinue(item)">查看详情</div>
+            <div class="cursor-pointer font-semibold text-teal-500" @click="handleView(item)">查看详情</div>
           </div>
         </div>
         <div class="pt-5 pb-1 flex justify-end" v-if="total > 0">
@@ -79,8 +79,8 @@ export default {
       this.filterForm = form
       this.getUserCollects()
     },
-    handleContinue(val) {
-      this.$router.push({name: 'home'})
+    handleView(item) {
+      this.$router.push({name: 'quiz.items', params: {type: 'collect'}, query: Object.assign({}, this.filterForm, {index: `q-${item.id}`})})
     },
     changePage(page) {
       this.currentPage = page

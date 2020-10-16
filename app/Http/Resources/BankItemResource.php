@@ -15,7 +15,9 @@ class BankItemResource extends JsonResource
      */
     public function toArray($request)
     {
-        $is_collect = $this->collects()->where('user_id', optional($request->user('api'))->id)->exists();
+        $userId = optional($request->user('api'))->id;
+        $is_collect = $this->collects()->where('user_id', $userId)->exists();
+        $notes = $this->notes()->where('user_id', $userId)->get();
 
         return [
             'id' => $this->id,
@@ -28,6 +30,7 @@ class BankItemResource extends JsonResource
             'score' => $this->score,
             'is_collect' => $is_collect,
             'record' => $this->record ?? null,
+            'notes' => $this->when($request->routeIs('api.v1.userNotes.index.detail'), UserNoteResource::collection($notes)),
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i')
         ];
     }
