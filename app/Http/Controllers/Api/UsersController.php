@@ -36,8 +36,22 @@ class UsersController extends Controller
         return new UserResource($request->user('api'));
     }
 
-    public function updateName(UserPasswordRequest $request)
+    public function updateAvatar(Request $request)
     {
+        $this->validate($request, ['avatar' => 'mimes:jpeg,bmp,png,gif|max:2048'], [], ['avatar' => '头像']);
+
+        $avatarPath = $request->avatar->store('avatars', config('api.storage_disk'));
+        $user = $request->user('api');
+        $user->avatar = $avatarPath;
+        $user->save();
+
+        return new UserResource($user);
+    }
+
+    public function updateName(Request $request)
+    {
+        $this->validate($request, ['name' => 'required|between:3,10'], [], ['name' => '昵称']);
+
         $user = $request->user('api');
         $user->name = $request->name;
         $user->save();

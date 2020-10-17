@@ -1,51 +1,54 @@
+import Vue from "Vue"
+
 const SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g
 const MOZ_HACK_REGEXP = /^moz([A-Z])/
+const isServer = Vue.prototype.$isServer
 
 export function str_repeat(i, m) {
-  for (var o = []; m > 0; o[--m] = i);
-  return o.join('');
+  for (var o = []; m > 0; o[--m] = i)
+  return o.join('')
 }
 
 export function sprintf() {
-  var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+  var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = ''
   while (f) {
     if (m = /^[^\x25]+/.exec(f)) {
-      o.push(m[0]);
+      o.push(m[0])
     }
     else if (m = /^\x25{2}/.exec(f)) {
-      o.push('%');
+      o.push('%')
     }
     else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
       if (((a = arguments[m[1] || i++]) == null) || (a == undefined)) {
-        throw('Too few arguments.');
+        throw('Too few arguments.')
       }
       if (/[^s]/.test(m[7]) && (typeof(a) != 'number')) {
-        throw('Expecting number but found ' + typeof(a));
+        throw('Expecting number but found ' + typeof(a))
       }
       switch (m[7]) {
-        case 'b': a = a.toString(2); break;
-        case 'c': a = String.fromCharCode(a); break;
-        case 'd': a = parseInt(a); break;
-        case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break;
-        case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break;
-        case 'o': a = a.toString(8); break;
-        case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break;
-        case 'u': a = Math.abs(a); break;
-        case 'x': a = a.toString(16); break;
-        case 'X': a = a.toString(16).toUpperCase(); break;
+        case 'b': a = a.toString(2); break
+        case 'c': a = String.fromCharCode(a); break
+        case 'd': a = parseInt(a); break
+        case 'e': a = m[6] ? a.toExponential(m[6]) : a.toExponential(); break
+        case 'f': a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a); break
+        case 'o': a = a.toString(8); break
+        case 's': a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a); break
+        case 'u': a = Math.abs(a); break
+        case 'x': a = a.toString(16); break
+        case 'X': a = a.toString(16).toUpperCase(); break
       }
-      a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
-      c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
-      x = m[5] - String(a).length - s.length;
-      p = m[5] ? str_repeat(c, x) : '';
-      o.push(s + (m[4] ? a + p : p + a));
+      a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a)
+      c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' '
+      x = m[5] - String(a).length - s.length
+      p = m[5] ? str_repeat(c, x) : ''
+      o.push(s + (m[4] ? a + p : p + a))
     }
     else {
-      throw('Huh ?!');
+      throw('Huh ?!')
     }
-    f = f.substring(m[0].length);
+    f = f.substring(m[0].length)
   }
-  return o.join('');
+  return o.join('')
 }
 
 export function camelCase (name) {
@@ -136,6 +139,87 @@ export function removeClass (el, cls) {
   }
 }
 
+export function on(element, event, handler) {
+  if (element && event && handler) {
+    if (!isServer && document.addEventListener)
+      element.addEventListener(event, handler, false)
+    else
+      element.attachEvent('on' + event, handler)
+  }
+}
+
+export function off(element, event, handler) {
+  if (element && event && handler) {
+    if (!isServer && document.addEventListener)
+      element.removeEventListener(event, handler, false)
+    else
+      element.detachEvent('on' + event, handler)
+  }
+}
+
+export function once(el, event, fn) {
+  var listener = function() {
+    if (fn) {
+      fn.apply(this, arguments)
+    }
+    off(el, event, listener)
+  }
+  on(el, event, listener)
+}
+
+export function isScroll(el, vertical) {
+  if (isServer) return
+
+  const determinedDirection = vertical !== null || vertical !== undefined
+  const overflow = determinedDirection
+    ? vertical
+      ? getStyle(el, 'overflow-y')
+      : getStyle(el, 'overflow-x')
+    : getStyle(el, 'overflow')
+
+  return overflow.match(/(scroll|auto)/)
+}
+
+export function getScrollContainer(el, vertical) {
+  if (isServer) return
+
+  let parent = el
+  while (parent) {
+    if ([window, document, document.documentElement].includes(parent)) {
+      return window
+    }
+    if (isScroll(parent, vertical)) {
+      return parent
+    }
+    parent = parent.parentNode
+  }
+
+  return parent
+}
+
+export function isInContainer(el, container) {
+  if (isServer || !el || !container) return false
+
+  const elRect = el.getBoundingClientRect()
+  let containerRect
+
+  if ([window, document, document.documentElement, null, undefined].includes(container)) {
+    containerRect = {
+      top: 0,
+      right: window.innerWidth,
+      bottom: window.innerHeight,
+      left: 0
+    }
+  } else {
+    containerRect = container.getBoundingClientRect()
+  }
+
+  return elRect.top < containerRect.bottom &&
+    elRect.bottom > containerRect.top &&
+    elRect.right > containerRect.left &&
+    elRect.left < containerRect.right
+}
+
 export function afterLeave(instance, callback, speed = 300, once = false) {
   if (!instance || !callback) throw new Error('instance & callback is required')
   let called = false
@@ -162,4 +246,36 @@ export function kebabCase(str) {
     .replace(hyphenateRE, '$1-$2')
     .replace(hyphenateRE, '$1-$2')
     .toLowerCase()
+}
+
+export function rafThrottle(fn) {
+  let locked = false
+  return function(...args) {
+    if (locked) return
+    locked = true
+    window.requestAnimationFrame(_ => {
+      fn.apply(this, args)
+      locked = false
+    })
+  }
+}
+
+export const isIE = function() {
+  return !isServer && !isNaN(Number(document.documentMode))
+}
+
+export const isEdge = function() {
+  return !isServer && navigator.userAgent.indexOf('Edge') > -1
+}
+
+export const isFirefox = function() {
+  return !isServer && !!window.navigator.userAgent.match(/firefox/i)
+}
+
+export function isString(obj) {
+  return Object.prototype.toString.call(obj) === '[object String]'
+}
+
+export function isHtmlElement(node) {
+  return node && node.nodeType === Node.ELEMENT_NODE
 }

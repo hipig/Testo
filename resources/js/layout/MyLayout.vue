@@ -23,7 +23,7 @@
                   </svg>
                   <span class="leading-none">基本资料</span>
                 </div>
-                <div class="flex items-center py-2 px-8 cursor-pointer">
+                <div class="flex items-center py-2 px-8 cursor-pointer" @click="handleLogout">
                   <svg class="w-7 h-7 stroke-current text-gray-400 mr-2" fill="none" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                   </svg>
@@ -42,31 +42,46 @@
 </template>
 
 <script>
-export default {
-  name: "MyLayout",
-  data () {
-    return {
-      currentMenu: '',
-      routerList: {
-        learn: ['my.learn', 'my.exam', 'my.note', 'my.collect', 'my.error'],
-        info: ['my.index', 'my.change.password']
+  import { mapActions } from 'vuex'
+
+  export default {
+    name: "MyLayout",
+    data () {
+      return {
+        currentMenu: '',
+        routerList: {
+          learn: ['my.learn', 'my.exam', 'my.note', 'my.collect', 'my.error'],
+          info: ['my.index', 'my.change.password']
+        }
+      }
+    },
+    watch: {
+      $route: {
+        handler: function(route) {
+          let routerKeys = Object.keys(this.routerList)
+          let keyIndex = routerKeys.findIndex(key => this.routerList[key].indexOf(route.name) > -1)
+          this.currentMenu = routerKeys[keyIndex]
+        },
+        immediate: true
+      }
+    },
+    methods: {
+      ...mapActions({
+        'logout': 'user/logout'
+      }),
+      handleLogout() {
+        this.$Dialog.confirm('是否退出登录？', '温馨提示')
+          .then(_ => {
+            this.logout()
+              .then(() => {
+                this.$router.go(0)
+              })
+          })
+          .catch(_ => {})
+      },
+      toRouter(name) {
+        this.$router.push({name: name})
       }
     }
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        let routerKeys = Object.keys(this.routerList)
-        let keyIndex = routerKeys.findIndex(key => this.routerList[key].indexOf(route.name) > -1)
-        this.currentMenu = routerKeys[keyIndex]
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    toRouter(name) {
-      this.$router.push({name: name})
-    }
   }
-}
 </script>

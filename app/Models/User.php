@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -36,6 +38,10 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'avatar_url'
     ];
 
     protected static function boot()
@@ -91,6 +97,16 @@ class User extends Authenticatable implements JWTSubject
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = \Hash::make($value);
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        $avatar = $this->avatar;
+        if ($avatar && !Str::startsWith($avatar, ['http', 'https'])) {
+            $avatar = Storage::disk(config('api.storage_disk'))->url($avatar);
+        }
+
+        return $avatar;
     }
 
     protected function serializeDate(\DateTimeInterface $date)

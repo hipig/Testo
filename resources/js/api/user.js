@@ -6,8 +6,9 @@ const api = {
   login: '/authorizations',
   register: '/users',
   currentUser: '/user',
-  changePassword: '/user/change-password',
   currentToken: '/authorizations/current',
+  changePassword: '/user/change-password',
+  updateName: '/user/update-name',
 }
 
 export const getCaptchas = (params) => service({
@@ -51,6 +52,12 @@ export const user = () => service({
 
 export const changePassword = (params) => service({
   url: api.changePassword,
+  method: 'post',
+  data: params
+})
+
+export const updateName = (params) => service({
+  url: api.updateName,
   method: 'post',
   data: params
 })

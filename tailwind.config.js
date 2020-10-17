@@ -5,13 +5,12 @@ module.exports = {
   },
   purge: [],
   theme: {
+    minHeight: {
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%'
+    },
     extend: {
-      height: {
-        'max-c': 'max-content'
-      },
-      width: {
-        '28': '7rem'
-      },
       transitionTimingFunction: {
         'easy-slide': 'cubic-bezier(.55, 0, .1, 1)'
       }

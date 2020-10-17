@@ -56,13 +56,13 @@
         <daily-list :subject-id="id" v-if="parseInt(activeTab) === 4 && id"></daily-list>
       </div>
     </div>
-    <t-modal v-model="switchSubjectVisible" title="切换考试" size="max-w-4xl" :show-footer="false" @close="closeSwitchSubjectModal">
+    <t-modal v-model="switchSubjectVisible" title="切换考试" size="max-w-4xl min-h-1/4" :show-footer="false" @close="closeSwitchSubjectModal">
       <div class="w-full" v-loading="listLoading">
         <div class="mb-5" v-for="(value, key) in subjectList" :key="key">
           <h3 class="text-gray-400 mb-2">{{ value.title }}</h3>
           <div class="flex flex-wrap -mx-3">
             <div class="w-1/4 px-3" v-for="(v, k) in value.childrenList" :key="k" @click="closeSwitchSubjectModal">
-              <router-link :to="{name: 'subjects.show', params: {pid: v.id}}" class="bg-gray-100 flex items-center justify-center py-2 mb-3 rounded text-base">{{ v.title }}</router-link>
+              <router-link :to="{name: 'subjects.show', params: {pid: v.id}}" class="flex items-center justify-center py-2 mb-3 rounded text-base" :class="[pid == v.id ? 'text-white bg-teal-500' : 'bg-gray-100']">{{ v.title }}</router-link>
             </div>
           </div>
         </div>
@@ -108,6 +108,7 @@
     },
     mounted() {
       this.getSubject()
+      this.getSubjectList()
     },
     watch: {
       $route(to,from){
@@ -143,7 +144,6 @@
       },
       showSwitchSubject() {
         this.switchSubjectVisible = !this.switchSubjectVisible
-        this.getSubjectList()
       },
       closeSwitchSubjectModal() {
         this.switchSubjectVisible = false

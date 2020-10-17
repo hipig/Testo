@@ -13,7 +13,8 @@ export const state = {
 // getters
 export const getters = {
   token: state => state.token,
-  userInfo: state => state.userInfo
+  userInfo: state => state.userInfo,
+  config: state => state.config
 }
 
 // mutations
@@ -23,6 +24,9 @@ export const mutations = {
   },
   [types.SET_USERINFO]: (state, info) => {
     state.userInfo = info
+  },
+  [types.SET_USERCONFIG]: (state, config) => {
+    state.config = config
   }
 }
 
@@ -91,5 +95,13 @@ export const actions = {
   clear({ commit }) {
     commit("SET_TOKEN", "")
     commit("SET_USERINFO", {})
+  },
+
+  setUserInfo({ commit }, userInfo) {
+    commit("SET_USERINFO", userInfo)
+  },
+
+  setConfig({ commit }, config) {
+    commit("SET_CONFIG", config)
   }
 }

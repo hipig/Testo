@@ -5,9 +5,27 @@
       <div class="mb-10 flex items-center">
         <div class="w-16 text-right mr-3">头像</div>
         <div class="flex-1">
-          <div class="w-24 h-24">
-            <img class="w-full rounded-full" src="https://thirdwx.qlogo.cn/mmopen/vi_32/Omgr0ibW11H2wPkRFz6VuQMfmwws5N9cjUcPuxWC4B4nYDtsqwxiaQYa6rYEnE24yIIick631bZj3h6Df05hty4Tw/132" alt="">
-          </div>
+          <t-upload
+            name="avatar"
+            accept="image/*"
+            :action="uploadAvatarUrl"
+            :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :on-error="handleAvatarError"
+            :before-upload="beforeAvatarUpload">
+            <div class="w-24 h-24 relative group rounded-full">
+              <img class="w-full rounded-full" :src="user.avatar_url" alt="">
+              <div class="absolute inset-0 flex items-center justify-center rounded-full" :class="[user.avatar_url ? 'hidden group-hover:flex bg-black bg-opacity-25' : 'border-2 border-dashed border-gray-200']">
+                <svg class="w-8 h-8 stroke-current text-gray-100" v-if="user.avatar_url" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                <svg class="w-10 h-10 stroke-current text-gray-200" v-else fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+              </div>
+            </div>
+          </t-upload>
         </div>
       </div>
       <div class="mb-10 flex items-center">
@@ -48,7 +66,8 @@
 
 <script>
   import InfoTab from "./InfoTab"
-  import { user } from "@/api/user"
+  import { mapActions } from "vuex"
+  import { user, updateName } from "@/api/user"
 
   export default {
     name: "my.index",
@@ -57,8 +76,12 @@
     },
     data () {
       return {
+        uploadAvatarUrl: window.config.api_url + "/user/update-avatar",
         infoFormShow: false,
-        user: {},
+        user: {
+          avatar_url: '',
+          name: ''
+        },
         infoForm: {
           name: ''
         }
@@ -68,6 +91,28 @@
       this.getUser()
     },
     methods: {
+      ...mapActions({
+        'setUserInfo': 'user/setUserInfo'
+      }),
+      handleAvatarSuccess(res, file) {
+        this.user = res
+        this.setUserInfo(res)
+      },
+      handleAvatarError(err, file) {
+        console.log(err)
+      },
+      beforeAvatarUpload(file) {
+        const isImage = ['image/jpeg', 'image/png', 'image/gif'].indexOf(file.type) > -1
+        const isLt2M = file.size / 1024 / 1024 < 2
+
+        if (!isImage) {
+          this.$Message.error('上传头像图片格式不正确!')
+        }
+        if (!isLt2M) {
+          this.$Message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
+      },
       getUser() {
         user()
           .then((res) => {
@@ -79,8 +124,13 @@
         this.infoForm.name = this.user.name
       },
       saveName() {
-        this.$Message.success('保存成功！')
-        this.infoFormShow = false
+        updateName(this.infoForm)
+          .then((res) => {
+            this.user = res
+            this.setUserInfo(res)
+            this.$Message.success('保存成功！')
+            this.infoFormShow = false
+          })
       }
     }
   }

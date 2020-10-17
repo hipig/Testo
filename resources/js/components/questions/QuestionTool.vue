@@ -36,6 +36,7 @@
         <div class="mb-5">
           <t-upload
             class="flex items-center"
+            accept="image/*"
             :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
             :action="uploadUrl"
             :data="{type: 'image'}"
@@ -75,6 +76,7 @@
         <div class="mb-5">
           <t-upload
             class="flex items-center"
+            accept="image/*"
             :headers="{'Authorization': 'Bearer ' + $store.getters['user/token']}"
             :action="uploadUrl"
             :data="{type: 'image'}"

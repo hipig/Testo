@@ -110,7 +110,6 @@ class LearnRecordsController extends Controller
     public function storeExam(LearnRecordExamStoreRequest $request)
     {
         $bank = Bank::query()->findOrFail($request->bank_id);
-        $bankItems = $bank->has_children ? $bank->childrenItems() : $bank->items();
 
         $record = optional($request->user('api'))
             ->records()
@@ -118,7 +117,7 @@ class LearnRecordsController extends Controller
                 'bank_id' => $bank->id,
                 'quiz_mode' => LearnRecord::QUIZ_EXAM,
                 'type' => $bank->type,
-                'total_count' => $bankItems->count()
+                'total_count' => $bank->total_count
             ]);
 
         return LearnRecordResource::make($record);

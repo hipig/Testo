@@ -40,7 +40,7 @@
       <template v-if="question.type === 4">
         <div class="flex flex-col mb-3">
           <label class="flex w-full mb-2" v-for="(v,i) in question.answer">
-            <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[showParse ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" placeholder="请输入答案" :disabled="showParse" @change="submit"/>
+            <input v-model="fillBlackAnswer[i]" class="w-full px-4 py-3 rounded focus:outline-none" :class="[showParse ? (isRight ? 'text-green-500 bg-green-100' : 'text-red-500 bg-red-100') : 'bg-gray-100']" :placeholder="showParse ? '未填写' : '请输入答案'" :disabled="showParse" @change="submit"/>
           </label>
         </div>
       </template>
@@ -54,15 +54,15 @@
       </template>
       <div class="mb-3" v-if="showParse">
         <div class="py-2 px-5 bg-gray-100 flex leading-tight rounded" :class="[question.type === 4 ? 'flex-col' : 'flex-wrap items-center']" v-if="showAnswerBar">
-          <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'text-green-500' : 'text-red-500') : '']" v-if="showCheckResult">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
+          <div class="mr-10 py-1" :class="[answer.length > 0 ? (isRight ? 'font-semibold text-green-500' : 'font-semibold text-red-500') : '']" v-if="showCheckResult">{{ answer.length > 0 ? (isRight ? '回答正确': '回答错误') : '没有回答' }}</div>
           <template  v-if="question.type !== 5">
             <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']">
               <span class="text-gray-500">正确答案：</span>
-              <span class="flex-1 text-green-500 text-base font-semibold leading-tight">{{ rightAnswerText }}</span>
+              <span class="flex-1 text-green-500 text-base font-semibold leading-tight" v-html="rightAnswerText"></span>
             </div>
             <div class="mr-10 py-1 flex" :class="[question.type === 4 ? 'items-baseline' : 'items-center']" v-if="answer.length > 0 && !isRight">
               <span class="text-gray-500">你的答案：</span>
-              <span class="flex-1 text-base font-semibold leading-tight">{{ answerText }}</span>
+              <span class="flex-1 text-base font-semibold leading-tight" v-html="answerText"></span>
             </div>
           </template>
         </div>
@@ -147,11 +147,13 @@
       },
       rightAnswerText() {
         let answer = this.question.answer
-        return typeof answer === "object" ? answer.join(',') : answer
+        let type = this.question.type
+        return typeof answer === "object" ? answer.join(type === 4 ? `<br>` : ' ') : answer
       },
       answerText() {
         let answer = this.currentAnswer
-        return typeof answer === "object" ? answer.join(',') : answer
+        let type = this.question.type
+        return typeof answer === "object" ? answer.join(type === 4 ? `<br>` : ' ') : answer
       },
       isRight() {
         return this.checkRight(this.currentAnswer, this.question.answer, this.question.type)

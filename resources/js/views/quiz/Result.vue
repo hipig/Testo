@@ -20,7 +20,7 @@
           <div class="bg-white shadow rounded-lg">
             <div class="h-40 flex flex-col items-center justify-center rounded-tl-lg rounded-tr-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-400 text-white mb-3">
               <div class="mb-3"><span class="text-5xl">{{ record.result_score }}</span> 分</div>
-              <div class="mb-1 text-xs">总分：<span class="text-sm">{{ record.score }} 分</span></div>
+              <div class="mb-1 text-xs">总分：<span class="text-sm">{{ totalScore }} 分</span></div>
               <div class="text-xs">{{ doneTimeText }}</div>
             </div>
             <div class="flex flex-col items-center justify-center">
@@ -73,6 +73,7 @@
         record:{},
         recordItems: {},
         recordResult: {},
+        totalScore: 0,
         doneTimeText: '00:00:00',
         isLoading: null
       }
@@ -120,6 +121,12 @@
             this.record = res
             this.recordItems = res.items
             this.recordResult = res.result
+
+            let score = 0
+            this.recordItems.forEach((v, k) => {
+              score += v.score
+            })
+            this.totalScore = [1, 4].indexOf(parseInt(res.type)) > -1 ? score : res.score
           })
           .finally(() => {
             this.isLoading = false

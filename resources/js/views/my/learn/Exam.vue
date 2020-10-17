@@ -100,9 +100,9 @@
         })
         .then(_ => {
           deleteRecords(item.id)
-          then(_ => {
-            this.$Message.success('删除成功！')
-          })
+            .then(_ => {
+              this.$Message.success('删除成功！')
+            })
         })
         .catch(_ => {})
       }

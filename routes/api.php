@@ -40,15 +40,19 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         });
     // 用户登录
     Route::post('authorizations', 'AuthorizationsController@store')->name('authorizations.store');
-    // 刷新token
-    Route::put('authorizations/current', 'AuthorizationsController@update')->name('authorizations.update');
-    // 删除token
-    Route::delete('authorizations/current', 'AuthorizationsController@destroy')->name('authorizations.destroy');
 
     // 登录后可以访问的接口
     Route::middleware('refresh.token')->group(function() {
+        // 刷新token
+        Route::put('authorizations/current', 'AuthorizationsController@update')->name('authorizations.update');
+        // 删除token
+        Route::delete('authorizations/current', 'AuthorizationsController@destroy')->name('authorizations.destroy');
         // 当前登录用户信息
         Route::get('user', 'UsersController@me')->name('user.show');
+        // 修改头像
+        Route::post('user/update-avatar', 'UsersController@updateAvatar')->name('user.update.avatar');
+        // 修改昵称
+        Route::post('user/update-name', 'UsersController@updateName')->name('user.update.name');
         // 修改密码
         Route::post('user/change-password', 'UsersController@updatePassword')->name('user.change.password');
 

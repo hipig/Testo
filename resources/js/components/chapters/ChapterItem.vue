@@ -67,13 +67,18 @@
         isActive: false
       }
     },
+    watch: {
+      name(val) {
+        this.isActive = false
+      }
+    },
     methods: {
       toggle() {
         if (this.disabled || this.second) return false
         this.isActive = !this.isActive
       },
       handle() {
-        this.$emit('btnClick', this.name)
+        this.$emit('on-click', this.name)
       }
     }
   }

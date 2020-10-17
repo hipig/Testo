@@ -13,7 +13,7 @@
             </div>
             <div class="text-base mt-4">
               <label class="flex items-center">
-                <input type="checkbox" value="1" v-model="autoNext" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal">
+                <input type="checkbox" v-model="autoNext" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="switchAutoNext">
                 <span class="ml-2">做对自动下一题</span>
               </label>
             </div>
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <div class="fixed bottom-0 left-0 right-0 px-4">
+    <div class="fixed bottom-0 left-0 right-0 px-4 z-30">
       <div class="max-w-6xl mx-auto">
         <div class="flex">
           <div class="w-2/3 px-8">
@@ -96,6 +96,7 @@
   import EmptyData from "@/components/common/EmptyData"
   import ExerciseItem from "@/components/questions/ExerciseItem"
   import TModal from "@/components/common/modal/Modal"
+  import { mapActions } from "vuex"
   import { showRecords, storeRecordItems, updateRecords } from "@/api/learnRecord"
 
   export default {
@@ -114,7 +115,7 @@
         questions: [],
         answerList: [],
         activeIndex: 0,
-        autoNext: '',
+        autoNext: this.$store.getters['user/config'].autoNext ||'',
         rightCount: 0,
         errorCount: 0,
         doneCount: 0,
@@ -152,6 +153,9 @@
       }
     },
     methods: {
+      ...mapActions({
+        'setConfig': 'user/setConfig'
+      }),
       showRecords() {
         this.isLoading = true
         showRecords(this.recordId, {bank_type: this.bankType})
@@ -231,6 +235,9 @@
             this.submitModalVisible = false
             this.$router.push({name: 'quiz.result', params: {id: this.recordId}})
           })
+      },
+      switchAutoNext() {
+        this.setConfig({autoNext: this.autoNext})
       },
       handleBack() {
         this.$router.go(-1)

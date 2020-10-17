@@ -33,9 +33,9 @@
                 </div>
                 <div class="flex flex-col text-base">
                   <div v-html="value.content"></div>
-                  <div class="flex flex-wrap -mb-3 -mr-3 mt-3">
-                    <div class="pr-3 pb-3 flex" v-for="(v, k) in value.upload_items" :key="k">
-                      <img class="h-24 max-w-full" :src="v.url" :alt="v.name">
+                  <div class="flex flex-wrap -mb-2 -mr-2 mt-3">
+                    <div class="pr-3 pb-3 flex" v-for="(v, k) in value.upload_items">
+                      <t-image class="w-24 h-24 mr-2" :key="k" :src="v.url" :preview-src-list="value.upload_urls" fit="cover" :alt="v.name"/>
                     </div>
                   </div>
                 </div>
@@ -155,7 +155,19 @@
         params.page = this.page
         requests[this.type](params)
           .then((res) => {
-            this.items = this.items.concat(res.data)
+            let items = res.data
+            if (this.type === 'note') {
+              items = items.map((item) => {
+                item.notes = item.notes.map((val) => {
+                  val.upload_urls = val.upload_items.map((v) => {
+                    return v.url
+                  })
+                  return val
+                })
+                return item
+              })
+            }
+            this.items = this.items.concat(items)
             this.totalPage = res.meta.last_page
 
             this.index && this.toIndex(this.index)

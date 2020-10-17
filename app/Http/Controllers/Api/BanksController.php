@@ -39,9 +39,11 @@ class BanksController extends Controller
 
     public function dailyTests(Request $request, Subject $subject)
     {
-        $dailyTests = $subject->dailyTests()->with(['items' => function($query) {
+        $dailyTests = $subject->dailyTests()->limit(3)->orderBy('created_at', 'desc')->with(['items' => function($query) {
             $query->limit(3);
         }])->get();
+
+        dd(1);
 
         return BankResource::collection($dailyTests);
     }

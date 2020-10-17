@@ -9,7 +9,7 @@ use App\Models\Question;
 use Faker\Generator as Faker;
 
 $factory->define(BankItem::class, function (Faker $faker) {
-    $banks = Bank::query()->whereNotNull('parent_id')->orWhere(function ($query) {
+    $banks = Bank::query()->whereNotNull('parent_id')->where('type', 1)->orWhere(function ($query) {
         $query->whereIn('type', [2, 3, 4]);
     })->get();
 

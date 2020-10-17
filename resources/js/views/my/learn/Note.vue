@@ -8,8 +8,8 @@
           <div class="flex justify-between text-xs leading-none mb-3">
             <div class="flex flex-col flex-1">
               <div class="text-base" v-html="item.content"></div>
-              <div class="flex flex-wrap -mr-3 mt-3">
-                <img class="h-24 mr-3" v-for="(v, k) in item.upload_items" :key="k" :src="v.url" :alt="v.name">
+              <div class="flex flex-wrap -mr-2 mt-3">
+                <t-image class="w-24 h-24 mr-2" v-for="(v, k) in item.upload_items" :key="k" :src="v.url" :preview-src-list="item.upload_urls" fit="cover" :alt="v.name"/>
               </div>
             </div>
             <div class="pl-2 text-gray-400">{{ item.created_at }}</div>
@@ -72,8 +72,14 @@
 
         getUserNotes(params)
           .then((res) => {
-            this.notes = res.data
             this.total = res.meta.total
+
+            this.notes = res.data.map((item) => {
+              item.upload_urls = item.upload_items.map((v) => {
+                return v.url
+              })
+              return item
+            })
           })
           .finally(() => {
             this.isLoading = false

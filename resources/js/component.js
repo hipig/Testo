@@ -4,11 +4,13 @@ import Message from "@/components/common/message"
 import Loading from "@/components/common/loading"
 import Progress from "@/components/common/progress"
 import Upload from "@/components/common/upload"
+import Image from "@/components/common/image"
 
 const components = [
   Pagination,
   Progress,
-  Upload
+  Upload,
+  Image
 ]
 
 const install = function(Vue, opts = {}) {

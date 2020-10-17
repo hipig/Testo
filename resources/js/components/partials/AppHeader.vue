@@ -14,7 +14,8 @@
         <template v-if="isLogin">
           <dropdown>
             <div class="flex items-center cursor-pointer">
-              <svg class="w-6 h-6 fill-current text-gray-500" viewBox="0 0 20 20">
+              <img class="w-7 h-7 rounded-full border border-gray-200" :src="userInfo.avatar_url" alt="userInfo.name" v-if="userInfo.avatar_url">
+              <svg class="w-6 h-6 fill-current text-gray-500" viewBox="0 0 20 20" v-else>
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
               </svg>
               <span class="ml-1 leading-none">{{ userInfo.name }}</span>
@@ -26,7 +27,7 @@
               </div>
               <div class="border-t border-gray-100"></div>
               <div class="py-1">
-                <a href="javascript:;" class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" @click="handleLogout">退出</a>
+                <div class="block px-4 py-2 text-sm leading-5 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" @click="handleLogout">退出</div>
               </div>
             </div>
           </dropdown>
@@ -84,11 +85,15 @@
         'logout': 'user/logout'
       }),
       handleLogout() {
-        this.logout()
-          .then(() => {
-            this.$router.go(0)
+        this.$Dialog.confirm('是否退出登录？', '温馨提示')
+          .then(_ => {
+            this.logout()
+              .then(() => {
+                this.$router.go(0)
+              })
           })
-      }
+          .catch(_ => {})
+      },
     }
   }
 </script>

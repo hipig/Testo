@@ -37,6 +37,14 @@ class LearnRecord extends Model
         'question_ids' => 'array'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($model) {
+            $model->items()->delete();
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

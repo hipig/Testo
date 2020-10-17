@@ -14,17 +14,11 @@ class BankItemSeeder extends Seeder
     {
         factory(BankItem::class, 2000)->create()->each(function ($item) {
             $bank = $item->bank;
-            if ($item->group_id) {
-                $bank = $item->group->bank;
-                $bank->increment('total_count');
-                $bank->increment('total_score', $item->score);
-            }
 
             $bank->increment('total_count');
-            $bank->increment('total_score', $item->score);
+            in_array($bank->type, [2, 3]) && $bank->increment('total_score', $item->score);
             if ($bank->parent_id) {
                 $bank->parent->increment('total_count');
-                $bank->parent->increment('total_score', $item->score);
             }
         });
 

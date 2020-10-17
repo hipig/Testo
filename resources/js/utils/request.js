@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "@/router"
 import store from '@/store'
 import message from '@/components/common/message'
 
@@ -36,6 +37,7 @@ service.interceptors.response.use((response) => {
         store.dispatch('user/clear')
       }
       message.error('尚未登录，请您先登录！')
+      router.push({name: 'auth.login'})
       break;
     case 403:
       message.error('您的权限不足，拒绝访问！')
