@@ -29009,7 +29009,7 @@ var render = function() {
                     id: "chapter-" + key,
                     title: value.title,
                     name: value.id,
-                    number: [value.learned_num || 0, value.total_count],
+                    number: [value.record_count || 0, value.total_count],
                     disabled: value.children.length === 0
                   },
                   on: { "on-click": _vm.handleLearn }
@@ -29020,7 +29020,7 @@ var render = function() {
                     attrs: {
                       title: v.title,
                       name: v.id,
-                      number: [v.learned_num || 0, v.total_count],
+                      number: [v.record_count || 0, v.total_count],
                       second: ""
                     },
                     on: { "on-click": _vm.handleLearn }
@@ -29324,7 +29324,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "text-gray-400" }, [
                   _c("span", { staticClass: "text-teal-500" }, [
-                    _vm._v(_vm._s(item.learned_num || 0))
+                    _vm._v(_vm._s(item.record_count || 0))
                   ]),
                   _vm._v("/" + _vm._s(item.total_count))
                 ])

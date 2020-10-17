@@ -15,8 +15,9 @@ class BankGroupResource extends JsonResource
     public function toArray($request)
     {
         $record_id = $this->transmit_record_id;
-        $items = $this->items->map(function ($item) use ($request, $record_id) {
-            $item->record = optional($request->user('api'))->recordItems()
+        $recordItemQuery = optional($request->user('api'))->recordItems();
+        $items = $this->items->map(function ($item) use ($recordItemQuery, $record_id) {
+            $item->record = (clone $recordItemQuery)
                 ->where('record_id', $record_id)
                 ->where('bank_item_id', $item->id)
                 ->first();

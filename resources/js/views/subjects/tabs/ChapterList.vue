@@ -14,8 +14,8 @@
         <div class="w-1/3">做题进度</div>
       </div>
       <div class="flex flex-wrap relative" v-loading="isLoading" loading-custom-class="h-32">
-        <chapter-item :id="'chapter-'+key" v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.learned_num||0, value.total_count]" :disabled="value.children.length === 0" @on-click="handleLearn">
-          <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.learned_num||0, v.total_count]" second  @on-click="handleLearn"/>
+        <chapter-item :id="'chapter-'+key" v-for="(value, key) in list" :key="key" :title="value.title" :name="value.id" :number="[value.record_count || 0, value.total_count]" :disabled="value.children.length === 0" @on-click="handleLearn">
+          <chapter-item v-for="(v, k) in value.children" :key="k" :title="v.title" :name="v.id" :number="[v.record_count || 0, v.total_count]" second  @on-click="handleLearn"/>
         </chapter-item>
       </div>
       <empty-data :show="isLoading === false && list.length === 0"/>
