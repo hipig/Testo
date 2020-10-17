@@ -6,7 +6,7 @@ export const state = {
   token: "",
   userInfo: {},
   config: {
-    autoNext: ""
+    autoNext: false
   }
 }
 
@@ -102,6 +102,6 @@ export const actions = {
   },
 
   setConfig({ commit }, config) {
-    commit("SET_CONFIG", config)
+    commit("SET_USERCONFIG", config)
   }
 }

@@ -114,7 +114,6 @@
       $route(to,from){
         this.pid = to.params.pid
         this.getSubject()
-        console.log(to)
       }
     },
     methods: {

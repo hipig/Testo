@@ -14796,7 +14796,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$Message.error('上传头像图片大小不能超过 2MB!');
       }
 
-      return isJPG && isLt2M;
+      return isImage && isLt2M;
     },
     getUser: function getUser() {
       var _this = this;
@@ -16583,7 +16583,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       questions: [],
       answerList: [],
       activeIndex: 0,
-      autoNext: this.$store.getters['user/config'].autoNext || '',
+      autoNext: this.$store.getters['user/config'].autoNext || false,
       rightCount: 0,
       errorCount: 0,
       doneCount: 0,
@@ -16717,6 +16717,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     switchAutoNext: function switchAutoNext() {
+      this.autoNext = !this.autoNext;
       this.setConfig({
         autoNext: this.autoNext
       });
@@ -17148,7 +17149,6 @@ __webpack_require__.r(__webpack_exports__);
     $route: function $route(to, from) {
       this.pid = to.params.pid;
       this.getSubject();
-      console.log(to);
     }
   },
   methods: {
@@ -22206,7 +22206,10 @@ var render = function() {
                       [
                         _c(
                           "label",
-                          { staticClass: "inline-flex items-center" },
+                          {
+                            staticClass: "inline-flex items-center",
+                            class: [_vm.showParse ? "" : "cursor-pointer"]
+                          },
                           [
                             _c("input", {
                               directives: [
@@ -22265,7 +22268,10 @@ var render = function() {
                       [
                         _c(
                           "label",
-                          { staticClass: "inline-flex items-center" },
+                          {
+                            staticClass: "inline-flex items-center",
+                            class: [_vm.showParse ? "" : "cursor-pointer"]
+                          },
                           [
                             _c("input", {
                               directives: [
@@ -27543,93 +27549,59 @@ var render = function() {
               "div",
               { staticClass: "w-2/3 px-3" },
               [
-                _c(
-                  "div",
-                  { staticClass: "bg-white shadow rounded-lg p-5 mb-5" },
-                  [
-                    _c("div", { staticClass: "flex items-center" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "text-2xl text-gray-900 leading-none truncate"
-                        },
-                        [_vm._v(_vm._s(_vm.record.bank_title))]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "flex-1 ml-3" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
-                          },
-                          [
-                            _vm._v(
-                              _vm._s(
-                                parseInt(_vm.record.type) === 4
-                                  ? "每日一练"
-                                  : "练习模式"
-                              )
-                            )
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-base mt-4" }, [
-                      _c("label", { staticClass: "flex items-center" }, [
-                        _c("input", {
-                          directives: [
+                _vm.record.id
+                  ? _c(
+                      "div",
+                      { staticClass: "bg-white shadow rounded-lg p-5 mb-5" },
+                      [
+                        _c("div", { staticClass: "flex items-center" }, [
+                          _c(
+                            "div",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.autoNext,
-                              expression: "autoNext"
-                            }
-                          ],
-                          staticClass:
-                            "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(_vm.autoNext)
-                              ? _vm._i(_vm.autoNext, null) > -1
-                              : _vm.autoNext
-                          },
-                          on: {
-                            change: [
-                              function($event) {
-                                var $$a = _vm.autoNext,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = null,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      (_vm.autoNext = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.autoNext = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.autoNext = $$c
-                                }
+                              staticClass:
+                                "text-2xl text-gray-900 leading-none truncate"
+                            },
+                            [_vm._v(_vm._s(_vm.record.bank_title))]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "flex-1 ml-3" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
                               },
-                              _vm.switchAutoNext
-                            ]
-                          }
-                        }),
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    parseInt(_vm.record.type) === 4
+                                      ? "每日一练"
+                                      : "练习模式"
+                                  )
+                                )
+                              ]
+                            )
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [
-                          _vm._v("做对自动下一题")
+                        _c("div", { staticClass: "text-base mt-4" }, [
+                          _c("label", { staticClass: "flex items-center" }, [
+                            _c("input", {
+                              staticClass:
+                                "form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal",
+                              attrs: { type: "checkbox" },
+                              domProps: { checked: _vm.autoNext },
+                              on: { change: _vm.switchAutoNext }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "ml-2" }, [
+                              _vm._v("做对自动下一题")
+                            ])
+                          ])
                         ])
-                      ])
-                    ])
-                  ]
-                ),
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -27665,7 +27637,6 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("empty-data", {
-                  staticClass: "mt-5",
                   attrs: {
                     show: _vm.isLoading === false && _vm.questionsLength === 0
                   }
@@ -27877,7 +27848,7 @@ var render = function() {
         "t-modal",
         {
           attrs: {
-            title: "结束作答",
+            title: "查看解析",
             size: "max-w-md",
             "mask-closable": false
           },
@@ -27899,7 +27870,7 @@ var render = function() {
             _c(
               "div",
               { staticClass: "text-gray-900 text-lg flex justify-center mb-5" },
-              [_vm._v("你已全部作答完毕，是否确认交卷？")]
+              [_vm._v("你已作答完毕，是否查看解析？")]
             )
           ]),
           _vm._v(" "),
@@ -27934,7 +27905,7 @@ var render = function() {
                       attrs: { type: "button" },
                       on: { click: _vm.submitRecord }
                     },
-                    [_vm._v("交卷")]
+                    [_vm._v("查看解析")]
                   )
                 ])
               ]
@@ -27983,24 +27954,26 @@ var render = function() {
               "div",
               { staticClass: "w-2/3 px-3" },
               [
-                _c(
-                  "div",
-                  { staticClass: "bg-white shadow rounded-lg p-5 mb-5" },
-                  [
-                    _c("div", { staticClass: "flex items-center" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "text-2xl text-gray-900 leading-none truncate"
-                        },
-                        [_vm._v(_vm._s(_vm.record.bank_title))]
-                      ),
-                      _vm._v(" "),
-                      _vm._m(0)
-                    ])
-                  ]
-                ),
+                _vm.record.id
+                  ? _c(
+                      "div",
+                      { staticClass: "bg-white shadow rounded-lg p-5 mb-5" },
+                      [
+                        _c("div", { staticClass: "flex items-center" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "text-2xl text-gray-900 leading-none truncate"
+                            },
+                            [_vm._v(_vm._s(_vm.record.bank_title))]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(0)
+                        ])
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -28035,7 +28008,6 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("empty-data", {
-                  staticClass: "mt-5",
                   attrs: {
                     show:
                       _vm.isLoading === false && _vm.recordItems.length === 0
@@ -29254,28 +29226,36 @@ var render = function() {
                   "div",
                   { staticClass: "-mb-5" },
                   _vm._l(item.items, function(v, k) {
-                    return _c(
-                      "div",
-                      {
-                        key: k,
-                        staticClass: "mb-5 flex flex-wrap items-baseline"
-                      },
-                      [
-                        _c("div", { staticClass: "text-teal-500 flex mr-2" }, [
-                          _vm._v(
-                            "[" +
-                              _vm._s(_vm.questionTypes[v.question.type].name) +
-                              "]"
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
+                    return k <= 2
+                      ? _c(
                           "div",
-                          { staticClass: "text-gray-400 flex-1 flex" },
-                          [_vm._v(_vm._s(v.question.title))]
+                          {
+                            key: k,
+                            staticClass: "mb-5 flex flex-wrap items-baseline"
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "text-teal-500 flex mr-2" },
+                              [
+                                _vm._v(
+                                  "[" +
+                                    _vm._s(
+                                      _vm.questionTypes[v.question.type].name
+                                    ) +
+                                    "]"
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "text-gray-400 flex-1 flex" },
+                              [_vm._v(_vm._s(v.question.title))]
+                            )
+                          ]
                         )
-                      ]
-                    )
+                      : _vm._e()
                   }),
                   0
                 )
@@ -49444,7 +49424,7 @@ var state = {
   token: "",
   userInfo: {},
   config: {
-    autoNext: ""
+    autoNext: false
   }
 }; // getters
 
@@ -49531,7 +49511,7 @@ var actions = {
   },
   setConfig: function setConfig(_ref8, config) {
     var commit = _ref8.commit;
-    commit("SET_CONFIG", config);
+    commit("SET_USERCONFIG", config);
   }
 };
 
@@ -51584,8 +51564,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

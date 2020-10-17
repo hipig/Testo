@@ -29,10 +29,6 @@ class Bank extends Model
         'status' => 'boolean'
     ];
 
-    protected $with = [
-        'children'
-    ];
-
     public function subject()
     {
         return $this->belongsTo(Subject::class);
@@ -56,6 +52,11 @@ class Bank extends Model
     public function items()
     {
         return $this->hasMany(BankItem::class, 'bank_id')->orderBy('index')->orderBy('question_type');
+    }
+
+    public function limit3Items()
+    {
+        return $this->hasMany(BankItem::class, 'bank_id');
     }
 
     public function childrenItems()

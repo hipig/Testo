@@ -4,7 +4,7 @@
       <breadcrumb :list="record.breadcrumb"/>
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
-          <div class="bg-white shadow rounded-lg p-5 mb-5">
+          <div class="bg-white shadow rounded-lg p-5 mb-5" v-if="record.id">
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
@@ -17,7 +17,7 @@
               <exam-item :id="'q-'+index" :key="index" :item="item" :answer="answerList[index].answer" :index="index" @answer="handleAnswer"></exam-item>
             </template>
           </div>
-          <empty-data class="mt-5" :show="isLoading === false && recordItems.length === 0"/>
+          <empty-data :show="isLoading === false && recordItems.length === 0"/>
         </div>
         <div class="w-1/3 px-3 relative">
           <div class="sticky top-1">

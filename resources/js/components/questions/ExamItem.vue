@@ -20,7 +20,7 @@
       <template v-if="question.type === 1 || question.type === 3">
         <div class="flex flex-col mb-3">
           <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
-            <label class="inline-flex items-center">
+            <label class="inline-flex items-center" :class="[showParse ? '' : 'cursor-pointer']">
               <input type="radio" :value="index" v-model="currentAnswer" class="form-radio w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
               <span class="ml-3">{{ item }}</span>
             </label>
@@ -30,7 +30,7 @@
       <template v-if="question.type === 2">
         <div class="flex flex-col mb-3">
           <div class="mb-2 text-base" v-for="(item, index) in question.option" :key="index">
-            <label class="inline-flex items-center">
+            <label class="inline-flex items-center" :class="[showParse ? '' : 'cursor-pointer']">
               <input type="checkbox" :value="index" v-model="currentAnswer" class="form-checkbox w-5 h-5 border-2" :class="[showParse ? (isRight ? 'text-green-500 focus:shadow-outline-green' : 'text-red-500 focus:shadow-outline-red') : 'text-teal-500 focus:shadow-outline-teal']" :disabled="showParse" @change="submit">
               <span class="ml-3">{{ item }}</span>
             </label>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BankResource;
 use App\Models\Bank;
+use App\Models\BankItem;
 use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -39,11 +40,10 @@ class BanksController extends Controller
 
     public function dailyTests(Request $request, Subject $subject)
     {
-        $dailyTests = $subject->dailyTests()->limit(3)->orderBy('created_at', 'desc')->with(['items' => function($query) {
-            $query->limit(3);
-        }])->get();
-
-        dd(1);
+        $dailyTests = $subject->dailyTests()->get();
+        $dailyTests->each(function ($item) {
+            $item->items = $item->items()->limit(3)->orderBy('index')->orderBy('question_type')->get();
+        });
 
         return BankResource::collection($dailyTests);
     }

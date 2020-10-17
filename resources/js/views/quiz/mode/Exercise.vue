@@ -4,7 +4,7 @@
       <breadcrumb :list="record.breadcrumb"/>
       <div class="mt-5 flex flex-wrap -mx-3">
         <div class="w-2/3 px-3">
-          <div class="bg-white shadow rounded-lg p-5 mb-5">
+          <div class="bg-white shadow rounded-lg p-5 mb-5" v-if="record.id">
             <div class="flex items-center">
               <div class="text-2xl text-gray-900 leading-none truncate">{{ record.bank_title }}</div>
               <div class="flex-1 ml-3">
@@ -13,7 +13,7 @@
             </div>
             <div class="text-base mt-4">
               <label class="flex items-center">
-                <input type="checkbox" v-model="autoNext" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="switchAutoNext">
+                <input type="checkbox" :checked="autoNext" class="form-checkbox w-5 h-5 border-2 text-teal-500 focus:shadow-outline-teal" @change="switchAutoNext">
                 <span class="ml-2">做对自动下一题</span>
               </label>
             </div>
@@ -23,7 +23,7 @@
               <exercise-item :key="index" v-if="activeIndex === index" :item="item" :answer="activeAnswer.answer" :index="index" @answer="handleAnswer"></exercise-item>
             </template>
           </div>
-          <empty-data class="mt-5" :show="isLoading === false && questionsLength === 0"/>
+          <empty-data :show="isLoading === false && questionsLength === 0"/>
         </div>
         <div class="w-1/3 px-3">
           <div class="bg-white shadow rounded-lg mb-5">
@@ -73,9 +73,9 @@
         </div>
       </div>
     </div>
-    <t-modal v-model="submitModalVisible" title="结束作答" size="max-w-md" :mask-closable="false" @close="submitModalVisible = false">
+    <t-modal v-model="submitModalVisible" title="查看解析" size="max-w-md" :mask-closable="false" @close="submitModalVisible = false">
       <div class="flex flex-col">
-        <div class="text-gray-900 text-lg flex justify-center mb-5">你已全部作答完毕，是否确认交卷？</div>
+        <div class="text-gray-900 text-lg flex justify-center mb-5">你已作答完毕，是否查看解析？</div>
       </div>
       <div slot="footer">
         <div class="flex flex-wrap items-center px-5 -mx-5">
@@ -83,7 +83,7 @@
             <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border bg-white rounded focus:outline-none" @click="submitModalVisible = false">取消</button>
           </div>
           <div class="w-1/2 px-5 flex justify-center">
-            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">交卷</button>
+            <button type="button" class="inline-flex items-center justify-center w-28 py-1 text-base leading-tight border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitRecord">查看解析</button>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@
         questions: [],
         answerList: [],
         activeIndex: 0,
-        autoNext: this.$store.getters['user/config'].autoNext ||'',
+        autoNext: this.$store.getters['user/config'].autoNext ||false,
         rightCount: 0,
         errorCount: 0,
         doneCount: 0,
@@ -237,6 +237,7 @@
           })
       },
       switchAutoNext() {
+        this.autoNext = !this.autoNext
         this.setConfig({autoNext: this.autoNext})
       },
       handleBack() {

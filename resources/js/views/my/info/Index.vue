@@ -111,7 +111,7 @@
         if (!isLt2M) {
           this.$Message.error('上传头像图片大小不能超过 2MB!')
         }
-        return isJPG && isLt2M
+        return isImage && isLt2M
       },
       getUser() {
         user()

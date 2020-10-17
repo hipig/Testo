@@ -66,7 +66,7 @@ class Subject extends Model
 
     public function dailyTests()
     {
-        return $this->hasMany(Bank::class, 'subject_id')->where('type', 4);
+        return $this->hasMany(Bank::class, 'subject_id')->where('type', 4)->limit(3)->orderBy('created_at', 'desc');
     }
 
     public function getChildrenGroupAttribute()

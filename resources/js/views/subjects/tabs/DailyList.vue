@@ -13,7 +13,7 @@
           </div>
           <div class="pl-32 py-5 pr-5">
             <div class="-mb-5">
-              <div class="mb-5 flex flex-wrap items-baseline" v-for="(v, k) in item.items" :key="k">
+              <div class="mb-5 flex flex-wrap items-baseline" v-for="(v, k) in item.items" v-if="k <= 2" :key="k">
                 <div class="text-teal-500 flex mr-2">[{{ questionTypes[v.question.type].name }}]</div>
                 <div class="text-gray-400 flex-1 flex">{{ v.question.title }}</div>
               </div>
