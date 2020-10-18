@@ -9,7 +9,6 @@ class Subject extends Model
     ];
 
     protected $casts = [
-//        'is_special' => 'boolean',
         'is_directory' => 'boolean',
         'status' => 'boolean',
     ];

@@ -6,7 +6,7 @@
           <h3 class="text-2xl text-gray-700">{{ value.title }}</h3>
           <div class="-mx-3 flex flex-wrap">
             <div class="w-1/6 px-3" v-for="(v, k) in value.childrenList" :key="k">
-              <div class="shadow rounded-lg w-full bg-white overflow-hidden w-full block mt-6 relative transform duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div class="shadow rounded-lg w-full bg-white overflow-hidden block mt-6 relative transform duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <router-link :to="{name: 'subjects.show', params: {pid: v.id}}" class="flex flex-col items-center p-5">
                   <svg class="w-8 h-8 stroke-current text-teal-500" fill="none" viewBox="0 0 24 24">
                     <path d="M12 14l9-5-9-5-9 5 9 5z"></path>

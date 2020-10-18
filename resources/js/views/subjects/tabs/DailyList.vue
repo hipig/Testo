@@ -31,7 +31,7 @@
   import QuestionType from "@/mixins/QuestionType"
   import EmptyData from "@/components/common/EmptyData"
   import { getDailyTests } from "@/api/bank"
-  import { storeExamRecords } from "@/api/learnRecord"
+  import { storeDailyTestRecords } from "@/api/learnRecord"
 
   export default {
     name: "DailyList",
@@ -72,7 +72,7 @@
           })
       },
       handle(id) {
-        storeExamRecords({bank_id: id})
+        storeDailyTestRecords({bank_id: id})
           .then((res) => {
             this.$router.push({name: 'mode.exercise', params: {id: res.id}})
           })

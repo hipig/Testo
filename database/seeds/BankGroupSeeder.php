@@ -12,6 +12,11 @@ class BankGroupSeeder extends Seeder
      */
     public function run()
     {
-        factory(BankGroup::class, 100)->create();
+        factory(BankGroup::class, 100)->create()->each(function ($item) {
+            if (!$item->bank->is_group) {
+                $item->bank->is_group = true;
+                $item->bank->save();
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Bank;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BankResource extends JsonResource
@@ -17,10 +18,14 @@ class BankResource extends JsonResource
     public function toArray($request)
     {
         $bankItemIds = ($this->has_children && $this->type === Bank::CHAPTER_TEST ? $this->childrenItems() : $this->items())->pluck('bank_items.id');
-        $record_count = optional($request->user('api'))->recordItems()
-            ->whereIn('bank_item_id', $bankItemIds)
-            ->whereNotNull('answer')
-            ->count(DB::raw('distinct bank_item_id'));
+        $record_count = 0;
+        if (Auth::guard('api')->check()) {
+            $record_count = optional($request->user('api'))->recordItems()
+                    ->whereIn('bank_item_id', $bankItemIds)
+                    ->whereNotNull('answer')
+                    ->count(DB::raw('distinct bank_item_id'));
+        }
+
 
         return [
             'id' => $this->id,

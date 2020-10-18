@@ -7,7 +7,7 @@ use App\Models\Question;
 use Faker\Generator as Faker;
 
 $factory->define(BankGroup::class, function (Faker $faker) {
-    $bankIds = \App\Models\Bank::query()->where('is_group', true)->pluck('id')->toArray();
+    $bankIds = \App\Models\Bank::query()->whereIn('type', [2, 3])->pluck('id')->toArray();
 
     $bankId = $faker->randomElement($bankIds);
     $descs = [
@@ -18,16 +18,15 @@ $factory->define(BankGroup::class, function (Faker $faker) {
         5 => '主观题仅提供作答，默认得分。'
     ];
     $type = $faker->randomElement(array_keys(Question::$typeMap));
-    $count = $faker->randomElement([5, 10, 15, 20, 30, 50]);
     $scores = [1 => 2, 2 => 3, 3 => 1, 4 => 5, 5 => 10 ];
     $score = $scores[$type];
-    $title = sprintf("本类题共%s题,每小题%s分,共%s分。".$descs[$type], $count, $score, $count * $score);
+    $title = "本类题共%s题,每小题".$score."分,共%s分。".$descs[$type];
 
     return [
         'bank_id' => $bankId,
         'title' => $title,
         'item_type' => $type,
-        'item_count' => $count,
+        'item_count' => 0,
         'item_score' => $score
     ];
 });

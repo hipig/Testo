@@ -66,6 +66,8 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::post('records/test', 'LearnRecordsController@storeTest')->name('learnRecords.store.test');
         // 生成考试答题记录
         Route::post('records/exam', 'LearnRecordsController@storeExam')->name('learnRecords.store.exam');
+        // 生成每日一练答题记录
+        Route::post('records/daily-test', 'LearnRecordsController@storeDailyTest')->name('learnRecords.store.daily.test');
         // 更新考试答题记录（交卷）
         Route::put('records/{record}', 'LearnRecordsController@update')->name('learnRecords.update');
         // 生成练习答题记录

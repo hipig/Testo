@@ -7,7 +7,7 @@
         <div class="pt-5 pb-4 border-b border-gray-100" v-for="(item, index) in records" :key="index">
           <div class="flex items-center justify-between text-gray-500 text-xs leading-none mb-2">
             <div class="flex items-center">
-              <div class="mr-8" :class="[item.type === 2 ? 'text-yellow-500' : 'text-red-500']">{{ item.type === 2 ? '模拟考试' : '历年真题' }}</div>
+              <div class="mr-8" :class="[item.type === 2 ? 'text-yellow-500' : 'text-green-500']">{{ item.type === 2 ? '模拟考试' : '历年真题' }}</div>
               <div class="mr-10">{{ item.created_at }}</div>
               <div class="border border-red-500 text-red-500 leading-tight px-2 rounded" v-if="item.is_end">{{ item.score }} 分</div>
             </div>

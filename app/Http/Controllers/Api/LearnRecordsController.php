@@ -13,6 +13,7 @@ use App\Http\Resources\LearnRecordShowResource;
 use App\Http\Resources\LearnRecordResource;
 use App\Models\Bank;
 use App\Models\LearnRecord;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -61,7 +62,7 @@ class LearnRecordsController extends Controller
 
     public function storeTest(LearnRecordTestStoreRequest $request)
     {
-        $mode = $request->mode ?? 1;
+        $mode = $request->mode ?? LearnRecord::QUIZ_TEST;
         $number = $request->number;
 
         $bank = Bank::query()->findOrFail($request->bank_id);
@@ -107,8 +108,10 @@ class LearnRecordsController extends Controller
         return LearnRecordResource::make($record);
     }
 
-    public function storeExam(LearnRecordExamStoreRequest $request)
+    public function storeExam(Request $request)
     {
+        $this->validate($request, ['bank_id' => 'required'], [], ['bank_id' => '题库']);
+
         $bank = Bank::query()->findOrFail($request->bank_id);
 
         $record = optional($request->user('api'))
@@ -119,6 +122,30 @@ class LearnRecordsController extends Controller
                 'type' => $bank->type,
                 'total_count' => $bank->total_count
             ]);
+
+        return LearnRecordResource::make($record);
+    }
+
+    public function storeDailyTest(Request $request)
+    {
+        $this->validate($request, ['bank_id' => 'required'], [], ['bank_id' => '题库']);
+
+        $this->validate($request, ['bank_id' => 'required'], [], ['bank_id' => '题库']);
+
+        $bank = Bank::query()->findOrFail($request->bank_id);
+        $query = optional($request->user('api'))->records();
+
+        $record = (clone $query)->where('bank_id', $bank->id)
+            ->whereBetween('created_at', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])
+            ->first();
+        if (!$record) {
+            $record = (clone $query)->create([
+                'bank_id' => $bank->id,
+                'quiz_mode' => LearnRecord::QUIZ_TEST,
+                'type' => $bank->type,
+                'total_count' => $bank->total_count
+            ]);
+        }
 
         return LearnRecordResource::make($record);
     }

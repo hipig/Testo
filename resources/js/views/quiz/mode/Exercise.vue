@@ -50,11 +50,11 @@
           </div>
           <div class="bg-white shadow rounded-lg">
             <div class="flex justify-center py-3 px-5 -mx-2">
-              <div class="w-1/2 px-2">
-                <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded focus:outline-none" @click="handleBack">返回章节练习</button>
+              <div class="w-1/2 px-2 flex justify-center">
+                <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded focus:outline-none" @click="handleBack">返回章节练习</button>
               </div>
-              <div class="w-1/2 px-2" v-if="submitActionShow">
-                <button type="button" class="w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitModalVisible = true">交卷</button>
+              <div class="w-1/2 px-2 flex justify-center" v-if="submitActionShow">
+                <button type="button" class="px-3 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none" @click="submitModalVisible = true">查看解析</button>
               </div>
             </div>
           </div>
@@ -207,7 +207,7 @@
         storeRecordItems(this.recordId, this.answerList[this.activeIndex])
 
         if (isRight) {
-          !!this.autoNext && this.nextItem()
+          this.autoNext && setTimeout(this.nextItem, 300)
           this.rightCount ++
         } else {
           this.errorCount ++

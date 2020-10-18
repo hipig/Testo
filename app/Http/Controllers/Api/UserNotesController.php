@@ -40,7 +40,7 @@ class UserNotesController extends Controller
             ->pluck('bank_item_id')
             ->toArray();
 
-        $bankItems = BankItem::query()->with('bank', 'question', 'notes')->whereIn('id', $bankItemIds)->paginate($request->page_size ?? config('api.page_size'));
+        $bankItems = BankItem::query()->with('bank', 'notes')->whereIn('id', $bankItemIds)->paginate($request->page_size ?? config('api.page_size'));
 
         return BankItemResource::collection($bankItems);
     }

@@ -7,6 +7,7 @@ const api = {
   showRecordsResult: '/records/%s/result',
   testRecords: '/records/test',
   examRecords: '/records/exam',
+  dailyTestRecords: '/records/daily-test',
   recordItems: '/records/%s/items',
   updateRecords: '/records/%s'
 }
@@ -37,6 +38,12 @@ export const storeTestRecords = (params) => service({
 
 export const storeExamRecords = (params) => service({
   url: api.examRecords,
+  method: 'post',
+  data: params
+})
+
+export const storeDailyTestRecords = (params) => service({
+  url: api.dailyTestRecords,
   method: 'post',
   data: params
 })

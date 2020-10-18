@@ -100,7 +100,7 @@
           3: '历年真题',
           4: '每日一练',
         },
-        activeTab: 1,
+        activeTab: this.$route.query.tab || 1,
         switchSubjectVisible: false,
         isLoading: null,
         listLoading: null

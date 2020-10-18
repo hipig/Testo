@@ -14,6 +14,8 @@ import QuizResult from "@/views/quiz/Result"
 import QuizResultDetail from "@/views/quiz/ResultDetail"
 import QuizItems from "@/views/quiz/Items"
 
+import Articles from "@/views/articles/Index"
+
 import AuthLogin from "@/views/auth/Login"
 import AuthRegister from "@/views/auth/Register"
 
@@ -39,12 +41,20 @@ export default [
       {
         path: '/subjects',
         name: 'subjects',
-        component: Subjects
-      },
-      {
-        path: '/subjects/:pid/:id?',
-        name: 'subjects.show',
-        component: SubjectsShow
+        redirect: '/subjects/',
+        component: BlankLayout,
+        children: [
+          {
+            path: '/',
+            name: 'subjects.index',
+            component: Subjects
+          },
+          {
+            path: ':pid/:id?',
+            name: 'subjects.show',
+            component: SubjectsShow
+          }
+        ]
       },
       {
         path: '/quiz',
@@ -80,6 +90,19 @@ export default [
             path: 'items/:type',
             name: 'quiz.items',
             component: QuizItems
+          }
+        ]
+      },
+      {
+        path: '/articles',
+        name: 'articles',
+        redirect: '/articles/',
+        component: BlankLayout,
+        children: [
+          {
+            path: '/',
+            name: 'articles.index',
+            component: Articles
           }
         ]
       },

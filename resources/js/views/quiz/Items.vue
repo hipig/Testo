@@ -188,7 +188,7 @@
             requests[this.type](item.id)
               .then(_ => {
                 this.$Message.success('删除成功')
-                this.getItems()
+                this.$router.go(0)
               })
           })
           .catch(_ => {})

@@ -57,12 +57,22 @@
     },
     filters: {
       labelColor(val) {
-        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
-        return isExam ? 'from-yellow-400 to-yellow-500' : 'from-teal-400 to-teal-500'
+        let classes = {
+          1: 'from-teal-400 to-teal-500',
+          2: 'from-yellow-400 to-yellow-500',
+          3: 'from-yellow-400 to-yellow-500',
+          4: 'from-blue-400 to-blue-500'
+        }
+        return classes[parseInt(val)]
       },
       labelText(val) {
-        let isExam = [2 ,3].indexOf(parseInt(val)) > -1
-        return isExam ? '试' : '练'
+        let texts = {
+          1: '练',
+          2: '考',
+          3: '考',
+          4: '每'
+        }
+        return texts[parseInt(val)]
       },
       actionColor(val) {
         let isExam = [2 ,3].indexOf(parseInt(val)) > -1

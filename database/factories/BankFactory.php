@@ -27,7 +27,7 @@ $factory->define(Bank::class, function (Faker $faker) {
         'subject_id' => $subjectId,
         'parent_id' => $type === 1 ? $parentId : null,
         'type' => $type,
-        'is_group' => in_array($type, [2, 3]) ? $faker->randomElement([0, 1]) : 0,
+        'is_group' => 0,
         'time_limit' => in_array($type, [2, 3]) ? $faker->randomElement([90, 120, 180]) : 0,
         'total_score' => 0
     ];
