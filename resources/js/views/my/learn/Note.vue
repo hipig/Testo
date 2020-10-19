@@ -15,9 +15,9 @@
             <div class="pl-2 text-gray-400">{{ item.created_at }}</div>
           </div>
           <div class="flex flex-col p-3 mb-3 bg-gray-100 border border-gray-200 rounded">
-            <div class="flex items-baseline text-base mb-2">
+            <div class="flex items-center text-base mb-2">
               <div class="text-teal-500 w-16">{{ `[${questionTypes[item.question_type].name}]` }}</div>
-              <div class="flex-1">{{ item.question_title }}</div>
+              <div class="flex-1 truncate" :title="item.question_title">{{ item.question_title }}</div>
             </div>
             <div class="text-gray-400 text-xs mr-2 truncate flex items-center">
               来源：<span class="text-gray-900">{{ item.subject_title }}</span>

@@ -11,9 +11,9 @@
             </div>
             <div class="cursor-pointer" @click="handleCancelCollect(item)">取消收藏</div>
           </div>
-          <div class="flex items-baseline text-base mb-2">
+          <div class="flex items-center text-base mb-2">
             <div class="text-teal-500 w-16">{{ `[${questionTypes[item.question_type].name}]` }}</div>
-            <div class="flex-1">{{ item.question_title }}</div>
+            <div class="flex-1 truncate" :title="item.question_title">{{ item.question_title }}</div>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-center">

@@ -7,7 +7,7 @@
         <span class="text-gray-400">个人中心</span>
       </div>
       <div class="pt-5 pb-20">
-        <div class="flex">
+        <div class="flex flex-wrap">
           <div class="w-48 max-h-screen mr-5">
             <div class="bg-white py-5 shadow rounded-lg">
               <div class="flex flex-col">
@@ -32,7 +32,7 @@
               </div>
             </div>
           </div>
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <router-view/>
           </div>
         </div>

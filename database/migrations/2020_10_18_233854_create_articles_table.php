@@ -17,8 +17,10 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id')->comment('分类ID');
             $table->string('title')->comment('标题');
+            $table->string('cover')->nullable()->comment('封面');
             $table->unsignedTinyInteger('type')->default(1)->comment('类型');
             $table->json('labels')->nullable()->comment('标签');
+            $table->string('description')->nullable()->comment('描述');
             $table->text('content')->comment('内容');
             $table->string('view_count')->comment('浏览量');
             $table->boolean('status')->default(true)->comment('状态');

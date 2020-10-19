@@ -14348,36 +14348,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/subject */ "./resources/js/api/subject.js");
+/* harmony import */ var _api_article__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/api/article */ "./resources/js/api/article.js");
 //
 //
 //
@@ -14449,23 +14422,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "articles.index",
+  components: {
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       subjectPid: this.$route.query.subject_pid || '',
       subjectId: this.$route.query.subject_id || '',
       subjectList: [],
-      activeSubject: {}
+      activeSubject: {},
+      articleList: [],
+      currentPage: 1,
+      total: 0,
+      isLoading: null
     };
   },
   mounted: function mounted() {
     this.getSubjectList();
+    this.getArticleList();
   },
   watch: {
     $route: function $route(to, from) {
       this.subjectPid = to.query.subject_pid || '';
       this.subjectId = to.query.subject_id || '';
+      this.currentPage = 1;
+      this.getArticleList();
     },
     subjectPid: function subjectPid(val) {
       var index = this.subjectList.findIndex(function (item) {
@@ -14478,13 +14463,33 @@ __webpack_require__.r(__webpack_exports__);
     getSubjectList: function getSubjectList() {
       var _this = this;
 
-      Object(_api_subject__WEBPACK_IMPORTED_MODULE_0__["getSubjectsTree"])().then(function (res) {
+      Object(_api_subject__WEBPACK_IMPORTED_MODULE_1__["getSubjectsTree"])().then(function (res) {
         _this.subjectList = res;
         var index = res.findIndex(function (item) {
           return item.id == _this.subjectPid;
         });
         _this.activeSubject = res[index];
       });
+    },
+    getArticleList: function getArticleList() {
+      var _this2 = this;
+
+      this.isLoading = true;
+      var params = {
+        subject_pid: this.subjectPid,
+        subject_id: this.subjectId,
+        page: this.currentPage
+      };
+      Object(_api_article__WEBPACK_IMPORTED_MODULE_2__["getArticles"])(params).then(function (res) {
+        _this2.articleList = res.data;
+        _this2.total = res.meta.total;
+      })["finally"](function () {
+        _this2.isLoading = false;
+      });
+    },
+    changePage: function changePage(page) {
+      this.currentPage = page;
+      this.getArticleList();
     },
     handleNav: function handleNav() {
       var pid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -23801,7 +23806,7 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "pt-5 pb-20" }, [
-        _c("div", { staticClass: "flex" }, [
+        _c("div", { staticClass: "flex flex-wrap" }, [
           _c("div", { staticClass: "w-48 max-h-screen mr-5" }, [
             _c("div", { staticClass: "bg-white py-5 shadow rounded-lg" }, [
               _c("div", { staticClass: "flex flex-col" }, [
@@ -23921,7 +23926,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "flex-1" }, [_c("router-view")], 1)
+          _c("div", { staticClass: "flex-1 min-w-0" }, [_c("router-view")], 1)
         ])
       ])
     ])
@@ -24117,321 +24122,229 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "flex flex-wrap -mx-3" }, [
-        _c("div", { staticClass: "w-3/4 px-3" }, [
-          _c("div", { staticClass: "shadow rounded-lg w-full bg-white" }, [
-            _c("div", { staticClass: "flex flex-col ml-5" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "py-5 pr-5 border-b border-gray-100 flex cursor-pointer"
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "h-32 w-48" },
-                    [
-                      _c("t-image", {
-                        staticClass: "h-full w-full",
-                        attrs: {
-                          src:
-                            "https://img.gezitiku.com/public/uploads/image/course/20201016/51ad7a37dff51e6ec08be317204f66d9.jpg",
-                          fit: "cover"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "h-32 flex-1 flex flex-col justify-between ml-5"
-                    },
-                    [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "flex items-center" }, [
-                        _c("div", { staticClass: "flex flex-wrap" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex items-center text-gray-400 mr-5"
-                            },
-                            [
+        _c(
+          "div",
+          { staticClass: "w-3/4 px-3" },
+          [
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "loading",
+                    rawName: "v-loading",
+                    value: _vm.isLoading,
+                    expression: "isLoading"
+                  }
+                ],
+                staticClass: "shadow rounded-lg w-full bg-white",
+                attrs: { "loading-custom-class": "h-56" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "flex flex-col ml-5" },
+                  _vm._l(_vm.articleList, function(item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass:
+                          "py-5 pr-5 border-b border-gray-100 flex cursor-pointer"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "h-32 w-48" },
+                          [
+                            _c("t-image", {
+                              staticClass: "h-full w-full",
+                              attrs: {
+                                src: item.cover_url,
+                                fit: "cover",
+                                lazy: ""
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "h-32 flex-1 flex flex-col justify-between min-w-0 ml-5"
+                          },
+                          [
+                            _c("div", { staticClass: "flex flex-col" }, [
+                              _c("div", { staticClass: "flex items-center" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "inline-flex items-center h-5 px-2 text-xs rounded-sm border border-teal-500 text-teal-500"
+                                  },
+                                  [_vm._v(_vm._s(item.category.title))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "ml-1 flex-1 truncate text-lg text-gray-900"
+                                  },
+                                  [_vm._v(_vm._s(item.title))]
+                                )
+                              ]),
+                              _vm._v(" "),
                               _c(
-                                "svg",
+                                "div",
                                 {
-                                  staticClass: "w-5 h-5 stroke-current",
-                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
+                                  staticClass: "mt-3 text-gray-500 h-10",
+                                  staticStyle: {
+                                    "text-overflow": "ellipsis",
+                                    display: "-webkit-box",
+                                    "-webkit-line-clamp": "2",
+                                    "-webkit-box-orient": "vertical",
+                                    overflow: "hidden"
+                                  },
+                                  attrs: { title: item.description }
                                 },
                                 [
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d:
-                                        "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    }
-                                  })
+                                  _vm._v(
+                                    "\n                    " +
+                                      _vm._s(item.description) +
+                                      "\n                  "
+                                  )
                                 ]
-                              ),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "leading-none" }, [
-                                _vm._v("2020-10-16 10:10")
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "flex items-center" }, [
+                              _c("div", { staticClass: "flex flex-wrap" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center text-gray-400 mr-5"
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "w-5 h-5 stroke-current",
+                                        attrs: {
+                                          fill: "none",
+                                          viewBox: "0 0 24 24"
+                                        }
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "stroke-linecap": "round",
+                                            "stroke-linejoin": "round",
+                                            "stroke-width": "2",
+                                            d:
+                                              "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "leading-none" },
+                                      [_vm._v(_vm._s(item.published_at))]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "flex items-center text-gray-400"
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "w-5 h-5 stroke-current",
+                                        attrs: {
+                                          fill: "none",
+                                          viewBox: "0 0 24 24"
+                                        }
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "stroke-linecap": "round",
+                                            "stroke-linejoin": "round",
+                                            "stroke-width": "2",
+                                            d:
+                                              "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("path", {
+                                          attrs: {
+                                            "stroke-linecap": "round",
+                                            "stroke-linejoin": "round",
+                                            "stroke-width": "2",
+                                            d:
+                                              "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "leading-none" },
+                                      [_vm._v(_vm._s(item.view_count))]
+                                    )
+                                  ]
+                                )
                               ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "flex items-center text-gray-400" },
-                            [
-                              _c(
-                                "svg",
-                                {
-                                  staticClass: "w-5 h-5 stroke-current",
-                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
-                                },
-                                [
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d:
-                                        "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "leading-none" }, [
-                                _vm._v("5")
-                              ])
-                            ]
-                          )
-                        ])
-                      ])
-                    ]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "py-5 pr-5 border-b border-gray-100 flex cursor-pointer"
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "h-32 w-48" },
-                    [
-                      _c("t-image", {
-                        staticClass: "h-full w-full",
-                        attrs: {
-                          src: "",
-                          fit: "cover",
-                          "load-err-text": "暂无封面"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "h-32 flex-1 flex flex-col justify-between ml-5"
-                    },
-                    [
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "flex items-center" }, [
-                        _c("div", { staticClass: "flex flex-wrap" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex items-center text-gray-400 mr-5"
-                            },
-                            [
-                              _c(
-                                "svg",
-                                {
-                                  staticClass: "w-5 h-5 stroke-current",
-                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
-                                },
-                                [
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d:
-                                        "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "leading-none" }, [
-                                _vm._v("2020-10-16 10:10")
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "flex items-center text-gray-400" },
-                            [
-                              _c(
-                                "svg",
-                                {
-                                  staticClass: "w-5 h-5 stroke-current",
-                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
-                                },
-                                [
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("path", {
-                                    attrs: {
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2",
-                                      d:
-                                        "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "leading-none" }, [
-                                _vm._v("5")
-                              ])
-                            ]
-                          )
-                        ])
-                      ])
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
-        ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _vm.total > 0
+                  ? _c(
+                      "div",
+                      { staticClass: "flex justify-center py-5" },
+                      [
+                        _c("t-pagination", {
+                          attrs: { total: _vm.total, current: _vm.currentPage },
+                          on: { "page-change": _vm.changePage }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c("empty-data", {
+              class: ["shadow-none"],
+              attrs: {
+                show: _vm.isLoading === false && _vm.articleList.length === 0
+              }
+            })
+          ],
+          1
+        )
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex flex-col" }, [
-      _c("div", { staticClass: "flex items-center" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "inline-flex items-center h-5 px-2 text-xs rounded-sm border border-teal-500 text-teal-500"
-          },
-          [_vm._v("二级建造师")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "ml-1 flex-1 truncate text-lg text-gray-900" },
-          [_vm._v("2020年海南省二级建造师执业资格考试公告")]
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "mt-3 text-gray-500 h-10",
-          staticStyle: {
-            "text-overflow": "ellipsis",
-            display: "-webkit-box",
-            "-webkit-line-clamp": "2",
-            "-webkit-box-orient": "vertical",
-            overflow: "hidden"
-          }
-        },
-        [
-          _vm._v(
-            "\n                    近日，海南住建厅发布了海南省2020年度二级建造师执业资格考试公告，内容提及2020年海南二级建造师考试时间及2020年海南二建考试疫情防控相关通知。具体详情格子题库已整理如下：具体详情格子题库已整理如下：\n                  "
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex flex-col" }, [
-      _c("div", { staticClass: "flex items-center" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "inline-flex items-center h-5 px-2 text-xs rounded-sm border border-teal-500 text-teal-500"
-          },
-          [_vm._v("一级消防工程师")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "ml-1 flex-1 truncate text-lg text-gray-900" },
-          [_vm._v("2019年山东东营一级消防工程师合格证书领取温馨提示")]
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "mt-3 text-gray-500 h-10",
-          staticStyle: {
-            "text-overflow": "ellipsis",
-            display: "-webkit-box",
-            "-webkit-line-clamp": "2",
-            "-webkit-box-orient": "vertical",
-            overflow: "hidden"
-          }
-        },
-        [
-          _vm._v(
-            "\n                    近日，山东东营人事考试网发布了2019年一级消防工程师合格证书领取温馨提示，内容中提到了东营地区一消考生可在10月15日后到指定地点领取合格证书。具体详情格子题库已整理如下：\n                  "
-          )
-        ]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -25546,7 +25459,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "flex items-baseline text-base mb-2" },
+                      { staticClass: "flex items-center text-base mb-2" },
                       [
                         _c("div", { staticClass: "text-teal-500 w-16" }, [
                           _vm._v(
@@ -25558,9 +25471,14 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "flex-1" }, [
-                          _vm._v(_vm._s(item.question_title))
-                        ])
+                        _c(
+                          "div",
+                          {
+                            staticClass: "flex-1 truncate",
+                            attrs: { title: item.question_title }
+                          },
+                          [_vm._v(_vm._s(item.question_title))]
+                        )
                       ]
                     ),
                     _vm._v(" "),
@@ -26464,7 +26382,7 @@ var render = function() {
                       [
                         _c(
                           "div",
-                          { staticClass: "flex items-baseline text-base mb-2" },
+                          { staticClass: "flex items-center text-base mb-2" },
                           [
                             _c("div", { staticClass: "text-teal-500 w-16" }, [
                               _vm._v(
@@ -26476,9 +26394,14 @@ var render = function() {
                               )
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "flex-1" }, [
-                              _vm._v(_vm._s(item.question_title))
-                            ])
+                            _c(
+                              "div",
+                              {
+                                staticClass: "flex-1 truncate",
+                                attrs: { title: item.question_title }
+                              },
+                              [_vm._v(_vm._s(item.question_title))]
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -46610,6 +46533,41 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/api/article.js":
+/*!*************************************!*\
+  !*** ./resources/js/api/article.js ***!
+  \*************************************/
+/*! exports provided: getArticles, getArticlesShow */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArticles", function() { return getArticles; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArticlesShow", function() { return getArticlesShow; });
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
+
+
+var api = {
+  articles: '/articles',
+  articlesShow: '/articles/%s'
+};
+var getArticles = function getArticles(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.articles,
+    method: 'get',
+    params: params
+  });
+};
+var getArticlesShow = function getArticlesShow(id) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.articlesShow, id),
+    method: 'get'
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/api/bank.js":
 /*!**********************************!*\
   !*** ./resources/js/api/bank.js ***!
@@ -52354,8 +52312,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -18,8 +18,10 @@ $factory->define(Article::class, function (Faker $faker) {
     return [
         'category_id' => $category_id,
         'title' => $faker->sentence,
+        'cover' => $faker->imageUrl(200, 150),
         'type' => $type,
-        'content' => $faker->paragraph,
+        'description' => $faker->paragraph,
+        'content' => $faker->paragraph(10),
         'view_count' => $faker->randomNumber(3)
     ];
 });

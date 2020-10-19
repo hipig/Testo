@@ -28,6 +28,10 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     // 获取题型总计
     Route::get('banks/{bank}/count-type-total', 'BanksController@getTypeCount')->name('banks.countTypeTotal');
 
+    // 资讯
+    Route::get('articles', 'ArticlesController@index')->name('articles.index');
+    Route::get('articles/{article}', 'ArticlesController@show')->name('articles.show');
+
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
 
