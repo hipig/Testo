@@ -74,4 +74,17 @@ class Article extends Model
         $subjectId && $query->where('category_id', $subjectId);
         return $query;
     }
+
+    public function scopeOrder($query, $order)
+    {
+        switch ($order) {
+            case 'hot':
+                $query->orderBy('view_count', 'desc');
+                break;
+            case 'recommend':
+            default:
+                $query->orderBy('published_at', 'desc')->orderBy('created_at', 'desc');
+        }
+        return $query;
+    }
 }

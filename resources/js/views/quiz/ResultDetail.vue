@@ -20,7 +20,7 @@
           <div v-loading="isLoading" loading-custom-class="h-56">
             <template v-if="record.is_group">
               <div class="mt-8" v-for="(item, index) in recordItems" :key="index">
-                <div class="text-base font-semibold">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
+                <div class="text-base font-semibold mb-3">{{ `${questionTypes[item.item_type].name}（${item.title}）` }}</div>
                 <exam-item :id="'q-'+index+'-'+i" v-for="(v, i) in item.items" :key="i" :item="v" :answer="answerList[index+'-'+i].answer" :index="[index, i]" :show-parse="true"></exam-item>
               </div>
             </template>

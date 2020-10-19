@@ -105,6 +105,8 @@ class LearnRecordsController extends Controller
                 'total_count' => $ids->count()
             ]);
 
+        $bank->increment('done_count');
+
         return LearnRecordResource::make($record);
     }
 
@@ -123,13 +125,13 @@ class LearnRecordsController extends Controller
                 'total_count' => $bank->total_count
             ]);
 
+        $bank->increment('done_count');
+
         return LearnRecordResource::make($record);
     }
 
     public function storeDailyTest(Request $request)
     {
-        $this->validate($request, ['bank_id' => 'required'], [], ['bank_id' => '题库']);
-
         $this->validate($request, ['bank_id' => 'required'], [], ['bank_id' => '题库']);
 
         $bank = Bank::query()->findOrFail($request->bank_id);
@@ -145,6 +147,8 @@ class LearnRecordsController extends Controller
                 'type' => $bank->type,
                 'total_count' => $bank->total_count
             ]);
+
+            $bank->increment('done_count');
         }
 
         return LearnRecordResource::make($record);

@@ -16,9 +16,13 @@ class BanksController extends Controller
 {
     public function chapterTests(Request $request, Subject $subject)
     {
-        $chapterTests = $subject->load('chapterTests.items', 'chapterTests.childrenItems')->chapterTests()
+        $chapterTests = $subject->load('chapterTests.items', 'chapterTests.childrenItems')
+            ->chapterTests()
             ->whereNull('parent_id')
             ->with('children')
+            ->status()
+            ->orderBy('index')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return BankResource::collection($chapterTests);
@@ -26,21 +30,34 @@ class BanksController extends Controller
 
     public function mockExams(Request $request, Subject $subject)
     {
-        $mockExams = $subject->load('mockExams.items')->mockExams;
+        $mockExams = $subject->load('mockExams.items')
+            ->mockExams()
+            ->status()
+            ->orderBy('index')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return BankResource::collection($mockExams);
     }
 
     public function oldExams(Request $request, Subject $subject)
     {
-        $oldExams = $subject->load('oldExams.items')->oldExams;
+        $oldExams = $subject->load('oldExams.items')
+            ->oldExams()
+            ->status()
+            ->orderBy('index')
+            ->orderBy('created_at', 'desc')
+            ->get();;
 
         return BankResource::collection($oldExams);
     }
 
     public function dailyTests(Request $request, Subject $subject)
     {
-        $dailyTests = $subject->load('dailyTests.limit3Items')->dailyTests()->get();
+        $dailyTests = $subject->load('dailyTests.limit3Items')
+            ->dailyTests()
+            ->status()
+            ->get();
 
         return BankResource::collection($dailyTests);
     }

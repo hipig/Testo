@@ -30,6 +30,7 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
 
     // 资讯
     Route::get('articles', 'ArticlesController@index')->name('articles.index');
+    Route::get('hot-articles', 'ArticlesController@hotList')->name('articles.index.hot');
     Route::get('articles/{article}', 'ArticlesController@show')->name('articles.show');
 
     Route::middleware('throttle:' . config('api.rate_limits.sign'))

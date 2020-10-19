@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Traits\StatusScopeTrait;
+
 class Bank extends Model
 {
+    use StatusScopeTrait;
+
     const CHAPTER_TEST = 1;
     const MOCK_EXAM = 2;
     const OLD_EXAM = 3;

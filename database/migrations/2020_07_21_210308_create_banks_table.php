@@ -25,6 +25,7 @@ class CreateBanksTable extends Migration
             $table->unsignedInteger('time_limit')->default(0)->comment('时间限制');
             $table->unsignedInteger('total_score')->default(0)->comment('总分');
             $table->unsignedInteger('total_count')->default(0)->comment('总题数');
+            $table->unsignedInteger('done_count')->default(0)->comment('学习次数');
             $table->string('source')->nullable()->comment('来源');
             $table->text('remark')->nullable()->comment('备注');
             $table->boolean('status')->default(true)->comment('状态');
