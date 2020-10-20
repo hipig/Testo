@@ -23,14 +23,14 @@
       </div>
     </div>
     <transition
-      enter-class="transform opacity-0"
-      enter-active-class="transition ease-in-out duration-75"
-      enter-to-class="transform opacity-100"
+      enter-class="opacity-0"
+      enter-active-class="ease-out duration-300"
+      enter-to-class="opacity-100"
       leave-class="transform opacity-100"
-      leave-active-class="transition ease-in-out duration-75"
-      leave-to-class="transform opacity-0"
+      leave-active-class="ease-out duration-200"
+      leave-to-class="opacity-0"
     >
-      <div class="ml-5" v-show="isActive">
+      <div class="ml-5" v-if="isActive">
         <slot></slot>
       </div>
     </transition>

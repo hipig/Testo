@@ -117,8 +117,8 @@
     data () {
       return {
         filterForm: {
-          subject_pid: this.$route.query.subject_pid || '',
-          subject_id: this.$route.query.subject_id || '',
+          subject_pid: '',
+          subject_id: '',
           order: 'new'
         },
         subjectList: [],
@@ -138,20 +138,6 @@
     computed: {
       subjectSelected() {
         return this.filterForm.subject_pid !== ""
-      }
-    },
-    watch: {
-      $route(to,from){
-        this.filterForm.subject_pid = to.query.subject_pid || ''
-        this.filterForm.subject_id = to.query.subject_id || ''
-        this.currentPage = 1
-        this.getArticleList()
-      },
-      subjectPid(val) {
-        let index = this.subjectList.findIndex((item) => {
-          return item.id == val
-        })
-        this.activeSubject = this.subjectList[index]
       }
     },
     methods: {
@@ -199,6 +185,7 @@
         this.getArticleList()
       },
       selectSubject() {
+        this.currentPage = 1
         this.getArticleList()
       },
       selectOrder() {

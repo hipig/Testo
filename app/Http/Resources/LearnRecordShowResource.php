@@ -19,12 +19,13 @@ class LearnRecordShowResource extends JsonResource
 
         if ($bank->is_group) {
             $groups = $this->bank_items->map(function ($item) {
-               $item->transmit_record_id = $this->id;
-               return $item;
+                $item->transmit_record_id = $this->id;
+                $item->transmit_user = $this->user;
+                return $item;
             });
             $items = BankGroupResource::collection($groups);
         } else {
-            $recordItemQuery = optional($request->user('api'))->recordItems();
+            $recordItemQuery = $this->user->recordItems();
             $bankItems = $this->bank_items->map(function ($item) use ($recordItemQuery) {
                 $item->record = (clone $recordItemQuery)
                     ->where('record_id', $this->id)

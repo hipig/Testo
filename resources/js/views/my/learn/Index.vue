@@ -122,7 +122,8 @@
         .then(_ => {
           deleteRecords(item.id)
             .then(_ => {
-              this.$Message.success('删除成功！')
+              this.$Message.success('删除成功')
+              this.$router.go(0)
             })
         })
         .catch(_ => {})

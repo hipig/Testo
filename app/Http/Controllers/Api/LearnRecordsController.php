@@ -6,7 +6,6 @@ use App\Events\LearnRecordItemStored;
 use App\Events\LearnRecordSubmitted;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\LearnRecordExamStoreRequest;
 use App\Http\Requests\Api\LearnRecordTestStoreRequest;
 use App\Http\Requests\Api\LearnRecordUpdateRequest;
 use App\Http\Resources\LearnRecordShowResource;
@@ -69,29 +68,28 @@ class LearnRecordsController extends Controller
         $user = optional($request->user('api'));
         $hasChildren = $bank->has_children;
 
-        $bankIds = $hasChildren ? $bank->children()->pluck('id')->toArray() : [$bank->id];
+        $bankIds = $hasChildren ? $bank->children()->pluck('id') : [$bank->id];
         $bankItems = $hasChildren ? $bank->childrenItems() : $bank->items();
-        $columnPrefix = $hasChildren ? 'bank_items.' : '';
         switch ($request->range) {
             case 'undone':
-                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
-                $bankItems->whereNotIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id');
+                $bankItems->whereNotIn('bank_items.id', $doneIds);
                 break;
             case 'done':
-                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id')->toArray();
-                $bankItems->whereIn($columnPrefix.'id', $doneIds);
+                $doneIds = $user->recordItems()->whereIn('learn_record_items.bank_id', $bankIds)->pluck('bank_item_id');
+                $bankItems->whereIn('bank_items.id', $doneIds);
                 break;
             case 'error':
                 $errorIds = $user->errors()->whereIn('bank_id', $bankIds)->pluck('bank_item_id');
-                $bankItems->whereIn($columnPrefix.'id', $errorIds);
+                $bankItems->whereIn('bank_items.id', $errorIds);
                 break;
         }
 
         if ($type = $request->type) {
-            $bankItems->where($columnPrefix.'question_type', $type);
+            $bankItems->where('bank_items.question_type', $type);
         }
 
-        $idPluck = $bankItems->pluck($columnPrefix.'id');
+        $idPluck = $bankItems->pluck('bank_items.id');
         $count = $idPluck->count();
         $ids = $idPluck->random($number >= $count ? $count : $number);
 

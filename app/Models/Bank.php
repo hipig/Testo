@@ -80,6 +80,6 @@ class Bank extends Model
 
     public function getHasChildrenAttribute()
     {
-        return is_null($this->parent_id);
+        return $this->newModelQuery()->where('parent_id', $this->id)->exists();
     }
 }

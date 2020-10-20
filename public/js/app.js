@@ -10654,6 +10654,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _assets_images_no_data_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/assets/images/no-data.svg */ "./resources/js/assets/images/no-data.svg");
+/* harmony import */ var _assets_images_no_data_svg__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_images_no_data_svg__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -10661,10 +10663,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Loading",
+  name: "EmptyData",
   props: {
     show: {
       type: Boolean,
@@ -10674,6 +10675,11 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       "default": '还没有数据哦~'
     }
+  },
+  data: function data() {
+    return {
+      noData: _assets_images_no_data_svg__WEBPACK_IMPORTED_MODULE_0___default.a
+    };
   }
 });
 
@@ -14469,8 +14475,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       filterForm: {
-        subject_pid: this.$route.query.subject_pid || '',
-        subject_id: this.$route.query.subject_id || '',
+        subject_pid: '',
+        subject_id: '',
         order: 'new'
       },
       subjectList: [],
@@ -14490,20 +14496,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     subjectSelected: function subjectSelected() {
       return this.filterForm.subject_pid !== "";
-    }
-  },
-  watch: {
-    $route: function $route(to, from) {
-      this.filterForm.subject_pid = to.query.subject_pid || '';
-      this.filterForm.subject_id = to.query.subject_id || '';
-      this.currentPage = 1;
-      this.getArticleList();
-    },
-    subjectPid: function subjectPid(val) {
-      var index = this.subjectList.findIndex(function (item) {
-        return item.id == val;
-      });
-      this.activeSubject = this.subjectList[index];
     }
   },
   methods: {
@@ -14555,6 +14547,7 @@ __webpack_require__.r(__webpack_exports__);
       this.getArticleList();
     },
     selectSubject: function selectSubject() {
+      this.currentPage = 1;
       this.getArticleList();
     },
     selectOrder: function selectOrder() {
@@ -15341,7 +15334,9 @@ __webpack_require__.r(__webpack_exports__);
         content: "\u786E\u5B9A\u5220\u9664\u8BE5\u8003\u8BD5\u8BB0\u5F55\uFF1F"
       }).then(function (_) {
         Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["deleteRecords"])(item.id).then(function (_) {
-          _this2.$Message.success('删除成功！');
+          _this2.$Message.success('删除成功');
+
+          _this2.$router.go(0);
         });
       })["catch"](function (_) {});
     }
@@ -15488,7 +15483,9 @@ __webpack_require__.r(__webpack_exports__);
         content: "\u786E\u5B9A\u5220\u9664\u8BE5\u5B66\u4E60\u8BB0\u5F55\uFF1F"
       }).then(function (_) {
         Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["deleteRecords"])(item.id).then(function (_) {
-          _this2.$Message.success('删除成功！');
+          _this2.$Message.success('删除成功');
+
+          _this2.$router.go(0);
         });
       })["catch"](function (_) {});
     }
@@ -19252,31 +19249,18 @@ var render = function() {
         "transition",
         {
           attrs: {
-            "enter-class": "transform opacity-0",
-            "enter-active-class": "transition ease-in-out duration-75",
-            "enter-to-class": "transform opacity-100",
+            "enter-class": "opacity-0",
+            "enter-active-class": "ease-out duration-300",
+            "enter-to-class": "opacity-100",
             "leave-class": "transform opacity-100",
-            "leave-active-class": "transition ease-in-out duration-75",
-            "leave-to-class": "transform opacity-0"
+            "leave-active-class": "ease-out duration-200",
+            "leave-to-class": "opacity-0"
           }
         },
         [
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.isActive,
-                  expression: "isActive"
-                }
-              ],
-              staticClass: "ml-5"
-            },
-            [_vm._t("default")],
-            2
-          )
+          _vm.isActive
+            ? _c("div", { staticClass: "ml-5" }, [_vm._t("default")], 2)
+            : _vm._e()
         ]
       )
     ],
@@ -19497,26 +19481,15 @@ var render = function() {
         "div",
         {
           staticClass:
-            "flex flex-col items-center justify-center text-gray-400 bg-white shadow rounded-lg py-16"
+            "flex flex-col items-center justify-center text-gray-400 bg-white shadow rounded-lg pt-8 pb-16"
         },
         [
-          _c(
-            "svg",
-            {
-              staticClass: "w-12 h-12 -ml-1 fill-current text-gray-500",
-              attrs: { viewBox: "0 0 1024 1024" }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  d:
-                    "M169.3 824.4c5.9 0 9.8 4.1 9.8 10.3 0 6.2-3.9 10.3-9.8 10.3H73.8c-5.9 0-9.8-4.1-9.8-10.3 0-6.2 3.9-10.3 9.8-10.3h95.5zM905 752.6c5.9 0 9.8 3.8 9.8 9.6s-3.9 9.6-9.8 9.6H737.9v25.3c0 27.3-21.8 48.7-49.6 48.7h-30c0 5.8-2.7 11.8-7.1 16.5-9.8 9.6-24.6 9.6-34.8 0l-15.7-16.5H217.6c-5.9 0-9.8-3.8-9.8-9.6s3.9-9.6 9.8-9.6h43.7c-6.6-8.5-9.8-18.8-9.8-29.5V309.8c0-27.3 21.8-48.7 49.6-48.7h31.6v-25c0-27.3 21.8-48.7 49.6-48.7h388.6c27.7 0 49.6 21.5 49.6 48.7v487c0 10.7-3.9 21.5-9.8 29.5H905z m-155.4 1.7h20.7c16.9 0 29.4-12.8 29.4-29.5V237.4c0-16.6-13-29.5-29.4-29.5H381.1c-16.9 0-29.4 12.8-29.4 29.5v25.3h338.7c27.8 0 49.6 21.5 49.6 48.8v443h9.6v-0.2zM519.5 730c16.3-15.7 25.4-37.3 25.4-59.7s-9.2-44-25.4-59.7c-15.8-15.4-37.8-24.5-60.9-24.5s-44.9 8.5-60.9 24.5c-16.3 15.7-25.4 37.3-25.4 59.7s9.2 44 25.4 59.7c15.8 15.4 37.8 24.5 60.9 24.5 21.9-0.5 43.9-8.9 60.9-24.5z m-104.4-90.2c2.2 1.1 2.7 3.7 2.2 6.8-6.9 11.6-8 26.7-2.7 39.4 1.1 2.6 0 4.8-2.7 6.8h-2.2c-2.2 0-3.8-1.1-4.9-2.6-5.8-15.1-4.9-33.5 2.7-47.7 1.8-2.7 4.9-3.8 7.6-2.7zM717.5 797V311.3c0-16.5-12.9-29.4-29.9-29.4H299.4c-16.8 0-29.9 12.7-29.9 29.4v486.4c0 16.5 12.9 29.4 29.9 29.4h281.3L553 799.9c-6.6-6.5-9.3-16.5-5.9-25.2l-24.5-25.2c-18.4 15.4-42.4 24.1-66.7 24.5-28.8 0-54.2-10.7-74.9-29.9-41.3-40.1-41.3-105.7-0.5-146.3l0.5-0.4c19.5-19.2 46-29.9 74.9-29.9 28.8 0 54.2 10.7 74.9 29.9 38.6 37.9 40.1 99.2 7 139.8l25.6 25.2c8.6-2.7 19.1-2.2 25.6 5.8l61.3 60.2h38.6c15-1.9 28.6-14.9 28.6-31.4z m-356-416.5c-5.9 0-9.8-4.1-9.8-10.3 0-6.2 3.9-10.3 9.8-10.3h173.6c5.9 0 9.8 4.1 9.8 10.3 0 6.2-3.9 10.3-9.8 10.3H361.5z m231.2 41.1c5.9 0 9.8 4.1 9.8 10.3 0 6.2-3.9 10.3-9.8 10.3H365.6c-5.9 0-9.8-4.1-9.8-10.3 0-6.2 3.9-10.3 9.8-10.3h227.1z m-110.9 65.7c5.9 0 9.7 4.1 9.7 10.3 0 6.2-3.8 10.3-9.7 10.3H361.4c-5.9 0-9.7-4.1-9.7-10.3 0-6.2 3.8-10.3 9.7-10.3h120.4zM105.1 273.6c-11.5 0-20.6 8.8-20.6 18.5 0 10.3 9.1 18.5 20.6 18.5s20.6-8.2 20.6-18.5-9.1-18.5-20.6-18.5z m-2.1 57.6c-21.4-0.7-38.4-17.6-39-39 0-21.4 17.6-39 39-39s39 17.6 39 39c0.1 21.3-17.5 39-39 39z m826.2 16.4c6.2 0 10.3-4.5 10.3-10.3 0-6.2-4.1-10.3-10.3-10.3-6.2 0-10.3 4.1-10.3 10.3 0 6.2 4.1 10.3 10.3 10.3z m2-37c16.5 0 28.8 12 28.8 28.8 0 16.3-12.7 28.8-28.8 28.8s-28.8-12.6-28.8-28.8c0.1-16.4 12.3-28.8 28.8-28.8zM208.6 206.5V195h-11.8c-5.8 0-9.5-3.8-9.5-9.5 0-5.8 3.8-9.5 9.5-9.5h11.8v-12c0-5.8 3.8-9.5 9.5-9.5 5.8 0 9.5 3.8 9.5 9.5v11.8h11.8c5.8 0 9.5 3.8 9.5 9.5 0 5.8-3.8 9.5-9.5 9.5h-11.8v11.8c0 5.8-3.8 9.5-9.5 9.5s-9.5-3.8-9.5-9.6zM186 479.9c5.8 0 10 4.2 9.5 10.2 0 5.8-3.8 9.5-9.5 9.5h-11.7v11.1c0 5.8-3.8 9.5-9.5 9.5-5.8 0-9.5-3.8-9.5-9.5v-11.8h-11.7c-5.8 0-9.5-3.8-9.5-9.5 0-5.8 3.8-9.5 9.5-9.5h11.7v-11.8c0-5.8 3.8-9.5 9.5-9.5 5.8 0 9.5 3.8 9.5 9.5v11.8H186z m731.6 28.7c5.3 0 9.5 4.2 9.5 9.5 0 5.8-3.8 9.5-9.5 9.5h-11.8v11.8c0 5.8-3.8 9.5-9.5 9.5-5.8 0-9.5-3.8-9.5-9.5v-11.8H875c-5.8 0-9.5-3.8-9.5-9.5 0-5.8 3.8-9.5 9.5-9.5h11.8v-11.8c0-5.8 3.8-9.5 9.5-9.5 5.8 0 9.5 3.8 9.5 9.5v11.8h11.8z"
-                }
-              })
-            ]
-          ),
+          _c("embed", {
+            staticClass: "w-48 h-48",
+            attrs: { src: _vm.noData, type: "image/svg+xml" }
+          }),
           _vm._v(" "),
-          _c("span", [_vm._v(_vm._s(_vm.text))])
+          _c("div", [_vm._v(_vm._s(_vm.text))])
         ]
       )
     : _vm._e()
@@ -28575,7 +28548,7 @@ var render = function() {
                           "button",
                           {
                             staticClass:
-                              "px-3 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded focus:outline-none",
+                              "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded focus:outline-none",
                             attrs: { type: "button" },
                             on: { click: _vm.handleBack }
                           },
@@ -28593,7 +28566,7 @@ var render = function() {
                               "button",
                               {
                                 staticClass:
-                                  "px-3 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
+                                  "w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded focus:outline-none",
                                 attrs: { type: "button" },
                                 on: {
                                   click: function($event) {
@@ -47270,6 +47243,17 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/assets/images/no-data.svg":
+/*!************************************************!*\
+  !*** ./resources/js/assets/images/no-data.svg ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/no-data.svg?f5f67bc064cc0a18b6ada9501b457825";
+
+/***/ }),
+
 /***/ "./resources/js/component.js":
 /*!***********************************!*\
   !*** ./resources/js/component.js ***!
@@ -52523,8 +52507,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\mofang\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\mofang\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\testo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\testo\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

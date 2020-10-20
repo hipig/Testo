@@ -5,13 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Events\LearnRecordItemStored;
 use App\Events\LearnRecordSubmitted;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\LearnRecordItemBatchRequest;
 use App\Http\Requests\Api\LearnRecordItemRequest;
 use App\Http\Resources\LearnRecordItemResource;
 use App\Models\LearnRecord;
-use App\Models\LearnRecordItem;
-use App\Models\Question;
-use Illuminate\Http\Request;
 
 class LearnRecordItemsController extends Controller
 {
