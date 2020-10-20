@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
             $table->json('labels')->nullable()->comment('标签');
             $table->string('description')->nullable()->comment('描述');
             $table->text('content')->comment('内容');
-            $table->string('view_count')->comment('浏览量');
+            $table->unsignedInteger('view_count')->comment('浏览量');
             $table->boolean('status')->default(true)->comment('状态');
             $table->timestamp('published_at')->nullable()->comment('发布时间');
             $table->timestamps();

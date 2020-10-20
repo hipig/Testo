@@ -9,7 +9,7 @@
           <router-link :to="{name: 'home'}" class="mr-8 py-2 inline-block font-medium hover:text-teal-500" :class="{'menu-active text-teal-500': currentMenu === 'home'}">首页</router-link>
           <router-link :to="{name: 'subjects.index'}" class="mr-8 py-2 inline-block font-medium hover:text-teal-500" :class="{'menu-active text-teal-500': currentMenu === 'subjects'}">题库</router-link>
           <router-link :to="{name: 'articles.index'}" class="mr-8 py-2 inline-block font-medium hover:text-teal-500" :class="{'menu-active text-teal-500': currentMenu === 'articles'}">资讯</router-link>
-          <router-link to="#" class="py-2 inline-block font-medium hover:text-teal-500">关于我们</router-link>
+          <router-link :to="{name: 'about.index'}" class="py-2 inline-block font-medium hover:text-teal-500" :class="{'menu-active text-teal-500': currentMenu === 'about'}">关于我们</router-link>
         </div>
         <template v-if="isLogin">
           <dropdown>
@@ -58,7 +58,8 @@
         routerList: {
           home: ['home'],
           subjects: ['subjects.index', 'subjects.show', 'mode.exercise', 'mode.test', 'mode.exam', 'quiz.result', 'quiz.result.detail'],
-          articles: ['articles.index', 'articles.show']
+          articles: ['articles.index', 'articles.show'],
+          about: ['about.index']
         }
       }
     },

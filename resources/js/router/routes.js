@@ -16,6 +16,8 @@ import QuizItems from "@/views/quiz/Items"
 
 import Articles from "@/views/articles/Index"
 
+import About from "@/views/about/Index"
+
 import AuthLogin from "@/views/auth/Login"
 import AuthRegister from "@/views/auth/Register"
 
@@ -105,6 +107,11 @@ export default [
             component: Articles
           }
         ]
+      },
+      {
+        path: '/about/:name?',
+        name: 'about.index',
+        component: About,
       },
       {
         path: '/auth',

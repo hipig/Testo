@@ -45,17 +45,17 @@
                   <div class="flex items-center">
                     <div class="flex flex-wrap">
                       <div class="flex items-center text-gray-400 mr-5">
-                        <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="leading-none">{{ item.published_at }}</span>
+                        <span class="leading-none ml-1">{{ item.published_at }}</span>
                       </div>
                       <div class="flex items-center text-gray-400">
-                        <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                          <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="leading-none">{{ item.view_count }}</span>
+                        <span class="leading-none ml-1">{{ item.view_count }}</span>
                       </div>
                     </div>
                   </div>
