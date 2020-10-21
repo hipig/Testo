@@ -22,24 +22,22 @@
         <button type="button" class="px-3 h-8 flex items-center justify-center border-2 border-teal-500 text-teal-500 bg-teal-50 rounded focus:outline-none" @click="handle">马上练习</button>
       </div>
     </div>
-    <transition
-      enter-class="opacity-0"
-      enter-active-class="ease-out duration-300"
-      enter-to-class="opacity-100"
-      leave-class="transform opacity-100"
-      leave-active-class="ease-out duration-200"
-      leave-to-class="opacity-0"
-    >
-      <div class="ml-5" v-if="isActive">
+    <t-collapse-transition>
+      <div class="ml-5" v-show="isActive">
         <slot></slot>
       </div>
-    </transition>
+    </t-collapse-transition>
   </div>
 </template>
 
 <script>
+  import TCollapseTransition from "../common/collapse-transition"
+
   export default {
     name: "ChapterItem",
+    components: {
+      TCollapseTransition
+    },
     props: {
       name: {
         type: String | Number | Object,

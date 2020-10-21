@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BankItemSeeder::class);
         $this->call(BankItemSeeder::class);
         $this->call(ArticleSeeder::class);
+        $this->call(AboutSeeder::class);
     }
 }

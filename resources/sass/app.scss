@@ -39,6 +39,10 @@
   }
 }
 
+.collapse-transition {
+  transition: height 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+}
+
 // 滚动条
 .scrollbar-hover::-webkit-scrollbar,
 .scrollbar-hover::-webkit-scrollbar-button,

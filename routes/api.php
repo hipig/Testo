@@ -32,6 +32,9 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
     Route::get('articles', 'ArticlesController@index')->name('articles.index');
     Route::get('hot-articles', 'ArticlesController@hotList')->name('articles.index.hot');
     Route::get('articles/{article}', 'ArticlesController@show')->name('articles.show');
+    // 关于我们
+    Route::get('abouts', 'AboutsController@index')->name('abouts.index');
+    Route::get('abouts/{about:name}', 'AboutsController@show')->name('abouts.show');
 
     Route::middleware('throttle:' . config('api.rate_limits.sign'))
         ->group(function () {
