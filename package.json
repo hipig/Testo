@@ -29,6 +29,7 @@
         "throttle-debounce": "^2.3.0",
         "v-calendar": "^1.0.8",
         "vue": "^2.6.12",
+        "vue-lottie": "^0.2.1",
         "vue-router": "^3.4.3",
         "vue-template-compiler": "^2.6.12",
         "vuex": "^3.5.1",

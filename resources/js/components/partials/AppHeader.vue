@@ -15,9 +15,11 @@
           <dropdown>
             <div class="flex items-center cursor-pointer">
               <img class="w-7 h-7 rounded-full border border-gray-200" :src="userInfo.avatar_url" alt="userInfo.name" v-if="userInfo.avatar_url">
-              <svg class="w-6 h-6 fill-current text-gray-500" viewBox="0 0 20 20" v-else>
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
-              </svg>
+              <span class="inline-flex items-center justify-center h-6 w-6 rounded-full overflow-hidden bg-gray-100" v-else>
+                <svg class="w-full h-full fill-current text-gray-300" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </span>
               <span class="ml-1 leading-none">{{ userInfo.name }}</span>
             </div>
             <div slot="dropdown-menu" class="w-48 rounded-lg shadow-lg bg-white border-t border-gray-100">
