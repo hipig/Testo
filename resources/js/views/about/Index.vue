@@ -4,7 +4,7 @@
       <div class="text-sm">
         <a href="/">首页</a>
         <span> / </span>
-        <span class="text-gray-400">个人中心</span>
+        <span class="text-gray-400">关于我们</span>
       </div>
       <div class="mt-2 pb-20">
         <div class="flex flex-wrap -mx-3">

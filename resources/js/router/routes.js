@@ -28,6 +28,8 @@ import MyExam from "@/views/my/learn/Exam"
 import MyNote from "@/views/my/learn/Note"
 import MyCollect from "@/views/my/learn/Collect"
 
+import AdminLogin from "@/views/admin/auth/Login"
+
 export default [
   {
     path: '',
@@ -167,6 +169,18 @@ export default [
             component: MyCollect
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: BlankLayout,
+    children: [
+      {
+        path: 'login',
+        name: 'admin.login',
+        component: AdminLogin
       }
     ]
   }

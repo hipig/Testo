@@ -13315,6 +13315,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AppFooter"
 });
@@ -14533,13 +14555,6 @@ var _assets_lottie_banner_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PUR
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -14646,6 +14661,46 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "admin.login"
 });
 
 /***/ }),
@@ -37472,9 +37527,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return !(_vm.$route.meta.showFooter && _vm.$route.meta.showFooter === false)
+    ? _c("footer", { staticClass: "bg-gray-800 border-t border-gray-100" }, [
+        _vm._m(0)
+      ])
+    : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "max-w-6xl w-full mx-auto p-6" }, [
+      _c("div", { staticClass: "flex items-center justify-between" }, [
+        _c("div", [
+          _c("div", { staticClass: "flex flex-wrap items-center -mx-2" }, [
+            _c("div", { staticClass: "inline-flex px-2" }, [
+              _c("a", { staticClass: "text-gray-200", attrs: { href: "#" } }, [
+                _vm._v("关于我们")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "hidden sm:inline-flex px-1" }, [
+              _c("span", { staticClass: "select-none text-gray-200" }, [
+                _vm._v("-")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "inline-flex px-2" }, [
+              _c("a", { staticClass: "text-gray-200", attrs: { href: "#" } }, [
+                _vm._v("联系我们")
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-gray-400" }, [
+          _vm._v("\n        Copyright © Testo. All Rights Reserved\n      ")
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -39131,7 +39225,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("router-view")], 1)
+  return _c("div", { staticClass: "min-h-screen" }, [_c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39429,169 +39523,56 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "py-5 px-4" }, [
+    _c("div", { staticClass: "flex flex-col" }, [
       _c("div", { staticClass: "flex flex-col py-20" }, [
         _c("div", { staticClass: "max-w-6xl w-full mx-auto" }, [
           _vm._m(2),
           _vm._v(" "),
-          _c("div", { staticClass: "flex flex-wrap -mx-3" }, [
-            _c("div", { staticClass: "w-1/3 px-3" }, [
-              _c(
-                "div",
-                { staticClass: "shadow rounded-lg w-full bg-white p-5" },
-                [
-                  _c("div", { staticClass: "flex flex-wrap" }, [
+          _c("div", { staticClass: "shadow rounded-lg w-full bg-white p-8" }, [
+            _c("div", { staticClass: "flex flex-wrap" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-1 min-w-0 pl-6" }, [
+                _c("div", { staticClass: "flex flex-col" }, [
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex flex-wrap -mx-5 mt-5" }, [
                     _c(
                       "div",
-                      {
-                        staticClass: "flex flex-col items-center mr-5 text-base"
-                      },
-                      [
-                        _c(
-                          "svg",
+                      { staticClass: "w-1/2 px-5" },
+                      _vm._l(4, function(i) {
+                        return _c(
+                          "div",
                           {
+                            key: i,
                             staticClass:
-                              "w-12 h-12 stroke-current text-teal-500",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                              "flex flex-col py-3 border-b border-dashed border-gray-200"
                           },
-                          [
-                            _c("path", {
-                              attrs: { d: "M12 14l9-5-9-5-9 5 9 5z" }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("自考")])
-                      ]
+                          [_vm._m(5, true)]
+                        )
+                      }),
+                      0
                     ),
                     _vm._v(" "),
-                    _vm._m(3)
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-1/3 px-3" }, [
-              _c(
-                "div",
-                { staticClass: "shadow rounded-lg w-full bg-white p-5" },
-                [
-                  _c("div", { staticClass: "flex flex-wrap" }, [
                     _c(
                       "div",
-                      {
-                        staticClass: "flex flex-col items-center mr-5 text-base"
-                      },
-                      [
-                        _c(
-                          "svg",
+                      { staticClass: "w-1/2 px-5" },
+                      _vm._l(4, function(i) {
+                        return _c(
+                          "div",
                           {
+                            key: i,
                             staticClass:
-                              "w-12 h-12 stroke-current text-teal-500",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
+                              "flex flex-col py-3 border-b border-dashed border-gray-200"
                           },
-                          [
-                            _c("path", {
-                              attrs: { d: "M12 14l9-5-9-5-9 5 9 5z" }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("自考")])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(4)
+                          [_vm._m(6, true)]
+                        )
+                      }),
+                      0
+                    )
                   ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "w-1/3 px-3" }, [
-              _c(
-                "div",
-                { staticClass: "shadow rounded-lg w-full bg-white p-5" },
-                [
-                  _c("div", { staticClass: "flex flex-wrap" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "flex flex-col items-center mr-5 text-base"
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass:
-                              "w-12 h-12 stroke-current text-teal-500",
-                            attrs: { fill: "none", viewBox: "0 0 24 24" }
-                          },
-                          [
-                            _c("path", {
-                              attrs: { d: "M12 14l9-5-9-5-9 5 9 5z" }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                d:
-                                  "M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                "stroke-linecap": "round",
-                                "stroke-linejoin": "round",
-                                "stroke-width": "2",
-                                d:
-                                  "M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("自考")])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm._m(5)
-                  ])
-                ]
-              )
+                ])
+              ])
             ])
           ])
         ])
@@ -39599,67 +39580,212 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "flex flex-col py-20 bg-white" }, [
         _c("div", { staticClass: "max-w-6xl w-full mx-auto" }, [
-          _vm._m(6),
+          _vm._m(7),
           _vm._v(" "),
           _c("div", { staticClass: "flex flex-wrap" }, [
-            _c("div", { staticClass: "w-1/3 flex" }, [
+            _c(
+              "div",
+              { staticClass: "w-1/3 border-b border-dashed border-gray-200" },
+              [
+                _c("div", { staticClass: "flex flex-col py-10 pr-20" }, [
+                  _c(
+                    "div",
+                    { staticClass: "mb-3 flex flex-wrap items-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "w-12 h-12 flex items-center justify-center bg-green-200 text-green-500 rounded-full"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-6 h-6 stroke-current",
+                              attrs: { fill: "none", viewBox: "0 0 24 24" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d:
+                                    "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex-1 text-xl ml-5" }, [
+                        _vm._v("全真机考")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-gray-400" }, [
+                    _vm._v(
+                      "依据无纸化考试准确信息，紧跟考试形式，全面模拟无纸化考试流程"
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(8),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "w-1/3 border-b border-dashed border-gray-200" },
+              [
+                _c("div", { staticClass: "flex flex-col py-10 pl-20" }, [
+                  _c(
+                    "div",
+                    { staticClass: "mb-3 flex flex-wrap items-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "w-12 h-12 flex items-center justify-center bg-teal-200 text-teal-500 rounded-full"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-6 h-6 stroke-current",
+                              attrs: { fill: "none", viewBox: "0 0 24 24" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d: "M4 6h16M4 12h16M4 18h7"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex-1 text-xl ml-5" }, [
+                        _vm._v("章节练习")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-gray-400" }, [
+                    _vm._v(
+                      "紧跟考试大纲，海量试题综合演练，哪里不会练哪里，让你的水平提示更容易"
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(9),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-1/3 border-l border-r border-dashed border-gray-200"
+              },
+              [
+                _c("div", { staticClass: "flex flex-col py-10 px-20" }, [
+                  _c(
+                    "div",
+                    { staticClass: "mb-3 flex flex-wrap items-center" },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "w-12 h-12 flex items-center justify-center bg-blue-200 text-blue-500 rounded-full"
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "w-6 h-6 stroke-current",
+                              attrs: { fill: "none", viewBox: "0 0 24 24" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  "stroke-linecap": "round",
+                                  "stroke-linejoin": "round",
+                                  "stroke-width": "2",
+                                  d:
+                                    "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "flex-1 text-xl ml-5" }, [
+                        _vm._v("每日一练")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "text-gray-400" }, [
+                    _vm._v("每日一练，温习巩固考试加分必做项目，每天迈进一小步")
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-1/3" }, [
               _c(
                 "div",
                 {
                   staticClass:
-                    "flex-1 border-l border-dashed border-transparent"
+                    "flex flex-col items-center justify-center py-10 cursor-pointer"
                 },
                 [
-                  _c("div", { staticClass: "flex flex-col pb-20 pr-20" }, [
-                    _c(
-                      "div",
-                      { staticClass: "mb-3 flex flex-wrap items-center" },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "w-12 h-12 flex items-center justify-center bg-green-500 text-white rounded-full"
-                          },
-                          [
-                            _c(
-                              "svg",
-                              {
-                                staticClass: "w-6 h-6 stroke-current",
-                                attrs: { fill: "none", viewBox: "0 0 24 24" }
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    "stroke-linecap": "round",
-                                    "stroke-linejoin": "round",
-                                    "stroke-width": "2",
-                                    d:
-                                      "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                  }
-                                })
-                              ]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "flex-1 text-xl ml-3" }, [
-                          _vm._v("全真机考")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-gray-400" }, [
-                      _vm._v(
-                        "依据无纸化考试准确信息，紧跟考试形式，全面模拟无纸化考试流程"
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "w-12 h-12 flex items-center justify-center bg-gray-100 text-gray-400 rounded-full"
+                    },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          staticClass: "w-6 h-6 stroke-current",
+                          attrs: { fill: "none", viewBox: "0 0 24 24" }
+                        },
+                        [
+                          _c("path", {
+                            attrs: {
+                              "stroke-linecap": "round",
+                              "stroke-linejoin": "round",
+                              "stroke-width": "2",
+                              d: "M13 5l7 7-7 7M5 5l7 7-7 7"
+                            }
+                          })
+                        ]
                       )
-                    ])
-                  ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "flex-1 text-lg text-gray-400 mt-3" },
+                    [_vm._v("查看更多")]
+                  )
                 ]
               )
-            ]),
-            _vm._v(" "),
-            _vm._m(7)
+            ])
           ])
         ])
       ])
@@ -39711,7 +39837,7 @@ var staticRenderFns = [
           staticClass:
             "mt-2 text-3xl leading-8 tracking-tight text-teal-500 sm:text-4xl sm:leading-10"
         },
-        [_vm._v("题库分类")]
+        [_vm._v("题库更新")]
       ),
       _vm._v(" "),
       _c(
@@ -39720,7 +39846,7 @@ var staticRenderFns = [
           staticClass:
             "mt-4 max-w-2xl text-lg leading-7 text-gray-400 lg:mx-auto"
         },
-        [_vm._v("151个科目满足您的不同需求")]
+        [_vm._v("新鲜试题，实时放送")]
       )
     ])
   },
@@ -39730,38 +39856,74 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "flex-1 min-w-0 flex flex-wrap -mx-2 leading-tight" },
+      { staticClass: "w-56 pr-8 border-r border-dashed border-gray-200" },
       [
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
+        _c("div", { staticClass: "flex flex-col -mb-1" }, [
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl text-white bg-gradient-to-r from-teal-500 to-teal-400 cursor-pointer"
+              },
+              [_vm._v("会计")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl cursor-pointer"
+              },
+              [_vm._v("建筑类")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl cursor-pointer"
+              },
+              [_vm._v("金融")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl cursor-pointer"
+              },
+              [_vm._v("公务员")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl cursor-pointer"
+              },
+              [_vm._v("职业资格")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "py-1" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "h-12 flex items-center justify-center rounded-sm text-xl cursor-pointer"
+              },
+              [_vm._v("医学类")]
+            )
+          ])
         ])
       ]
     )
@@ -39772,38 +39934,39 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "flex-1 min-w-0 flex flex-wrap -mx-2 leading-tight" },
+      {
+        staticClass:
+          "flex items-center justify-between py-3 border-b border-teal-500 text-gray-500"
+      },
       [
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
+        _c("div", { staticClass: "flex flex-wrap" }, [
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("初级经济师")
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("中级经济师")
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("初级会计师")
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("中级会计师")
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("初级统计师")
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "mr-8", attrs: { href: "#" } }, [
+            _vm._v("中级统计师")
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
+        _c("a", { staticClass: "text-teal-500", attrs: { href: "#" } }, [
+          _vm._v("更多>>")
         ])
       ]
     )
@@ -39812,43 +39975,61 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex-1 min-w-0 flex flex-wrap -mx-2 leading-tight" },
-      [
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
+    return _c("div", { staticClass: "flex flex-wrap" }, [
+      _c("div", { staticClass: "flex-1 min-w-0 flex flex-col" }, [
+        _c("div", { staticClass: "leading-tight truncate" }, [
+          _vm._v("2016中级经济师考试《中级经济基础》精选试题及解析")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理专科")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "w-1/2 px-2 py-2 truncate" }, [
-          _c("a", { attrs: { href: "#" } }, [_vm._v("行政管理本科")])
+        _c("div", { staticClass: "text-xs text-gray-400 mt-1" }, [
+          _c("span", { staticClass: "mr-3" }, [_vm._v("2015-05-25")]),
+          _vm._v(" "),
+          _c("span", [_vm._v("总分：100")])
         ])
-      ]
-    )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex items-center ml-5" }, [
+        _c(
+          "a",
+          {
+            staticClass:
+              "inline-flex items-center h-6 px-4 border border-teal-500 text-teal-500 rounded-full",
+            attrs: { href: "#" }
+          },
+          [_vm._v("做题")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex flex-wrap" }, [
+      _c("div", { staticClass: "flex-1 min-w-0 flex flex-col" }, [
+        _c("div", { staticClass: "leading-tight truncate" }, [
+          _vm._v("2016中级经济师考试《中级经济基础》精选试题及解析")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-xs text-gray-400 mt-1" }, [
+          _c("span", { staticClass: "mr-3" }, [_vm._v("2015-05-25")]),
+          _vm._v(" "),
+          _c("span", [_vm._v("总分：100")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex items-center ml-5" }, [
+        _c(
+          "a",
+          {
+            staticClass:
+              "inline-flex items-center h-6 px-4 border border-teal-500 text-teal-500 rounded-full",
+            attrs: { href: "#" }
+          },
+          [_vm._v("做题")]
+        )
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -39861,7 +40042,7 @@ var staticRenderFns = [
           staticClass:
             "mt-2 text-3xl leading-8 tracking-tight text-teal-500 sm:text-4xl sm:leading-10"
         },
-        [_vm._v("题库特色")]
+        [_vm._v("平台特色")]
       ),
       _vm._v(" "),
       _c(
@@ -39878,35 +40059,65 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-1/3 flex" }, [
-      _c(
-        "div",
-        { staticClass: "flex-1 border-l border-dashed border-gray-100" },
-        [
-          _c("div", { staticClass: "flex flex-col pb-20 pr-20" }, [
-            _c("div", { staticClass: "mb-3 flex flex-wrap items-center" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "w-12 h-12 flex items-center justify-center bg-teal-500 text-white rounded-full"
-                },
-                [_c("span", { staticClass: "text-xl" }, [_vm._v("模")])]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex-1 text-xl ml-3" }, [
-                _vm._v("模拟考试")
-              ])
-            ]),
+    return _c(
+      "div",
+      {
+        staticClass:
+          "flex-1 border-l border-r border-b border-dashed border-gray-200"
+      },
+      [
+        _c("div", { staticClass: "flex flex-col py-10 px-20" }, [
+          _c("div", { staticClass: "mb-3 flex flex-wrap items-center" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "w-12 h-12 flex items-center justify-center bg-purple-200 text-purple-500 rounded-full"
+              },
+              [_c("span", { staticClass: "text-xl" }, [_vm._v("模")])]
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "text-gray-400" }, [
-              _vm._v(
-                "依托行业最先进智能算法，配合行业最全面考题，全真模拟实战现场"
-              )
+            _c("div", { staticClass: "flex-1 text-xl ml-5" }, [
+              _vm._v("模拟考试")
             ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-gray-400" }, [
+            _vm._v(
+              "依托行业最先进智能算法，配合行业最全面考题，全真模拟实战现场"
+            )
           ])
-        ]
-      )
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/3" }, [
+      _c("div", { staticClass: "flex flex-col py-10 pr-20" }, [
+        _c("div", { staticClass: "mb-3 flex flex-wrap items-center" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "w-12 h-12 flex items-center justify-center bg-indigo-200 text-indigo-500 rounded-full"
+            },
+            [_c("span", { staticClass: "text-xl" }, [_vm._v("真")])]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex-1 text-xl ml-5" }, [
+            _vm._v("历年真题")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-gray-400" }, [
+          _vm._v(
+            "囊括近10年真题，让你了解和掌握考试常出题型，有效掌握考试节奏，合理分配做题时间"
+          )
+        ])
+      ])
     ])
   }
 ]
@@ -40022,8 +40233,98 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("span", [_vm._v(" / ")]),
       _vm._v(" "),
-      _c("span", { staticClass: "text-gray-400" }, [_vm._v("个人中心")])
+      _c("span", { staticClass: "text-gray-400" }, [_vm._v("关于我们")])
     ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "min-h-screen bg-gray-50 flex items-center py-12 px-8" },
+      [
+        _c("div", { staticClass: "max-w-md w-full mx-auto" }, [
+          _c("div", { staticClass: "flex flex-col" }, [
+            _c(
+              "a",
+              {
+                staticClass:
+                  "block text-teal-500 text-xl font-extrabold text-center",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Testo 后台管理")]
+            ),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                staticClass:
+                  "mt-5 text-center text-3xl text-gray-900 text-center"
+              },
+              [_vm._v("登录你的账户")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mt-8" }, [
+              _c(
+                "div",
+                { staticClass: "bg-white py-8 px-10 shadow rounded-lg" },
+                [
+                  _c("div", { staticClass: "flex flex-col" }, [
+                    _c("div", { staticClass: "block w-full mb-6" }, [
+                      _c("span", { staticClass: "block mb-1 leading-tight" }, [
+                        _vm._v("用户名")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-input w-full text-sm",
+                        attrs: { type: "text", placeholder: "请输入用户名" }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "block w-full mb-6" }, [
+                      _c("span", { staticClass: "block mb-1 leading-tight" }, [
+                        _vm._v("密码")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-input w-full text-sm",
+                        attrs: { type: "password", placeholder: "请输入密码" }
+                      })
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -66289,6 +66590,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_my_learn_Exam__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @/views/my/learn/Exam */ "./resources/js/views/my/learn/Exam.vue");
 /* harmony import */ var _views_my_learn_Note__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @/views/my/learn/Note */ "./resources/js/views/my/learn/Note.vue");
 /* harmony import */ var _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @/views/my/learn/Collect */ "./resources/js/views/my/learn/Collect.vue");
+/* harmony import */ var _views_admin_auth_Login__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @/views/admin/auth/Login */ "./resources/js/views/admin/auth/Login.vue");
+
 
 
 
@@ -66420,6 +66723,15 @@ __webpack_require__.r(__webpack_exports__);
       name: 'my.collect',
       component: _views_my_learn_Collect__WEBPACK_IMPORTED_MODULE_21__["default"]
     }]
+  }]
+}, {
+  path: '/admin',
+  name: 'admin',
+  component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_1__["default"],
+  children: [{
+    path: 'login',
+    name: 'admin.login',
+    component: _views_admin_auth_Login__WEBPACK_IMPORTED_MODULE_22__["default"]
   }]
 }]);
 
@@ -67210,6 +67522,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_39cad8fe___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_39cad8fe___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/auth/Login.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/views/admin/auth/Login.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Login.vue?vue&type=template&id=b2225a3e& */ "./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e&");
+/* harmony import */ var _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Login.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/admin/auth/Login.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Login.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/auth/Login.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Login.vue?vue&type=template&id=b2225a3e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/auth/Login.vue?vue&type=template&id=b2225a3e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Login_vue_vue_type_template_id_b2225a3e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
