@@ -4,8 +4,8 @@ import MyLayout from "@/layout/MyLayout"
 
 
 import Home from "@/views/Home"
-import Subjects from "@/views/subjects/Index"
-import SubjectsShow from "@/views/subjects/Show"
+import Subjects from "@/views/subject/Index"
+import SubjectsShow from "@/views/subject/Show"
 
 import QuizModeExercise from "@/views/quiz/mode/Exercise"
 import QuizModeTest from "@/views/quiz/mode/Test"
@@ -14,7 +14,7 @@ import QuizResult from "@/views/quiz/Result"
 import QuizResultDetail from "@/views/quiz/ResultDetail"
 import QuizItems from "@/views/quiz/Items"
 
-import Articles from "@/views/articles/Index"
+import Articles from "@/views/article/Index"
 
 import About from "@/views/about/Index"
 
@@ -29,6 +29,7 @@ import MyNote from "@/views/my/learn/Note"
 import MyCollect from "@/views/my/learn/Collect"
 
 import AdminLogin from "@/views/admin/auth/Login"
+import AdminDashboard from "@/views/admin/dashboard/Index"
 
 export default [
   {
@@ -175,8 +176,14 @@ export default [
   {
     path: '/admin',
     name: 'admin',
+    redirect: '/admin/dashboard',
     component: BlankLayout,
     children: [
+      {
+        path: 'dashboard',
+        name: 'admin.dashboard',
+        component: AdminDashboard
+      },
       {
         path: 'login',
         name: 'admin.login',

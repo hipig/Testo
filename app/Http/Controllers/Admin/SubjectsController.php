@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SubjectRequest;
 use App\Http\Resources\SubjectResource;
 use App\Models\Subject;
-use App\Services\SubjectService;
 use Illuminate\Http\Request;
 
 class SubjectsController extends Controller
@@ -17,7 +15,7 @@ class SubjectsController extends Controller
         return SubjectResource::collection($subjects);
     }
 
-    public function store(SubjectRequest $request)
+    public function store(Request $request)
     {
         $subject = Subject::create($request->only([
             'title', 'name', 'parent_id', 'thumb', 'is_special',

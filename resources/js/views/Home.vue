@@ -26,8 +26,8 @@
       <div class="flex flex-col py-20">
         <div class="max-w-6xl w-full mx-auto">
           <div class="text-center mb-10">
-            <h3 class="mt-2 text-3xl leading-8 tracking-tight text-teal-500 sm:text-4xl sm:leading-10">题库更新</h3>
-            <p class="mt-4 max-w-2xl text-lg leading-7 text-gray-400 lg:mx-auto">新鲜试题，实时放送</p>
+            <h3 class="mt-2 tracking-tight font-semibold text-gray-900 text-4xl leading-8">题库更新</h3>
+            <p class="mt-4 max-w-2xl text-lg leading-7 text-gray-600 lg:mx-auto">新鲜试题，实时放送</p>
           </div>
           <div class="shadow rounded-lg w-full bg-white p-8">
             <div class="flex flex-wrap">
@@ -109,8 +109,8 @@
       <div class="flex flex-col py-20 bg-white">
         <div class="max-w-6xl w-full mx-auto">
           <div class="text-center mb-10">
-            <h3 class="mt-2 text-3xl leading-8 tracking-tight text-teal-500 sm:text-4xl sm:leading-10">平台特色</h3>
-            <p class="mt-4 max-w-2xl text-lg leading-7 text-gray-400 lg:mx-auto">5大特色，为考试保驾护航</p>
+            <h3 class="mt-2 tracking-tight font-semibold text-gray-900 text-4xl leading-8">平台特色</h3>
+            <p class="mt-4 max-w-2xl text-lg leading-7 text-gray-600 lg:mx-auto">5大特色，为考试保驾护航</p>
           </div>
           <div class="flex flex-wrap">
             <div class="w-1/3 border-b border-dashed border-gray-200">

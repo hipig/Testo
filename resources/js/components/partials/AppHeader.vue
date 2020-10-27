@@ -1,8 +1,8 @@
 <template>
   <div class="bg-white px-4 relative" :class="{'shadow-sm': currentMenu !== 'home'}">
     <div class="flex items-center justify-between mx-auto max-w-6xl">
-      <a href="/" class="flex items-center py-2">
-        <span class="text-2xl text-teal-500 font-semibold">Testo</span>
+      <a href="/" class="flex items-center py-2 text-teal-500">
+        <span class="text-2xl font-semibold font-mono">Testo</span>
       </a>
       <div class="flex-1 flex items-center justify-between ml-12 py-4">
         <div class="text-sm">
