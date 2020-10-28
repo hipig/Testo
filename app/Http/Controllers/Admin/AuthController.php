@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\AdminUserRequest;
+use App\Http\Resources\AdminUserResource;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -11,6 +12,11 @@ class AuthController extends Controller
     {
         $token = $request->access_token;
         return $this->respondWithToken($token)->setStatusCode(201);
+    }
+
+    public function me(Request $request)
+    {
+        return AdminUserResource::make($request->user('admin'));
     }
 
     public function logout()

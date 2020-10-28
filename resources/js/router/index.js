@@ -33,7 +33,7 @@ function before(to, from, next) {
 
   if (to.matched.some(res => res.name.startsWith('admin'))) {
     const whiteList = ['admin.login']
-    if (store.getters['admin/token']) {
+    if (store.getters['adminUser/token']) {
       if (to.path === '/admin/login') {
         next({ name: 'admin.dashboard', replace: true })
       } else {

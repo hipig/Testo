@@ -16,7 +16,7 @@ class AdminUserRequest extends FormRequest
             'password' => [
                 'required',
                 'alpha_dash',
-                'min:6',
+                'min:5',
                 function($attribute, $value, $fail) {
                     $credentials = $this->only('username', 'password');
                     if (!$token = \Auth::guard('admin')->attempt($credentials)) {
@@ -26,6 +26,14 @@ class AdminUserRequest extends FormRequest
                     $this->offsetSet('access_token', $token);
                 }
             ]
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'username' => '用户名',
+            'password' => '密码'
         ];
     }
 }

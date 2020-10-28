@@ -104,3 +104,14 @@ Route::prefix('v1')->name('api.v1.')->namespace('Api')->group(function() {
         Route::post('uploads', 'UploadsController@store')->name('uploads.store');
     });
 });
+
+Route::prefix('v1/admin')->name('api.v1.admin.')->namespace('Admin')->group(function () {
+    Route::post('login', 'AuthController@login')->name('login');
+
+    Route::middleware('auth:admin')->group(function () {
+
+        Route::get('me', 'AuthController@me')->name('me');
+        Route::delete('logout', 'AuthController@logout')->name('logout');
+
+    });
+});

@@ -14705,6 +14705,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -14734,8 +14741,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "admin.login"
+  name: "admin.login",
+  data: function data() {
+    return {
+      loginForm: {
+        username: '',
+        password: ''
+      }
+    };
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])({
+    'login': 'adminUser/login',
+    'getUserInfo': 'adminUser/getUserInfo'
+  })), {}, {
+    submitLogin: function submitLogin() {
+      var _this = this;
+
+      this.login(this.loginForm).then(function () {
+        _this.$Message.success('登录成功');
+
+        _this.getUserInfo();
+
+        _this.$router.push({
+          name: 'admin',
+          replace: true
+        });
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -40440,100 +40475,138 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "min-h-screen bg-gray-50 flex items-center py-12 px-8" },
+    [
+      _c("div", { staticClass: "max-w-md w-full mx-auto" }, [
+        _c("div", { staticClass: "flex flex-col" }, [
+          _c(
+            "a",
+            {
+              staticClass:
+                "block text-teal-500 text-2xl font-extrabold font-mono leading-none text-center",
+              attrs: { href: "/" }
+            },
+            [_vm._v("Testo")]
+          ),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              staticClass: "mt-3 text-center text-3xl text-gray-900 text-center"
+            },
+            [_vm._v("登录你的账户")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-8" }, [
+            _c(
+              "div",
+              { staticClass: "bg-white py-8 px-10 shadow rounded-lg" },
+              [
+                _c("div", { staticClass: "flex flex-col" }, [
+                  _c("div", { staticClass: "mb-6" }, [
+                    _c("div", { staticClass: "mb-1 leading-tight" }, [
+                      _vm._v("用户名")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loginForm.username,
+                          expression: "loginForm.username"
+                        }
+                      ],
+                      staticClass:
+                        "form-input w-full text-sm focus:shadow-outline-teal",
+                      attrs: { type: "text", placeholder: "请输入用户名" },
+                      domProps: { value: _vm.loginForm.username },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loginForm,
+                            "username",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mb-4" }, [
+                    _c("div", { staticClass: "mb-1 leading-tight" }, [
+                      _vm._v("密码")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.loginForm.password,
+                          expression: "loginForm.password"
+                        }
+                      ],
+                      staticClass:
+                        "form-input w-full text-sm focus:shadow-outline-teal",
+                      attrs: { type: "password", placeholder: "请输入密码" },
+                      domProps: { value: _vm.loginForm.password },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.loginForm,
+                            "password",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "w-full inline-flex items-center justify-center font-medium focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white text-base",
+                      attrs: { type: "button" },
+                      on: { click: _vm.submitLogin }
+                    },
+                    [_vm._v("登录")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "min-h-screen bg-gray-50 flex items-center py-12 px-8" },
-      [
-        _c("div", { staticClass: "max-w-md w-full mx-auto" }, [
-          _c("div", { staticClass: "flex flex-col" }, [
-            _c(
-              "a",
-              {
-                staticClass:
-                  "block text-teal-500 text-2xl font-extrabold font-mono leading-none text-center",
-                attrs: { href: "/" }
-              },
-              [_vm._v("Testo")]
-            ),
-            _vm._v(" "),
-            _c(
-              "p",
-              {
-                staticClass:
-                  "mt-3 text-center text-3xl text-gray-900 text-center"
-              },
-              [_vm._v("登录你的账户")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "mt-8" }, [
-              _c(
-                "div",
-                { staticClass: "bg-white py-8 px-10 shadow rounded-lg" },
-                [
-                  _c("div", { staticClass: "flex flex-col" }, [
-                    _c("div", { staticClass: "mb-6" }, [
-                      _c("div", { staticClass: "mb-1 leading-tight" }, [
-                        _vm._v("用户名")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass:
-                          "form-input w-full text-sm focus:shadow-outline-teal",
-                        attrs: { type: "text", placeholder: "请输入用户名" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "mb-4" }, [
-                      _c("div", { staticClass: "mb-1 leading-tight" }, [
-                        _vm._v("密码")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        staticClass:
-                          "form-input w-full text-sm focus:shadow-outline-teal",
-                        attrs: { type: "password", placeholder: "请输入密码" }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "mb-3 flex items-center justify-end" },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "text-sm inline-flex text-teal-500",
-                            attrs: { href: "#" }
-                          },
-                          [_vm._v("忘记密码？")]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "w-full inline-flex items-center justify-center font-medium focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white text-base",
-                        attrs: { type: "button" }
-                      },
-                      [_vm._v("登录")]
-                    )
-                  ])
-                ]
-              )
-            ])
-          ])
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "mb-3 flex items-center justify-end" }, [
+      _c(
+        "a",
+        {
+          staticClass: "text-sm inline-flex text-teal-500",
+          attrs: { href: "#" }
+        },
+        [_vm._v("忘记密码？")]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -63362,6 +63435,56 @@ var getAboutsShow = function getAboutsShow(name) {
 
 /***/ }),
 
+/***/ "./resources/js/api/admin/user.js":
+/*!****************************************!*\
+  !*** ./resources/js/api/admin/user.js ***!
+  \****************************************/
+/*! exports provided: login, logout, me, changePassword */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "login", function() { return login; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "me", function() { return me; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changePassword", function() { return changePassword; });
+/* harmony import */ var _utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/adminRequest */ "./resources/js/utils/adminRequest.js");
+
+var api = {
+  login: '/login',
+  me: '/me',
+  logout: '/logout',
+  changePassword: '/change-password'
+};
+var login = function login(params) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.login,
+    method: 'post',
+    data: params
+  });
+};
+var logout = function logout() {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.logout,
+    method: 'delete'
+  });
+};
+var me = function me() {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.me,
+    method: 'get'
+  });
+};
+var changePassword = function changePassword(params) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.changePassword,
+    method: 'post',
+    data: params
+  });
+};
+
+/***/ }),
+
 /***/ "./resources/js/api/article.js":
 /*!*************************************!*\
   !*** ./resources/js/api/article.js ***!
@@ -66791,7 +66914,7 @@ function before(to, from, next) {
   })) {
     var whiteList = ['admin.login'];
 
-    if (_store__WEBPACK_IMPORTED_MODULE_3__["default"].getters['admin/token']) {
+    if (_store__WEBPACK_IMPORTED_MODULE_3__["default"].getters['adminUser/token']) {
       if (to.path === '/admin/login') {
         next({
           name: 'admin.dashboard',
@@ -67113,10 +67236,91 @@ webpackContext.id = "./resources/js/store/modules sync .*\\.js$";
 /*!*************************************************!*\
   !*** ./resources/js/store/modules/adminUser.js ***!
   \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: state, getters, mutations, actions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getters", function() { return getters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mutations", function() { return mutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "actions", function() { return actions; });
+/* harmony import */ var _mutation_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mutation-types */ "./resources/js/store/mutation-types.js");
+/* harmony import */ var _api_admin_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/admin/user */ "./resources/js/api/admin/user.js");
+var _mutations;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+ // state
+
+var state = {
+  token: "",
+  userInfo: {}
+}; // getters
+
+var getters = {
+  token: function token(state) {
+    return state.token;
+  },
+  userInfo: function userInfo(state) {
+    return state.userInfo;
+  }
+}; // mutations
+
+var mutations = (_mutations = {}, _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_TOKEN"], function (state, token) {
+  state.token = token;
+}), _defineProperty(_mutations, _mutation_types__WEBPACK_IMPORTED_MODULE_0__["SET_USERINFO"], function (state, info) {
+  state.userInfo = info;
+}), _mutations); // actions
+
+var actions = {
+  // 登录
+  login: function login(_ref, params) {
+    var commit = _ref.commit;
+    return new Promise(function (resolve, reject) {
+      Object(_api_admin_user__WEBPACK_IMPORTED_MODULE_1__["login"])(params).then(function (res) {
+        commit("SET_TOKEN", res.access_token);
+        resolve(res);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  getUserInfo: function getUserInfo(_ref2) {
+    var commit = _ref2.commit;
+    return new Promise(function (resolve, reject) {
+      Object(_api_admin_user__WEBPACK_IMPORTED_MODULE_1__["me"])().then(function (res) {
+        commit("SET_USERINFO", res);
+        resolve(res);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  logout: function logout(_ref3) {
+    var commit = _ref3.commit;
+    return new Promise(function (resolve) {
+      Object(_api_admin_user__WEBPACK_IMPORTED_MODULE_1__["logout"])().then(function () {
+        resolve();
+      })["catch"](function () {
+        resolve();
+      }).then(function () {
+        commit("SET_TOKEN", "");
+        commit("SET_USERINFO", {});
+      });
+    });
+  },
+  clear: function clear(_ref4) {
+    var commit = _ref4.commit;
+    commit("SET_TOKEN", "");
+    commit("SET_USERINFO", {});
+  },
+  setUserInfo: function setUserInfo(_ref5, userInfo) {
+    var commit = _ref5.commit;
+    commit("SET_USERINFO", userInfo);
+  }
+};
 
 /***/ }),
 
@@ -67255,6 +67459,81 @@ __webpack_require__.r(__webpack_exports__);
 var SET_TOKEN = 'SET_TOKEN';
 var SET_USERINFO = 'SET_USERINFO';
 var SET_USERCONFIG = 'SET_USERCONFIG';
+
+/***/ }),
+
+/***/ "./resources/js/utils/adminRequest.js":
+/*!********************************************!*\
+  !*** ./resources/js/utils/adminRequest.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/router */ "./resources/js/router/index.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/store */ "./resources/js/store/index.js");
+/* harmony import */ var _components_common_message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/message */ "./resources/js/components/common/message/index.js");
+
+
+
+ // 创建 axios 实例
+
+var service = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+  baseURL: window.config.api_url + '/admin',
+  timeout: 6000
+});
+service.interceptors.request.use(function (config) {
+  var token = _store__WEBPACK_IMPORTED_MODULE_2__["default"].getters['adminUser/token'];
+
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token;
+  }
+
+  return config;
+});
+service.interceptors.response.use(function (response) {
+  return response.data;
+}, function (error) {
+  var response = error.response;
+
+  switch (response.status) {
+    case 401:
+      var token = _store__WEBPACK_IMPORTED_MODULE_2__["default"].getters['adminUser/token'];
+
+      if (token) {
+        _store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('adminUser/clear');
+      }
+
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请您先登录！');
+      _router__WEBPACK_IMPORTED_MODULE_1__["default"].push({
+        name: 'admin.login'
+      });
+      break;
+
+    case 403:
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('您的权限不足，拒绝访问！');
+      break;
+
+    case 422:
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(Object.values(response.data.errors)[0][0]);
+      break;
+
+    case 429:
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('重复访问次数过多！');
+      break;
+
+    case 400:
+    case 500:
+      _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error(response.data.message || '请求出现错误或服务器异常，请稍后再试！');
+      break;
+  }
+
+  return Promise.reject(response);
+});
+/* harmony default export */ __webpack_exports__["default"] = (service);
 
 /***/ }),
 

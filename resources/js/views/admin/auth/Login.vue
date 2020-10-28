@@ -9,16 +9,16 @@
             <div class="flex flex-col">
               <div class="mb-6">
                 <div class="mb-1 leading-tight">用户名</div>
-                <input type="text" class="form-input w-full text-sm focus:shadow-outline-teal" placeholder="请输入用户名">
+                <input type="text" v-model="loginForm.username" class="form-input w-full text-sm focus:shadow-outline-teal" placeholder="请输入用户名">
               </div>
               <div class="mb-4">
                 <div class="mb-1 leading-tight">密码</div>
-                <input type="password" class="form-input w-full text-sm focus:shadow-outline-teal" placeholder="请输入密码">
+                <input type="password" v-model="loginForm.password" class="form-input w-full text-sm focus:shadow-outline-teal" placeholder="请输入密码">
               </div>
               <div class="mb-3 flex items-center justify-end">
                 <a href="#" class="text-sm inline-flex text-teal-500">忘记密码？</a>
               </div>
-              <button type="button" class="w-full inline-flex items-center justify-center font-medium focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white text-base">登录</button>
+              <button type="button" class="w-full inline-flex items-center justify-center font-medium focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white text-base" @click="submitLogin">登录</button>
             </div>
           </div>
         </div>
@@ -28,7 +28,31 @@
 </template>
 
 <script>
+  import { mapActions } from "vuex"
+
   export default {
-    name: "admin.login"
+    name: "admin.login",
+    data () {
+      return {
+        loginForm: {
+          username: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      ...mapActions({
+        'login': 'adminUser/login',
+        'getUserInfo': 'adminUser/getUserInfo',
+      }),
+      submitLogin() {
+        this.login(this.loginForm)
+          .then(() => {
+            this.$Message.success('登录成功')
+            this.getUserInfo()
+            this.$router.push({name: 'admin', replace: true})
+          })
+      }
+    }
   }
 </script>
