@@ -28,7 +28,7 @@
   import { getSubjectsTree } from "@/api/subject"
 
   export default {
-    name: "subjects",
+    name: "subject.index",
     data () {
       return {
         subjectList: []

@@ -80,7 +80,7 @@
   import { getSubjectsTree, getSubjectsShow } from "@/api/subject"
 
   export default {
-    name: "subjects.show",
+    name: "subject.show",
     components: {
       ChapterList,
       ExamList,

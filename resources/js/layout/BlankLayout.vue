@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen">
+  <div>
     <router-view/>
   </div>
 </template>

@@ -1,6 +1,7 @@
 import MainLayout from "@/layout/MainLayout"
 import BlankLayout from "@/layout/BlankLayout"
 import MyLayout from "@/layout/MyLayout"
+import AdminLayout from "@/layout/AdminLayout"
 
 
 import Home from "@/views/Home"
@@ -30,6 +31,7 @@ import MyCollect from "@/views/my/learn/Collect"
 
 import AdminLogin from "@/views/admin/auth/Login"
 import AdminDashboard from "@/views/admin/dashboard/Index"
+import AdminSubject from "@/views/admin/subject/Index"
 
 export default [
   {
@@ -175,14 +177,27 @@ export default [
   },
   {
     path: '/admin',
-    name: 'admin',
+    name: 'admin.layout',
     redirect: '/admin/dashboard',
     component: BlankLayout,
     children: [
       {
-        path: 'dashboard',
-        name: 'admin.dashboard',
-        component: AdminDashboard
+        path: '/',
+        name: 'admin',
+        redirect: '/admin/dashboard',
+        component: AdminLayout,
+        children: [
+          {
+            path: 'dashboard',
+            name: 'admin.dashboard',
+            component: AdminDashboard,
+          },
+          {
+            path: 'subject',
+            name: 'admin.subject.index',
+            component: AdminSubject,
+          }
+        ]
       },
       {
         path: 'login',
