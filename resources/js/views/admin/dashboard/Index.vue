@@ -1,9 +1,9 @@
 <template>
-  <div class="flex-1 flex flex-col">
-    <div class="flex items-center pt-6 px-4 mb-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col">
+    <div class="flex items-center mb-4">
       <h1 class="text-2xl font-semibold text-gray-900">仪表盘</h1>
     </div>
-    <div class="py-4 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col py-4">
       <div class="flex flex-wrap -mx-3">
         <div class="w-1/4 px-3">
           <div class="bg-white shadow rounded-lg">

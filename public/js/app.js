@@ -12215,10 +12215,9 @@ __webpack_require__.r(__webpack_exports__);
         this.changePage(page);
       }
     },
-    changeSize: function changeSize(size) {
-      this.currentPageSize = size;
+    changeSize: function changeSize() {
       this.changePage(1);
-      this.$emit('pagesize-change', size);
+      this.$emit('pagesize-change', this.currentPageSize);
     }
   }
 });
@@ -14326,6 +14325,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AdminLayout",
   data: function data() {
@@ -15017,14 +15018,148 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_admin_subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/api/admin/subject */ "./resources/js/api/admin/subject.js");
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "admin.subject.index"
+  name: "admin.subject.index",
+  components: {
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      filterForm: {},
+      subjectList: [],
+      currentPage: 1,
+      pageSize: 10,
+      total: 0,
+      isLoading: null
+    };
+  },
+  mounted: function mounted() {
+    this.getSubjectList();
+  },
+  methods: {
+    getSubjectList: function getSubjectList() {
+      var _this = this;
+
+      this.isLoading = true;
+      var params = this.filterForm;
+      params.page = this.currentPage;
+      params.page_size = this.pageSize;
+      Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_1__["getSubjects"])(params).then(function (res) {
+        _this.subjectList = res.data;
+        _this.total = res.meta.total;
+      })["finally"](function (_) {
+        _this.isLoading = false;
+      });
+    },
+    changePage: function changePage(page) {
+      this.currentPage = page;
+      this.getSubjectList();
+    },
+    changePageSize: function changePageSize(size) {
+      this.pageSize = size;
+      this.getSubjectList();
+    },
+    handleDelete: function handleDelete(item) {
+      var _this2 = this;
+
+      this.$Dialog.confirm('是否确认删除？', '温馨提示').then(function (_) {
+        Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_1__["deleteSubjects"])(item.id).then(function (_) {
+          _this2.$Message.success('操作成功');
+
+          _this2.getSubjectList();
+        });
+      })["catch"](function (_) {});
+    }
+  }
 });
 
 /***/ }),
@@ -37165,22 +37300,23 @@ var render = function() {
                     ],
                     staticClass:
                       "form-select border border-gray-200 py-0 pr-7 h-7 text-xs focus:border-gray-200 focus:shadow-none",
-                    attrs: { size: _vm.size },
                     on: {
-                      "on-change": _vm.changeSize,
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.currentPageSize = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.currentPageSize = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.changeSize
+                      ]
                     }
                   },
                   _vm._l(_vm.pageSizeOpts, function(item) {
@@ -37212,7 +37348,7 @@ var render = function() {
                       }
                     ],
                     staticClass:
-                      "w-7 h-7 mx-2 border border-gray-200 flex items-center text-center rounded focus:outline-none",
+                      "w-8 h-7 mx-2 border border-gray-200 flex items-center text-center rounded focus:outline-none",
                     attrs: { type: "text" },
                     domProps: { value: _vm.jumpPageNum },
                     on: {
@@ -39679,7 +39815,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "min-h-screen flex" }, [
     _c("div", { staticClass: "hidden md:flex md:flex-shrink-0" }, [
-      _c("div", { staticClass: "bg-gray-800 w-64 flex flex-col" }, [
+      _c("div", { staticClass: "bg-teal-800 w-64 flex flex-col" }, [
         _c("div", { staticClass: "flex-1 flex flex-col pb-4" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -39738,7 +39874,7 @@ var render = function() {
                       "p",
                       {
                         staticClass:
-                          "text-xs leading-4 font-medium text-gray-400 transition ease-in-out duration-150"
+                          "text-xs leading-4 font-medium text-teal-300 transition ease-in-out duration-150"
                       },
                       [_vm._v("修改资料")]
                     )
@@ -39750,7 +39886,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "nav",
-            { staticClass: "flex-1 mt-5 bg-gray-800" },
+            { staticClass: "flex-1 mt-5 bg-teal-800" },
             [
               _c(
                 "router-link",
@@ -39759,8 +39895,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "dashboard"
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
                   ],
                   attrs: { to: { name: "admin.dashboard" } }
                 },
@@ -39797,8 +39933,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "subject"
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
                   ],
                   attrs: { to: { name: "admin.subject.index" } }
                 },
@@ -39841,7 +39977,12 @@ var render = function() {
                 "a",
                 {
                   staticClass:
-                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
+                  class: [
+                    _vm.currentMenu === "bank"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                  ],
                   attrs: { href: "#" }
                 },
                 [
@@ -39874,7 +40015,12 @@ var render = function() {
                 "a",
                 {
                   staticClass:
-                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
+                  class: [
+                    _vm.currentMenu === "question"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                  ],
                   attrs: { href: "#" }
                 },
                 [
@@ -39907,7 +40053,12 @@ var render = function() {
                 "a",
                 {
                   staticClass:
-                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
+                  class: [
+                    _vm.currentMenu === "user"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                  ],
                   attrs: { href: "#" }
                 },
                 [
@@ -39940,7 +40091,12 @@ var render = function() {
                 "a",
                 {
                   staticClass:
-                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
+                  class: [
+                    _vm.currentMenu === "article"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                  ],
                   attrs: { href: "#" }
                 },
                 [
@@ -39973,7 +40129,12 @@ var render = function() {
                 "a",
                 {
                   staticClass:
-                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                    "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
+                  class: [
+                    _vm.currentMenu === "about"
+                      ? "bg-teal-700 text-white"
+                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                  ],
                   attrs: { href: "#" }
                 },
                 [
@@ -40010,7 +40171,7 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700 transition ease-in-out duration-150",
                 attrs: { href: "#" }
               },
               [
@@ -40052,7 +40213,7 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none focus:bg-gray-700 hover:text-white hover:bg-gray-700 transition ease-in-out duration-150 text-gray-300",
+                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700 transition ease-in-out duration-150",
                 attrs: { href: "#" }
               },
               [
@@ -40085,12 +40246,14 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "flex-1 min-w-0 flex flex-col" },
-      [_c("router-view")],
-      1
-    )
+    _c("div", { staticClass: "flex-1 min-w-0 flex flex-col" }, [
+      _c(
+        "div",
+        { staticClass: "pt-3 sm:pt-4 lg:pt-6 px-4 sm:px-6 lg:px-8" },
+        [_c("router-view")],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -40102,15 +40265,13 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "flex items-center flex-shrink-0 bg-gray-900 py-4 px-4 mb-4"
+          "flex items-center flex-shrink-0 bg-teal-500 py-4 px-4 mb-4"
       },
       [
         _c("a", { staticClass: "text-white", attrs: { href: "/admin" } }, [
-          _c(
-            "span",
-            { staticClass: "text-xl font-semibold font-mono text-teal-500" },
-            [_vm._v("Testo")]
-          ),
+          _c("span", { staticClass: "text-xl font-semibold font-mono" }, [
+            _vm._v("Testo")
+          ]),
           _vm._v(" "),
           _c("span", { staticClass: "text-lg ml-1" }, [_vm._v("后台管理")])
         ])
@@ -41327,10 +41488,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex-1 flex flex-col" }, [
+  return _c("div", { staticClass: "flex flex-col" }, [
     _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "py-4 px-4 sm:px-6 lg:px-8" }, [
+    _c("div", { staticClass: "flex flex-col py-4" }, [
       _c("div", { staticClass: "flex flex-wrap -mx-3" }, [
         _c("div", { staticClass: "w-1/4 px-3" }, [
           _c("div", { staticClass: "bg-white shadow rounded-lg" }, [
@@ -41493,15 +41654,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex items-center pt-6 px-4 mb-4 sm:px-6 lg:px-8" },
-      [
-        _c("h1", { staticClass: "text-2xl font-semibold text-gray-900" }, [
-          _vm._v("仪表盘")
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "flex items-center mb-4" }, [
+      _c("h1", { staticClass: "text-2xl font-semibold text-gray-900" }, [
+        _vm._v("仪表盘")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -41605,11 +41762,360 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex-1 flex flex-col" }, [
-    _vm._v("\n  这是 科目分类 页\n")
+  return _c("div", { staticClass: "flex flex-col" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex flex-col py-4" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex flex-col sm:flex-row items-center justify-between mb-5"
+        },
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "w-full sm:w-1/2 flex items-center justify-end" },
+            [
+              _c("div", { staticClass: "relative w-full sm:w-auto" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "absolute inset-y-0 left-0 w-10 flex items-center justify-center pointer-events-none"
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        staticClass: "w-5 h-5 stroke-current",
+                        attrs: { fill: "none", viewBox: "0 0 24 24" }
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          }
+                        })
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass:
+                    "form-input block w-full sm:w-64 pl-10 shadow-sm transition ease-in-out duration-150 sm:text-sm sm:leading-5 focus:shadow-outline-teal",
+                  attrs: { placeholder: "请输入.." }
+                })
+              ])
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "loading",
+              rawName: "v-loading",
+              value: _vm.isLoading,
+              expression: "isLoading"
+            }
+          ],
+          staticClass: "shadow rounded-md bg-white overflow-hidden px-5",
+          attrs: { "loading-custom-class": "h-56" }
+        },
+        [
+          _c("table", { staticClass: "w-full border-b border-gray-200" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.subjectList, function(item, index) {
+                  return _c("tr", { key: index }, [
+                    _vm._m(3, true),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.id))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.title))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.name))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.level))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [
+                        item.is_directory
+                          ? _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800"
+                              },
+                              [_vm._v("是")]
+                            )
+                          : _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                              },
+                              [_vm._v("否")]
+                            )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap text-center leading-5"
+                      },
+                      [
+                        _c("div", { staticClass: "-mx-1" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "px-1 text-teal-500 hover:text-teal-700 focus:outline-none",
+                              attrs: { type: "button" }
+                            },
+                            [_vm._v("编辑")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "px-1 text-red-500 hover:text-red-700 focus:outline-none",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.handleDelete(item)
+                                }
+                              }
+                            },
+                            [_vm._v("删除")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                }),
+                _vm._v(" "),
+                _c("tr", [
+                  _c(
+                    "td",
+                    { attrs: { colspan: "7" } },
+                    [
+                      _c("empty-data", {
+                        attrs: {
+                          show:
+                            _vm.isLoading === false &&
+                            _vm.subjectList.length === 0
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ],
+              2
+            )
+          ]),
+          _vm._v(" "),
+          _vm.total > 0
+            ? _c(
+                "div",
+                { staticClass: "py-5" },
+                [
+                  _c("t-pagination", {
+                    attrs: {
+                      total: _vm.total,
+                      "page-size": _vm.pageSize,
+                      current: _vm.currentPage,
+                      "show-total": "",
+                      "show-sizer": "",
+                      "show-quickjump": ""
+                    },
+                    on: {
+                      "page-change": _vm.changePage,
+                      "pagesize-change": _vm.changePageSize
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e()
+        ]
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center mb-4" }, [
+      _c("h1", { staticClass: "text-2xl font-semibold text-gray-900" }, [
+        _vm._v("科目分类")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2" }, [
+      _c("div", { staticClass: "px-0 sm:px-2" }, [
+        _c(
+          "button",
+          {
+            staticClass:
+              "inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white",
+            attrs: { type: "button" }
+          },
+          [_vm._v("添加科目")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-2 py-3 text-gray-900 text-left font-semibold tracking-wider w-6"
+          },
+          [
+            _c("input", {
+              staticClass:
+                "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+              attrs: { type: "checkbox" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-10"
+          },
+          [_vm._v("\n              ID\n            ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+          },
+          [_vm._v("\n              名称\n            ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+          },
+          [_vm._v("\n              标识\n            ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+          },
+          [_vm._v("\n              层级\n            ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+          },
+          [_vm._v("\n              是否有子类目\n            ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "px-6 py-3 text-gray-900 text-center font-semibold tracking-wider"
+          },
+          [_vm._v("\n              操作\n            ")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "td",
+      { staticClass: "px-2 py-3 border-t border-gray-200 whitespace-no-wrap" },
+      [
+        _c("input", {
+          staticClass:
+            "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+          attrs: { type: "checkbox" }
+        })
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -64407,6 +64913,49 @@ var getAboutsShow = function getAboutsShow(name) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.aboutsShow, name),
     method: 'get'
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/api/admin/subject.js":
+/*!*******************************************!*\
+  !*** ./resources/js/api/admin/subject.js ***!
+  \*******************************************/
+/*! exports provided: getSubjects, storeSubjects, deleteSubjects */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjects", function() { return getSubjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeSubjects", function() { return storeSubjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteSubjects", function() { return deleteSubjects; });
+/* harmony import */ var _utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/adminRequest */ "./resources/js/utils/adminRequest.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
+
+
+var api = {
+  subjects: '/subjects',
+  subjectsShow: '/subjects/%s'
+};
+var getSubjects = function getSubjects(params) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.subjects,
+    method: 'get',
+    params: params
+  });
+};
+var storeSubjects = function storeSubjects(params) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.subjects,
+    method: 'post',
+    data: params
+  });
+};
+var deleteSubjects = function deleteSubjects(id) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.subjectsShow, id),
+    method: 'delete'
   });
 };
 

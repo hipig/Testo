@@ -90,13 +90,13 @@
       </svg>
     </li>
     <div v-if="showSizer" class="mr-2">
-      <select class="form-select border border-gray-200 py-0 pr-7 h-7 text-xs focus:border-gray-200 focus:shadow-none" v-model="currentPageSize" :size="size" @on-change="changeSize">
+      <select class="form-select border border-gray-200 py-0 pr-7 h-7 text-xs focus:border-gray-200 focus:shadow-none" v-model="currentPageSize" @change="changeSize">
         <option v-for="item in pageSizeOpts" :key="item" :value="item">{{ `${item} 条/页` }}</option>
       </select>
     </div>
     <div class="flex flex-wrap items-center leading-none" v-if="showQuickjump">
       <div>前往</div>
-      <input type="text" class="w-7 h-7 mx-2 border border-gray-200 flex items-center text-center rounded focus:outline-none" v-model="jumpPageNum" @keydown="handleKeydown" @keyup.enter="changePage()">
+      <input type="text" class="w-8 h-7 mx-2 border border-gray-200 flex items-center text-center rounded focus:outline-none" v-model="jumpPageNum" @keydown="handleKeydown" @keyup.enter="changePage()">
       <div>页</div>
     </div>
   </ul>
@@ -232,10 +232,9 @@
           this.changePage(page)
         }
       },
-      changeSize (size) {
-        this.currentPageSize = size
+      changeSize () {
         this.changePage(1)
-        this.$emit('pagesize-change', size)
+        this.$emit('pagesize-change', this.currentPageSize)
       }
     }
   }

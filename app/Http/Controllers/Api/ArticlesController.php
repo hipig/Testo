@@ -18,7 +18,7 @@ class ArticlesController extends Controller
             ->where('type', Article::TYPE_SUBJECT)
             ->status()
             ->order($request->order ?? 'new')
-            ->paginate(config('api.page_size', $request->page_size));
+            ->paginate($request->page_size ?? config('api.page_size'));
 
         return ArticleResource::collection($articles);
     }
