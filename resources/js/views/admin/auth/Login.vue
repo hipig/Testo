@@ -15,7 +15,11 @@
                 <div class="mb-1 leading-tight">密码</div>
                 <input type="password" v-model="loginForm.password" class="form-input w-full text-sm focus:shadow-outline-teal" placeholder="请输入密码">
               </div>
-              <div class="mb-3 flex items-center justify-end">
+              <div class="mb-3 flex items-center justify-between">
+                <label class="flex items-center">
+                  <input type="checkbox" class="form-checkbox w-4 h-4 text-teal-500 focus:shadow-outline-teal">
+                  <span class="ml-1">记住我</span>
+                </label>
                 <a href="#" class="text-sm inline-flex text-teal-500">忘记密码？</a>
               </div>
               <button type="button" class="w-full inline-flex items-center justify-center font-medium focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white text-base" @click="submitLogin">登录</button>

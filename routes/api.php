@@ -113,7 +113,8 @@ Route::prefix('v1/admin')->name('api.v1.admin.')->namespace('Admin')->group(func
         Route::get('me', 'AuthController@me')->name('me');
         Route::delete('logout', 'AuthController@logout')->name('logout');
 
-        Route::apiResource('subjects', 'SubjectsController')->only('index', 'store', 'destroy');
 
+        Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
+        Route::apiResource('subjects', 'SubjectsController');
     });
 });

@@ -22,7 +22,7 @@ class SubjectRequest extends FormRequest
     public function attributes()
     {
         return [
-            'title' => '标题',
+            'title' => '名称',
             'name' => '标识',
             'is_special' => '是否专业科目'
         ];

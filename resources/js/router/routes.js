@@ -32,6 +32,7 @@ import MyCollect from "@/views/my/learn/Collect"
 import AdminLogin from "@/views/admin/auth/Login"
 import AdminDashboard from "@/views/admin/dashboard/Index"
 import AdminSubject from "@/views/admin/subject/Index"
+import AdminSubjectForm from "@/views/admin/subject/Form"
 
 export default [
   {
@@ -194,8 +195,25 @@ export default [
           },
           {
             path: 'subject',
-            name: 'admin.subject.index',
-            component: AdminSubject,
+            name: 'admin.subject',
+            component: BlankLayout,
+            children: [
+              {
+                path: '/',
+                name: 'admin.subject.index',
+                component: AdminSubject,
+              },
+              {
+                path: 'create',
+                name: 'admin.subject.create',
+                component: AdminSubjectForm,
+              },
+              {
+                path: 'edit/:id',
+                name: 'admin.subject.edit',
+                component: AdminSubjectForm,
+              }
+            ]
           }
         ]
       },

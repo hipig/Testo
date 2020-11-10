@@ -14878,6 +14878,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "admin.login",
@@ -15009,6 +15013,165 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api_admin_subject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/api/admin/subject */ "./resources/js/api/admin/subject.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "admin.subject.form",
+  data: function data() {
+    return {
+      id: this.$route.params.id || 0,
+      subjectForm: {
+        title: '',
+        name: '',
+        parent_id: '',
+        is_special: '',
+        is_directory: null
+      },
+      subjectTree: []
+    };
+  },
+  computed: {
+    isCreate: function isCreate() {
+      return this.id === 0;
+    }
+  },
+  mounted: function mounted() {
+    this.getSubjectsTree();
+  },
+  created: function created() {
+    if (!this.isCreate) this.showSubjects();
+  },
+  methods: {
+    getSubjectsTree: function getSubjectsTree() {
+      var _this = this;
+
+      Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_0__["getSubjectsTree"])().then(function (res) {
+        _this.subjectTree = res;
+      });
+    },
+    showSubjects: function showSubjects() {
+      var _this2 = this;
+
+      Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_0__["showSubjects"])(this.id).then(function (res) {
+        _this2.subjectForm = res;
+      });
+    },
+    handleSubmit: function handleSubmit() {
+      var _this3 = this;
+
+      var request = this.isCreate ? Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_0__["storeSubjects"])(this.subjectForm) : Object(_api_admin_subject__WEBPACK_IMPORTED_MODULE_0__["updateSubjects"])(this.id, this.subjectForm);
+      request.then(function (_) {
+        _this3.$router.push({
+          name: 'admin.subject.index'
+        });
+
+        _this3.$Message.success('保存成功');
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Index.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/subject/Index.vue?vue&type=script&lang=js& ***!
@@ -15116,6 +15279,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       filterForm: {},
       subjectList: [],
+      checks: [],
       currentPage: 1,
       pageSize: 10,
       total: 0,
@@ -15140,6 +15304,13 @@ __webpack_require__.r(__webpack_exports__);
         _this.isLoading = false;
       });
     },
+    checkAll: function checkAll() {
+      if (this.checks.length == this.subjectList.length) {
+        this.checks.splice(0, this.subjectList.length);
+      } else {
+        this.checks = Object.assign([], this.subjectList);
+      }
+    },
     changePage: function changePage(page) {
       this.currentPage = page;
       this.getSubjectList();
@@ -15147,6 +15318,14 @@ __webpack_require__.r(__webpack_exports__);
     changePageSize: function changePageSize(size) {
       this.pageSize = size;
       this.getSubjectList();
+    },
+    handleEdit: function handleEdit(item) {
+      this.$router.push({
+        name: 'admin.subject.edit',
+        params: {
+          id: item.id
+        }
+      });
     },
     handleDelete: function handleDelete(item) {
       var _this2 = this;
@@ -39815,7 +39994,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "min-h-screen flex" }, [
     _c("div", { staticClass: "hidden md:flex md:flex-shrink-0" }, [
-      _c("div", { staticClass: "bg-teal-800 w-64 flex flex-col" }, [
+      _c("div", { staticClass: "bg-gray-800 w-64 flex flex-col" }, [
         _c("div", { staticClass: "flex-1 flex flex-col pb-4" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -39874,7 +40053,7 @@ var render = function() {
                       "p",
                       {
                         staticClass:
-                          "text-xs leading-4 font-medium text-teal-300 transition ease-in-out duration-150"
+                          "text-xs leading-4 font-medium text-gray-400 transition ease-in-out duration-150"
                       },
                       [_vm._v("修改资料")]
                     )
@@ -39886,7 +40065,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "nav",
-            { staticClass: "flex-1 mt-5 bg-teal-800" },
+            { staticClass: "flex-1 mt-5 bg-gray-800" },
             [
               _c(
                 "router-link",
@@ -39895,8 +40074,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "dashboard"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { to: { name: "admin.dashboard" } }
                 },
@@ -39933,8 +40112,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "subject"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { to: { name: "admin.subject.index" } }
                 },
@@ -39980,8 +40159,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "bank"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { href: "#" }
                 },
@@ -40018,8 +40197,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "question"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { href: "#" }
                 },
@@ -40056,8 +40235,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "user"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { href: "#" }
                 },
@@ -40094,8 +40273,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "article"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { href: "#" }
                 },
@@ -40132,8 +40311,8 @@ var render = function() {
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
                   class: [
                     _vm.currentMenu === "about"
-                      ? "bg-teal-700 text-white"
-                      : "text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
                   attrs: { href: "#" }
                 },
@@ -40171,7 +40350,7 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700 transition ease-in-out duration-150",
+                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700 transition ease-in-out duration-150",
                 attrs: { href: "#" }
               },
               [
@@ -40213,7 +40392,7 @@ var render = function() {
               "a",
               {
                 staticClass:
-                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-teal-100 hover:text-white hover:bg-teal-700 focus:bg-teal-700 transition ease-in-out duration-150",
+                  "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700 transition ease-in-out duration-150",
                 attrs: { href: "#" }
               },
               [
@@ -40265,7 +40444,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "flex items-center flex-shrink-0 bg-teal-500 py-4 px-4 mb-4"
+          "flex items-center flex-shrink-0 bg-gray-900 py-4 px-4 mb-4"
       },
       [
         _c("a", { staticClass: "text-white", attrs: { href: "/admin" } }, [
@@ -41455,16 +41634,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mb-3 flex items-center justify-end" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-sm inline-flex text-teal-500",
-          attrs: { href: "#" }
-        },
-        [_vm._v("忘记密码？")]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "mb-3 flex items-center justify-between" },
+      [
+        _c("label", { staticClass: "flex items-center" }, [
+          _c("input", {
+            staticClass:
+              "form-checkbox w-4 h-4 text-teal-500 focus:shadow-outline-teal",
+            attrs: { type: "checkbox" }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-1" }, [_vm._v("记住我")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "text-sm inline-flex text-teal-500",
+            attrs: { href: "#" }
+          },
+          [_vm._v("忘记密码？")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -41747,6 +41940,420 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "flex flex-col" }, [
+    _c("div", { staticClass: "flex items-center mb-4" }, [
+      _c("h1", { staticClass: "text-2xl font-semibold text-gray-900" }, [
+        _vm._v("科目分类 "),
+        _c("span", { staticClass: "text-lg font-normal" }, [
+          _vm._v(_vm._s(_vm.isCreate ? "添加" : "编辑"))
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex flex-col py-4" }, [
+      _c(
+        "div",
+        { staticClass: "shadow rounded-md bg-white overflow-hidden px-6 py-8" },
+        [
+          _c("div", { staticClass: "mb-6" }, [
+            _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 px-3" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.subjectForm.title,
+                      expression: "subjectForm.title"
+                    }
+                  ],
+                  staticClass:
+                    "form-input w-full max-w-lg text-sm focus:shadow-outline-teal",
+                  attrs: { type: "text", placeholder: "请输入名称" },
+                  domProps: { value: _vm.subjectForm.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.subjectForm, "title", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 px-3" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.subjectForm.name,
+                      expression: "subjectForm.name"
+                    }
+                  ],
+                  staticClass:
+                    "form-input w-full max-w-lg text-sm focus:shadow-outline-teal",
+                  attrs: { type: "text", placeholder: "请输入标识" },
+                  domProps: { value: _vm.subjectForm.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.subjectForm, "name", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 px-3" }, [
+                _c("div", { staticClass: "flex items-center" }, [
+                  _c(
+                    "label",
+                    {
+                      class: [
+                        _vm.isCreate
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed opacity-50"
+                      ]
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.subjectForm.is_directory,
+                            expression: "subjectForm.is_directory"
+                          }
+                        ],
+                        staticClass:
+                          "form-radio w-4 h-4 text-teal-500 focus:shadow-outline-teal",
+                        attrs: { type: "radio", disabled: !_vm.isCreate },
+                        domProps: {
+                          value: true,
+                          checked: _vm._q(_vm.subjectForm.is_directory, true)
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.subjectForm,
+                              "is_directory",
+                              true
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "ml-1 leading-none" }, [
+                        _vm._v("是")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "ml-5",
+                      class: [
+                        _vm.isCreate
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed opacity-50"
+                      ]
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.subjectForm.is_directory,
+                            expression: "subjectForm.is_directory"
+                          }
+                        ],
+                        staticClass:
+                          "form-radio w-4 h-4 text-teal-500 focus:shadow-outline-teal",
+                        attrs: { type: "radio", disabled: !_vm.isCreate },
+                        domProps: {
+                          value: false,
+                          checked: _vm._q(_vm.subjectForm.is_directory, false)
+                        },
+                        on: {
+                          change: function($event) {
+                            return _vm.$set(
+                              _vm.subjectForm,
+                              "is_directory",
+                              false
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "ml-1 leading-none" }, [
+                        _vm._v("否")
+                      ])
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 px-3" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.subjectForm.parent_id,
+                        expression: "subjectForm.parent_id"
+                      }
+                    ],
+                    staticClass:
+                      "form-select w-full max-w-lg text-sm focus:shadow-outline-teal",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.subjectForm,
+                          "parent_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("顶级科目")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.subjectTree, function(item, index) {
+                      return [
+                        _c(
+                          "option",
+                          { key: index, domProps: { value: item.id } },
+                          [_vm._v(_vm._s(item.title))]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(item.childrenList, function(v, i) {
+                          return item.childrenList
+                            ? _c(
+                                "option",
+                                { key: i, domProps: { value: v.id } },
+                                [_vm._v("﹂" + _vm._s(v.title))]
+                              )
+                            : _vm._e()
+                        })
+                      ]
+                    })
+                  ],
+                  2
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-5/6 px-3" }, [
+                _c("div", { staticClass: "flex items-center" }, [
+                  _c("label", { staticClass: "cursor-pointer" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.subjectForm.is_special,
+                          expression: "subjectForm.is_special"
+                        }
+                      ],
+                      staticClass:
+                        "form-checkbox w-4 h-4 text-teal-500 focus:shadow-outline-teal",
+                      attrs: { type: "checkbox" },
+                      domProps: {
+                        value: 1,
+                        checked: Array.isArray(_vm.subjectForm.is_special)
+                          ? _vm._i(_vm.subjectForm.is_special, 1) > -1
+                          : _vm.subjectForm.is_special
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.subjectForm.is_special,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = 1,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                _vm.$set(
+                                  _vm.subjectForm,
+                                  "is_special",
+                                  $$a.concat([$$v])
+                                )
+                            } else {
+                              $$i > -1 &&
+                                _vm.$set(
+                                  _vm.subjectForm,
+                                  "is_special",
+                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                )
+                            }
+                          } else {
+                            _vm.$set(_vm.subjectForm, "is_special", $$c)
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "ml-1 leading-none" }, [
+                      _vm._v("是否为专业科目")
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex flex-wrap items-center -mx-3" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-5/6 px-3" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center justify-center font-medium border border-teal-500 focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white",
+                  attrs: { type: "button" },
+                  on: { click: _vm.handleSubmit }
+                },
+                [_vm._v("确定")]
+              )
+            ])
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c("div", { staticClass: "leading-tight text-right text-gray-900" }, [
+        _vm._v("名称")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c("div", { staticClass: "leading-tight text-right" }, [_vm._v("标识")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c("div", { staticClass: "leading-tight text-right" }, [
+        _vm._v("是否目录")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c("div", { staticClass: "leading-tight text-right" }, [
+        _vm._v("上级科目")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c("div", { staticClass: "leading-tight text-right" }, [
+        _vm._v("专业科目")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-1/6 px-3" }, [
+      _c(
+        "div",
+        {
+          staticClass: "leading-tight text-right",
+          staticStyle: { "font-size": "0" }
+        },
+        [_vm._v("操作")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Index.vue?vue&type=template&id=448132a0&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/admin/subject/Index.vue?vue&type=template&id=448132a0& ***!
@@ -41773,7 +42380,24 @@ var render = function() {
             "flex flex-col sm:flex-row items-center justify-between mb-5"
         },
         [
-          _vm._m(1),
+          _c("div", { staticClass: "w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2" }, [
+            _c("div", { staticClass: "px-0 sm:px-2" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$router.push({ name: "admin.subject.create" })
+                    }
+                  }
+                },
+                [_vm._v("添加科目")]
+              )
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -41834,14 +42458,134 @@ var render = function() {
         },
         [
           _c("table", { staticClass: "w-full border-b border-gray-200" }, [
-            _vm._m(2),
+            _c("thead", [
+              _c("tr", [
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-2 py-3 text-gray-900 text-left font-semibold tracking-wider w-6"
+                  },
+                  [
+                    _c("input", {
+                      staticClass:
+                        "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                      attrs: { type: "checkbox" },
+                      on: { change: _vm.checkAll }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-10"
+                  },
+                  [_vm._v("\n              ID\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              名称\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              标识\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              层级\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              是否有子类目\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-center font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              操作\n            ")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
               [
                 _vm._l(_vm.subjectList, function(item, index) {
                   return _c("tr", { key: index }, [
-                    _vm._m(3, true),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-2 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.checks,
+                              expression: "checks"
+                            }
+                          ],
+                          staticClass:
+                            "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            value: item,
+                            checked: Array.isArray(_vm.checks)
+                              ? _vm._i(_vm.checks, item) > -1
+                              : _vm.checks
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.checks,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = item,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 && (_vm.checks = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.checks = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.checks = $$c
+                              }
+                            }
+                          }
+                        })
+                      ]
+                    ),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -41919,7 +42663,12 @@ var render = function() {
                             {
                               staticClass:
                                 "px-1 text-teal-500 hover:text-teal-700 focus:outline-none",
-                              attrs: { type: "button" }
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.handleEdit(item)
+                                }
+                              }
                             },
                             [_vm._v("编辑")]
                           ),
@@ -41950,6 +42699,7 @@ var render = function() {
                     { attrs: { colspan: "7" } },
                     [
                       _c("empty-data", {
+                        class: ["shadow-none"],
                         attrs: {
                           show:
                             _vm.isLoading === false &&
@@ -42000,120 +42750,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "flex items-center mb-4" }, [
       _c("h1", { staticClass: "text-2xl font-semibold text-gray-900" }, [
-        _vm._v("科目分类")
+        _vm._v("科目分类 "),
+        _c("span", { staticClass: "text-lg font-normal" }, [_vm._v("列表")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2" }, [
-      _c("div", { staticClass: "px-0 sm:px-2" }, [
-        _c(
-          "button",
-          {
-            staticClass:
-              "inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white",
-            attrs: { type: "button" }
-          },
-          [_vm._v("添加科目")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-2 py-3 text-gray-900 text-left font-semibold tracking-wider w-6"
-          },
-          [
-            _c("input", {
-              staticClass:
-                "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
-              attrs: { type: "checkbox" }
-            })
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-10"
-          },
-          [_vm._v("\n              ID\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
-          },
-          [_vm._v("\n              名称\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
-          },
-          [_vm._v("\n              标识\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
-          },
-          [_vm._v("\n              层级\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
-          },
-          [_vm._v("\n              是否有子类目\n            ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass:
-              "px-6 py-3 text-gray-900 text-center font-semibold tracking-wider"
-          },
-          [_vm._v("\n              操作\n            ")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "td",
-      { staticClass: "px-2 py-3 border-t border-gray-200 whitespace-no-wrap" },
-      [
-        _c("input", {
-          staticClass:
-            "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
-          attrs: { type: "checkbox" }
-        })
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -64922,19 +65562,23 @@ var getAboutsShow = function getAboutsShow(name) {
 /*!*******************************************!*\
   !*** ./resources/js/api/admin/subject.js ***!
   \*******************************************/
-/*! exports provided: getSubjects, storeSubjects, deleteSubjects */
+/*! exports provided: getSubjects, getSubjectsTree, showSubjects, storeSubjects, updateSubjects, deleteSubjects */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjects", function() { return getSubjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSubjectsTree", function() { return getSubjectsTree; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showSubjects", function() { return showSubjects; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeSubjects", function() { return storeSubjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateSubjects", function() { return updateSubjects; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteSubjects", function() { return deleteSubjects; });
 /* harmony import */ var _utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/adminRequest */ "./resources/js/utils/adminRequest.js");
 /* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
 
 
 var api = {
+  subjectsTree: '/subjects/tree',
   subjects: '/subjects',
   subjectsShow: '/subjects/%s'
 };
@@ -64945,10 +65589,29 @@ var getSubjects = function getSubjects(params) {
     params: params
   });
 };
+var getSubjectsTree = function getSubjectsTree() {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.subjectsTree,
+    method: 'get'
+  });
+};
+var showSubjects = function showSubjects(id) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.subjectsShow, id),
+    method: 'get'
+  });
+};
 var storeSubjects = function storeSubjects(params) {
   return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
     url: api.subjects,
     method: 'post',
+    data: params
+  });
+};
+var updateSubjects = function updateSubjects(id, params) {
+  return Object(_utils_adminRequest__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.subjectsShow, id),
+    method: 'put',
     data: params
   });
 };
@@ -68585,6 +69248,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_admin_auth_Login__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @/views/admin/auth/Login */ "./resources/js/views/admin/auth/Login.vue");
 /* harmony import */ var _views_admin_dashboard_Index__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @/views/admin/dashboard/Index */ "./resources/js/views/admin/dashboard/Index.vue");
 /* harmony import */ var _views_admin_subject_Index__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @/views/admin/subject/Index */ "./resources/js/views/admin/subject/Index.vue");
+/* harmony import */ var _views_admin_subject_Form__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @/views/admin/subject/Form */ "./resources/js/views/admin/subject/Form.vue");
+
 
 
 
@@ -68737,8 +69402,21 @@ __webpack_require__.r(__webpack_exports__);
       component: _views_admin_dashboard_Index__WEBPACK_IMPORTED_MODULE_24__["default"]
     }, {
       path: 'subject',
-      name: 'admin.subject.index',
-      component: _views_admin_subject_Index__WEBPACK_IMPORTED_MODULE_25__["default"]
+      name: 'admin.subject',
+      component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_1__["default"],
+      children: [{
+        path: '/',
+        name: 'admin.subject.index',
+        component: _views_admin_subject_Index__WEBPACK_IMPORTED_MODULE_25__["default"]
+      }, {
+        path: 'create',
+        name: 'admin.subject.create',
+        component: _views_admin_subject_Form__WEBPACK_IMPORTED_MODULE_26__["default"]
+      }, {
+        path: 'edit/:id',
+        name: 'admin.subject.edit',
+        component: _views_admin_subject_Form__WEBPACK_IMPORTED_MODULE_26__["default"]
+      }]
     }]
   }, {
     path: 'login',
@@ -69840,6 +70518,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_06f2abc8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Index_vue_vue_type_template_id_06f2abc8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/subject/Form.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/views/admin/subject/Form.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue?vue&type=template&id=4938ce66& */ "./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66&");
+/* harmony import */ var _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/admin/subject/Form.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=template&id=4938ce66& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/admin/subject/Form.vue?vue&type=template&id=4938ce66&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_4938ce66___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

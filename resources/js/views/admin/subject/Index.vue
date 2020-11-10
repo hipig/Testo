@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col">
     <div class="flex items-center mb-4">
-      <h1 class="text-2xl font-semibold text-gray-900">科目分类</h1>
+      <h1 class="text-2xl font-semibold text-gray-900">科目分类 <span class="text-lg font-normal">列表</span></h1>
     </div>
     <div class="flex flex-col py-4">
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
         <div class="w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
           <div class="px-0 sm:px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white">添加科目</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="$router.push({name: 'admin.subject.create'})">添加科目</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -26,7 +26,7 @@
           <thead>
             <tr>
               <th class="px-2 py-3 text-gray-900 text-left font-semibold tracking-wider w-6">
-                <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal">
+                <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal" @change="checkAll">
               </th>
               <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-10">
                 ID
@@ -51,7 +51,7 @@
           <tbody>
             <tr v-for="(item, index) in subjectList" :key="index">
               <td class="px-2 py-3 border-t border-gray-200 whitespace-no-wrap">
-                <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal">
+                <input type="checkbox" v-model="checks" :value="item" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal">
               </td>
               <td class="px-6 py-3 border-t border-gray-200 whitespace-no-wrap">{{ item.id }}</td>
               <td class="px-6 py-3 border-t border-gray-200 whitespace-no-wrap">{{ item.title }}</td>
@@ -63,14 +63,14 @@
               </td>
               <td class="px-6 py-3 border-t border-gray-200 whitespace-no-wrap text-center leading-5">
                 <div class="-mx-1">
-                  <button type="button" class="px-1 text-teal-500 hover:text-teal-700 focus:outline-none">编辑</button>
+                  <button type="button" class="px-1 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleEdit(item)">编辑</button>
                   <button type="button" class="px-1 text-red-500 hover:text-red-700 focus:outline-none" @click="handleDelete(item)">删除</button>
                 </div>
               </td>
             </tr>
             <tr>
               <td colspan="7">
-                <empty-data :show="isLoading === false && subjectList.length === 0"/>
+                <empty-data :class="['shadow-none']" :show="isLoading === false && subjectList.length === 0"/>
               </td>
             </tr>
           </tbody>
@@ -96,6 +96,7 @@
       return {
         filterForm: {},
         subjectList: [],
+        checks: [],
         currentPage: 1,
         pageSize: 10,
         total: 0,
@@ -122,6 +123,13 @@
             this.isLoading = false
           })
       },
+      checkAll() {
+        if (this.checks.length == this.subjectList.length) {
+          this.checks.splice(0, this.subjectList.length)
+        } else {
+          this.checks = Object.assign([], this.subjectList)
+        }
+      },
       changePage(page) {
         this.currentPage = page
         this.getSubjectList()
@@ -129,6 +137,9 @@
       changePageSize(size) {
         this.pageSize = size
         this.getSubjectList()
+      },
+      handleEdit(item) {
+        this.$router.push({name: 'admin.subject.edit', params: {id: item.id}})
       },
       handleDelete(item) {
         this.$Dialog.confirm('是否确认删除？', '温馨提示')
