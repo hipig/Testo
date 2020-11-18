@@ -1,11 +1,11 @@
 import axios from 'axios'
-import router from "@/router"
-import store from '@/store'
+import router from "@/admin/router"
+import store from '@/admin/store'
 import message from '@/components/common/message'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: window.config.api_url + '/admin',
+  baseURL: window.config.api_url,
   timeout: 6000
 })
 
@@ -23,9 +23,9 @@ service.interceptors.response.use((response) => {
   const response = error.response
   switch (response.status) {
     case 401:
-      const token = store.getters['adminUser/token']
+      const token = store.getters['user/token']
       if (token) {
-        store.dispatch('adminUser/clear')
+        store.dispatch('user/clear')
       }
       message.error('尚未登录，请您先登录！')
       router.push({name: 'admin.login'})

@@ -23,8 +23,6 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$Loading = Loading.loading
   Vue.prototype.$Dialog = Dialog
   Vue.prototype.$Message = Message
-
-  Vue.directive('auth', )
 }
 
 if (typeof window !== 'undefined' && window.Vue) {

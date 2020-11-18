@@ -31,31 +31,6 @@ function createRouter () {
 function before(to, from, next) {
   NProgress.start()
 
-  if (to.matched.some(res => res.name.startsWith('admin'))) {
-    const whiteList = ['admin.login']
-    if (store.getters['adminUser/token']) {
-      if (to.path === '/admin/login') {
-        next({ name: 'admin.dashboard', replace: true })
-      } else {
-        // 请求带有 redirect 重定向时，登录自动重定向到该地址
-        const redirect = decodeURIComponent(from.query.redirect || to.path)
-        if (to.path === redirect) {
-          next()
-        } else {
-          // 跳转到目的路由
-          next({ path: redirect })
-        }
-      }
-    } else {
-      if (whiteList.includes(to.name)) {
-        next()
-      } else {
-        next({ name: 'admin.login', replace: true })
-        NProgress.done()
-      }
-    }
-  }
-
   next()
 }
 

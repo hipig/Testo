@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const tailwindcss = require('tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,19 +12,9 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/admin.js', 'public/js')
-    .webpackConfig({
-      output: {
-        chunkFilename: 'js/chunks/[name].js'
-      },
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, 'resources/js')
-        }
-      }
-    })
-    .babelConfig({
-      presets: ["@vue/babel-preset-jsx"]
+mix.sass('resources/sass/app.scss', 'public/css')
+    .options({
+        processCssUrls: false,
+        postCss: [ tailwindcss('./tailwind.config.js') ],
     })
     .version();

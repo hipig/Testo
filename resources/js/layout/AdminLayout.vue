@@ -79,7 +79,7 @@
               </svg>
               <span class="ml-2 leading-none">个人设置</span>
             </a>
-            <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700 transition ease-in-out duration-150">
+            <a href="javascript:;" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700 transition ease-in-out duration-150" @click="handleLogout">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
               </svg>
@@ -98,17 +98,23 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
   export default {
     name: "AdminLayout",
     data () {
       return {
-        userInfo: this.$store.getters['adminUser/userInfo'],
         currentMenu: '',
         routerList: {
           dashboard : ['admin.dashboard'],
           subject : ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
         }
       }
+    },
+    computed: {
+      ...mapGetters({
+        'userInfo': 'adminUser/userInfo'
+      })
     },
     watch: {
       $route: {
@@ -120,5 +126,20 @@
         immediate: true
       }
     },
+    methods: {
+      ...mapActions({
+        'logout': 'adminUser/logout'
+      }),
+      handleLogout() {
+        this.$Dialog.confirm('是否退出登录？', '温馨提示')
+          .then(_ => {
+            this.logout()
+              .then(() => {
+                this.$router.go(0)
+              })
+          })
+          .catch(_ => {})
+      }
+    }
   }
 </script>

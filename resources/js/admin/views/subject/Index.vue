@@ -7,7 +7,7 @@
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
         <div class="w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
           <div class="px-0 sm:px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="$router.push({name: 'admin.subject.create'})">添加科目</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="$router.push({name: 'admin.subject.create'})">添加科目</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -43,6 +43,9 @@
               <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider">
                 是否有子类目
               </th>
+              <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-20">
+                创建时间
+              </th>
               <th class="px-6 py-3 text-gray-900 text-center font-semibold tracking-wider">
                 操作
               </th>
@@ -61,6 +64,7 @@
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800" v-if="item.is_directory">是</span>
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-else>否</span>
               </td>
+              <td class="px-6 py-3 border-t border-gray-200 whitespace-no-wrap">{{ item.created_at }}</td>
               <td class="px-6 py-3 border-t border-gray-200 whitespace-no-wrap text-center leading-5">
                 <div class="-mx-1">
                   <button type="button" class="px-1 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleEdit(item)">编辑</button>
@@ -85,7 +89,7 @@
 
 <script>
   import EmptyData from "@/components/common/EmptyData"
-  import { getSubjects, deleteSubjects } from "@/api/admin/subject"
+  import { getSubjects, deleteSubjects } from "@/admin/api/subject"
 
   export default {
     name: "admin.subject.index",

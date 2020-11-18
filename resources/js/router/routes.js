@@ -1,38 +1,35 @@
 import MainLayout from "@/layout/MainLayout"
 import BlankLayout from "@/layout/BlankLayout"
 import MyLayout from "@/layout/MyLayout"
-import AdminLayout from "@/layout/AdminLayout"
 
+function view (view) {
+  return () => import(/* webpackChunkName: '' */ `@/views/${view}.vue`).then(m => m.default || m)
+}
 
-import Home from "@/views/Home"
-import Subjects from "@/views/subject/Index"
-import SubjectsShow from "@/views/subject/Show"
+const Home = view('Home')
+const Subjects = view('subject/Index')
+const SubjectsShow = view('subject/Show')
 
-import QuizModeExercise from "@/views/quiz/mode/Exercise"
-import QuizModeTest from "@/views/quiz/mode/Test"
-import QuizModeExam from "@/views/quiz/mode/Exam"
-import QuizResult from "@/views/quiz/Result"
-import QuizResultDetail from "@/views/quiz/ResultDetail"
-import QuizItems from "@/views/quiz/Items"
+const QuizModeExercise = view('quiz/mode/Exercise')
+const QuizModeTest = view('quiz/mode/Test')
+const QuizModeExam = view('quiz/mode/Exam')
+const QuizResult = view('quiz/Result')
+const QuizResultDetail = view('quiz/ResultDetail')
+const QuizItems = view('quiz/Items')
 
-import Articles from "@/views/article/Index"
+const Articles = view('article/Index')
 
-import About from "@/views/about/Index"
+const About = view('about/Index')
 
-import AuthLogin from "@/views/auth/Login"
-import AuthRegister from "@/views/auth/Register"
+const AuthLogin = view('auth/Login')
+const AuthRegister = view('auth/Register')
 
-import MyIndex from "@/views/my/info/Index"
-import MyChangePassword from "@/views/my/info/ChangePassword"
-import MyLearn from "@/views/my/learn/Index"
-import MyExam from "@/views/my/learn/Exam"
-import MyNote from "@/views/my/learn/Note"
-import MyCollect from "@/views/my/learn/Collect"
-
-import AdminLogin from "@/views/admin/auth/Login"
-import AdminDashboard from "@/views/admin/dashboard/Index"
-import AdminSubject from "@/views/admin/subject/Index"
-import AdminSubjectForm from "@/views/admin/subject/Form"
+const MyIndex = view('my/info/Index')
+const MyChangePassword = view('my/info/ChangePassword')
+const MyLearn = view('my/learn/Index')
+const MyExam = view('my/learn/Exam')
+const MyNote = view('my/learn/Note')
+const MyCollect = view('my/learn/Collect')
 
 export default [
   {
@@ -173,54 +170,6 @@ export default [
             component: MyCollect
           }
         ]
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    name: 'admin.layout',
-    redirect: '/admin/dashboard',
-    component: BlankLayout,
-    children: [
-      {
-        path: '/',
-        name: 'admin',
-        redirect: '/admin/dashboard',
-        component: AdminLayout,
-        children: [
-          {
-            path: 'dashboard',
-            name: 'admin.dashboard',
-            component: AdminDashboard,
-          },
-          {
-            path: 'subject',
-            name: 'admin.subject',
-            component: BlankLayout,
-            children: [
-              {
-                path: '/',
-                name: 'admin.subject.index',
-                component: AdminSubject,
-              },
-              {
-                path: 'create',
-                name: 'admin.subject.create',
-                component: AdminSubjectForm,
-              },
-              {
-                path: 'edit/:id',
-                name: 'admin.subject.edit',
-                component: AdminSubjectForm,
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: 'login',
-        name: 'admin.login',
-        component: AdminLogin
       }
     ]
   }

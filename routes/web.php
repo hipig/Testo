@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('{view}', 'RouterController')->where('view', '.*');
+Route::get('admin/{view?}', 'AdminRouterController')->where('view', '.*');
+Route::get('{view?}', 'RouterController')->where('view', '.*');

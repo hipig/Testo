@@ -1,4 +1,4 @@
-import service from '@/utils/adminRequest'
+import service from '@/admin/utils/request'
 import { sprintf } from "@/utils/util"
 
 const api = {
