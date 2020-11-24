@@ -17,7 +17,9 @@ module.exports = {
     },
   },
   variants: {
-    display: ['responsive', 'hover', 'focus', 'group-hover', 'group-focus']
+    display: ['responsive', 'hover', 'focus', 'group-hover', 'group-focus'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'checked'],
+    translate: ['responsive', 'hover', 'focus', 'checked'],
   },
   plugins: [
     require('@tailwindcss/ui'),

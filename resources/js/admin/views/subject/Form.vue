@@ -69,7 +69,7 @@
               <div class="w-5/6 px-3">
                 <div class="flex items-center">
                   <label class="cursor-pointer">
-                    <input type="checkbox" v-model="subjectForm.is_special" :value="1" class="form-checkbox w-4 h-4 text-teal-500 focus:shadow-outline-teal">
+                    <input type="checkbox" v-model="subjectForm.is_special" :value="true" class="form-checkbox w-4 h-4 text-teal-500 focus:shadow-outline-teal">
                     <span class="ml-1 leading-none">是否为专业科目</span>
                   </label>
                 </div>

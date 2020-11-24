@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Api\SubjectRequest;
-use App\Http\Resources\SubjectResource;
+use App\Http\Requests\Admin\SubjectRequest;
+use App\Http\Resources\Admin\SubjectResource;
+use App\Http\Resources\Admin\SubjectShowResource;
 use App\Models\Subject;
 use App\Services\SubjectService;
 use Illuminate\Http\Request;
@@ -12,9 +13,11 @@ class SubjectsController extends Controller
 {
     public function index(Request $request)
     {
-        $subjects = Subject::query()
-            ->latest()
-            ->paginate($request->page_size ?? config('api.page_size'));
+        $query = Subject::query();
+
+        $request->has('level') && $query->where('level', $request->level);
+
+        $subjects = $query->latest()->paginate($request->page_size ?? config('api.page_size'));
 
         return SubjectResource::collection($subjects);
     }
@@ -26,11 +29,6 @@ class SubjectsController extends Controller
         return  SubjectResource::collection($service->getSubjectTree(null, $subjects));
     }
 
-    public function show(Request $request, Subject $subject)
-    {
-        return new SubjectResource($subject);
-    }
-
     public function store(SubjectRequest $request)
     {
         $subject = Subject::create($request->only([
@@ -38,7 +36,12 @@ class SubjectsController extends Controller
             'is_directory', 'status', 'index'
         ]));
 
-        return new SubjectResource($subject);
+        return SubjectResource::make($subject);
+    }
+
+    public function show(Request $request, Subject $subject)
+    {
+        return SubjectShowResource::make($subject);
     }
 
     public function update(SubjectRequest $request, Subject $subject)
@@ -49,7 +52,7 @@ class SubjectsController extends Controller
         ]));
         $subject->save();
 
-        return new SubjectResource($subject);
+        return SubjectResource::make($subject);
     }
 
     public function destroy(Request $request, Subject $subject)

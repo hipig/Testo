@@ -40,12 +40,12 @@
               </svg>
               <span class="ml-2 leading-none">科目分类</span>
             </router-link>
-            <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'bank' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
+            <router-link :to="{name: 'admin.bank.index'}" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'bank' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
               </svg>
               <span class="ml-2 leading-none">题库管理</span>
-            </a>
+            </router-link>
             <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'question' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
@@ -108,6 +108,7 @@ import { mapGetters, mapActions } from 'vuex'
         routerList: {
           dashboard : ['admin.dashboard'],
           subject : ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
+          bank : ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show'],
         }
       }
     },

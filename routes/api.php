@@ -113,8 +113,9 @@ Route::prefix('v1/admin')->name('api.v1.admin.')->namespace('Admin')->group(func
         Route::get('me', 'AuthController@me')->name('me');
         Route::delete('logout', 'AuthController@logout')->name('logout');
 
-
         Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
+        Route::get('subjects/last', 'SubjectsController@last')->name('subjects.last');
         Route::apiResource('subjects', 'SubjectsController');
+        Route::apiResource('banks', 'BanksController');
     });
 });

@@ -7,7 +7,7 @@
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
         <div class="w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
           <div class="px-0 sm:px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow-sm focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="$router.push({name: 'admin.subject.create'})">添加科目</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="handleCreate">添加科目</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -43,7 +43,7 @@
               <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider">
                 是否有子类目
               </th>
-              <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-20">
+              <th class="px-6 py-3 text-gray-900 text-left font-semibold tracking-wider">
                 创建时间
               </th>
               <th class="px-6 py-3 text-gray-900 text-center font-semibold tracking-wider">
@@ -141,6 +141,9 @@
       changePageSize(size) {
         this.pageSize = size
         this.getSubjectList()
+      },
+      handleCreate() {
+        this.$router.push({name: 'admin.subject.create'})
       },
       handleEdit(item) {
         this.$router.push({name: 'admin.subject.edit', params: {id: item.id}})

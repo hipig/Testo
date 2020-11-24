@@ -23,9 +23,9 @@ service.interceptors.response.use((response) => {
   const response = error.response
   switch (response.status) {
     case 401:
-      const token = store.getters['user/token']
+      const token = store.getters['adminUser/token']
       if (token) {
-        store.dispatch('user/clear')
+        store.dispatch('adminUser/clear')
       }
       message.error('尚未登录，请您先登录！')
       router.push({name: 'admin.login'})

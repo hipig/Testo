@@ -20,6 +20,11 @@ class Bank extends Model
         self::DAILY_TEST => '每日一练'
     ];
 
+    public static $needTimeLimitTypeMap = [
+        self::MOCK_EXAM,
+        self::OLD_EXAM,
+    ];
+
     protected $fillable = [
         'title', 'subject_id', 'parent_id', 'type',
         'is_free', 'price', 'is_group', 'time_limit',

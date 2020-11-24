@@ -13031,7 +13031,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       currentMenu: '',
       routerList: {
         dashboard: ['admin.dashboard'],
-        subject: ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show']
+        subject: ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
+        bank: ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show']
       }
     };
   },
@@ -16797,7 +16798,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "a",
+                "router-link",
                 {
                   staticClass:
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
@@ -16806,7 +16807,7 @@ var render = function() {
                       ? "bg-gray-700 text-white"
                       : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
-                  attrs: { href: "#" }
+                  attrs: { to: { name: "admin.bank.index" } }
                 },
                 [
                   _c(
@@ -33877,6 +33878,8 @@ var AdminLogin = view('auth/Login');
 var AdminDashboard = view('dashboard/Index');
 var AdminSubject = view('subject/Index');
 var AdminSubjectForm = view('subject/Form');
+var AdminBank = view('bank/Index');
+var AdminBankForm = view('bank/Form');
 /* harmony default export */ __webpack_exports__["default"] = ([{
   path: '',
   name: 'admin',
@@ -33902,6 +33905,23 @@ var AdminSubjectForm = view('subject/Form');
       path: 'edit/:id',
       name: 'admin.subject.edit',
       component: AdminSubjectForm
+    }]
+  }, {
+    path: 'bank',
+    name: 'admin.bank',
+    component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    children: [{
+      path: '',
+      name: 'admin.bank.index',
+      component: AdminBank
+    }, {
+      path: 'create',
+      name: 'admin.bank.create',
+      component: AdminBankForm
+    }, {
+      path: 'edit/:id',
+      name: 'admin.bank.edit',
+      component: AdminBankForm
     }]
   }]
 }, {
@@ -34153,10 +34173,10 @@ service.interceptors.response.use(function (response) {
 
   switch (response.status) {
     case 401:
-      var token = _admin_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters['user/token'];
+      var token = _admin_store__WEBPACK_IMPORTED_MODULE_2__["default"].getters['adminUser/token'];
 
       if (token) {
-        _admin_store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('user/clear');
+        _admin_store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch('adminUser/clear');
       }
 
       _components_common_message__WEBPACK_IMPORTED_MODULE_3__["default"].error('尚未登录，请您先登录！');
@@ -34199,19 +34219,27 @@ service.interceptors.response.use(function (response) {
 var map = {
 	"./auth/Login.vue": [
 		"./resources/js/admin/views/auth/Login.vue",
-		2
+		29
+	],
+	"./bank/Form.vue": [
+		"./resources/js/admin/views/bank/Form.vue",
+		30
+	],
+	"./bank/Index.vue": [
+		"./resources/js/admin/views/bank/Index.vue",
+		10
 	],
 	"./dashboard/Index.vue": [
 		"./resources/js/admin/views/dashboard/Index.vue",
-		3
+		31
 	],
 	"./subject/Form.vue": [
 		"./resources/js/admin/views/subject/Form.vue",
-		26
+		23
 	],
 	"./subject/Index.vue": [
 		"./resources/js/admin/views/subject/Index.vue",
-		1
+		13
 	]
 };
 function webpackAsyncContext(req) {

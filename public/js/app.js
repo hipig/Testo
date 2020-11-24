@@ -37230,16 +37230,16 @@ function isHtmlElement(node) {
 var map = {
 	"./Home.vue": [
 		"./resources/js/views/Home.vue",
-		31,
-		27
+		28,
+		24
 	],
 	"./about/Index.vue": [
 		"./resources/js/views/about/Index.vue",
-		28
+		25
 	],
 	"./article/Index.vue": [
 		"./resources/js/views/article/Index.vue",
-		15
+		11
 	],
 	"./auth/Login.vue": [
 		"./resources/js/views/auth/Login.vue",
@@ -37247,15 +37247,15 @@ var map = {
 	],
 	"./auth/Register.vue": [
 		"./resources/js/views/auth/Register.vue",
-		21
+		18
 	],
 	"./my/info/ChangePassword.vue": [
 		"./resources/js/views/my/info/ChangePassword.vue",
-		22
+		19
 	],
 	"./my/info/Index.vue": [
 		"./resources/js/views/my/info/Index.vue",
-		23
+		20
 	],
 	"./my/info/InfoTab.vue": [
 		"./resources/js/views/my/info/InfoTab.vue",
@@ -37263,22 +37263,22 @@ var map = {
 	],
 	"./my/learn/Collect.vue": [
 		"./resources/js/views/my/learn/Collect.vue",
-		6,
-		10
+		1,
+		5
 	],
 	"./my/learn/Exam.vue": [
 		"./resources/js/views/my/learn/Exam.vue",
-		6,
-		11
+		1,
+		6
 	],
 	"./my/learn/Index.vue": [
 		"./resources/js/views/my/learn/Index.vue",
-		6,
-		12
+		1,
+		7
 	],
 	"./my/learn/LearnFilter.vue": [
 		"./resources/js/views/my/learn/LearnFilter.vue",
-		6
+		1
 	],
 	"./my/learn/LearnTab.vue": [
 		"./resources/js/views/my/learn/LearnTab.vue",
@@ -37286,64 +37286,64 @@ var map = {
 	],
 	"./my/learn/Note.vue": [
 		"./resources/js/views/my/learn/Note.vue",
-		6,
-		13
+		1,
+		8
 	],
 	"./quiz/Items.vue": [
 		"./resources/js/views/quiz/Items.vue",
 		0,
-		7,
-		25
+		2,
+		22
 	],
 	"./quiz/Result.vue": [
 		"./resources/js/views/quiz/Result.vue",
-		17
+		14
 	],
 	"./quiz/ResultDetail.vue": [
 		"./resources/js/views/quiz/ResultDetail.vue",
 		0,
-		7,
-		29
+		2,
+		26
 	],
 	"./quiz/mode/Exam.vue": [
 		"./resources/js/views/quiz/mode/Exam.vue",
 		0,
-		7,
-		18
+		2,
+		15
 	],
 	"./quiz/mode/Exercise.vue": [
 		"./resources/js/views/quiz/mode/Exercise.vue",
 		0,
-		20
+		17
 	],
 	"./quiz/mode/Test.vue": [
 		"./resources/js/views/quiz/mode/Test.vue",
 		0,
-		7,
-		19
+		2,
+		16
 	],
 	"./subject/Index.vue": [
 		"./resources/js/views/subject/Index.vue",
-		30
+		27
 	],
 	"./subject/Show.vue": [
 		"./resources/js/views/subject/Show.vue",
-		8,
-		9,
-		14
+		3,
+		4,
+		9
 	],
 	"./subject/tabs/ChapterList.vue": [
 		"./resources/js/views/subject/tabs/ChapterList.vue",
-		8
+		3
 	],
 	"./subject/tabs/DailyList.vue": [
 		"./resources/js/views/subject/tabs/DailyList.vue",
-		9,
-		24
+		4,
+		21
 	],
 	"./subject/tabs/ExamList.vue": [
 		"./resources/js/views/subject/tabs/ExamList.vue",
-		16
+		12
 	]
 };
 function webpackAsyncContext(req) {
