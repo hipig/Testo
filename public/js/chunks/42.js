@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[23],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[42],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/common/Timing.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
@@ -54,9 +54,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -67,11 +67,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
 /* harmony import */ var _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/questions/ExamItem */ "./resources/js/components/questions/ExamItem.vue");
 /* harmony import */ var _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/Timing */ "./resources/js/components/common/Timing.vue");
-/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
-/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+/* harmony import */ var _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/common/modal/Modal */ "./resources/js/components/common/modal/Modal.vue");
+/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
 //
 //
 //
@@ -169,29 +166,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 
 
@@ -199,15 +173,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "quiz.mode.exam",
+  name: "quiz.mode.test",
   components: {
     Breadcrumb: _components_common_Breadcrumb__WEBPACK_IMPORTED_MODULE_0__["default"],
     EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_1__["default"],
     ExamItem: _components_questions_ExamItem__WEBPACK_IMPORTED_MODULE_2__["default"],
     Timing: _components_common_Timing__WEBPACK_IMPORTED_MODULE_3__["default"],
-    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_5__["default"]
+    TModal: _components_common_modal_Modal__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_4__["default"]],
   data: function data() {
     return {
       recordId: this.$route.params.id,
@@ -227,11 +200,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     this.showRecords();
   },
   computed: {
-    limitTime: function limitTime() {
-      return this.record.time_limit * 60 - this.doneTime;
-    },
     undoneCount: function undoneCount() {
-      return Object.keys(this.answerList).length - this.doneCount;
+      return this.answerList.length - this.doneCount;
     }
   },
   watch: {
@@ -245,38 +215,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       this.isLoading = true;
 
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["showRecords"])(this.recordId).then(function (res) {
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["showRecords"])(this.recordId).then(function (res) {
         _this.record = res;
         _this.recordItems = res.items;
         _this.doneTime = res.done_time;
-        var answerList = {};
-
-        _this.recordItems.forEach(function (item, index) {
-          if (res.is_group) {
-            item.items.forEach(function (v, i) {
-              answerList[index + '-' + i] = {
-                record_id: _this.recordId,
-                bank_id: v.bank_id,
-                bank_item_id: v.id,
-                question_id: v.question.id,
-                question_type: v.question.type,
-                answer: v.record && v.record.answer || ""
-              };
-            });
-          } else {
-            answerList[index] = {
-              record_id: _this.recordId,
-              bank_id: item.bank_id,
-              bank_item_id: item.id,
-              question_id: item.question.id,
-              question_type: item.question.type,
-              answer: item.record && item.record.answer || ""
-            };
-          }
+        _this.answerList = res.items.map(function (item) {
+          return {
+            record_id: _this.recordId,
+            bank_id: item.bank_id,
+            bank_item_id: item.id,
+            question_id: item.question.id,
+            question_type: item.question.type,
+            answer: item.record && item.record.answer || ""
+          };
         });
-
-        _this.answerList = answerList;
-        _this.doneCount = Object.values(answerList).filter(function (item) {
+        _this.doneCount = _this.answerList.filter(function (item) {
           return item.answer.length !== 0;
         }).length;
       })["finally"](function () {
@@ -286,10 +239,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     },
     intervalEvent: function intervalEvent() {
       if (!this.isPause) this.doneTime++;
-
-      if (this.limitTime <= 0) {
-        clearInterval(this.timer);
-      }
     },
     toIndex: function toIndex(index) {
       this.$nextTick(function () {
@@ -299,14 +248,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       });
     },
     handleAnswer: function handleAnswer(answer, isRight, index) {
-      index = _typeof(index) === "object" ? index.join('-') : index;
       this.answerList[index] = Object.assign({}, this.answerList[index], {
         answer: answer,
         is_right: isRight
       });
-      this.doneCount = Object.values(this.answerList).filter(function (item) {
+      this.doneCount = this.answerList.filter(function (item) {
         return item.answer.length !== 0;
       }).length;
+    },
+    getDoneTime: function getDoneTime(second) {
+      this.doneTime = second;
     },
     submitRecord: function submitRecord() {
       var _this2 = this;
@@ -314,25 +265,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'end';
       var params = {
         done_time: this.doneTime,
-        type: type || '',
+        type: type,
         items: this.answerList
       };
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_6__["updateRecords"])(this.recordId, params).then(function (res) {
-        if (type && type === 'end') {
-          _this2.submitModalVisible = false;
+      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_5__["updateRecords"])(this.recordId, params).then(function (res) {
+        _this2.submitModalVisible = false;
 
-          _this2.$router.push({
-            name: 'quiz.result',
-            params: {
-              id: _this2.recordId
-            }
-          });
-        }
+        _this2.$router.push({
+          name: 'quiz.result',
+          params: {
+            id: _this2.recordId
+          }
+        });
       });
-    },
-    nextContinue: function nextContinue() {
-      this.submitRecord('next');
-      this.$router.go(-1);
     }
   }
 });
@@ -365,9 +310,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba&":
 /*!************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba& ***!
   \************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -410,63 +355,8 @@ var render = function() {
                             [_vm._v(_vm._s(_vm.record.bank_title))]
                           ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "flex-1 ml-3" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    _vm.record.type == 2
-                                      ? "模拟考试"
-                                      : "历年真题"
-                                  )
-                                )
-                              ]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "mt-4 flex flex-warp items-center text-gray-400"
-                          },
-                          [
-                            _c("div", { staticClass: "mr-10" }, [
-                              _vm._v(
-                                _vm._s(
-                                  "本卷共" +
-                                    _vm.recordItems.length +
-                                    (_vm.record.is_group ? "大" : "小") +
-                                    "题"
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "mr-10" }, [
-                              _vm._v(
-                                _vm._s(
-                                  "总分：" + (_vm.record.score || 0) + "分"
-                                )
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "mr-10" }, [
-                              _vm._v(
-                                _vm._s(
-                                  "时间：" +
-                                    (_vm.record.time_limit || 0) +
-                                    "分钟"
-                                )
-                              )
-                            ])
-                          ]
-                        )
+                          _vm._m(0)
+                        ])
                       ]
                     )
                   : _vm._e(),
@@ -485,60 +375,20 @@ var render = function() {
                     attrs: { "loading-custom-class": "h-56" }
                   },
                   [
-                    _vm.record.is_group
-                      ? _vm._l(_vm.recordItems, function(item, index) {
-                          return _c(
-                            "div",
-                            { key: index, staticClass: "mt-8" },
-                            [
-                              _c(
-                                "div",
-                                { staticClass: "text-base font-semibold mb-3" },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.questionTypes[item.item_type].name +
-                                        "（" +
-                                        item.title +
-                                        "）"
-                                    )
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _vm._l(item.items, function(v, i) {
-                                return _c("exam-item", {
-                                  key: i,
-                                  attrs: {
-                                    id: "q-" + index + "-" + i,
-                                    item: v,
-                                    answer:
-                                      _vm.answerList[index + "-" + i].answer,
-                                    index: [index, i],
-                                    "show-report": false,
-                                    "show-note": false
-                                  },
-                                  on: { answer: _vm.handleAnswer }
-                                })
-                              })
-                            ],
-                            2
-                          )
+                    _vm._l(_vm.recordItems, function(item, index) {
+                      return [
+                        _c("exam-item", {
+                          key: index,
+                          attrs: {
+                            id: "q-" + index,
+                            item: item,
+                            answer: _vm.answerList[index].answer,
+                            index: index
+                          },
+                          on: { answer: _vm.handleAnswer }
                         })
-                      : _vm._l(_vm.recordItems, function(item, index) {
-                          return _c("exam-item", {
-                            key: index,
-                            attrs: {
-                              id: "q-" + index,
-                              item: item,
-                              answer: _vm.answerList[index].answer,
-                              index: index,
-                              "show-report": false,
-                              "show-note": false
-                            },
-                            on: { answer: _vm.handleAnswer }
-                          })
-                        })
+                      ]
+                    })
                   ],
                   2
                 ),
@@ -567,90 +417,16 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "px-5 py-4" },
+                    {
+                      staticClass:
+                        "px-5 py-4 h-36 overflow-auto scrollbar-hover"
+                    },
                     [
-                      _vm.record.is_group
-                        ? _vm._l(_vm.recordItems, function(item, index) {
-                            return _c(
-                              "div",
-                              { key: index, staticClass: "mb-4" },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "mb-2 text-gray-900 flex items-center leading-none"
-                                  },
-                                  [
-                                    _c(
-                                      "span",
-                                      {
-                                        staticClass: "font-semibold text-base"
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.questionTypes[item.item_type]
-                                              .name
-                                          )
-                                        )
-                                      ]
-                                    ),
-                                    _c(
-                                      "span",
-                                      { staticClass: "text-gray-400" },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            "（共" +
-                                              item.item_count +
-                                              "题，每题" +
-                                              item.item_score +
-                                              "分）"
-                                          )
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "flex flex-wrap -mx-1" },
-                                  _vm._l(item.items, function(_, i) {
-                                    return _c(
-                                      "div",
-                                      {
-                                        key: i,
-                                        staticClass:
-                                          "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
-                                        class: [
-                                          _vm.answerList[index + "-" + i] &&
-                                          _vm.answerList[index + "-" + i].answer
-                                            .length === 0
-                                            ? "text-gray-500 border-gray-100 hover:border-teal-500"
-                                            : "text-white bg-gray-400 border-gray-400"
-                                        ],
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.toIndex(
-                                              "q-" + index + "-" + i
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(i + 1))]
-                                    )
-                                  }),
-                                  0
-                                )
-                              ]
-                            )
-                          })
-                        : _c(
+                      _vm.answerList.length > 0
+                        ? _c(
                             "div",
-                            { staticClass: "flex flex-wrap -mx-1" },
-                            _vm._l(_vm.recordItems, function(_, index) {
+                            { staticClass: "flex flex-wrap -mx-1 -mb-2" },
+                            _vm._l(_vm.answerList, function(item, index) {
                               return _c(
                                 "div",
                                 {
@@ -658,8 +434,7 @@ var render = function() {
                                   staticClass:
                                     "w-6 h-6 mx-1 mb-2 leading-none flex items-center justify-center border text-xs rounded-sm cursor-pointer",
                                   class: [
-                                    _vm.answerList[index] &&
-                                    _vm.answerList[index].answer.length === 0
+                                    item.answer.length === 0
                                       ? "text-gray-500 border-gray-100 hover:border-teal-500"
                                       : "text-white bg-gray-400 border-gray-400"
                                   ],
@@ -673,16 +448,15 @@ var render = function() {
                               )
                             }),
                             0
-                          ),
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _vm.isLoading === false &&
-                      Object.keys(_vm.answerList).length === 0
+                      _vm.isLoading === false && _vm.answerList.length === 0
                         ? _c("div", { staticClass: "text-gray-400" }, [
                             _vm._v("还没有数据哦~")
                           ])
                         : _vm._e()
-                    ],
-                    2
+                    ]
                   ),
                   _vm._v(" "),
                   _c(
@@ -725,165 +499,124 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm.record.id
-                  ? _c("div", { staticClass: "bg-white shadow rounded-lg" }, [
+                _c("div", { staticClass: "bg-white shadow rounded-lg mb-5" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "border-b border-gray-100 flex leading-none"
+                    },
+                    [
+                      _c("div", { staticClass: "w-2/3 flex items-center" }, [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "w-full flex items-center py-2 px-4 border-r border-gray-100"
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass:
+                                  "w-6 h-6 stroke-current text-gray-400",
+                                attrs: { fill: "none", viewBox: "0 0 24 24" }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d:
+                                      "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "text-teal-500 text-base ml-1" },
+                              [
+                                _vm.isLoading === false
+                                  ? _c("timing", {
+                                      attrs: {
+                                        second: 0,
+                                        "done-second": _vm.doneTime
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c(
                         "div",
-                        {
-                          staticClass:
-                            "border-b border-gray-100 flex leading-none"
-                        },
+                        { staticClass: "w-1/3 flex items-center py-2 px-4" },
                         [
                           _c(
                             "div",
-                            { staticClass: "w-2/3 flex items-center" },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "w-full flex items-center py-2 px-4 border-r border-gray-100"
-                                },
-                                [
-                                  _c(
-                                    "svg",
-                                    {
-                                      staticClass:
-                                        "w-6 h-6 stroke-current text-gray-400",
-                                      attrs: {
-                                        fill: "none",
-                                        viewBox: "0 0 24 24"
-                                      }
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          "stroke-linecap": "round",
-                                          "stroke-linejoin": "round",
-                                          "stroke-width": "2",
-                                          d:
-                                            "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        }
-                                      })
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass:
-                                        "text-teal-500 text-base ml-1"
-                                    },
-                                    [
-                                      _vm.isLoading === false
-                                        ? _c("timing", {
-                                            attrs: {
-                                              second:
-                                                _vm.record.time_limit * 60,
-                                              "done-second": _vm.doneTime,
-                                              "is-countdown":
-                                                _vm.record.time_limit > 0
-                                            }
-                                          })
-                                        : _vm._e()
-                                    ],
-                                    1
-                                  )
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
                             {
-                              staticClass: "w-1/3 flex items-center py-2 px-4"
+                              staticClass: "cursor-pointer flex items-center",
+                              on: {
+                                click: function($event) {
+                                  _vm.isPause = true
+                                }
+                              }
                             },
                             [
                               _c(
-                                "div",
+                                "svg",
                                 {
                                   staticClass:
-                                    "cursor-pointer flex items-center",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.isPause = true
-                                    }
-                                  }
+                                    "w-6 h-6 stroke-current text-gray-400",
+                                  attrs: { fill: "none", viewBox: "0 0 24 24" }
                                 },
                                 [
-                                  _c(
-                                    "svg",
-                                    {
-                                      staticClass:
-                                        "w-6 h-6 stroke-current text-gray-400",
-                                      attrs: {
-                                        fill: "none",
-                                        viewBox: "0 0 24 24"
-                                      }
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          "stroke-linecap": "round",
-                                          "stroke-linejoin": "round",
-                                          "stroke-width": "2",
-                                          d:
-                                            "M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        }
-                                      })
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    { staticClass: "text-gray-900 ml-1" },
-                                    [_vm._v("暂停")]
-                                  )
+                                  _c("path", {
+                                    attrs: {
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round",
+                                      "stroke-width": "2",
+                                      d:
+                                        "M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    }
+                                  })
                                 ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                { staticClass: "text-gray-900 ml-1" },
+                                [_vm._v("暂停")]
                               )
                             ]
                           )
                         ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "flex justify-center py-3 px-5 -mx-2" },
-                        [
-                          _c("div", { staticClass: "w-1/2 px-2" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "w-full h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-sm focus:outline-none",
-                                attrs: { type: "button" },
-                                on: { click: _vm.nextContinue }
-                              },
-                              [_vm._v("下次继续")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-1/2 px-2" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "w-full h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.submitModalVisible = true
-                                  }
-                                }
-                              },
-                              [_vm._v("交卷")]
-                            )
-                          ])
-                        ]
                       )
-                    ])
-                  : _vm._e()
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex justify-center py-3" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "w-36 h-8 flex items-center justify-center border border-teal-500 bg-teal-500 text-white rounded-sm focus:outline-none",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.submitModalVisible = true
+                          }
+                        }
+                      },
+                      [_vm._v("交卷")]
+                    )
+                  ])
+                ])
               ])
             ])
           ])
@@ -1047,7 +780,23 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex-1 ml-3" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex justify-center text-base text-teal-500 border border-teal-500 rounded-sm w-20"
+        },
+        [_vm._v("考试模式")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -1220,17 +969,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/views/quiz/mode/Exam.vue":
+/***/ "./resources/js/views/quiz/mode/Test.vue":
 /*!***********************************************!*\
-  !*** ./resources/js/views/quiz/mode/Exam.vue ***!
+  !*** ./resources/js/views/quiz/mode/Test.vue ***!
   \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Exam.vue?vue&type=template&id=67dbf830& */ "./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830&");
-/* harmony import */ var _Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Exam.vue?vue&type=script&lang=js& */ "./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Test.vue?vue&type=template&id=9fddd9ba& */ "./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba&");
+/* harmony import */ var _Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Test.vue?vue&type=script&lang=js& */ "./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -1240,9 +989,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -1252,38 +1001,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/quiz/mode/Exam.vue"
+component.options.__file = "resources/js/views/quiz/mode/Test.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js&":
 /*!************************************************************************!*\
-  !*** ./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js& ***!
   \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exam.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Exam.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Test.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Test.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830&":
+/***/ "./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba&":
 /*!******************************************************************************!*\
-  !*** ./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830& ***!
+  !*** ./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba& ***!
   \******************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exam.vue?vue&type=template&id=67dbf830& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Exam.vue?vue&type=template&id=67dbf830&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Test.vue?vue&type=template&id=9fddd9ba& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/quiz/mode/Test.vue?vue&type=template&id=9fddd9ba&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_67dbf830___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Test_vue_vue_type_template_id_9fddd9ba___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

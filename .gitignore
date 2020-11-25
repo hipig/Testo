@@ -1,5 +1,6 @@
 /node_modules
 /public/hot
+/public/js/chunks
 /public/storage
 /public/uploads
 /storage/*.key

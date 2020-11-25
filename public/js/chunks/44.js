@@ -1,9 +1,9 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[4],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[44],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11,8 +11,9 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _LearnTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LearnTab */ "./resources/js/views/my/learn/LearnTab.vue");
 /* harmony import */ var _LearnFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LearnFilter */ "./resources/js/views/my/learn/LearnFilter.vue");
-/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
-/* harmony import */ var _api_learnRecord__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/api/learnRecord */ "./resources/js/api/learnRecord.js");
+/* harmony import */ var _mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/mixins/QuestionType */ "./resources/js/mixins/QuestionType.js");
+/* harmony import */ var _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/common/EmptyData */ "./resources/js/components/common/EmptyData.vue");
+/* harmony import */ var _api_userCollect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/api/userCollect */ "./resources/js/api/userCollect.js");
 //
 //
 //
@@ -48,20 +49,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "my.exam",
+  name: "my.collect",
   components: {
     LearnTab: _LearnTab__WEBPACK_IMPORTED_MODULE_0__["default"],
     LearnFilter: _LearnFilter__WEBPACK_IMPORTED_MODULE_1__["default"],
-    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_2__["default"]
+    EmptyData: _components_common_EmptyData__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mixins: [_mixins_QuestionType__WEBPACK_IMPORTED_MODULE_2__["default"]],
   data: function data() {
     return {
-      records: [],
+      collects: [],
       filterForm: {},
       currentPage: 1,
       total: 0,
@@ -69,23 +72,18 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getRecordList();
-  },
-  filters: {
-    actionText: function actionText(val) {
-      return val.is_end ? '查看解析' : '继续考试';
-    }
+    this.getUserCollects();
   },
   methods: {
-    getRecordList: function getRecordList() {
+    getUserCollects: function getUserCollects() {
       var _this = this;
 
       this.isLoading = true;
       var params = this.filterForm;
-      params.type = [2, 3];
       params.page = this.currentPage;
-      Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["getRecords"])(params).then(function (res) {
-        _this.records = res.data;
+
+      Object(_api_userCollect__WEBPACK_IMPORTED_MODULE_4__["getUserCollects"])(params).then(function (res) {
+        _this.collects = res.data;
         _this.total = res.meta.total;
       })["finally"](function () {
         _this.isLoading = false;
@@ -93,33 +91,34 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleSelect: function handleSelect(form) {
       this.filterForm = form;
-      this.getRecordList();
+      this.getUserCollects();
     },
-    handleContinue: function handleContinue(val) {
-      var routerName = 'mode.exam';
-      if (val.is_end) routerName = 'quiz.result';
+    handleView: function handleView(item) {
       this.$router.push({
-        name: routerName,
+        name: 'quiz.items',
         params: {
-          id: val.id
-        }
+          type: 'collect'
+        },
+        query: Object.assign({}, this.filterForm, {
+          index: "q-".concat(item.id)
+        })
       });
     },
     changePage: function changePage(page) {
       this.currentPage = page;
-      this.getRecordList();
+      this.getUserCollects();
     },
-    handleDelete: function handleDelete() {
+    handleCancelCollect: function handleCancelCollect(item) {
       var _this2 = this;
 
       return this.$Dialog.confirm({
         title: '温馨提示',
-        content: "\u786E\u5B9A\u5220\u9664\u8BE5\u8003\u8BD5\u8BB0\u5F55\uFF1F"
+        content: "\u786E\u8BA4\u53D6\u6D88\u6536\u85CF\uFF1F"
       }).then(function (_) {
-        Object(_api_learnRecord__WEBPACK_IMPORTED_MODULE_3__["deleteRecords"])(item.id).then(function (_) {
-          _this2.$Message.success('删除成功');
+        Object(_api_userCollect__WEBPACK_IMPORTED_MODULE_4__["destroyUserCollects"])(item.id).then(function (_) {
+          _this2.$Message.success('取消收藏成功');
 
-          _this2.$router.go(0);
+          _this2.getUserCollects();
         });
       })["catch"](function (_) {});
     }
@@ -158,10 +157,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e&":
-/*!***********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e& ***!
-  \***********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b& ***!
+  \**************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -177,13 +176,16 @@ var render = function() {
     "div",
     { staticClass: "bg-white shadow rounded-lg" },
     [
-      _c("learn-tab", { attrs: { active: "exam" } }),
+      _c("learn-tab", { attrs: { active: "collect" } }),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "p-5" },
         [
-          _c("learn-filter", { on: { "on-select": _vm.handleSelect } }),
+          _c("learn-filter", {
+            attrs: { "show-question-type-select": true },
+            on: { "on-select": _vm.handleSelect }
+          }),
           _vm._v(" "),
           _c(
             "div",
@@ -199,7 +201,7 @@ var render = function() {
               attrs: { "loading-custom-class": "h-56" }
             },
             [
-              _vm._l(_vm.records, function(item, index) {
+              _vm._l(_vm.collects, function(item, index) {
                 return _c(
                   "div",
                   {
@@ -215,55 +217,48 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "flex items-center" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "mr-8",
-                              class: [
-                                item.type === 2
-                                  ? "text-yellow-500"
-                                  : "text-green-500"
-                              ]
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  item.type === 2 ? "模拟考试" : "历年真题"
-                                )
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "mr-10" }, [
-                            _vm._v(_vm._s(item.created_at))
-                          ]),
-                          _vm._v(" "),
-                          item.is_end
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "border border-red-500 text-red-500 leading-tight px-2 rounded"
-                                },
-                                [_vm._v(_vm._s(item.score) + " 分")]
-                              )
-                            : _vm._e()
+                          _c("div", [_vm._v(_vm._s(item.created_at))])
                         ]),
                         _vm._v(" "),
                         _c(
                           "div",
                           {
                             staticClass: "cursor-pointer",
-                            on: { click: _vm.handleDelete }
+                            on: {
+                              click: function($event) {
+                                return _vm.handleCancelCollect(item)
+                              }
+                            }
                           },
-                          [_vm._v("删除")]
+                          [_vm._v("取消收藏")]
                         )
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "text-base mb-2 truncate" }, [
-                      _vm._v(_vm._s(item.bank_title))
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "flex items-center text-base mb-2" },
+                      [
+                        _c("div", { staticClass: "text-teal-500 w-16" }, [
+                          _vm._v(
+                            _vm._s(
+                              "[" +
+                                _vm.questionTypes[item.question_type].name +
+                                "]"
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "flex-1 truncate",
+                            attrs: { title: item.question_title }
+                          },
+                          [_vm._v(_vm._s(item.question_title))]
+                        )
+                      ]
+                    ),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -274,37 +269,29 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "text-gray-900 w-40 mr-2 truncate flex items-center"
+                                "text-gray-400 text-xs mr-2 truncate flex items-center"
                             },
                             [
-                              _c("span", { staticClass: "text-xs" }, [
+                              _vm._v("\n              来源："),
+                              _c("span", { staticClass: "text-gray-900" }, [
                                 _vm._v(_vm._s(item.subject_title))
                               ])
                             ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "text-gray-400" }, [
-                            _c(
-                              "span",
-                              { staticClass: "text-teal-500 text-base" },
-                              [_vm._v(_vm._s(item.done_count))]
-                            ),
-                            _vm._v("/" + _vm._s(item.total_count))
-                          ])
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
                           "div",
                           {
                             staticClass:
-                              "cursor-pointer font-semibold text-yellow-500",
+                              "cursor-pointer font-semibold text-teal-500",
                             on: {
                               click: function($event) {
-                                return _vm.handleContinue(item)
+                                return _vm.handleView(item)
                               }
                             }
                           },
-                          [_vm._v(_vm._s(_vm._f("actionText")(item)))]
+                          [_vm._v("查看详情")]
                         )
                       ]
                     )
@@ -331,7 +318,9 @@ var render = function() {
           _vm._v(" "),
           _c("empty-data", {
             class: ["shadow-none"],
-            attrs: { show: _vm.isLoading === false && _vm.records.length === 0 }
+            attrs: {
+              show: _vm.isLoading === false && _vm.collects.length === 0
+            }
           })
         ],
         1
@@ -438,114 +427,77 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/api/learnRecord.js":
+/***/ "./resources/js/api/userCollect.js":
 /*!*****************************************!*\
-  !*** ./resources/js/api/learnRecord.js ***!
+  !*** ./resources/js/api/userCollect.js ***!
   \*****************************************/
-/*! exports provided: getRecords, showRecords, showRecordsResult, storeTestRecords, storeExamRecords, storeDailyTestRecords, storeRecordItems, updateRecords, deleteRecords */
+/*! exports provided: getUserCollects, storeUserCollects, showUserCollects, deleteUserCollects, destroyUserCollects */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecords", function() { return getRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showRecords", function() { return showRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showRecordsResult", function() { return showRecordsResult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeTestRecords", function() { return storeTestRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeExamRecords", function() { return storeExamRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeDailyTestRecords", function() { return storeDailyTestRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeRecordItems", function() { return storeRecordItems; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecords", function() { return updateRecords; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteRecords", function() { return deleteRecords; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserCollects", function() { return getUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storeUserCollects", function() { return storeUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showUserCollects", function() { return showUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUserCollects", function() { return deleteUserCollects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyUserCollects", function() { return destroyUserCollects; });
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/utils/request */ "./resources/js/utils/request.js");
-/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/utils/util */ "./resources/js/utils/util.js");
+/* harmony import */ var _utils_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/util */ "./resources/js/utils/util.js");
 
 
 var api = {
-  getRecords: '/records',
-  showRecords: '/records/%s',
-  showRecordsResult: '/records/%s/result',
-  testRecords: '/records/test',
-  examRecords: '/records/exam',
-  dailyTestRecords: '/records/daily-test',
-  recordItems: '/records/%s/items',
-  updateRecords: '/records/%s'
+  userCollects: '/user/collects',
+  showUserCollects: '/user/collects/item',
+  destroyUserCollects: '/user/collects/%s'
 };
-var getRecords = function getRecords(params) {
+var getUserCollects = function getUserCollects(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: api.getRecords,
+    url: api.userCollects,
     method: 'get',
     params: params
   });
 };
-var showRecords = function showRecords(id, params) {
+var storeUserCollects = function storeUserCollects(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.showRecords, id),
+    url: api.userCollects,
+    method: 'post',
+    data: params
+  });
+};
+var showUserCollects = function showUserCollects(params) {
+  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    url: api.showUserCollects,
     method: 'get',
     params: params
   });
 };
-var showRecordsResult = function showRecordsResult(id, params) {
+var deleteUserCollects = function deleteUserCollects(params) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.showRecordsResult, id),
-    method: 'get',
-    params: params
-  });
-};
-var storeTestRecords = function storeTestRecords(params) {
-  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: api.testRecords,
-    method: 'post',
+    url: api.showUserCollects,
+    method: 'delete',
     data: params
   });
 };
-var storeExamRecords = function storeExamRecords(params) {
+var destroyUserCollects = function destroyUserCollects(id) {
   return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: api.examRecords,
-    method: 'post',
-    data: params
-  });
-};
-var storeDailyTestRecords = function storeDailyTestRecords(params) {
-  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: api.dailyTestRecords,
-    method: 'post',
-    data: params
-  });
-};
-var storeRecordItems = function storeRecordItems(id, params) {
-  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.recordItems, id),
-    method: 'post',
-    data: params
-  });
-};
-var updateRecords = function updateRecords(id, params) {
-  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.updateRecords, id),
-    method: 'put',
-    data: params
-  });
-};
-var deleteRecords = function deleteRecords(id) {
-  return Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.updateRecords, id),
+    url: Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["sprintf"])(api.destroyUserCollects, id),
     method: 'delete'
   });
 };
 
 /***/ }),
 
-/***/ "./resources/js/views/my/learn/Exam.vue":
-/*!**********************************************!*\
-  !*** ./resources/js/views/my/learn/Exam.vue ***!
-  \**********************************************/
+/***/ "./resources/js/views/my/learn/Collect.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Exam.vue?vue&type=template&id=32ebb87e& */ "./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e&");
-/* harmony import */ var _Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Exam.vue?vue&type=script&lang=js& */ "./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Collect.vue?vue&type=template&id=28a9201b& */ "./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&");
+/* harmony import */ var _Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Collect.vue?vue&type=script&lang=js& */ "./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -555,9 +507,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -567,38 +519,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/my/learn/Exam.vue"
+component.options.__file = "resources/js/views/my/learn/Collect.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&":
-/*!***********************************************************************!*\
-  !*** ./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************/
+/***/ "./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exam.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Collect.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e&":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e& ***!
-  \*****************************************************************************/
+/***/ "./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b& ***!
+  \********************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Exam.vue?vue&type=template&id=32ebb87e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Exam.vue?vue&type=template&id=32ebb87e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Collect.vue?vue&type=template&id=28a9201b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/my/learn/Collect.vue?vue&type=template&id=28a9201b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Exam_vue_vue_type_template_id_32ebb87e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Collect_vue_vue_type_template_id_28a9201b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

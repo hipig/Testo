@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[12],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[55],{
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/admin/views/subject/Index.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
@@ -55,6 +55,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -65,30 +110,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       filterForm: {},
-      columns: [{
-        label: 'ID',
-        prop: 'id'
-      }, {
-        label: '名称',
-        prop: 'title'
-      }, {
-        label: '标识',
-        prop: 'name'
-      }, {
-        label: '层级',
-        prop: 'level'
-      }, {
-        label: '是否为目录',
-        prop: 'is_directory',
-        slot: 'directory'
-      }, {
-        label: '创建时间',
-        prop: 'created_at'
-      }, {
-        label: '操作',
-        prop: 'action',
-        slot: 'action'
-      }],
       subjectList: [],
       checks: [],
       currentPage: 1,
@@ -258,75 +279,281 @@ var render = function() {
           attrs: { "loading-custom-class": "h-56" }
         },
         [
-          _c("t-table", {
-            attrs: { columns: _vm.columns, data: _vm.subjectList },
-            scopedSlots: _vm._u([
-              {
-                key: "directory",
-                fn: function(ref) {
-                  var row = ref.row
-                  return [
-                    row.is_directory
-                      ? _c(
-                          "span",
-                          {
-                            staticClass:
-                              "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                          },
-                          [_vm._v("是")]
-                        )
-                      : _c(
-                          "span",
-                          {
-                            staticClass:
-                              "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-                          },
-                          [_vm._v("否")]
-                        )
+          _c("table", { staticClass: "w-full border-b border-gray-200" }, [
+            _c("thead", [
+              _c("tr", [
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-2 py-3 text-gray-900 text-left font-semibold tracking-wider w-6"
+                  },
+                  [
+                    _c("input", {
+                      staticClass:
+                        "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                      attrs: { type: "checkbox" },
+                      on: { change: _vm.checkAll }
+                    })
                   ]
-                }
-              },
-              {
-                key: "action",
-                fn: function(ref) {
-                  var row = ref.row
-                  return [
-                    _c("div", { staticClass: "flex flex-wrap items-center" }, [
-                      _c(
-                        "button",
-                        {
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider w-10"
+                  },
+                  [_vm._v("\n              ID\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              名称\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              标识\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              层级\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              是否有子类目\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-left font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              创建时间\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticClass:
+                      "px-6 py-3 text-gray-900 text-center font-semibold tracking-wider"
+                  },
+                  [_vm._v("\n              操作\n            ")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.subjectList, function(item, index) {
+                  return _c("tr", { key: index }, [
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-2 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.checks,
+                              expression: "checks"
+                            }
+                          ],
                           staticClass:
-                            "pr-3 text-teal-500 hover:text-teal-700 focus:outline-none",
-                          attrs: { type: "button" },
+                            "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            value: item,
+                            checked: Array.isArray(_vm.checks)
+                              ? _vm._i(_vm.checks, item) > -1
+                              : _vm.checks
+                          },
                           on: {
-                            click: function($event) {
-                              return _vm.handleEdit(row)
+                            change: function($event) {
+                              var $$a = _vm.checks,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = item,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 && (_vm.checks = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.checks = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.checks = $$c
+                              }
                             }
                           }
-                        },
-                        [_vm._v("编辑")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "pr-3 text-red-500 hover:text-red-700 focus:outline-none",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.handleDelete(row)
-                            }
-                          }
-                        },
-                        [_vm._v("删除")]
-                      )
-                    ])
-                  ]
-                }
-              }
-            ])
-          }),
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.id))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.title))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.name))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.level))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [
+                        item.is_directory
+                          ? _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800"
+                              },
+                              [_vm._v("是")]
+                            )
+                          : _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                              },
+                              [_vm._v("否")]
+                            )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap"
+                      },
+                      [_vm._v(_vm._s(item.created_at))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      {
+                        staticClass:
+                          "px-6 py-3 border-t border-gray-200 whitespace-no-wrap text-center leading-5"
+                      },
+                      [
+                        _c("div", { staticClass: "-mx-1" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "px-1 text-teal-500 hover:text-teal-700 focus:outline-none",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.handleEdit(item)
+                                }
+                              }
+                            },
+                            [_vm._v("编辑")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "px-1 text-red-500 hover:text-red-700 focus:outline-none",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.handleDelete(item)
+                                }
+                              }
+                            },
+                            [_vm._v("删除")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                }),
+                _vm._v(" "),
+                _c("tr", [
+                  _c(
+                    "td",
+                    { attrs: { colspan: "7" } },
+                    [
+                      _c("empty-data", {
+                        class: ["shadow-none"],
+                        attrs: {
+                          show:
+                            _vm.isLoading === false &&
+                            _vm.subjectList.length === 0
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              ],
+              2
+            )
+          ]),
           _vm._v(" "),
           _vm.total > 0
             ? _c(
@@ -351,8 +578,7 @@ var render = function() {
                 1
               )
             : _vm._e()
-        ],
-        1
+        ]
       )
     ])
   ])

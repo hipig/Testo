@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[16],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[57],{
 
 /***/ "./resources/js/api/bank.js":
 /*!**********************************!*\

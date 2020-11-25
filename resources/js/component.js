@@ -5,12 +5,14 @@ import Loading from "@/components/common/loading"
 import Progress from "@/components/common/progress"
 import Upload from "@/components/common/upload"
 import Image from "@/components/common/image"
+import Table from "@/components/common/table"
 
 const components = [
   Pagination,
   Progress,
   Upload,
-  Image
+  Image,
+  Table
 ]
 
 const install = function(Vue, opts = {}) {

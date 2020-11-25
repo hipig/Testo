@@ -272,8 +272,29 @@ export const isFirefox = function() {
   return !isServer && !!window.navigator.userAgent.match(/firefox/i)
 }
 
-export function isString(obj) {
-  return Object.prototype.toString.call(obj) === '[object String]'
+export const isObject = function(input) {
+  return Object.prototype.toString.call(input) === '[object Object]';
+}
+export const isArray = function (input) {
+  return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+}
+export const isDate = function (input) {
+  return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+}
+export const isNumber = function (input) {
+  return input instanceof Number || Object.prototype.toString.call(input) === '[object Number]';
+}
+export const isString = function (input) {
+  return input instanceof String || Object.prototype.toString.call(input) === '[object String]';
+}
+export const isBoolean = function (input) {
+  return typeof input == 'boolean';
+}
+export const isFunction = function (input) {
+  return typeof input == 'function';
+}
+export const isNull = function (input) {
+  return input === undefined || input === null;
 }
 
 export function isHtmlElement(node) {
