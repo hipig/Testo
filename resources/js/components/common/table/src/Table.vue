@@ -33,9 +33,6 @@
           </tr>
         </tbody>
       </table>
-      <div class="py-5" v-if="total > 0">
-        <t-pagination :total="total" :page-size="pageSize" :current="currentPage" @page-change="changePage" @pagesize-change="changePageSize" show-total show-sizer show-quickjump/>
-      </div>
     </div>
   </div>
 </template>

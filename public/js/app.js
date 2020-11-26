@@ -12229,9 +12229,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -16976,31 +16973,7 @@ var render = function() {
           ],
           2
         )
-      ]),
-      _vm._v(" "),
-      _vm.total > 0
-        ? _c(
-            "div",
-            { staticClass: "py-5" },
-            [
-              _c("t-pagination", {
-                attrs: {
-                  total: _vm.total,
-                  "page-size": _vm.pageSize,
-                  current: _vm.currentPage,
-                  "show-total": "",
-                  "show-sizer": "",
-                  "show-quickjump": ""
-                },
-                on: {
-                  "page-change": _vm.changePage,
-                  "pagesize-change": _vm.changePageSize
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e()
+      ])
     ])
   ])
 }
@@ -37925,51 +37898,51 @@ function isHtmlElement(node) {
 var map = {
 	"./Home.vue": [
 		"./resources/js/views/Home.vue",
-		29,
-		25
+		28,
+		24
 	],
 	"./about/Index.vue": [
 		"./resources/js/views/about/Index.vue",
-		24
+		25
 	],
 	"./article/Index.vue": [
 		"./resources/js/views/article/Index.vue",
-		9
+		19
 	],
 	"./auth/Login.vue": [
 		"./resources/js/views/auth/Login.vue",
-		32
+		31
 	],
 	"./auth/Register.vue": [
 		"./resources/js/views/auth/Register.vue",
-		18
+		14
 	],
 	"./my/info/ChangePassword.vue": [
 		"./resources/js/views/my/info/ChangePassword.vue",
-		19
+		15
 	],
 	"./my/info/Index.vue": [
 		"./resources/js/views/my/info/Index.vue",
-		20
+		16
 	],
 	"./my/info/InfoTab.vue": [
 		"./resources/js/views/my/info/InfoTab.vue",
-		33
+		32
 	],
 	"./my/learn/Collect.vue": [
 		"./resources/js/views/my/learn/Collect.vue",
 		1,
-		6
+		10
 	],
 	"./my/learn/Exam.vue": [
 		"./resources/js/views/my/learn/Exam.vue",
 		1,
-		4
+		11
 	],
 	"./my/learn/Index.vue": [
 		"./resources/js/views/my/learn/Index.vue",
 		1,
-		5
+		12
 	],
 	"./my/learn/LearnFilter.vue": [
 		"./resources/js/views/my/learn/LearnFilter.vue",
@@ -37977,68 +37950,68 @@ var map = {
 	],
 	"./my/learn/LearnTab.vue": [
 		"./resources/js/views/my/learn/LearnTab.vue",
-		34
+		33
 	],
 	"./my/learn/Note.vue": [
 		"./resources/js/views/my/learn/Note.vue",
 		1,
-		7
+		13
 	],
 	"./quiz/Items.vue": [
 		"./resources/js/views/quiz/Items.vue",
 		0,
 		2,
-		21
+		20
 	],
 	"./quiz/Result.vue": [
 		"./resources/js/views/quiz/Result.vue",
-		13
+		6
 	],
 	"./quiz/ResultDetail.vue": [
 		"./resources/js/views/quiz/ResultDetail.vue",
 		0,
 		2,
-		27
+		26
 	],
 	"./quiz/mode/Exam.vue": [
 		"./resources/js/views/quiz/mode/Exam.vue",
 		0,
 		2,
-		23
+		7
 	],
 	"./quiz/mode/Exercise.vue": [
 		"./resources/js/views/quiz/mode/Exercise.vue",
 		0,
-		15
+		9
 	],
 	"./quiz/mode/Test.vue": [
 		"./resources/js/views/quiz/mode/Test.vue",
 		0,
 		2,
-		14
+		8
 	],
 	"./subject/Index.vue": [
 		"./resources/js/views/subject/Index.vue",
-		28
+		27
 	],
 	"./subject/Show.vue": [
 		"./resources/js/views/subject/Show.vue",
-		26,
 		3,
-		10
+		4,
+		5
 	],
 	"./subject/tabs/ChapterList.vue": [
 		"./resources/js/views/subject/tabs/ChapterList.vue",
-		26
+		3
 	],
 	"./subject/tabs/DailyList.vue": [
 		"./resources/js/views/subject/tabs/DailyList.vue",
-		3,
-		16
+		4,
+		34
 	],
 	"./subject/tabs/ExamList.vue": [
 		"./resources/js/views/subject/tabs/ExamList.vue",
-		11
+		21
 	]
 };
 function webpackAsyncContext(req) {

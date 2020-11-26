@@ -12179,9 +12179,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -16634,31 +16631,7 @@ var render = function() {
           ],
           2
         )
-      ]),
-      _vm._v(" "),
-      _vm.total > 0
-        ? _c(
-            "div",
-            { staticClass: "py-5" },
-            [
-              _c("t-pagination", {
-                attrs: {
-                  total: _vm.total,
-                  "page-size": _vm.pageSize,
-                  current: _vm.currentPage,
-                  "show-total": "",
-                  "show-sizer": "",
-                  "show-quickjump": ""
-                },
-                on: {
-                  "page-change": _vm.changePage,
-                  "pagesize-change": _vm.changePageSize
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e()
+      ])
     ])
   ])
 }
@@ -34715,7 +34688,7 @@ service.interceptors.response.use(function (response) {
 var map = {
 	"./auth/Login.vue": [
 		"./resources/js/admin/views/auth/Login.vue",
-		30
+		29
 	],
 	"./bank/Form.vue": [
 		"./resources/js/admin/views/bank/Form.vue",
@@ -34723,11 +34696,11 @@ var map = {
 	],
 	"./bank/Index.vue": [
 		"./resources/js/admin/views/bank/Index.vue",
-		8
+		18
 	],
 	"./dashboard/Index.vue": [
 		"./resources/js/admin/views/dashboard/Index.vue",
-		31
+		30
 	],
 	"./subject/Form.vue": [
 		"./resources/js/admin/views/subject/Form.vue",
@@ -34735,7 +34708,7 @@ var map = {
 	],
 	"./subject/Index.vue": [
 		"./resources/js/admin/views/subject/Index.vue",
-		12
+		23
 	]
 };
 function webpackAsyncContext(req) {
