@@ -11,6 +11,7 @@ const AdminSubject = view('subject/Index')
 const AdminSubjectForm = view('subject/Form')
 const AdminBank = view('bank/Index')
 const AdminBankForm = view('bank/Form')
+const AdminBankItemForm = view('bank/ItemForm')
 
 export default [
   {
@@ -65,6 +66,11 @@ export default [
             path: 'edit/:id',
             name: 'admin.bank.edit',
             component: AdminBankForm,
+          },
+          {
+            path: 'edit/:id/item',
+            name: 'admin.bank.item.edit',
+            component: AdminBankItemForm,
           }
         ]
       }

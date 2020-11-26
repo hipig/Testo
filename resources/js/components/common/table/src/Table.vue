@@ -9,7 +9,7 @@
         <thead>
           <tr>
             <th class="px-2 py-3 text-gray-900 text-center font-semibold tracking-wider" v-if="!selection || selection === 'checkbox'">
-              <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal" :checked="checks.length > 0" @change="checkAll">
+              <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal" :checked="checks.length > 0 && checks.length === checkableData.length" @change="checkAll">
             </th>
             <th class="px-6 py-3 text-gray-900 font-semibold tracking-wider" :class="[getColumnClasses(col)]" v-for="(col, index) of computeColumns" :key="index">{{ col.label }}</th>
           </tr>

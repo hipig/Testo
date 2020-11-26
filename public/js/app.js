@@ -14970,7 +14970,7 @@ var render = function() {
                             "svg",
                             {
                               staticClass:
-                                "w-6 h-6 stroke-current text-gray-500 cursor-pointer",
+                                "w-5 h-5 stroke-current text-gray-500 cursor-pointer",
                               attrs: { fill: "none", viewBox: "0 0 24 24" }
                             },
                             [
@@ -16845,7 +16845,11 @@ var render = function() {
                         staticClass:
                           "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
                         attrs: { type: "checkbox" },
-                        domProps: { checked: _vm.checks.length > 0 },
+                        domProps: {
+                          checked:
+                            _vm.checks.length > 0 &&
+                            _vm.checks.length === _vm.checkableData.length
+                        },
                         on: { change: _vm.checkAll }
                       })
                     ]

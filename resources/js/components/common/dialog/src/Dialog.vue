@@ -21,7 +21,7 @@
       >
         <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full relative" :class="[size || 'sm:max-w-md']" v-show="visible">
           <div class="absolute top-0 right-0 mt-4 mr-4" v-if="showClose"  @click="handleAction('cancel')">
-            <svg class="w-6 h-6 stroke-current text-gray-500 cursor-pointer" fill="none" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 stroke-current text-gray-500 cursor-pointer" fill="none" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </div>

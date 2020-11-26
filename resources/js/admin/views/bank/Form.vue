@@ -5,7 +5,10 @@
     </div>
     <div class="flex flex-col py-4">
       <div class="shadow rounded-md bg-white overflow-hidden">
-        <div class="px-6 py-8">
+        <div class="p-6">
+          <div class="flex justify-between pb-4 mb-8 border-b border-dashed border-gray-200">
+            <div class="text-2xl text-gray-900 font-semibold">基本信息</div>
+          </div>
           <div class="mb-6">
             <div class="flex flex-wrap items-center -mx-3">
               <div class="w-1/6 px-3">
@@ -19,7 +22,7 @@
           <div class="mb-6">
             <div class="flex flex-wrap items-center -mx-3">
               <div class="w-1/6 px-3">
-                <div class="leading-tight text-right">选择科目</div>
+                <div class="leading-tight text-right">关联科目</div>
               </div>
               <div class="w-5/6 px-3">
                 <select v-model="bankForm.subject_pid" class="form-select w-48 max-w-lg text-sm focus:shadow-outline-teal" @change="selectSubjectParent">
@@ -55,7 +58,7 @@
           <div class="mb-6">
             <div class="flex flex-wrap items-center -mx-3">
               <div class="w-1/6 px-3">
-                <div class="leading-tight text-right">总分及时间</div>
+                <div class="leading-tight text-right">总分及限制时长</div>
               </div>
               <div class="w-5/6 px-3">
                 <div class="flex items-center">
@@ -65,10 +68,10 @@
               </div>
             </div>
           </div>
-          <div>
+          <div class="mb-6">
             <div class="flex flex-wrap items-center -mx-3">
               <div class="w-1/6 px-3">
-                <div class="leading-tight text-right">支付价格</div>
+                <div class="leading-tight text-right">付费设置</div>
               </div>
               <div class="w-5/6 px-3">
                 <div class="flex items-center">
@@ -81,8 +84,98 @@
                     </div>
                   </label>
                   <template v-if="!bankForm.is_free">
-                    <input type="text" v-model="bankForm.price" class="ml-5 form-input leading-tight max-w-lg text-sm focus:shadow-outline-teal" placeholder="请输入价格">
+                    <div class="ml-5 relative rounded-md shadow-sm">
+                      <div class="absolute inset-y-0 left-0 px-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500">
+                          ￥
+                        </span>
+                      </div>
+                      <input type="text" v-model="bankForm.price" class="flex-1 form-input pl-7 leading-tight max-w-lg text-sm focus:shadow-outline-teal" placeholder="0.00">
+                    </div>
                   </template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-6">
+            <div class="flex flex-wrap items-center -mx-3">
+              <div class="w-1/6 px-3">
+                <div class="leading-tight text-right text-gray-900">来源</div>
+              </div>
+              <div class="w-5/6 px-3">
+                <input type="text" v-model="bankForm.source" class="form-input w-full max-w-lg text-sm focus:shadow-outline-teal" placeholder="请输入来源">
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-start -mx-3">
+              <div class="w-1/6 px-3">
+                <div class="leading-tight text-right text-gray-900">备注</div>
+              </div>
+              <div class="w-5/6 px-3">
+                <textarea v-model="bankForm.remark" rows="4" class="form-input w-full max-w-lg text-sm focus:shadow-outline-teal" placeholder="请输入备注"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between pb-4 mb-8 border-b border-dashed border-gray-200">
+            <div class="text-2xl text-gray-900 font-semibold">试题管理</div>
+            <div class="inline-flex flex-wrap rounded-md shadow">
+              <button type="button" class="inline-flex items-center justify-center font-medium focus:outline-none rounded-l-md px-3 py-1 border" :class="[mode === 'normal' ? 'bg-teal-500 border-teal-500 text-white' : 'bg-white border-r-0']" @click="mode = 'normal'">标准模式</button>
+              <button type="button" class="inline-flex items-center justify-center font-medium focus:outline-none rounded-r-md px-3 py-1 bg-white border" :class="[mode === 'group' ? 'bg-teal-500 border-teal-500 text-white' : 'bg-white border-l-0']" @click="mode = 'group'">分组模式</button>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="flex flex-col border border-teal-200 rounded-md mb-5">
+              <div class="flex items-center justify-between bg-teal-50 text-teal-500 border-b border-teal-200 px-3 py-2 rounded-t-md">
+                <div class="flex-1 flex items-center">
+                  <div class="cursor-pointer mr-3">
+                    <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                  <span class="text-xl leading-snug">单项选择</span>
+                </div>
+                <div class="flex flex-wrap items-center -mx-1 leading-none">
+                  <div class="px-1">
+                    <button type="button" class="text-teal-500 focus:outline-none" title="向前移动">
+                      <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="px-1">
+                    <button type="button" class="text-teal-500 focus:outline-none" title="向后移动">
+                      <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="px-1">
+                    <button type="button" class="text-teal-500 focus:outline-none" title="编辑分组">
+                      <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="px-1">
+                    <button type="button" class="text-teal-500 focus:outline-none" title="删除分组">
+                      <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full">
+                <div class="flex items-center justify-center py-20">
+                  <button type="button" class="inline-flex items-center justify-center font-medium leading-none border border-teal-500 focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 text-teal-500">
+                    <svg class="w-6 h-6 stroke-current -ml-1" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span class="ml-1 text-base">添加试题</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -90,7 +183,7 @@
         </div>
         <div class="px-6 py-3 flex justify-center items-center bg-gray-50">
           <button type="button" class="inline-flex items-center justify-center font-medium leading-snug border border-teal-500 focus:outline-none focus:shadow-outline-teal rounded-md px-6 py-2 bg-teal-500 text-white mr-5" @click="handleSubmit">确定</button>
-          <button type="button" class="inline-flex items-center justify-center font-medium leading-snug border focus:outline-none focus:shadow-outline-gray rounded-md px-6 py-2" @click="$router.go(-1)">返回</button>
+          <button type="button" class="inline-flex items-center justify-center font-medium leading-snug border focus:outline-none focus:shadow-outline-gray rounded-md px-6 py-2 bg-white" @click="$router.go(-1)">返回</button>
         </div>
       </div>
     </div>
@@ -116,8 +209,11 @@
           is_free: true,
           price: null,
           total_score: 0,
-          time_limit: 0
+          time_limit: 0,
+          source: '',
+          remark: ''
         },
+        mode: 'normal',
         subjectTree: [],
         activeSubject: {},
       }

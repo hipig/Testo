@@ -114,13 +114,6 @@
             this.isLoading = false
           })
       },
-      checkAll() {
-        if (this.checks.length == this.subjectList.length) {
-          this.checks.splice(0, this.subjectList.length)
-        } else {
-          this.checks = Object.assign([], this.subjectList)
-        }
-      },
       changePage(page) {
         this.currentPage = page
         this.getSubjectList()

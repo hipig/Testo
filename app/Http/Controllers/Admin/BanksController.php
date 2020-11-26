@@ -26,6 +26,7 @@ class BanksController extends Controller
         $bank = Bank::create($request->only([
             'title', 'subject_id', 'parent_id', 'type',
             'is_free', 'price', 'is_group', 'time_limit',
+            'source', 'remark'
         ]));
 
         return BankResource::make($bank);
@@ -41,6 +42,7 @@ class BanksController extends Controller
         $bank->fill($request->only([
             'title', 'subject_id', 'parent_id', 'type',
             'is_free', 'price', 'is_group', 'time_limit',
+            'source', 'remark'
         ]));
         $bank->save();
 
