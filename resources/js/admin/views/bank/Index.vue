@@ -7,10 +7,10 @@
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
         <div class="flex flex-wrap w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
           <div class="px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 border border-teal-500 text-white" @click="handleCreate">添加题库</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 border border-teal-500 text-white" @click="handleCreate">添加题库</button>
           </div>
           <div class="px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow focus:outline-none focus:shadow-outline-red rounded-md px-5 py-2 border text-white" :class="[!isSelected ? 'bg-red-400 border-red-400 cursor-not-allowed': 'bg-red-500 border-red-500']" :disabled="!isSelected" @click="handleBatchDelete">批量删除</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-red rounded-md px-5 py-2 border text-white" :class="[!isSelected ? 'bg-red-400 border-red-400 cursor-not-allowed': 'bg-red-500 border-red-500']" :disabled="!isSelected" @click="handleBatchDelete">批量删除</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -24,8 +24,8 @@
           </div>
         </div>
       </div>
-      <div class="shadow rounded-md bg-white overflow-hidden px-5" v-loading="isLoading" loading-custom-class="h-56">
-        <t-table :columns="columns" :data="bankList" @select="selectRow">
+      <div class="shadow rounded-md bg-white overflow-hidden px-5">
+        <t-table :columns="columns" :data="bankList" :loading="isLoading" @select="selectRow">
           <template #type="{row}">
             <span class="font-semibold">{{ bankTypeMap[row.type] }}</span>
           </template>
@@ -66,7 +66,8 @@
         columns: [
           {
             label: 'ID',
-            prop: 'id'
+            prop: 'id',
+            width: 80
           },
           {
             label: '关联科目',
@@ -82,21 +83,25 @@
           {
             label: '类型',
             prop: 'title',
-            slot: 'type'
+            slot: 'type',
+            width: 120
           },
           {
             label: '是否免费',
             prop: 'is_free',
-            slot: 'status'
+            slot: 'status',
+            width: 120
           },
           {
             label: '创建时间',
-            prop: 'created_at'
+            prop: 'created_at',
+            width: 190
           },
           {
             label: '操作',
             prop: 'action',
-            slot: 'action'
+            slot: 'action',
+            width: 200
           }
         ],
         bankList: [],

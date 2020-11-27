@@ -27,7 +27,6 @@ export default [
       },
       {
         path: 'subject',
-        name: 'admin.subject',
         component: BlankLayout,
         children: [
           {
@@ -49,7 +48,6 @@ export default [
       },
       {
         path: 'bank',
-        name: 'admin.bank',
         component: BlankLayout,
         children: [
           {

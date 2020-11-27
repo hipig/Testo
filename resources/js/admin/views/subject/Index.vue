@@ -7,7 +7,7 @@
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
         <div class="w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
           <div class="px-0 sm:px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-snug shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 text-white" @click="handleCreate">添加科目</button>
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 border border-teal-500 text-white" @click="handleCreate">添加科目</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -21,8 +21,8 @@
           </div>
         </div>
       </div>
-      <div class="shadow rounded-md bg-white overflow-hidden px-5" v-loading="isLoading" loading-custom-class="h-56">
-        <t-table :columns="columns" :data="subjectList">
+      <div class="shadow rounded-md bg-white overflow-hidden px-5">
+        <t-table :columns="columns" :data="subjectList" :loading="isLoading">
           <template #directory="{row}">
             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-if="row.is_directory">是</span>
             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-else>否</span>
@@ -61,7 +61,8 @@
           },
           {
             label: '名称',
-            prop: 'title'
+            prop: 'title',
+            treeOpener: true
           },
           {
             label: '标识',

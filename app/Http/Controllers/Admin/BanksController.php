@@ -34,6 +34,7 @@ class BanksController extends Controller
 
     public function show(Request $request, Bank $bank)
     {
+        $bank->load('items');
         return BankShowResource::make($bank);
     }
 

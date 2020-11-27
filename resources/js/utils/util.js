@@ -220,6 +220,13 @@ export function isInContainer(el, container) {
     elRect.left < containerRect.right
 }
 
+export function uuid() {
+  const s4 = ()=>{
+    return Math.floor(( 1 + Math.random()) * 0x10000).toString(16).substring(1);
+  };
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
 export function afterLeave(instance, callback, speed = 300, once = false) {
   if (!instance || !callback) throw new Error('instance & callback is required')
   let called = false

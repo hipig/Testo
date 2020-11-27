@@ -12179,6 +12179,23 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -12199,12 +12216,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         return [];
       }
     },
+    loading: {
+      type: Boolean | NaN,
+      "default": false
+    },
     selection: Boolean | String
   },
   data: function data() {
     return {
       isMounted: false,
+      update: {
+        data: 0,
+        columns: 0
+      },
       computeColumns: [],
+      backupData: _toConsumableArray(this.data),
       computeData: _toConsumableArray(this.data),
       checks: []
     };
@@ -12219,14 +12245,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   watch: {
     data: {
       handler: function handler() {
-        this.checks.splice(0, this.checks.length);
-        this.computeData = _toConsumableArray(this.data);
+        var changed = this.backupData.length != this.data.length;
+        var n = 0;
+
+        while (!changed && this.data.length > n) {
+          changed = this.data[n] !== this.backupData[n];
+          n += 1;
+        }
+
+        if (changed) {
+          this.labelData(this.data);
+          this.update.data += 1;
+          this.checks.splice(0, this.checks.length);
+          this.computeData = _toConsumableArray(this.data);
+        }
+
+        this.backupData = _toConsumableArray(this.data);
       },
       deep: true
     },
     columns: {
       handler: function handler() {
         this.initColumns();
+        this.update.columns += 1;
       },
       deep: true
     },
@@ -12237,11 +12278,32 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       deep: true
     }
   },
+  beforeMount: function beforeMount() {
+    this.labelData(this.data);
+  },
   mounted: function mounted() {
     this.isMounted = true;
     this.initColumns();
   },
   methods: {
+    labelData: function labelData(data) {
+      var _iterator = _createForOfIteratorHelper(data),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var d = _step.value;
+
+          if (!d._table_uuid) {
+            this.$set(d, '_table_uuid', Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["uuid"])());
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    },
     initColumns: function initColumns() {
       if (this.columns.length) {
         this.computeColumns = this.columns;
@@ -12251,12 +12313,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var columns = [];
 
       if (this.$slots["default"]) {
-        var _iterator = _createForOfIteratorHelper(this.$slots["default"]),
-            _step;
+        var _iterator2 = _createForOfIteratorHelper(this.$slots["default"]),
+            _step2;
 
         try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var slot = _step.value;
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var slot = _step2.value;
             var option = slot.componentOptions;
 
             if (option && (option.tag == 'TableColumn' || option.tag == 't-table-column' || option.tag == 't-tablecolumn')) {
@@ -12264,13 +12326,84 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             }
           }
         } catch (err) {
-          _iterator.e(err);
+          _iterator2.e(err);
         } finally {
-          _iterator.f();
+          _iterator2.f();
         }
       }
 
       this.computeColumns = columns;
+    },
+    toggleTree: function toggleTree(row) {
+      if (row._opened) {
+        this.foldTree(row);
+      } else {
+        this.expandTree(row);
+      }
+    },
+    foldAll: function foldAll() {
+      var _this = this;
+
+      this.computeData.forEach(function (item) {
+        _this.foldTree(item);
+      });
+    },
+    expandAll: function expandAll() {
+      var _this2 = this;
+
+      this.computeData.forEach(function (item) {
+        _this2.expandTree(item, {
+          expandAll: true
+        });
+      });
+    },
+    expandTree: function expandTree(row) {
+      var _this3 = this;
+
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (row._opened) return false;
+
+      if (row.children && row.children.length) {
+        var _this$computeData;
+
+        this.labelData(row.children);
+        this.$set(row, '_opened', true);
+        var index = this.computeData.indexOf(row);
+
+        (_this$computeData = this.computeData).splice.apply(_this$computeData, [index + 1, 0].concat(_toConsumableArray(row.children)));
+
+        row.children.forEach(function (item) {
+          _this3.$set(item, '_level', (row._level || 0) + 1);
+
+          if (params.expandAll) {
+            _this3.expandTree(item);
+          }
+        });
+      }
+    },
+    foldTree: function foldTree(row) {
+      var _this4 = this;
+
+      if (!row._opened) return false;
+
+      if (row.children && row.children.length) {
+        row.children.forEach(function (item) {
+          _this4.foldTree(item);
+
+          var itemIndex = _this4.computeData.indexOf(item);
+
+          var checkIndex = _this4.checks.indexOf(item);
+
+          if (itemIndex > -1) {
+            _this4.computeData.splice(itemIndex, 1);
+          }
+
+          if (checkIndex > -1) {
+            _this4.checks.splice(checkIndex, 1);
+          }
+        });
+        this.$set(row, '_opened', false);
+      }
     },
     getWidth: function getWidth(column) {
       return Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["isObject"])(column) && column.width ? column.width : '';
@@ -12281,7 +12414,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         center: 'text-center',
         right: 'text-right'
       };
-      return classes[column] || 'text-left';
+      return classes[column.align] || 'text-left';
     },
     getRowShow: function getRowShow(row, column) {
       var value = row[column.prop];
@@ -12308,6 +12441,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       this.$emit('selectAll', this.checks);
+    },
+    isChecked: function isChecked(row) {
+      return this.checks.indexOf(row) > -1;
     }
   }
 });
@@ -16467,177 +16603,281 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [
-      _c("table", { staticClass: "w-full border-b border-gray-200" }, [
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "loading",
+          rawName: "v-loading",
+          value: _vm.loading,
+          expression: "loading"
+        }
+      ],
+      attrs: { "loading-custom-class": "h-56" }
+    },
+    [
+      _c("div", [
         _c(
-          "colgroup",
+          "table",
+          { staticClass: "table-fixed w-full border-b border-gray-200" },
           [
-            _vm.selection !== false
-              ? _c("col", { attrs: { width: 50 } })
-              : _vm._e(),
+            _c(
+              "colgroup",
+              [
+                _vm.selection !== false
+                  ? _c("col", { attrs: { width: 50 } })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.computeColumns, function(col, index) {
+                  return _c("col", {
+                    key: index + _vm.update.columns,
+                    attrs: { width: _vm.getWidth(col) }
+                  })
+                })
+              ],
+              2
+            ),
             _vm._v(" "),
-            _vm._l(_vm.computeColumns, function(col, index) {
-              return _c("col", {
-                key: index,
-                attrs: { width: _vm.getWidth(col) }
-              })
-            })
-          ],
-          2
-        ),
-        _vm._v(" "),
-        _c("thead", [
-          _c(
-            "tr",
-            [
-              !_vm.selection || _vm.selection === "checkbox"
-                ? _c(
-                    "th",
-                    {
-                      staticClass:
-                        "px-2 py-3 text-gray-900 text-center font-semibold tracking-wider"
-                    },
-                    [
-                      _c("input", {
-                        staticClass:
-                          "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked:
-                            _vm.checks.length > 0 &&
-                            _vm.checks.length === _vm.checkableData.length
-                        },
-                        on: { change: _vm.checkAll }
-                      })
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm._l(_vm.computeColumns, function(col, index) {
-                return _c(
-                  "th",
-                  {
-                    key: index,
-                    staticClass:
-                      "px-6 py-3 text-gray-900 font-semibold tracking-wider",
-                    class: [_vm.getColumnClasses(col)]
-                  },
-                  [_vm._v(_vm._s(col.label))]
-                )
-              })
-            ],
-            2
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          [
-            _vm._l(_vm.computeData, function(row, index) {
-              return _c(
+            _c("thead", [
+              _c(
                 "tr",
-                { key: index },
                 [
                   !_vm.selection || _vm.selection === "checkbox"
                     ? _c(
-                        "td",
+                        "th",
                         {
                           staticClass:
-                            "py-3 border-t border-gray-200 text-center"
+                            "px-2 py-3 text-gray-900 text-center font-semibold tracking-wider"
                         },
                         [
                           _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.checks,
-                                expression: "checks"
-                              }
-                            ],
                             staticClass:
                               "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
                             attrs: { type: "checkbox" },
                             domProps: {
-                              value: row,
-                              checked: Array.isArray(_vm.checks)
-                                ? _vm._i(_vm.checks, row) > -1
-                                : _vm.checks
+                              checked:
+                                _vm.checks.length > 0 &&
+                                _vm.checks.length === _vm.checkableData.length
                             },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.checks,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = row,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 && (_vm.checks = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.checks = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.checks = $$c
-                                }
-                              }
-                            }
+                            on: { change: _vm.checkAll }
                           })
                         ]
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm._l(_vm.computeColumns, function(col, i) {
+                  _vm._l(_vm.computeColumns, function(col, index) {
                     return _c(
-                      "td",
+                      "th",
                       {
-                        key: index + i,
-                        staticClass: "px-6 py-3 border-t border-gray-200"
+                        key: index + _vm.update.columns,
+                        staticClass:
+                          "px-6 py-3 text-gray-900 font-semibold tracking-wider",
+                        class: [_vm.getColumnClasses(col)]
                       },
-                      [
-                        col.slot
-                          ? [
-                              _vm._t(col.slot, null, {
-                                row: row,
-                                column: col,
-                                index: index
-                              })
-                            ]
-                          : [_vm._v(_vm._s(_vm.getRowShow(row, col)))]
-                      ],
-                      2
+                      [_vm._v(_vm._s(col.label))]
                     )
                   })
                 ],
                 2
               )
-            }),
+            ]),
             _vm._v(" "),
-            _c("tr", [
-              _c(
-                "td",
-                { attrs: { colspan: _vm.computeColumns.length + 1 } },
-                [
-                  _c("empty-data", {
-                    class: ["shadow-none"],
-                    attrs: {
-                      show: _vm.isMounted && _vm.computeData.length === 0
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          ],
-          2
+            _c(
+              "tbody",
+              [
+                _vm._l(_vm.computeData, function(row, index) {
+                  return _c(
+                    "tr",
+                    {
+                      key: row._table_uuid,
+                      class: [_vm.isChecked(row) ? "bg-teal-50" : ""]
+                    },
+                    [
+                      !_vm.selection || _vm.selection === "checkbox"
+                        ? _c(
+                            "td",
+                            {
+                              staticClass:
+                                "py-3 border-t border-gray-200 text-center"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.checks,
+                                    expression: "checks"
+                                  }
+                                ],
+                                staticClass:
+                                  "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                                attrs: { type: "checkbox" },
+                                domProps: {
+                                  value: row,
+                                  checked: Array.isArray(_vm.checks)
+                                    ? _vm._i(_vm.checks, row) > -1
+                                    : _vm.checks
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = _vm.checks,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = row,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          (_vm.checks = $$a.concat([$$v]))
+                                      } else {
+                                        $$i > -1 &&
+                                          (_vm.checks = $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1)))
+                                      }
+                                    } else {
+                                      _vm.checks = $$c
+                                    }
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(_vm.computeColumns, function(col, i) {
+                        return _c(
+                          "td",
+                          {
+                            key: index + "-" + i + _vm.update.columns,
+                            staticClass: "px-6 py-3 border-t border-gray-200",
+                            class: [_vm.getColumnClasses(col)]
+                          },
+                          [
+                            col.treeOpener
+                              ? [
+                                  _c(
+                                    "div",
+                                    { staticClass: "inline-flex items-center" },
+                                    [
+                                      _vm._l(row._level, function(l) {
+                                        return _c("div", {
+                                          key: l,
+                                          staticClass: "w-4"
+                                        })
+                                      }),
+                                      _vm._v(" "),
+                                      row.children && row.children.length > 0
+                                        ? _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "focus:outline-none transition-all duration-300 ease-in-out",
+                                              class: [
+                                                row._opened
+                                                  ? "transform rotate-90"
+                                                  : ""
+                                              ],
+                                              attrs: { type: "button" },
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.toggleTree(row)
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "svg",
+                                                {
+                                                  staticClass:
+                                                    "w-4 h-4 stroke-current text-gray-400 mr-1",
+                                                  attrs: {
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24"
+                                                  }
+                                                },
+                                                [
+                                                  _c("path", {
+                                                    attrs: {
+                                                      "stroke-linecap": "round",
+                                                      "stroke-linejoin":
+                                                        "round",
+                                                      "stroke-width": "2",
+                                                      d: "M9 5l7 7-7 7"
+                                                    }
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        : _c("div", {
+                                            staticClass: "w-4 h-4 mr-1"
+                                          }),
+                                      _vm._v(" "),
+                                      col.slot
+                                        ? [
+                                            _vm._t(col.slot, null, {
+                                              row: row,
+                                              column: col,
+                                              index: index
+                                            })
+                                          ]
+                                        : [
+                                            _vm._v(
+                                              _vm._s(_vm.getRowShow(row, col))
+                                            )
+                                          ]
+                                    ],
+                                    2
+                                  )
+                                ]
+                              : [
+                                  col.slot
+                                    ? [
+                                        _vm._t(col.slot, null, {
+                                          row: row,
+                                          column: col,
+                                          index: index
+                                        })
+                                      ]
+                                    : [_vm._v(_vm._s(_vm.getRowShow(row, col)))]
+                                ]
+                          ],
+                          2
+                        )
+                      })
+                    ],
+                    2
+                  )
+                }),
+                _vm._v(" "),
+                _vm.loading && _vm.computeData.length === 0
+                  ? _c("tr", [
+                      _c(
+                        "td",
+                        { attrs: { colspan: _vm.computeColumns.length + 1 } },
+                        [
+                          _c("empty-data", {
+                            class: ["shadow-none"],
+                            attrs: {
+                              show: _vm.loading && _vm.computeData.length === 0
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  : _vm._e()
+              ],
+              2
+            )
+          ]
         )
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -34365,7 +34605,6 @@ var AdminBankItemForm = view('bank/ItemForm');
     component: AdminDashboard
   }, {
     path: 'subject',
-    name: 'admin.subject',
     component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     children: [{
       path: '',
@@ -34382,7 +34621,6 @@ var AdminBankItemForm = view('bank/ItemForm');
     }]
   }, {
     path: 'bank',
-    name: 'admin.bank',
     component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     children: [{
       path: '',
@@ -34709,11 +34947,11 @@ var map = {
 	],
 	"./bank/ItemForm.vue": [
 		"./resources/js/admin/views/bank/ItemForm.vue",
-		35
+		30
 	],
 	"./dashboard/Index.vue": [
 		"./resources/js/admin/views/dashboard/Index.vue",
-		30
+		31
 	],
 	"./subject/Form.vue": [
 		"./resources/js/admin/views/subject/Form.vue",
@@ -36663,7 +36901,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************!*\
   !*** ./resources/js/utils/util.js ***!
   \************************************/
-/*! exports provided: str_repeat, sprintf, camelCase, getStyle, hasClass, addClass, removeClass, on, off, once, isScroll, getScrollContainer, isInContainer, afterLeave, kebabCase, rafThrottle, isIE, isEdge, isFirefox, isObject, isArray, isDate, isNumber, isString, isBoolean, isFunction, isNull, isHtmlElement */
+/*! exports provided: str_repeat, sprintf, camelCase, getStyle, hasClass, addClass, removeClass, on, off, once, isScroll, getScrollContainer, isInContainer, uuid, afterLeave, kebabCase, rafThrottle, isIE, isEdge, isFirefox, isObject, isArray, isDate, isNumber, isString, isBoolean, isFunction, isNull, isHtmlElement */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36681,6 +36919,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isScroll", function() { return isScroll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getScrollContainer", function() { return getScrollContainer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInContainer", function() { return isInContainer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uuid", function() { return uuid; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "afterLeave", function() { return afterLeave; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "kebabCase", function() { return kebabCase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rafThrottle", function() { return rafThrottle; });
@@ -36938,6 +37177,13 @@ function isInContainer(el, container) {
   }
 
   return elRect.top < containerRect.bottom && elRect.bottom > containerRect.top && elRect.right > containerRect.left && elRect.left < containerRect.right;
+}
+function uuid() {
+  var s4 = function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  };
+
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 function afterLeave(instance, callback) {
   var speed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 300;

@@ -15,9 +15,7 @@ class SubjectsController extends Controller
     {
         $query = Subject::query();
 
-        $request->has('level') && $query->where('level', $request->level);
-
-        $subjects = $query->latest()->paginate($request->page_size ?? config('api.page_size'));
+        $subjects = $query->with('children', 'children.children')->where('level', 0)->latest()->paginate($request->page_size ?? config('api.page_size'));
 
         return SubjectResource::collection($subjects);
     }
