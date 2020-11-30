@@ -13,9 +13,11 @@ class SubjectsController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Subject::query();
-
-        $subjects = $query->with('children', 'children.children')->where('level', 0)->latest()->paginate($request->page_size ?? config('api.page_size'));
+        $subjects = Subject::query()
+            ->with('children', 'children.children')
+            ->where('level', 0)
+            ->latest()
+            ->paginate($request->page_size ?? config('api.page_size'));
 
         return SubjectResource::collection($subjects);
     }

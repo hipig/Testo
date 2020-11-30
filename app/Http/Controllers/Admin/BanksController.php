@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BankRequest;
+use App\Http\Resources\Admin\BankItemResource;
 use App\Http\Resources\Admin\BankResource;
 use App\Http\Resources\Admin\BankShowResource;
 use App\Models\Bank;
@@ -14,7 +15,8 @@ class BanksController extends Controller
     public function index(Request $request)
     {
         $banks = Bank::query()
-            ->with('subject')
+            ->with('subject', 'children', 'children.subject')
+            ->whereNull('parent_id')
             ->latest()
             ->paginate($request->page_size ?? config('api.page_size'));
 
@@ -36,6 +38,12 @@ class BanksController extends Controller
     {
         $bank->load('items');
         return BankShowResource::make($bank);
+    }
+
+    public function showItems(Request $request, Bank $bank)
+    {
+        $bankItems = $bank->items()->paginate($request->page_size ?? config('api.page_size'));
+        return BankItemResource::collection($bankItems);
     }
 
     public function update(BankRequest $request, Bank $bank)

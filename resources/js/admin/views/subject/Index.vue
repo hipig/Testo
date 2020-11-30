@@ -43,14 +43,10 @@
 </template>
 
 <script>
-  import EmptyData from "@/components/common/EmptyData"
   import { getSubjects, deleteSubjects } from "@/admin/api/subject"
 
   export default {
     name: "admin.subject.index",
-    components: {
-      EmptyData
-    },
     data () {
       return {
         filterForm: {},

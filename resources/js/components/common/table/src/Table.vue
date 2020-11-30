@@ -22,17 +22,19 @@
             <td class="px-6 py-3 border-t border-gray-200" :class="[getColumnClasses(col)]" v-for="(col, i) of computeColumns" :key="index+'-'+ i + update.columns">
               <template v-if="col.treeOpener">
                 <div class="inline-flex items-center">
-                  <div v-for="l of row._level" :key="l" class="w-4"></div>
+                  <div v-for="l of row._level" :key="l" class="mr-4"></div>
                   <button type="button" class="focus:outline-none transition-all duration-300 ease-in-out" :class="[row._opened ? 'transform rotate-90' : '']" v-if="row.children && row.children.length > 0" @click="toggleTree(row)">
-                    <svg class="w-4 h-4 stroke-current text-gray-400 mr-1" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 stroke-current text-teal-500 mr-1" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                   </button>
-                  <div class="w-4 h-4 mr-1" v-else></div>
-                  <template v-if="col.slot">
-                    <slot :name="col.slot" :row="row" :column="col" :index="index"></slot>
-                  </template>
-                  <template v-else>{{ getRowShow(row, col) }}</template>
+                  <div :class="{'w-4 h-4 mr-1': row._level > 0}" v-else></div>
+                  <span>
+                    <template v-if="col.slot">
+                      <slot :name="col.slot" :row="row" :column="col" :index="index"></slot>
+                    </template>
+                    <template v-else>{{ getRowShow(row, col) }}</template>
+                  </span>
                 </div>
               </template>
               <template v-else>
@@ -43,9 +45,9 @@
               </template>
             </td>
           </tr>
-          <tr v-if="loading && computeData.length === 0">
+          <tr v-if="loading === false && computeData.length === 0">
             <td :colspan="computeColumns.length+1">
-              <empty-data :class="['shadow-none']" :show="loading && computeData.length === 0"/>
+              <empty-data :class="['shadow-none']" :show="loading === false && computeData.length === 0"/>
             </td>
           </tr>
         </tbody>
@@ -74,7 +76,7 @@
       },
       loading: {
         type: Boolean | NaN,
-        default: false
+        default: null
       },
       selection: Boolean | String
     },

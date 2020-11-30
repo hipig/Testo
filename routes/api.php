@@ -116,6 +116,10 @@ Route::prefix('v1/admin')->name('api.v1.admin.')->namespace('Admin')->group(func
         Route::get('subjects/tree', 'SubjectsController@tree')->name('subjects.tree');
         Route::get('subjects/last', 'SubjectsController@last')->name('subjects.last');
         Route::apiResource('subjects', 'SubjectsController');
+
+        Route::get('banks/{bank}/items', 'BanksController@showItems')->name('bankItems.show');
         Route::apiResource('banks', 'BanksController');
+
+        Route::apiResource('questions', 'QuestionsController');
     });
 });

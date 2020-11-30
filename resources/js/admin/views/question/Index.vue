@@ -1,16 +1,13 @@
 <template>
   <div class="flex flex-col">
     <div class="flex items-center mb-4">
-      <h1 class="text-2xl font-semibold text-gray-900">题库 <span class="text-lg font-normal">列表</span></h1>
+      <h1 class="text-2xl font-semibold text-gray-900">题目 <span class="text-lg font-normal">列表</span></h1>
     </div>
     <div class="flex flex-col py-4">
       <div class="flex flex-col sm:flex-row items-center justify-between mb-5">
-        <div class="flex flex-wrap w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
-          <div class="px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 border border-teal-500 text-white" @click="handleCreate">添加题库</button>
-          </div>
-          <div class="px-2">
-            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-red rounded-md px-5 py-2 border text-white" :class="[!isSelected ? 'bg-red-400 border-red-400 cursor-not-allowed': 'bg-red-500 border-red-500']" :disabled="!isSelected" @click="handleBatchDelete">批量删除</button>
+        <div class="w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
+          <div class="px-0 sm:px-2">
+            <button type="button" class="inline-flex items-center justify-center font-medium leading-tight shadow focus:outline-none focus:shadow-outline-teal rounded-md px-5 py-2 bg-teal-500 border border-teal-500 text-white" @click="handleCreate">添加题目</button>
           </div>
         </div>
         <div class="w-full sm:w-1/2 flex items-center justify-end">
@@ -25,19 +22,17 @@
         </div>
       </div>
       <div class="shadow rounded-md bg-white overflow-hidden px-5">
-        <t-table :columns="columns" :data="bankList" :loading="isLoading" @select="selectRow">
-          <template #type="{row}">
-            <span class="font-semibold">{{ bankTypeMap[row.type] }}</span>
-          </template>
-          <template #status="{row}">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" v-if="row.is_free">免费</span>
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" v-else>￥{{ row.price }}</span>
+        <t-table :columns="columns" :data="questionList" :loading="isLoading">
+          <template #title="{row}">
+            <div class="flex items-start">
+              <span class="border border-green-500 text-green-500 text-center px-2 rounded mr-2">{{ questionTypes[row.type].name }}</span>
+              <span class="flex-1 min-w-0 truncate">{{ row.title }}</span>
+            </div>
           </template>
           <template #action="{row}">
             <div class="flex flex-wrap items-center">
               <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleEdit(row)">编辑</button>
               <button type="button" class="pr-3 text-red-500 hover:text-red-700 focus:outline-none" @click="handleDelete(row)">删除</button>
-              <button type="button" class="text-yellow-500 hover:text-yellow-700 focus:outline-none" @click="handleEditItem(row)">管理试题</button>
             </div>
           </template>
         </t-table>
@@ -50,12 +45,12 @@
 </template>
 
 <script>
-  import { getBanks, deleteBanks } from "@/admin/api/bank"
-  import Bank from "@/admin/mixins/Bank"
+  import { getQuestions, deleteQuestions } from "@/admin/api/question"
+  import QuestionType from "@/mixins/QuestionType"
 
   export default {
-    name: "admin.subject.index",
-    mixins: [Bank],
+    name: "admin.question.index",
+    mixins: [QuestionType],
     data () {
       return {
         filterForm: {},
@@ -66,29 +61,9 @@
             width: 80
           },
           {
-            label: '关联科目',
-            prop: 'subject',
-            render: (value) => {
-              return value.title
-            },
-            width: 200
-          },
-          {
             label: '名称',
             prop: 'title',
-            treeOpener: true
-          },
-          {
-            label: '类型',
-            prop: 'title',
-            slot: 'type',
-            width: 120
-          },
-          {
-            label: '是否免费',
-            prop: 'is_free',
-            slot: 'status',
-            width: 120
+            slot: 'title'
           },
           {
             label: '创建时间',
@@ -99,10 +74,10 @@
             label: '操作',
             prop: 'action',
             slot: 'action',
-            width: 200
+            width: 160
           }
         ],
-        bankList: [],
+        questionList: [],
         checks: [],
         currentPage: 1,
         pageSize: 10,
@@ -110,63 +85,50 @@
         isLoading: null
       }
     },
-    computed: {
-      isSelected() {
-        return this.checks.length !== 0
-      }
-    },
     mounted() {
-      this.getBankList()
+      this.getQuestionList()
     },
     methods: {
-      getBankList() {
+      getQuestionList() {
         this.isLoading = true
 
         let params = this.filterForm
         params.page = this.currentPage
         params.page_size = this.pageSize
 
-        getBanks(params)
+        getQuestions(params)
           .then((res) => {
-            this.bankList = res.data
+            this.questionList = res.data
             this.total = res.meta.total
           })
           .finally(_ => {
             this.isLoading = false
           })
       },
-      selectRow(checks) {
-        this.checks = checks
-      },
       changePage(page) {
         this.currentPage = page
-        this.getBankList()
+        this.getQuestionList()
       },
       changePageSize(size) {
         this.pageSize = size
-        this.getBankList()
+        this.getQuestionList()
       },
       handleCreate() {
-        this.$router.push({name: 'admin.bank.create'})
+        this.$router.push({name: 'admin.question.create'})
       },
       handleEdit(item) {
-        this.$router.push({name: 'admin.bank.edit', params: {id: item.id}})
-      },
-      handleEditItem(item) {
-        this.$router.push({name: 'admin.bank.item.edit', params: {id: item.id}})
+        this.$router.push({name: 'admin.question.edit', params: {id: item.id}})
       },
       handleDelete(item) {
         this.$Dialog.confirm('是否确认删除？', '温馨提示')
           .then(_ => {
-            deleteBanks(item.id)
+            deleteQuestions(item.id)
               .then(_ => {
                 this.$Message.success('操作成功')
-                this.getBankList()
+                this.getQuestionList()
               })
           })
           .catch(_ => {})
-      },
-      handleBatchDelete() {
 
       }
     }

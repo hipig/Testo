@@ -46,12 +46,12 @@
               </svg>
               <span class="ml-2 leading-none">题库管理</span>
             </router-link>
-            <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'question' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
+            <router-link :to="{name: 'admin.question.index'}" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'question' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
               </svg>
               <span class="ml-2 leading-none">题目列表</span>
-            </a>
+            </router-link>
             <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'user' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -106,9 +106,10 @@ import { mapGetters, mapActions } from 'vuex'
       return {
         currentMenu: '',
         routerList: {
-          dashboard : ['admin.dashboard'],
-          subject : ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
-          bank : ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show'],
+          dashboard: ['admin.dashboard'],
+          subject: ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
+          bank: ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show', 'admin.bank.item.edit'],
+          question: ['admin.question.index', 'admin.question.create', 'admin.question.edit', 'admin.question.show']
         }
       }
     },

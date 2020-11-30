@@ -3,7 +3,8 @@ import { sprintf } from "@/utils/util"
 
 const api = {
   banks: '/banks',
-  banksShow: '/banks/%s'
+  banksShow: '/banks/%s',
+  bankItemsShow: '/banks/%s/items'
 }
 
 export const getBanks = (params) => service({
@@ -15,6 +16,12 @@ export const getBanks = (params) => service({
 export const showBanks = (id) => service({
   url: sprintf(api.banksShow, id),
   method: 'get'
+})
+
+export const showBankItems = (id, params) => service({
+  url: sprintf(api.bankItemsShow, id),
+  method: 'get',
+  params: params
 })
 
 export const storeBanks = (params) => service({

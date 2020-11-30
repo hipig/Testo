@@ -12196,6 +12196,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -12218,7 +12220,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     loading: {
       type: Boolean | NaN,
-      "default": false
+      "default": null
     },
     selection: Boolean | String
   },
@@ -13407,7 +13409,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       routerList: {
         dashboard: ['admin.dashboard'],
         subject: ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
-        bank: ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show']
+        bank: ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show', 'admin.bank.item.edit'],
+        question: ['admin.question.index', 'admin.question.create', 'admin.question.edit', 'admin.question.show']
       }
     };
   },
@@ -16765,7 +16768,7 @@ var render = function() {
                                       _vm._l(row._level, function(l) {
                                         return _c("div", {
                                           key: l,
-                                          staticClass: "w-4"
+                                          staticClass: "mr-4"
                                         })
                                       }),
                                       _vm._v(" "),
@@ -16792,7 +16795,7 @@ var render = function() {
                                                 "svg",
                                                 {
                                                   staticClass:
-                                                    "w-4 h-4 stroke-current text-gray-400 mr-1",
+                                                    "w-4 h-4 stroke-current text-teal-500 mr-1",
                                                   attrs: {
                                                     fill: "none",
                                                     viewBox: "0 0 24 24"
@@ -16813,22 +16816,32 @@ var render = function() {
                                             ]
                                           )
                                         : _c("div", {
-                                            staticClass: "w-4 h-4 mr-1"
+                                            class: {
+                                              "w-4 h-4 mr-1": row._level > 0
+                                            }
                                           }),
                                       _vm._v(" "),
-                                      col.slot
-                                        ? [
-                                            _vm._t(col.slot, null, {
-                                              row: row,
-                                              column: col,
-                                              index: index
-                                            })
-                                          ]
-                                        : [
-                                            _vm._v(
-                                              _vm._s(_vm.getRowShow(row, col))
-                                            )
-                                          ]
+                                      _c(
+                                        "span",
+                                        [
+                                          col.slot
+                                            ? [
+                                                _vm._t(col.slot, null, {
+                                                  row: row,
+                                                  column: col,
+                                                  index: index
+                                                })
+                                              ]
+                                            : [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.getRowShow(row, col)
+                                                  )
+                                                )
+                                              ]
+                                        ],
+                                        2
+                                      )
                                     ],
                                     2
                                   )
@@ -16853,7 +16866,7 @@ var render = function() {
                   )
                 }),
                 _vm._v(" "),
-                _vm.loading && _vm.computeData.length === 0
+                _vm.loading === false && _vm.computeData.length === 0
                   ? _c("tr", [
                       _c(
                         "td",
@@ -16862,7 +16875,9 @@ var render = function() {
                           _c("empty-data", {
                             class: ["shadow-none"],
                             attrs: {
-                              show: _vm.loading && _vm.computeData.length === 0
+                              show:
+                                _vm.loading === false &&
+                                _vm.computeData.length === 0
                             }
                           })
                         ],
@@ -17549,7 +17564,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "a",
+                "router-link",
                 {
                   staticClass:
                     "group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150",
@@ -17558,7 +17573,7 @@ var render = function() {
                       ? "bg-gray-700 text-white"
                       : "text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700"
                   ],
-                  attrs: { href: "#" }
+                  attrs: { to: { name: "admin.question.index" } }
                 },
                 [
                   _c(
@@ -34594,6 +34609,8 @@ var AdminSubjectForm = view('subject/Form');
 var AdminBank = view('bank/Index');
 var AdminBankForm = view('bank/Form');
 var AdminBankItemForm = view('bank/ItemForm');
+var AdminQuestion = view('question/Index');
+var AdminQuestionForm = view('question/Form');
 /* harmony default export */ __webpack_exports__["default"] = ([{
   path: '',
   name: 'admin',
@@ -34638,6 +34655,22 @@ var AdminBankItemForm = view('bank/ItemForm');
       path: 'edit/:id/item',
       name: 'admin.bank.item.edit',
       component: AdminBankItemForm
+    }]
+  }, {
+    path: 'question',
+    component: _layout_BlankLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
+    children: [{
+      path: '',
+      name: 'admin.question.index',
+      component: AdminQuestion
+    }, {
+      path: 'create',
+      name: 'admin.question.create',
+      component: AdminQuestionForm
+    }, {
+      path: 'edit/:id',
+      name: 'admin.question.edit',
+      component: AdminQuestionForm
     }]
   }]
 }, {
@@ -34935,7 +34968,7 @@ service.interceptors.response.use(function (response) {
 var map = {
 	"./auth/Login.vue": [
 		"./resources/js/admin/views/auth/Login.vue",
-		29
+		30
 	],
 	"./bank/Form.vue": [
 		"./resources/js/admin/views/bank/Form.vue",
@@ -34947,19 +34980,27 @@ var map = {
 	],
 	"./bank/ItemForm.vue": [
 		"./resources/js/admin/views/bank/ItemForm.vue",
-		30
+		19
 	],
 	"./dashboard/Index.vue": [
 		"./resources/js/admin/views/dashboard/Index.vue",
 		31
 	],
+	"./question/Form.vue": [
+		"./resources/js/admin/views/question/Form.vue",
+		37
+	],
+	"./question/Index.vue": [
+		"./resources/js/admin/views/question/Index.vue",
+		36
+	],
 	"./subject/Form.vue": [
 		"./resources/js/admin/views/subject/Form.vue",
-		22
+		23
 	],
 	"./subject/Index.vue": [
 		"./resources/js/admin/views/subject/Index.vue",
-		23
+		24
 	]
 };
 function webpackAsyncContext(req) {

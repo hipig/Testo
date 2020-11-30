@@ -12246,6 +12246,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -12268,7 +12270,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     loading: {
       type: Boolean | NaN,
-      "default": false
+      "default": null
     },
     selection: Boolean | String
   },
@@ -17107,7 +17109,7 @@ var render = function() {
                                       _vm._l(row._level, function(l) {
                                         return _c("div", {
                                           key: l,
-                                          staticClass: "w-4"
+                                          staticClass: "mr-4"
                                         })
                                       }),
                                       _vm._v(" "),
@@ -17134,7 +17136,7 @@ var render = function() {
                                                 "svg",
                                                 {
                                                   staticClass:
-                                                    "w-4 h-4 stroke-current text-gray-400 mr-1",
+                                                    "w-4 h-4 stroke-current text-teal-500 mr-1",
                                                   attrs: {
                                                     fill: "none",
                                                     viewBox: "0 0 24 24"
@@ -17155,22 +17157,32 @@ var render = function() {
                                             ]
                                           )
                                         : _c("div", {
-                                            staticClass: "w-4 h-4 mr-1"
+                                            class: {
+                                              "w-4 h-4 mr-1": row._level > 0
+                                            }
                                           }),
                                       _vm._v(" "),
-                                      col.slot
-                                        ? [
-                                            _vm._t(col.slot, null, {
-                                              row: row,
-                                              column: col,
-                                              index: index
-                                            })
-                                          ]
-                                        : [
-                                            _vm._v(
-                                              _vm._s(_vm.getRowShow(row, col))
-                                            )
-                                          ]
+                                      _c(
+                                        "span",
+                                        [
+                                          col.slot
+                                            ? [
+                                                _vm._t(col.slot, null, {
+                                                  row: row,
+                                                  column: col,
+                                                  index: index
+                                                })
+                                              ]
+                                            : [
+                                                _vm._v(
+                                                  _vm._s(
+                                                    _vm.getRowShow(row, col)
+                                                  )
+                                                )
+                                              ]
+                                        ],
+                                        2
+                                      )
                                     ],
                                     2
                                   )
@@ -17195,7 +17207,7 @@ var render = function() {
                   )
                 }),
                 _vm._v(" "),
-                _vm.loading && _vm.computeData.length === 0
+                _vm.loading === false && _vm.computeData.length === 0
                   ? _c("tr", [
                       _c(
                         "td",
@@ -17204,7 +17216,9 @@ var render = function() {
                           _c("empty-data", {
                             class: ["shadow-none"],
                             attrs: {
-                              show: _vm.loading && _vm.computeData.length === 0
+                              show:
+                                _vm.loading === false &&
+                                _vm.computeData.length === 0
                             }
                           })
                         ],
@@ -38150,16 +38164,16 @@ function isHtmlElement(node) {
 var map = {
 	"./Home.vue": [
 		"./resources/js/views/Home.vue",
-		28,
-		24
+		29,
+		25
 	],
 	"./about/Index.vue": [
 		"./resources/js/views/about/Index.vue",
-		25
+		26
 	],
 	"./article/Index.vue": [
 		"./resources/js/views/article/Index.vue",
-		19
+		20
 	],
 	"./auth/Login.vue": [
 		"./resources/js/views/auth/Login.vue",
@@ -38213,7 +38227,7 @@ var map = {
 		"./resources/js/views/quiz/Items.vue",
 		0,
 		2,
-		20
+		21
 	],
 	"./quiz/Result.vue": [
 		"./resources/js/views/quiz/Result.vue",
@@ -38223,7 +38237,7 @@ var map = {
 		"./resources/js/views/quiz/ResultDetail.vue",
 		0,
 		2,
-		26
+		27
 	],
 	"./quiz/mode/Exam.vue": [
 		"./resources/js/views/quiz/mode/Exam.vue",
@@ -38244,7 +38258,7 @@ var map = {
 	],
 	"./subject/Index.vue": [
 		"./resources/js/views/subject/Index.vue",
-		27
+		28
 	],
 	"./subject/Show.vue": [
 		"./resources/js/views/subject/Show.vue",
@@ -38263,7 +38277,7 @@ var map = {
 	],
 	"./subject/tabs/ExamList.vue": [
 		"./resources/js/views/subject/tabs/ExamList.vue",
-		21
+		22
 	]
 };
 function webpackAsyncContext(req) {
