@@ -42,7 +42,8 @@ class BanksController extends Controller
 
     public function showItems(Request $request, Bank $bank)
     {
-        $bankItems = $bank->items()->paginate($request->page_size ?? config('api.page_size'));
+        $query = $bank->is_group ? $bank->groups()->with('items') : $bank->items();
+        $bankItems = $query->paginate($request->page_size ?? config('api.page_size'));
         return BankItemResource::collection($bankItems);
     }
 

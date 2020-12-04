@@ -121,5 +121,7 @@ Route::prefix('v1/admin')->name('api.v1.admin.')->namespace('Admin')->group(func
         Route::apiResource('banks', 'BanksController');
 
         Route::apiResource('questions', 'QuestionsController');
+
+        Route::apiResource('users', 'UsersController')->except('store', 'update');
     });
 });

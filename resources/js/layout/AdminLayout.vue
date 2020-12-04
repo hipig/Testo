@@ -52,12 +52,12 @@
               </svg>
               <span class="ml-2 leading-none">题目列表</span>
             </router-link>
-            <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'user' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
+            <router-link :to="{name: 'admin.user.index'}" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'user' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
               <span class="ml-2 leading-none">用户管理</span>
-            </a>
+            </router-link>
             <a href="#" class="group mb-1 flex items-center px-6 py-2 text-sm leading-6 focus:outline-none transition ease-in-out duration-150" :class="[currentMenu === 'article' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700 focus:bg-gray-700']">
               <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
@@ -109,7 +109,8 @@ import { mapGetters, mapActions } from 'vuex'
           dashboard: ['admin.dashboard'],
           subject: ['admin.subject.index', 'admin.subject.create', 'admin.subject.edit', 'admin.subject.show'],
           bank: ['admin.bank.index', 'admin.bank.create', 'admin.bank.edit', 'admin.bank.show', 'admin.bank.item.edit'],
-          question: ['admin.question.index', 'admin.question.create', 'admin.question.edit', 'admin.question.show']
+          question: ['admin.question.index', 'admin.question.create', 'admin.question.edit', 'admin.question.show'],
+          user: ['admin.user.index', 'admin.user.create', 'admin.user.edit', 'admin.user.show']
         }
       }
     },

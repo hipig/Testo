@@ -1,40 +1,40 @@
 <template>
   <div v-loading="loading" loading-custom-class="h-56">
     <div>
-      <table class="table-fixed w-full border-b border-gray-200">
+      <table class="table-fixed w-full">
         <colgroup>
           <col v-if="selection !== false" :width="50" />
           <col v-for="(col, index) of computeColumns" :width="getWidth(col)" :key="index + update.columns" />
         </colgroup>
         <thead>
           <tr>
-            <th class="px-2 py-3 text-gray-900 text-center font-semibold tracking-wider" v-if="!selection || selection === 'checkbox'">
+            <th class="px-2 py-3 text-gray-900 text-center font-semibold tracking-wider border-b border-gray-100" v-if="!selection || selection === 'checkbox'">
               <input type="checkbox" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal" :checked="checks.length > 0 && checks.length === checkableData.length" @change="checkAll">
             </th>
-            <th class="px-6 py-3 text-gray-900 font-semibold tracking-wider" :class="[getColumnClasses(col)]" v-for="(col, index) of computeColumns" :key="index + update.columns">{{ col.label }}</th>
+            <th class="px-6 py-3 text-gray-900 font-semibold tracking-wider border-b border-gray-100" :class="[getColumnClasses(col)]" v-for="(col, index) of computeColumns" :key="index + update.columns">{{ col.label }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(row, index) of computeData" :key="row._table_uuid" :class="[isChecked(row) ? 'bg-teal-50' : '']">
-            <td class="py-3 border-t border-gray-200 text-center" v-if="!selection || selection === 'checkbox'">
+            <td class="py-3 border-b border-gray-100 text-center" v-if="!selection || selection === 'checkbox'">
               <input type="checkbox" v-model="checks" :value="row" class="form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal">
             </td>
-            <td class="px-6 py-3 border-t border-gray-200" :class="[getColumnClasses(col)]" v-for="(col, i) of computeColumns" :key="index+'-'+ i + update.columns">
+            <td class="px-6 py-3 border-b border-gray-100" :class="[getColumnClasses(col)]" v-for="(col, i) of computeColumns" :key="index+'-'+ i + update.columns">
               <template v-if="col.treeOpener">
-                <div class="inline-flex items-center">
+                <div class="inline-flex items-center w-full">
                   <div v-for="l of row._level" :key="l" class="mr-4"></div>
-                  <button type="button" class="focus:outline-none transition-all duration-300 ease-in-out" :class="[row._opened ? 'transform rotate-90' : '']" v-if="row.children && row.children.length > 0" @click="toggleTree(row)">
+                  <button type="button" class="focus:outline-none transition-all duration-300 ease-in-out" :class="[row._opened ? 'transform rotate-90' : '']" v-if="hasChildren(row)" @click="toggleTree(row)">
                     <svg class="w-4 h-4 stroke-current text-teal-500 mr-1" fill="none" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                   </button>
                   <div :class="{'w-4 h-4 mr-1': row._level > 0}" v-else></div>
-                  <span>
+                  <template>
                     <template v-if="col.slot">
                       <slot :name="col.slot" :row="row" :column="col" :index="index"></slot>
                     </template>
                     <template v-else>{{ getRowShow(row, col) }}</template>
-                  </span>
+                  </template>
                 </div>
               </template>
               <template v-else>
@@ -77,6 +77,10 @@
       loading: {
         type: Boolean | NaN,
         default: null
+      },
+      childrenKey: {
+        type: String | NaN,
+        default: 'children'
       },
       selection: Boolean | String
     },
@@ -144,6 +148,9 @@
           if (!d._table_uuid) {
             this.$set(d, '_table_uuid', uuid())
           }
+          if (!d._level) {
+            this.$set(d, '_level', 0)
+          }
         }
       },
       initColumns() {
@@ -181,12 +188,12 @@
       },
       expandTree(row, params = {}) {
         if (row._opened) return false
-        if (row.children && row.children.length) {
-          this.labelData(row.children)
+        if (this.hasChildren(row)) {
+          this.labelData(this.getRowChildren(row))
           this.$set(row, '_opened', true)
           let index = this.computeData.indexOf(row)
-          this.computeData.splice(index + 1, 0, ...row.children)
-          row.children.forEach(item => {
+          this.computeData.splice(index + 1, 0, ...this.getRowChildren(row))
+          this.getRowChildren(row).forEach(item => {
             this.$set(item, '_level', (row._level || 0) + 1)
             if (params.expandAll) {
               this.expandTree(item)
@@ -196,8 +203,8 @@
       },
       foldTree(row) {
         if (!row._opened) return false
-        if (row.children && row.children.length) {
-          row.children.forEach(item => {
+        if (this.hasChildren(row)) {
+          this.getRowChildren(row).forEach(item => {
             this.foldTree(item)
             let itemIndex = this.computeData.indexOf(item)
             let checkIndex = this.checks.indexOf(item)
@@ -210,6 +217,12 @@
           });
           this.$set(row, '_opened', false)
         }
+      },
+      hasChildren(row) {
+        return this.getRowChildren(row) && this.getRowChildren(row).length > 0
+      },
+      getRowChildren(row) {
+        return row[this.childrenKey || 'children']
       },
       getWidth(column) {
         return isObject(column) && column.width ? column.width : ''

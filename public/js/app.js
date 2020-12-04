@@ -12272,6 +12272,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       type: Boolean | NaN,
       "default": null
     },
+    childrenKey: {
+      type: String | NaN,
+      "default": 'children'
+    },
     selection: Boolean | String
   },
   data: function data() {
@@ -12349,6 +12353,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           if (!d._table_uuid) {
             this.$set(d, '_table_uuid', Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["uuid"])());
           }
+
+          if (!d._level) {
+            this.$set(d, '_level', 0);
+          }
         }
       } catch (err) {
         _iterator.e(err);
@@ -12415,16 +12423,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       if (row._opened) return false;
 
-      if (row.children && row.children.length) {
+      if (this.hasChildren(row)) {
         var _this$computeData;
 
-        this.labelData(row.children);
+        this.labelData(this.getRowChildren(row));
         this.$set(row, '_opened', true);
         var index = this.computeData.indexOf(row);
 
-        (_this$computeData = this.computeData).splice.apply(_this$computeData, [index + 1, 0].concat(_toConsumableArray(row.children)));
+        (_this$computeData = this.computeData).splice.apply(_this$computeData, [index + 1, 0].concat(_toConsumableArray(this.getRowChildren(row))));
 
-        row.children.forEach(function (item) {
+        this.getRowChildren(row).forEach(function (item) {
           _this3.$set(item, '_level', (row._level || 0) + 1);
 
           if (params.expandAll) {
@@ -12438,8 +12446,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       if (!row._opened) return false;
 
-      if (row.children && row.children.length) {
-        row.children.forEach(function (item) {
+      if (this.hasChildren(row)) {
+        this.getRowChildren(row).forEach(function (item) {
           _this4.foldTree(item);
 
           var itemIndex = _this4.computeData.indexOf(item);
@@ -12456,6 +12464,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
         this.$set(row, '_opened', false);
       }
+    },
+    hasChildren: function hasChildren(row) {
+      return this.getRowChildren(row) && this.getRowChildren(row).length > 0;
+    },
+    getRowChildren: function getRowChildren(row) {
+      return row[this.childrenKey || 'children'];
     },
     getWidth: function getWidth(column) {
       return Object(_utils_util__WEBPACK_IMPORTED_MODULE_1__["isObject"])(column) && column.width ? column.width : '';
@@ -16962,275 +16976,267 @@ var render = function() {
     },
     [
       _c("div", [
-        _c(
-          "table",
-          { staticClass: "table-fixed w-full border-b border-gray-200" },
-          [
+        _c("table", { staticClass: "table-fixed w-full" }, [
+          _c(
+            "colgroup",
+            [
+              _vm.selection !== false
+                ? _c("col", { attrs: { width: 50 } })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.computeColumns, function(col, index) {
+                return _c("col", {
+                  key: index + _vm.update.columns,
+                  attrs: { width: _vm.getWidth(col) }
+                })
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("thead", [
             _c(
-              "colgroup",
+              "tr",
               [
-                _vm.selection !== false
-                  ? _c("col", { attrs: { width: 50 } })
+                !_vm.selection || _vm.selection === "checkbox"
+                  ? _c(
+                      "th",
+                      {
+                        staticClass:
+                          "px-2 py-3 text-gray-900 text-center font-semibold tracking-wider border-b border-gray-100"
+                      },
+                      [
+                        _c("input", {
+                          staticClass:
+                            "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked:
+                              _vm.checks.length > 0 &&
+                              _vm.checks.length === _vm.checkableData.length
+                          },
+                          on: { change: _vm.checkAll }
+                        })
+                      ]
+                    )
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.computeColumns, function(col, index) {
-                  return _c("col", {
-                    key: index + _vm.update.columns,
-                    attrs: { width: _vm.getWidth(col) }
-                  })
+                  return _c(
+                    "th",
+                    {
+                      key: index + _vm.update.columns,
+                      staticClass:
+                        "px-6 py-3 text-gray-900 font-semibold tracking-wider border-b border-gray-100",
+                      class: [_vm.getColumnClasses(col)]
+                    },
+                    [_vm._v(_vm._s(col.label))]
+                  )
                 })
               ],
               2
-            ),
-            _vm._v(" "),
-            _c("thead", [
-              _c(
-                "tr",
-                [
-                  !_vm.selection || _vm.selection === "checkbox"
-                    ? _c(
-                        "th",
-                        {
-                          staticClass:
-                            "px-2 py-3 text-gray-900 text-center font-semibold tracking-wider"
-                        },
-                        [
-                          _c("input", {
-                            staticClass:
-                              "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
-                            attrs: { type: "checkbox" },
-                            domProps: {
-                              checked:
-                                _vm.checks.length > 0 &&
-                                _vm.checks.length === _vm.checkableData.length
-                            },
-                            on: { change: _vm.checkAll }
-                          })
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm._l(_vm.computeColumns, function(col, index) {
-                    return _c(
-                      "th",
-                      {
-                        key: index + _vm.update.columns,
-                        staticClass:
-                          "px-6 py-3 text-gray-900 font-semibold tracking-wider",
-                        class: [_vm.getColumnClasses(col)]
-                      },
-                      [_vm._v(_vm._s(col.label))]
-                    )
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              [
-                _vm._l(_vm.computeData, function(row, index) {
-                  return _c(
-                    "tr",
-                    {
-                      key: row._table_uuid,
-                      class: [_vm.isChecked(row) ? "bg-teal-50" : ""]
-                    },
-                    [
-                      !_vm.selection || _vm.selection === "checkbox"
-                        ? _c(
-                            "td",
-                            {
-                              staticClass:
-                                "py-3 border-t border-gray-200 text-center"
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.checks,
-                                    expression: "checks"
-                                  }
-                                ],
-                                staticClass:
-                                  "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
-                                attrs: { type: "checkbox" },
-                                domProps: {
-                                  value: row,
-                                  checked: Array.isArray(_vm.checks)
-                                    ? _vm._i(_vm.checks, row) > -1
-                                    : _vm.checks
-                                },
-                                on: {
-                                  change: function($event) {
-                                    var $$a = _vm.checks,
-                                      $$el = $event.target,
-                                      $$c = $$el.checked ? true : false
-                                    if (Array.isArray($$a)) {
-                                      var $$v = row,
-                                        $$i = _vm._i($$a, $$v)
-                                      if ($$el.checked) {
-                                        $$i < 0 &&
-                                          (_vm.checks = $$a.concat([$$v]))
-                                      } else {
-                                        $$i > -1 &&
-                                          (_vm.checks = $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1)))
-                                      }
-                                    } else {
-                                      _vm.checks = $$c
-                                    }
-                                  }
-                                }
-                              })
-                            ]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm._l(_vm.computeColumns, function(col, i) {
-                        return _c(
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            [
+              _vm._l(_vm.computeData, function(row, index) {
+                return _c(
+                  "tr",
+                  {
+                    key: row._table_uuid,
+                    class: [_vm.isChecked(row) ? "bg-teal-50" : ""]
+                  },
+                  [
+                    !_vm.selection || _vm.selection === "checkbox"
+                      ? _c(
                           "td",
                           {
-                            key: index + "-" + i + _vm.update.columns,
-                            staticClass: "px-6 py-3 border-t border-gray-200",
-                            class: [_vm.getColumnClasses(col)]
+                            staticClass:
+                              "py-3 border-b border-gray-100 text-center"
                           },
                           [
-                            col.treeOpener
-                              ? [
-                                  _c(
-                                    "div",
-                                    { staticClass: "inline-flex items-center" },
-                                    [
-                                      _vm._l(row._level, function(l) {
-                                        return _c("div", {
-                                          key: l,
-                                          staticClass: "mr-4"
-                                        })
-                                      }),
-                                      _vm._v(" "),
-                                      row.children && row.children.length > 0
-                                        ? _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "focus:outline-none transition-all duration-300 ease-in-out",
-                                              class: [
-                                                row._opened
-                                                  ? "transform rotate-90"
-                                                  : ""
-                                              ],
-                                              attrs: { type: "button" },
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.toggleTree(row)
-                                                }
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.checks,
+                                  expression: "checks"
+                                }
+                              ],
+                              staticClass:
+                                "form-checkbox w-4 h-4 cursor-pointer text-teal-500 focus:shadow-outline-teal",
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                value: row,
+                                checked: Array.isArray(_vm.checks)
+                                  ? _vm._i(_vm.checks, row) > -1
+                                  : _vm.checks
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.checks,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = row,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.checks = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.checks = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.checks = $$c
+                                  }
+                                }
+                              }
+                            })
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.computeColumns, function(col, i) {
+                      return _c(
+                        "td",
+                        {
+                          key: index + "-" + i + _vm.update.columns,
+                          staticClass: "px-6 py-3 border-b border-gray-100",
+                          class: [_vm.getColumnClasses(col)]
+                        },
+                        [
+                          col.treeOpener
+                            ? [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "inline-flex items-center w-full"
+                                  },
+                                  [
+                                    _vm._l(row._level, function(l) {
+                                      return _c("div", {
+                                        key: l,
+                                        staticClass: "mr-4"
+                                      })
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.hasChildren(row)
+                                      ? _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "focus:outline-none transition-all duration-300 ease-in-out",
+                                            class: [
+                                              row._opened
+                                                ? "transform rotate-90"
+                                                : ""
+                                            ],
+                                            attrs: { type: "button" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.toggleTree(row)
                                               }
-                                            },
-                                            [
-                                              _c(
-                                                "svg",
-                                                {
-                                                  staticClass:
-                                                    "w-4 h-4 stroke-current text-teal-500 mr-1",
-                                                  attrs: {
-                                                    fill: "none",
-                                                    viewBox: "0 0 24 24"
-                                                  }
-                                                },
-                                                [
-                                                  _c("path", {
-                                                    attrs: {
-                                                      "stroke-linecap": "round",
-                                                      "stroke-linejoin":
-                                                        "round",
-                                                      "stroke-width": "2",
-                                                      d: "M9 5l7 7-7 7"
-                                                    }
-                                                  })
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        : _c("div", {
-                                            class: {
-                                              "w-4 h-4 mr-1": row._level > 0
                                             }
-                                          }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "span",
-                                        [
-                                          col.slot
-                                            ? [
-                                                _vm._t(col.slot, null, {
-                                                  row: row,
-                                                  column: col,
-                                                  index: index
+                                          },
+                                          [
+                                            _c(
+                                              "svg",
+                                              {
+                                                staticClass:
+                                                  "w-4 h-4 stroke-current text-teal-500 mr-1",
+                                                attrs: {
+                                                  fill: "none",
+                                                  viewBox: "0 0 24 24"
+                                                }
+                                              },
+                                              [
+                                                _c("path", {
+                                                  attrs: {
+                                                    "stroke-linecap": "round",
+                                                    "stroke-linejoin": "round",
+                                                    "stroke-width": "2",
+                                                    d: "M9 5l7 7-7 7"
+                                                  }
                                                 })
                                               ]
-                                            : [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm.getRowShow(row, col)
-                                                  )
-                                                )
-                                              ]
-                                        ],
-                                        2
-                                      )
-                                    ],
-                                    2
-                                  )
-                                ]
-                              : [
-                                  col.slot
-                                    ? [
-                                        _vm._t(col.slot, null, {
-                                          row: row,
-                                          column: col,
-                                          index: index
-                                        })
-                                      ]
-                                    : [_vm._v(_vm._s(_vm.getRowShow(row, col)))]
-                                ]
-                          ],
-                          2
-                        )
-                      })
-                    ],
-                    2
-                  )
-                }),
-                _vm._v(" "),
-                _vm.loading === false && _vm.computeData.length === 0
-                  ? _c("tr", [
-                      _c(
-                        "td",
-                        { attrs: { colspan: _vm.computeColumns.length + 1 } },
-                        [
-                          _c("empty-data", {
-                            class: ["shadow-none"],
-                            attrs: {
-                              show:
-                                _vm.loading === false &&
-                                _vm.computeData.length === 0
-                            }
-                          })
+                                            )
+                                          ]
+                                        )
+                                      : _c("div", {
+                                          class: {
+                                            "w-4 h-4 mr-1": row._level > 0
+                                          }
+                                        }),
+                                    _vm._v(" "),
+                                    [
+                                      col.slot
+                                        ? [
+                                            _vm._t(col.slot, null, {
+                                              row: row,
+                                              column: col,
+                                              index: index
+                                            })
+                                          ]
+                                        : [
+                                            _vm._v(
+                                              _vm._s(_vm.getRowShow(row, col))
+                                            )
+                                          ]
+                                    ]
+                                  ],
+                                  2
+                                )
+                              ]
+                            : [
+                                col.slot
+                                  ? [
+                                      _vm._t(col.slot, null, {
+                                        row: row,
+                                        column: col,
+                                        index: index
+                                      })
+                                    ]
+                                  : [_vm._v(_vm._s(_vm.getRowShow(row, col)))]
+                              ]
                         ],
-                        1
+                        2
                       )
-                    ])
-                  : _vm._e()
-              ],
-              2
-            )
-          ]
-        )
+                    })
+                  ],
+                  2
+                )
+              }),
+              _vm._v(" "),
+              _vm.loading === false && _vm.computeData.length === 0
+                ? _c("tr", [
+                    _c(
+                      "td",
+                      { attrs: { colspan: _vm.computeColumns.length + 1 } },
+                      [
+                        _c("empty-data", {
+                          class: ["shadow-none"],
+                          attrs: {
+                            show:
+                              _vm.loading === false &&
+                              _vm.computeData.length === 0
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e()
+            ],
+            2
+          )
+        ])
       ])
     ]
   )
@@ -38164,20 +38170,20 @@ function isHtmlElement(node) {
 var map = {
 	"./Home.vue": [
 		"./resources/js/views/Home.vue",
-		29,
-		25
+		31,
+		27
 	],
 	"./about/Index.vue": [
 		"./resources/js/views/about/Index.vue",
-		26
+		28
 	],
 	"./article/Index.vue": [
 		"./resources/js/views/article/Index.vue",
-		20
+		22
 	],
 	"./auth/Login.vue": [
 		"./resources/js/views/auth/Login.vue",
-		32
+		34
 	],
 	"./auth/Register.vue": [
 		"./resources/js/views/auth/Register.vue",
@@ -38193,7 +38199,7 @@ var map = {
 	],
 	"./my/info/InfoTab.vue": [
 		"./resources/js/views/my/info/InfoTab.vue",
-		33
+		35
 	],
 	"./my/learn/Collect.vue": [
 		"./resources/js/views/my/learn/Collect.vue",
@@ -38216,7 +38222,7 @@ var map = {
 	],
 	"./my/learn/LearnTab.vue": [
 		"./resources/js/views/my/learn/LearnTab.vue",
-		34
+		36
 	],
 	"./my/learn/Note.vue": [
 		"./resources/js/views/my/learn/Note.vue",
@@ -38227,7 +38233,7 @@ var map = {
 		"./resources/js/views/quiz/Items.vue",
 		0,
 		2,
-		21
+		23
 	],
 	"./quiz/Result.vue": [
 		"./resources/js/views/quiz/Result.vue",
@@ -38237,7 +38243,7 @@ var map = {
 		"./resources/js/views/quiz/ResultDetail.vue",
 		0,
 		2,
-		27
+		29
 	],
 	"./quiz/mode/Exam.vue": [
 		"./resources/js/views/quiz/mode/Exam.vue",
@@ -38258,7 +38264,7 @@ var map = {
 	],
 	"./subject/Index.vue": [
 		"./resources/js/views/subject/Index.vue",
-		28
+		30
 	],
 	"./subject/Show.vue": [
 		"./resources/js/views/subject/Show.vue",
@@ -38273,11 +38279,11 @@ var map = {
 	"./subject/tabs/DailyList.vue": [
 		"./resources/js/views/subject/tabs/DailyList.vue",
 		4,
-		35
+		37
 	],
 	"./subject/tabs/ExamList.vue": [
 		"./resources/js/views/subject/tabs/ExamList.vue",
-		22
+		24
 	]
 };
 function webpackAsyncContext(req) {

@@ -1,5 +1,5 @@
 import * as types from "../mutation-types"
-import { login, me, logout } from "@/admin/api/user"
+import { login, me, logout } from "@/admin/api/auth"
 
 // state
 export const state = {

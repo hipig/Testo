@@ -24,5 +24,17 @@ export default {
         },
       }
     }
+  },
+  methods: {
+    getQuestionTypeClasses(type) {
+      let classes = {
+        1: 'text-green-500 border-green-500',
+        2: 'text-orange-500 border-orange-500',
+        3: 'text-yellow-500 border-yellow-500',
+        4: 'text-pink-500 border-pink-500',
+        5: 'text-indigo-500 border-indigo-500'
+      }
+      return classes[parseInt(type)] || 'text-teal-500 border-teal-500'
+    }
   }
 }

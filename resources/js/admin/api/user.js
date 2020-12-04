@@ -1,30 +1,23 @@
 import service from '@/admin/utils/request'
+import { sprintf } from "@/utils/util"
 
 const api = {
-  login: '/login',
-  me: '/me',
-  logout: '/logout',
-  changePassword: '/change-password'
+  users: '/users',
+  usersShow: '/users/%s'
 }
 
-export const login = (params) => service({
-  url: api.login,
-  method: 'post',
-  data: params
+export const getUsers = (params) => service({
+  url: api.users,
+  method: 'get',
+  params: params
 })
 
-export const logout = () => service({
-  url: api.logout,
-  method: 'delete'
-})
-
-export const me = () => service({
-  url: api.me,
+export const showUsers = (id) => service({
+  url: sprintf(api.usersShow, id),
   method: 'get'
 })
 
-export const changePassword = (params) => service({
-  url: api.changePassword,
-  method: 'post',
-  data: params
+export const deleteUsers = (id) => service({
+  url: sprintf(api.usersShow, id),
+  method: 'delete'
 })

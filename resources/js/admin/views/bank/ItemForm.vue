@@ -5,7 +5,7 @@
     </div>
     <div class="flex flex-col py-4">
       <div class="shadow rounded-md bg-white overflow-hidden">
-        <div class="px-6 pt-5 pb-1">
+        <div class="px-6 py-3 bg-gray-50">
           <div class="flex flex-col sm:flex-row items-center justify-between">
             <div class="flex flex-wrap w-full sm:w-1/2 mb-4 sm:mb-0 -mx-2">
               <template v-if="bank.is_group">
@@ -61,20 +61,43 @@
           </div>
         </div>
         <div class="px-6">
-          <t-table :columns="itemColumns" :data="bankItemList" :loading="isLoading">
-            <template #title="{row}">
-              <div class="flex items-start">
-                <span class="border border-green-500 text-green-500 text-center px-2 rounded mr-2">{{ questionTypes[row.question_type].name }}</span>
-                <span class="flex-1 min-w-0 truncate">{{ row.question.title }}</span>
-              </div>
-            </template>
-            <template #action="{row}">
-              <div class="flex flex-wrap items-center">
-                <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleEditScore(row)">修改分数</button>
-                <button type="button" class="pr-3 text-red-500 hover:text-red-700 focus:outline-none" @click="handleRemove(row)">移除</button>
-              </div>
-            </template>
-          </t-table>
+          <template v-if="bank.is_group">
+            <t-table :columns="groupColumns" :data="bankItemList" children-key="items" :loading="isLoading">
+              <template #title="{row}">
+                <span v-if="row._level === 0">{{ row.title }}</span>
+                <span class="truncate" v-else>{{ row.question.title }}</span>
+              </template>
+              <template #action="{row}">
+                <div class="flex flex-wrap items-center">
+                  <template v-if="row._level === 0">
+                    <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleAddItem(row)">添加题目</button>
+                    <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleBatchUpdateScore(row)">修改分数</button>
+                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" @click="handleRemoveGroup(row)">移除分组</button>
+                  </template>
+                  <template v-else>
+                    <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleUpdateScore(row)">修改分数</button>
+                    <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" @click="handleRemove(row)">移除题目</button>
+                  </template>
+                </div>
+              </template>
+            </t-table>
+          </template>
+          <template v-else>
+            <t-table :columns="itemColumns" :data="bankItemList" :loading="isLoading">
+              <template #title="{row}">
+                <div class="flex items-start">
+                  <span class="border text-center px-2 rounded mr-2" :class="[getQuestionTypeClasses(row.question_type)]">{{ questionTypes[row.question_type].name }}</span>
+                  <span class="flex-1 min-w-0 truncate">{{ row.question.title }}</span>
+                </div>
+              </template>
+              <template #action="{row}">
+                <div class="flex flex-wrap items-center">
+                  <button type="button" class="pr-3 text-teal-500 hover:text-teal-700 focus:outline-none" @click="handleEditScore(row)">修改分数</button>
+                  <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" @click="handleRemove(row)">移除</button>
+                </div>
+              </template>
+            </t-table>
+          </template>
           <div class="py-5" v-if="total > 0">
             <t-pagination :total="total" :page-size="pageSize" :current="currentPage" @page-change="changePage" @pagesize-change="changePageSize" show-total show-sizer show-quickjump/>
           </div>
@@ -96,6 +119,30 @@
         id: this.$route.params.id || 0,
         bank: {},
         bankItemList: [],
+        groupColumns: [
+          {
+            label: 'ID',
+            prop: 'id',
+            width: 80
+          },
+          {
+            label: '标题',
+            prop: 'title',
+            slot: 'title',
+            treeOpener: true
+          },
+          {
+            label: '创建时间',
+            prop: 'created_at',
+            width: 190
+          },
+          {
+            label: '操作',
+            prop: 'action',
+            slot: 'action',
+            width: 250
+          }
+        ],
         itemColumns: [
           {
             label: 'ID',
@@ -162,7 +209,16 @@
         this.pageSize = size
         this.showBankItems()
       },
-      handleEditScore(item) {
+      handleUpdateScore(item) {
+
+      },
+      handleBatchUpdateScore(item) {
+
+      },
+      handleAddItem(item) {
+
+      },
+      handleRemoveGroup(item) {
 
       },
       handleRemove(item) {

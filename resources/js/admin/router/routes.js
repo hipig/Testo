@@ -14,6 +14,7 @@ const AdminBankForm = view('bank/Form')
 const AdminBankItemForm = view('bank/ItemForm')
 const AdminQuestion = view('question/Index')
 const AdminQuestionForm = view('question/Form')
+const AdminUser = view('user/Index')
 
 export default [
   {
@@ -92,6 +93,17 @@ export default [
             path: 'edit/:id',
             name: 'admin.question.edit',
             component: AdminQuestionForm,
+          }
+        ]
+      },
+      {
+        path: 'user',
+        component: BlankLayout,
+        children: [
+          {
+            path: '',
+            name: 'admin.user.index',
+            component: AdminUser,
           }
         ]
       }
